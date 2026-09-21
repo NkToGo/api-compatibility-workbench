@@ -1,12 +1,10 @@
 # Development roadmap
 
-Each numbered item is a reviewable step. Complete its implementation, validation,
-review and commit before advancing. Adjust boundaries when necessary to keep the
-change understandable in one sitting.
+The milestones below describe planned capabilities and their acceptance criteria.
 
 ## Milestone 1 — Establish a trustworthy compatibility case
 
-1. **Ready for review:** define supported input shapes and evidence conclusions; implement
+1. **Implemented:** define supported input shapes and evidence conclusions; implement
    immutable identities and deterministic assessment rules with focused tests.
 2. Curate a real provider/consumer transition, documenting rights, exact versions,
    scenario coverage and independently reviewed expected behavior.

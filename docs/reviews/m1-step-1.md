@@ -1,7 +1,6 @@
 # Milestone 1, Step 1 — Input identity and evidence conclusions
 
-Status: committed as `179d5ac`. GitHub Actions passed on Windows and Linux after
-the initial push to the private repository.
+Status: implemented. The domain library has passed verification on Windows and Linux.
 
 ## What changed
 
@@ -28,7 +27,7 @@ The project uses Apache License 2.0 and includes the upstream Maven Wrapper noti
    the core decision path and missing/duplicate/stale evidence handling.
 4. [Behavior tests](../../backend/src/test/java/io/github/nktogo/apicompatibility/compatibility/CompatibilityComparisonTest.java):
    concrete cases challenging false success and invalid reuse.
-5. [Roadmap](../roadmap.md): the next review boundaries.
+5. [Roadmap](../roadmap.md): planned capabilities and acceptance criteria.
 
 The other Java files define the compact immutable records used by the comparator.
 `mvnw` and `mvnw.cmd` are upstream Apache tooling, not application logic.
@@ -51,18 +50,16 @@ identity, changes to shared verification conditions, SDK/configuration-only
 transitions, incomplete scenario coverage and stale historical assessments.
 
 Documentation links resolve. `.env.local` and build output are excluded from Git.
-The coding agent independently verified both successful jobs in
+Both platform jobs passed in
 [GitHub Actions run 35595362856](https://github.com/NkToGo/api-compatibility-workbench/actions/runs/35595362856).
 The tests use synthetic records and make no external API calls. They do
-not validate the configured OpenAI key, execute a Stripe migration or prove that
+not validate provider credentials, execute a Stripe migration or prove that
 the future runner can authenticate evidence.
 
-## Review boundary
+## Scope and interactive verification
 
 Follow the [manual verification instructions](../manual-verification/m1-step-1.md)
-to build locally and exercise the comparator interactively. Routine verification,
-staging, commits and pushes have now been delegated to the coding agent; see
-`CONTRIBUTING.md` for the current reporting and review boundaries.
+to build locally and exercise the comparator interactively.
 
 This completes the proposed scope of Step 1, not the whole milestone. No web
 server, agent worker, database or cloud service has been added. Step 2 will curate

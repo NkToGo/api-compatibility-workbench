@@ -4,27 +4,12 @@ Use JDK 21 and the repository's Maven Wrapper. The commands in `README.md` compi
 the library with warnings treated as errors, run its tests and package the JAR.
 GitHub Actions is configured to run the same checks on Windows and Linux.
 
-## Review boundaries
+## Changes and validation
 
-Each numbered roadmap step is a coherent review boundary. A milestone contains
-several steps; it is not one large change. Before moving to the next step:
-
-1. Finish the step's behavior and relevant documentation.
-2. Run the focused checks and report their actual results and limitations.
-3. Perform the applicable hands-on verification scenarios and inspect the diff.
-4. Commit and push the coherent step, then check remote CI and address failures.
-5. Report the changes, verification evidence and limitations, suggested review
-   order, commit identity and CI status before advancing.
-
-The maintainer has delegated routine verification, staging, commits and pushes to
-the coding agent. Preserve reviewable step boundaries and report actual results;
-delegation does not remove review or allow skipped validation. Request maintainer
-input when credentials, runtime approval or product decisions require it.
-Running an automated test command manually is a build check; when the product
-supports an interactive workflow, also exercise actual hands-on scenarios.
-
-Keep commits meaningful. Do not split changes artificially or combine unrelated
-steps merely because they belong to the same milestone.
+Keep changes cohesive and independently reviewable. Include relevant tests and
+documentation, and describe validation results and known limitations. For an
+interactive feature, exercise the actual workflow as well as automated checks.
+Investigate failing checks before submitting a change.
 
 ## Evidence-sensitive changes
 

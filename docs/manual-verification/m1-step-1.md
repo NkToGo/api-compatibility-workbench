@@ -1,14 +1,13 @@
 # Manual verification — Milestone 1, Step 1
 
-Run these steps from Windows PowerShell. This component is a library, so there is
-no browser or server to start. JShell, included in JDK 21, lets you call the actual
+Run these steps from Windows PowerShell at the repository root. This component is
+a library, so there is no browser or server to start. JShell, included in JDK 21, lets you call the actual
 comparison code interactively. The inputs below are synthetic metadata; they do
 not contact or validate an external provider.
 
 ## 1. Verify the build
 
 ```powershell
-Set-Location 'C:\Users\yatta\Projects\api-compatibility-workbench'
 .\mvnw.cmd -B -ntp -f backend/pom.xml clean verify
 ```
 
@@ -91,9 +90,8 @@ Exit JShell:
 /exit
 ```
 
-## 5. Review before committing
+## 5. Compare with the contract
 
 Return to the [review guide](../reviews/m1-step-1.md), inspect the implementation
-and confirm that these results match the documented contract. Report any mismatch
-before proceeding. Follow `CONTRIBUTING.md` for the currently delegated staging,
-commit, push and reporting workflow.
+and confirm that these results match the documented contract. Investigate any
+mismatch.

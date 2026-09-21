@@ -1,0 +1,179 @@
+{
+  "formatVersion": 1,
+  "reviewedOn": "2026-09-21",
+  "sources": [
+    {
+      "id": "baseline-consumer",
+      "url": "https://raw.githubusercontent.com/killbill/killbill-stripe-plugin/b5445c6be4f195c5b59d7c867ad7dcc696aa7a38/src/main/java/org/killbill/billing/plugin/stripe/StripePaymentPluginApi.java",
+      "revision": "b5445c6be4f195c5b59d7c867ad7dcc696aa7a38",
+      "sha256": "77aa72b81ca96c1f73a0f51993f9b831e817101666cd80074b74be78e728f3ee",
+      "localExcerpt": "consumer/baseline.java.txt",
+      "lineRanges": [
+        {
+          "start": 391,
+          "end": 444
+        },
+        {
+          "start": 446,
+          "end": 488
+        },
+        {
+          "start": 631,
+          "end": 638
+        }
+      ],
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "baseline-pom.xml",
+      "url": "https://raw.githubusercontent.com/killbill/killbill-stripe-plugin/b5445c6be4f195c5b59d7c867ad7dcc696aa7a38/pom.xml",
+      "sha256": "0eba6123895cde54acdf6c253a3ad68351c9798b864ad022ccf9183d0781c6ec",
+      "license": "Apache-2.0",
+      "redistributed": false
+    },
+    {
+      "id": "baseline-LICENSE",
+      "url": "https://raw.githubusercontent.com/killbill/killbill-stripe-plugin/b5445c6be4f195c5b59d7c867ad7dcc696aa7a38/LICENSE",
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "license": "Apache-2.0",
+      "redistributed": false
+    },
+    {
+      "id": "upstream-reference-consumer",
+      "url": "https://raw.githubusercontent.com/killbill/killbill-stripe-plugin/b5b7b52e6c703f2292730996ce838a7538497762/src/main/java/org/killbill/billing/plugin/stripe/StripePaymentPluginApi.java",
+      "revision": "b5b7b52e6c703f2292730996ce838a7538497762",
+      "sha256": "cae4d1626068c039353d59e27142f50c7a139c53d0c08e50b3df2dc97809be4a",
+      "localExcerpt": "consumer/upstream-reference.java.txt",
+      "lineRanges": [
+        {
+          "start": 392,
+          "end": 448
+        },
+        {
+          "start": 450,
+          "end": 492
+        },
+        {
+          "start": 635,
+          "end": 642
+        }
+      ],
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "upstream-reference-pom.xml",
+      "url": "https://raw.githubusercontent.com/killbill/killbill-stripe-plugin/b5b7b52e6c703f2292730996ce838a7538497762/pom.xml",
+      "sha256": "583486bfc36956f7fee0f69d3583ecb057f4ef02fbde73ea8c20bea775e986b5",
+      "license": "Apache-2.0",
+      "redistributed": false
+    },
+    {
+      "id": "upstream-reference-LICENSE",
+      "url": "https://raw.githubusercontent.com/killbill/killbill-stripe-plugin/b5b7b52e6c703f2292730996ce838a7538497762/LICENSE",
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "license": "Apache-2.0",
+      "redistributed": false
+    },
+    {
+      "id": "17.4.0-Stripe.java",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/df4a644373d2708f0958d6069da62c3c17fb609f/src/main/java/com/stripe/Stripe.java",
+      "sha256": "8cdaf92824a98bf6492766f5c659a20155b396b062f85accaa863b48e93b2028",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "17.4.0-RequestOptions.java",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/df4a644373d2708f0958d6069da62c3c17fb609f/src/main/java/com/stripe/net/RequestOptions.java",
+      "sha256": "6ec6ba0de5818aeeea95f5052ab61178e680f155c00088b5856b516d1c60ec0f",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "17.4.0-Customer.java",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/df4a644373d2708f0958d6069da62c3c17fb609f/src/main/java/com/stripe/model/Customer.java",
+      "sha256": "8dc25279807ce4c96cb97b1c69395e0873ff7a7fd2e748c6303cc729eeec745d",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "17.4.0-LICENSE",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/df4a644373d2708f0958d6069da62c3c17fb609f/LICENSE",
+      "sha256": "60b67f69eb24e3ccc8cd93ceca47856b597e1f815a29f2a83d8f3b3270d817ee",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "20.33.0-Stripe.java",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/9502d3fd9c5b9bdda437a34c506a7fef6a5e2c89/src/main/java/com/stripe/Stripe.java",
+      "sha256": "634b0434006e686f82154b110be5364307ae43dd91975aa85accf71263dc785a",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "20.33.0-RequestOptions.java",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/9502d3fd9c5b9bdda437a34c506a7fef6a5e2c89/src/main/java/com/stripe/net/RequestOptions.java",
+      "sha256": "b86ef658b797f2d7d320daafa81fcb402d2ba4cb33c370ee04fd603aa8c8fe6a",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "20.33.0-Customer.java",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/9502d3fd9c5b9bdda437a34c506a7fef6a5e2c89/src/main/java/com/stripe/model/Customer.java",
+      "sha256": "f509d9ac48b0bfc9d1c43e91aa95bf407155a06274f3007251f12c4c43de9ce9",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "20.33.0-LICENSE",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/9502d3fd9c5b9bdda437a34c506a7fef6a5e2c89/LICENSE",
+      "sha256": "60b67f69eb24e3ccc8cd93ceca47856b597e1f815a29f2a83d8f3b3270d817ee",
+      "license": "MIT",
+      "redistributed": false
+    },
+    {
+      "id": "gson-parent-license",
+      "url": "https://repo.maven.apache.org/maven2/com/google/code/gson/gson-parent/2.8.6/gson-parent-2.8.6.pom",
+      "sha256": "3736463859ec19267295e894940ae82a8f684413031122fe35ce7cff7e30a774",
+      "license": "Apache-2.0",
+      "redistributed": false
+    }
+  ],
+  "executionArtifacts": [
+    {
+      "coordinate": "com.stripe:stripe-java:17.4.0:jar",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/17.4.0/stripe-java-17.4.0.jar",
+      "sha256": "dd21617fd65fefe5d13f9cfb4a9a117b77c211518ed1bb9ba661bb511e6740c1",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:17.4.0:pom",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/17.4.0/stripe-java-17.4.0.pom",
+      "sha256": "4fac8aea67935d4262c79a34b97375bebc20eeeecd40a14b5db637364f8405ee",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:20.33.0:jar",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/20.33.0/stripe-java-20.33.0.jar",
+      "sha256": "aa27965aadf401d65c6e6c80bc82d77d7b66d09e7f036a999c79510118af9a8c",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:20.33.0:pom",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/20.33.0/stripe-java-20.33.0.pom",
+      "sha256": "c5e85f0e2e80f26748acd710bc21ae5ac5a0f03daaeb128a483754064f842c2f",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.google.code.gson:gson:2.8.6:jar",
+      "url": "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar",
+      "sha256": "c8fb4839054d280b3033f800d1f5a97de2f028eb8ba2eb458ad287e536f3f25f",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.google.code.gson:gson:2.8.6:pom",
+      "url": "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.6/gson-2.8.6.pom",
+      "sha256": "2174415a647332d30fda04bd1cfc708a3ecc84eaf7517f596188d8244e103911",
+      "redistributed": false
+    }
+  ]
+}

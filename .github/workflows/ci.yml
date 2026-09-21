@@ -26,6 +26,9 @@ jobs:
           java-version: '21'
           cache: maven
           cache-dependency-path: backend/pom.xml
+      - name: Verify curated case inputs
+        shell: pwsh
+        run: ./scripts/Verify-CuratedCase.ps1
       - name: Verify on Windows
         if: runner.os == 'Windows'
         shell: pwsh

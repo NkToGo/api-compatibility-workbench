@@ -12,6 +12,11 @@ observations. It distinguishes a regression observed during a declared transitio
 no regression observed within the declared scenarios, and an unresolved result.
 Changed inputs make an earlier assessment stale.
 
+A [curated Stripe migration case](cases/stripe-customer-sources-2020-08-27/README.md)
+pins historical consumer code, SDK artifacts and synthetic fixtures with a
+separate expected-behavior contract. Its inputs are checked in CI; the migration
+has not been executed yet.
+
 There is no running web application or migration runner yet. Agent investigation,
 provider adapters, isolated execution, persistence and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
@@ -50,6 +55,7 @@ Never put credentials in case inputs, recorded observations or diagnostic output
 
 - [Product scope and boundaries](docs/product.md)
 - [Compatibility and evidence contract](docs/compatibility-contract.md)
+- [Stripe customer-sources case](cases/stripe-customer-sources-2020-08-27/README.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

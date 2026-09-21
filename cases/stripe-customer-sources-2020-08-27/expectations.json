@@ -1,0 +1,39 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-customer-sources-2020-08-27",
+  "status": "curated-not-executed",
+  "evidenceKind": "source-reviewed-contract",
+  "requireEvidenceBeforeDeactivation": true,
+  "scenarios": [
+    {
+      "id": "modern-method-survives-omission",
+      "mustComplete": true,
+      "finalMethodIds": ["pm_curated_modern"],
+      "deactivatedMethodIds": []
+    },
+    {
+      "id": "empty-account-survives-omission",
+      "mustComplete": true,
+      "finalMethodIds": [],
+      "deactivatedMethodIds": []
+    },
+    {
+      "id": "legacy-method-not-lost",
+      "mustComplete": true,
+      "finalMethodIds": ["card_curated_legacy"],
+      "deactivatedMethodIds": []
+    },
+    {
+      "id": "present-legacy-collection-control",
+      "mustComplete": true,
+      "finalMethodIds": ["card_curated_legacy"],
+      "deactivatedMethodIds": []
+    },
+    {
+      "id": "confirmed-removed-legacy-method",
+      "mustComplete": true,
+      "finalMethodIds": [],
+      "deactivatedMethodIds": ["card_curated_legacy"]
+    }
+  ]
+}

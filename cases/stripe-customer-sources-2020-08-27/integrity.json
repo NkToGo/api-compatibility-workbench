@@ -1,0 +1,25 @@
+{
+  "formatVersion": 1,
+  "files": [
+    {
+      "path": "expectations.json",
+      "sha256": "21c7456708d03e236dd909fbd4b76e4ad1ec6ec8d7af85d0784df6117b9bc273"
+    },
+    {
+      "path": "fixtures.json",
+      "sha256": "fe657ee4a5cc4707a1d16938059267852bc0003602e3a0f0d0ae9209a573008b"
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "c5d194275e778c5ed6099d7b4a946086ae2a5697ec6f9b6a46f3bb96cac2fc85"
+    },
+    {
+      "path": "consumer/baseline.java.txt",
+      "sha256": "c383bcc6696d43daa875690ba81de46874c3b98c832eef8455d935135b10c6df"
+    },
+    {
+      "path": "consumer/upstream-reference.java.txt",
+      "sha256": "92e6e05bfca15ad3b7af3a72f164c79b2d7c56ae004168ad5a1cbbfcf282fcc0"
+    }
+  ]
+}

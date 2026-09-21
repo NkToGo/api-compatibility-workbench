@@ -6,8 +6,9 @@ The milestones below describe planned capabilities and their acceptance criteria
 
 1. **Implemented:** define supported input shapes and evidence conclusions; implement
    immutable identities and deterministic assessment rules with focused tests.
-2. Curate a real provider/consumer transition, documenting rights, exact versions,
-   scenario coverage and independently reviewed expected behavior.
+2. **Curated:** [Stripe customer-sources transition](../cases/stripe-customer-sources-2020-08-27/README.md)
+   with source rights, pinned versions and expected behavior reviewed against
+   provider and consumer sources separately from the historical repair. Not executed.
 3. Execute the baseline and changed scenarios deterministically and record
    artifacts with provenance.
 4. Add a readable case/result view showing coverage, observations and open issues.

@@ -1,5 +1,15 @@
 API Compatibility Workbench
 
+This distribution includes selected method excerpts from the Kill Bill Stripe
+plugin under Apache License 2.0:
+Copyright 2020-2020 Equinix, Inc
+Copyright 2014-2020 The Billing Project, LLC
+
+Source: https://github.com/killbill/killbill-stripe-plugin
+Revisions: b5445c6be4f195c5b59d7c867ad7dcc696aa7a38 and
+b5b7b52e6c703f2292730996ce838a7538497762.
+The excerpts retain method bodies and omit their enclosing class and imports.
+
 This distribution includes Apache Maven Wrapper 3.3.4 scripts (mvnw and mvnw.cmd).
 The upstream notice follows:
 

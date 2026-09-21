@@ -1,0 +1,258 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-customer-sources-2020-08-27",
+  "origin": "authored-synthetic",
+  "apiVersions": {
+    "baseline": "2019-12-03",
+    "target": "2020-08-27"
+  },
+  "scenarios": [
+    {
+      "id": "modern-method-survives-omission",
+      "initialLocalMethodIds": [
+        "pm_curated_modern"
+      ],
+      "paymentMethodListResponse": {
+        "object": "list",
+        "data": [
+          {
+            "id": "pm_curated_modern",
+            "object": "payment_method",
+            "customer": "cus_curated",
+            "type": "card",
+            "card": {
+              "brand": "visa",
+              "last4": "4242",
+              "exp_month": 12,
+              "exp_year": 2030
+            }
+          }
+        ],
+        "has_more": false,
+        "url": "/v1/payment_methods"
+      },
+      "sourceListResponse": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "url": "/v1/customers/cus_curated/sources"
+      },
+      "baseline": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer",
+          "sources": {
+            "object": "list",
+            "data": [],
+            "has_more": false,
+            "url": "/v1/customers/cus_curated/sources"
+          }
+        }
+      },
+      "target": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer"
+        }
+      }
+    },
+    {
+      "id": "empty-account-survives-omission",
+      "initialLocalMethodIds": [],
+      "paymentMethodListResponse": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "url": "/v1/payment_methods"
+      },
+      "sourceListResponse": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "url": "/v1/customers/cus_curated/sources"
+      },
+      "baseline": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer",
+          "sources": {
+            "object": "list",
+            "data": [],
+            "has_more": false,
+            "url": "/v1/customers/cus_curated/sources"
+          }
+        }
+      },
+      "target": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer"
+        }
+      }
+    },
+    {
+      "id": "legacy-method-not-lost",
+      "initialLocalMethodIds": [
+        "card_curated_legacy"
+      ],
+      "paymentMethodListResponse": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "url": "/v1/payment_methods"
+      },
+      "sourceListResponse": {
+        "object": "list",
+        "data": [
+          {
+            "id": "card_curated_legacy",
+            "object": "card",
+            "customer": "cus_curated",
+            "brand": "Visa",
+            "last4": "4242",
+            "exp_month": 12,
+            "exp_year": 2030
+          }
+        ],
+        "has_more": false,
+        "url": "/v1/customers/cus_curated/sources"
+      },
+      "baseline": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer",
+          "sources": {
+            "object": "list",
+            "data": [
+              {
+                "id": "card_curated_legacy",
+                "object": "card",
+                "customer": "cus_curated",
+                "brand": "Visa",
+                "last4": "4242",
+                "exp_month": 12,
+                "exp_year": 2030
+              }
+            ],
+            "has_more": false,
+            "url": "/v1/customers/cus_curated/sources"
+          }
+        }
+      },
+      "target": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer"
+        }
+      }
+    },
+    {
+      "id": "present-legacy-collection-control",
+      "initialLocalMethodIds": [
+        "card_curated_legacy"
+      ],
+      "paymentMethodListResponse": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "url": "/v1/payment_methods"
+      },
+      "sourceListResponse": {
+        "object": "list",
+        "data": [
+          {
+            "id": "card_curated_legacy",
+            "object": "card",
+            "customer": "cus_curated",
+            "brand": "Visa",
+            "last4": "4242",
+            "exp_month": 12,
+            "exp_year": 2030
+          }
+        ],
+        "has_more": false,
+        "url": "/v1/customers/cus_curated/sources"
+      },
+      "baseline": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer",
+          "sources": {
+            "object": "list",
+            "data": [
+              {
+                "id": "card_curated_legacy",
+                "object": "card",
+                "customer": "cus_curated",
+                "brand": "Visa",
+                "last4": "4242",
+                "exp_month": 12,
+                "exp_year": 2030
+              }
+            ],
+            "has_more": false,
+            "url": "/v1/customers/cus_curated/sources"
+          }
+        }
+      },
+      "target": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer",
+          "sources": {
+            "object": "list",
+            "data": [
+              {
+                "id": "card_curated_legacy",
+                "object": "card",
+                "customer": "cus_curated",
+                "brand": "Visa",
+                "last4": "4242",
+                "exp_month": 12,
+                "exp_year": 2030
+              }
+            ],
+            "has_more": false,
+            "url": "/v1/customers/cus_curated/sources"
+          }
+        }
+      }
+    },
+    {
+      "id": "confirmed-removed-legacy-method",
+      "initialLocalMethodIds": [
+        "card_curated_legacy"
+      ],
+      "paymentMethodListResponse": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "url": "/v1/payment_methods"
+      },
+      "sourceListResponse": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "url": "/v1/customers/cus_curated/sources"
+      },
+      "baseline": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer",
+          "sources": {
+            "object": "list",
+            "data": [],
+            "has_more": false,
+            "url": "/v1/customers/cus_curated/sources"
+          }
+        }
+      },
+      "target": {
+        "customerResponse": {
+          "id": "cus_curated",
+          "object": "customer"
+        }
+      }
+    }
+  ]
+}

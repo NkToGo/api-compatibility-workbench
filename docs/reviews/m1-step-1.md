@@ -1,6 +1,7 @@
 # Milestone 1, Step 1 — Input identity and evidence conclusions
 
-Status: implemented and locally validated; awaiting review before the first commit.
+Status: committed as `179d5ac`. GitHub Actions passed on Windows and Linux after
+the initial push to the private repository.
 
 ## What changed
 
@@ -50,20 +51,20 @@ identity, changes to shared verification conditions, SDK/configuration-only
 transitions, incomplete scenario coverage and stale historical assessments.
 
 Documentation links resolve. `.env.local` and build output are excluded from Git.
-The CI configuration has not run on GitHub; Linux execution has not been verified
-locally. The tests use synthetic records and make no external API calls. They do
+The coding agent independently verified both successful jobs in
+[GitHub Actions run 35595362856](https://github.com/NkToGo/api-compatibility-workbench/actions/runs/35595362856).
+The tests use synthetic records and make no external API calls. They do
 not validate the configured OpenAI key, execute a Stripe migration or prove that
 the future runner can authenticate evidence.
 
 ## Review boundary
 
 Follow the [manual verification instructions](../manual-verification/m1-step-1.md)
-to build locally and exercise the comparator interactively. The maintainer performs
-this verification, stages the reviewed files, commits and pushes them. These actions
-have not been delegated to automation.
+to build locally and exercise the comparator interactively. Routine verification,
+staging, commits and pushes have now been delegated to the coding agent; see
+`CONTRIBUTING.md` for the current reporting and review boundaries.
 
 This completes the proposed scope of Step 1, not the whole milestone. No web
-server, agent worker, database or cloud service has been added. No commit or remote
-repository has been created. After review and the first commit, Step 2 will curate
+server, agent worker, database or cloud service has been added. Step 2 will curate
 a real provider/consumer transition with source rights, pinned inputs and reviewed
 expected behavior.

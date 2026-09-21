@@ -95,4 +95,5 @@ Exit JShell:
 
 Return to the [review guide](../reviews/m1-step-1.md), inspect the implementation
 and confirm that these results match the documented contract. Report any mismatch
-before proceeding. The maintainer stages, commits and pushes the reviewed step.
+before proceeding. Follow `CONTRIBUTING.md` for the currently delegated staging,
+commit, push and reporting workflow.

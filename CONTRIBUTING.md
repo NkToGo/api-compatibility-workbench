@@ -11,16 +11,17 @@ several steps; it is not one large change. Before moving to the next step:
 
 1. Finish the step's behavior and relevant documentation.
 2. Run the focused checks and report their actual results and limitations.
-3. Summarize the change and give a short suggested reading order, exact manual
-   verification instructions and expected results.
-4. The maintainer performs manual verification and review; address any feedback.
-5. Provide staging, commit and push commands. The maintainer executes them and
-   confirms completion before the next implementation step begins.
+3. Perform the applicable hands-on verification scenarios and inspect the diff.
+4. Commit and push the coherent step, then check remote CI and address failures.
+5. Report the changes, verification evidence and limitations, suggested review
+   order, commit identity and CI status before advancing.
 
-Automation may run development checks. Manual verification, staging, commits,
-pushes and remote repository creation remain maintainer actions unless explicitly
-delegated. Running an automated test command manually is a build check; when the
-product supports an interactive workflow, also provide actual hands-on scenarios.
+The maintainer has delegated routine verification, staging, commits and pushes to
+the coding agent. Preserve reviewable step boundaries and report actual results;
+delegation does not remove review or allow skipped validation. Request maintainer
+input when credentials, runtime approval or product decisions require it.
+Running an automated test command manually is a build check; when the product
+supports an interactive workflow, also exercise actual hands-on scenarios.
 
 Keep commits meaningful. Do not split changes artificially or combine unrelated
 steps merely because they belong to the same milestone.

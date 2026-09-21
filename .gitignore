@@ -1,0 +1,12 @@
+# Local credentials and environment configuration
+.env
+.env.*
+!.env.example
+
+# Build output and local tooling
+**/target/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

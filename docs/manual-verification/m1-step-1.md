@@ -8,10 +8,12 @@ not contact or validate an external provider.
 ## 1. Verify the build
 
 ```powershell
+./scripts/Prepare-StripeCase.ps1
 .\mvnw.cmd -B -ntp -f backend/pom.xml clean verify
 ```
 
-Expected: `BUILD SUCCESS`, 48 tests, zero failures/errors/skips. Stop on a failure
+Expected: `BUILD SUCCESS`, zero failures/errors/skips. The original comparator has
+48 tests; the full suite also covers the subsequently added case runner. Stop on a failure
 and investigate before committing.
 
 ## 2. Open the interactive Java shell

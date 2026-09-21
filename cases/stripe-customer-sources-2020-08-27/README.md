@@ -1,7 +1,11 @@
 # Stripe customer sources: omission is not an empty list
 
-Status: curated inputs and expected behavior; **not executed**. There is no
-compatibility assessment or validated repair for this case yet.
+Status: curated inputs with an [executed isolated-method case](../../docs/stripe-case-runner.md).
+The baseline passes all five scenarios; the unrepaired target fails four and the
+historical reference fails two. There is no validated repair or full-installation
+compatibility claim. The input contract's `curated-not-executed` status records
+its creation state; execution evidence is stored separately, never written back
+over the expected results.
 
 ## The integration problem
 
@@ -16,7 +20,8 @@ stopped including customer sources by default. The
 updates the SDK and guards the missing collection. That patch is a historical
 reference, not the authority for expected results. Skipping a missing collection
 may still leave existing legacy methods in the subsequent deactivation set.
-This is a source-based risk to test, not an observed production incident.
+The isolated runner demonstrates this risk with synthetic responses. It is not
+evidence of an observed production incident.
 
 ## Exact transition
 
@@ -94,17 +99,15 @@ the runner must also record whether remote absence was established before deleti
 
 ## Execution boundary
 
-The next runner must exercise the selected methods' ordering, reconciliation and
-deletion behavior with the actual pinned SDK types. Database and platform services
-may be controlled test doubles, but any adaptation must be explicit and retain a
-diff from these excerpts. Merely reimplementing the null check as a new test does
-not validate the consumer. Report results as an isolated consumer-method case,
-not a full Kill Bill installation test.
+The local runner preserves the selected method bodies and exercises their ordering,
+reconciliation and deletion behavior with the actual pinned SDK types. Database
+and platform services are controlled test doubles; generated source assembly and
+the [documented service substitutions](../../docs/stripe-case-runner.md) expose the
+adaptation. Results apply to the isolated methods, not a full Kill Bill installation.
 
-Use one declared Java 21 execution environment for all variants, isolated SDK
-classpaths and the same fixtures, expectations and harness. Exact runtime/harness
-digests are pending execution implementation; do not fabricate InputSnapshot
-values or observations now. A whole-plugin upgrade may fail to compile for other
+All variants use one declared Java 21 environment, isolated SDK classpaths and the
+same fixtures, expectations and harness. Runtime/harness digests and actual
+observations are recorded per run. A whole-plugin upgrade may fail to compile for other
 reasons (including Checkout method changes); that is outside this isolated case.
 
 Fail closed on unexpected network access. Only local fixture transport is allowed;
@@ -114,12 +117,11 @@ unexpected calls when implementing the transport. No pagination beyond a single
 page is covered. Transactions, concurrency, real database writes, provider errors
 and production API behavior remain outside the first case's coverage.
 
-Source prediction is that the target dereferences a missing collection; the
-reference skips it and may deactivate the legacy record. Only execution may turn
-those predictions into evidence. Stripe's current changelog also describes the
+Execution shows the target dereferencing a missing collection and the reference
+skipping it before deactivating the legacy record. Stripe's current changelog also describes the
 Java SDK as unaffected; it does not establish that this consumer's runtime flow
 is safe. The pinned model has a nullable reference field without an initializer.
-Resolve the apparent discrepancy through execution, not documentation voting.
+The SDK's unchanged field shape does not prevent this observed runtime failure.
 
 The historical repair is publicly available and may be known to models. This is
 a reproducibility case, not held-out evidence of agent generalization.

@@ -14,35 +14,44 @@ Changed inputs make an earlier assessment stale.
 
 A [curated Stripe migration case](cases/stripe-customer-sources-2020-08-27/README.md)
 pins historical consumer code, SDK artifacts and synthetic fixtures with a
-separate expected-behavior contract. Its inputs are checked in CI; the migration
-has not been executed yet.
+separate expected-behavior contract. A deterministic local runner now executes
+the selected consumer methods with both SDKs and records bounded assessments.
+The isolated case exposes regressions in the unrepaired upgrade and remaining
+failures in the historical reference patch. See [running the case](docs/stripe-case-runner.md).
 
-There is no running web application or migration runner yet. Agent investigation,
+There is no web application or general migration runner yet. Agent investigation,
 provider adapters, isolated execution, persistence and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
 
 ## Build and test
 
-Requirements: JDK 21 and network access for the first dependency download.
+Requirements: JDK 21, PowerShell 7 and network access for the first dependency download.
 The included Maven Wrapper selects Maven 3.9.16 and checks its distribution digest.
 Run these commands from the repository root.
 
 Windows PowerShell:
 
 ```powershell
+./scripts/Prepare-StripeCase.ps1
 .\mvnw.cmd -B -ntp -f backend/pom.xml clean verify
 ```
 
 Linux/macOS:
 
 ```sh
+pwsh -NoProfile -File ./scripts/Prepare-StripeCase.ps1
 sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 ```
 
-Tests use local records and do not call OpenAI, Stripe or GitHub. They do not need
-Docker, a database or credentials. The build produces a library JAR in
-`backend/target/`, not an executable server.
+Tests use local records and synthetic provider responses; they do not call OpenAI,
+Stripe or GitHub. They need no Docker, database or credentials. Preparation downloads
+checksum-pinned artifacts from Maven Central; execution then uses an offline fixture
+transport. The build produces a library JAR and runtime dependencies, not a server.
+
+After building, run `./scripts/Run-StripeCase.ps1` in PowerShell to produce a new
+local report. The [runner documentation](docs/stripe-case-runner.md) explains the
+results, artifacts and isolation limits.
 
 ## Configuration
 
@@ -56,6 +65,7 @@ Never put credentials in case inputs, recorded observations or diagnostic output
 - [Product scope and boundaries](docs/product.md)
 - [Compatibility and evidence contract](docs/compatibility-contract.md)
 - [Stripe customer-sources case](cases/stripe-customer-sources-2020-08-27/README.md)
+- [Local case execution and evidence](docs/stripe-case-runner.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

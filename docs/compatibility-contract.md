@@ -41,6 +41,10 @@ Accepting these Java types does not establish support for any Stripe transition,
 consumer JDK, webhook type or repository. That support matrix will come from real
 curated and executed cases in subsequent steps.
 
+The separate [local Stripe case runner](stripe-case-runner.md) now constructs these
+records from one allowlisted, isolated-method experiment. Its synthetic responses
+and service doubles establish only that case's coverage, not general Stripe support.
+
 ## Comparable transitions
 
 Baseline and target must share case, provider, expectations, fixture bundle,

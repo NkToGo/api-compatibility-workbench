@@ -1,0 +1,10 @@
+import java.util.*;
+import java.sql.SQLException;
+import com.stripe.exception.StripeException;
+import com.stripe.model.*;
+import com.stripe.net.RequestOptions;
+
+// The following method excerpts retain their upstream copyright and license.
+// Only this enclosing class, its constructor and imports are added.
+class Consumer extends FixtureSupport {
+    Consumer(State state) { super(state); }

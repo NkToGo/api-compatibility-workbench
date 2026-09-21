@@ -1,0 +1,206 @@
+import com.google.gson.*;
+import com.stripe.Stripe;
+import com.stripe.model.HasId;
+import com.stripe.net.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.sql.SQLException;
+import java.time.Instant;
+import java.util.*;
+
+/** Fixture-only process; no real provider client or Kill Bill services are installed. */
+public final class FixtureMain {
+    public static void main(String[] args) throws Exception {
+        JsonObject scenario = JsonParser.parseString(Files.readString(Path.of(args[0]))).getAsJsonObject();
+        FixtureSupport.State state = new FixtureSupport.State(scenario);
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("scenarioId", scenario.get("id").getAsString());
+        result.put("sdkVersion", Stripe.VERSION);
+        result.put("apiVersion", Stripe.API_VERSION);
+        result.put("completed", false);
+        result.put("status", "COMPLETED");
+        List<String> returned = List.of();
+        try {
+            if (!Stripe.API_VERSION.equals(args[2])) throw new FixtureViolation("SDK_VERSION_MISMATCH");
+            ApiResource.setStripeResponseGetter(new LiveStripeResponseGetter(new FixtureTransport(state, args[1], args[2])));
+            returned = new Consumer(state).getPaymentMethods(FixtureSupport.ACCOUNT, true, List.of(),
+                    new FixtureSupport.CallContext()).stream().map(FixtureSupport.PaymentMethodInfoPlugin::id).sorted().toList();
+            result.put("completed", true);
+        } catch (NullPointerException e) {
+            // A consumer exception is an observed failure, not a failed test process.
+            result.put("consumerException", e.getClass().getName());
+        } catch (FixtureViolation e) {
+            result.put("status", "INFRASTRUCTURE_ERROR");
+            result.put("failureCode", e.getMessage());
+        } catch (Exception e) {
+            // Unexpected setup, mapping or unsupported-service failures cannot prove a regression.
+            result.put("status", "INFRASTRUCTURE_ERROR");
+            result.put("failureCode", e.getClass().getName());
+            e.printStackTrace(System.err);
+        }
+        result.put("returnedMethodIds", returned);
+        result.put("finalMethodIds", state.records.keySet().stream().sorted().toList());
+        result.put("deactivatedMethodIds", state.deleted.stream().sorted().toList());
+        result.put("unsafeDeactivationIds", state.unsafeDeleted.stream().sorted().toList());
+        result.put("events", state.events);
+        System.out.println(new Gson().toJson(result));
+    }
+}
+
+final class FixtureTransport extends HttpClient {
+    private final FixtureSupport.State state;
+    private final String side;
+    private final String version;
+    FixtureTransport(FixtureSupport.State state, String side, String version) {
+        this.state = state; this.side = side; this.version = version;
+    }
+    @Override public StripeResponse request(StripeRequest request) {
+        String path = request.url().getPath();
+        String actualVersion = request.headers().firstValue("Stripe-Version").orElse("");
+        if (request.method() != ApiResource.RequestMethod.GET ||
+                !request.url().getProtocol().equals("https") || !request.url().getHost().equals("api.stripe.com") ||
+                !actualVersion.equals(version)) throw new FixtureViolation("UNEXPECTED_REQUEST_OR_VERSION");
+        Map<String, Object> params = request.params() == null ? Map.of() : request.params();
+        JsonObject body;
+        switch (path) {
+            case "/v1/payment_methods" -> {
+                if (!params.equals(Map.of("customer", "cus_curated", "type", "card")))
+                    throw new FixtureViolation("UNEXPECTED_PAYMENT_METHOD_QUERY");
+                body = state.scenario.getAsJsonObject("paymentMethodListResponse");
+                requireSinglePage(body, "payment_method");
+                state.methodsEnumerated = true;
+            }
+            case "/v1/customers/cus_curated" -> {
+                if (!params.isEmpty()) throw new FixtureViolation("UNEXPECTED_CUSTOMER_QUERY");
+                JsonObject selected = state.scenario.getAsJsonObject(side);
+                if (selected == null) throw new FixtureViolation("MISSING_FIXTURE_SIDE");
+                body = selected.getAsJsonObject("customerResponse");
+                if (body == null || !body.has("object") || !body.get("object").getAsString().equals("customer") ||
+                        !body.has("id") || !body.get("id").getAsString().equals("cus_curated"))
+                    throw new FixtureViolation("INVALID_CUSTOMER_FIXTURE");
+                if (body.has("sources")) {
+                    requireSinglePage(body.getAsJsonObject("sources"), "card");
+                    state.sourcesEnumerated = true;
+                }
+            }
+            default -> throw new FixtureViolation("UNEXPECTED_ENDPOINT");
+        }
+        state.events.add(Map.of("kind", "request", "path", path, "apiVersion", actualVersion,
+                "method", "GET", "sequence", state.events.size() + 1));
+        // This transport has no network implementation or fallback.
+        return new StripeResponse(200, HttpHeaders.of(Map.of()), body.toString());
+    }
+    private static void requireSinglePage(JsonObject body, String itemType) {
+        if (body == null || !body.has("object") || !body.get("object").getAsString().equals("list") ||
+                !body.has("data") || !body.get("data").isJsonArray() || !body.has("has_more") ||
+                !body.get("has_more").isJsonPrimitive() || !body.getAsJsonPrimitive("has_more").isBoolean())
+            throw new FixtureViolation("INVALID_COLLECTION");
+        for (JsonElement item : body.getAsJsonArray("data")) {
+            if (!item.isJsonObject() || !item.getAsJsonObject().has("id") ||
+                    !item.getAsJsonObject().get("id").isJsonPrimitive() ||
+                    !item.getAsJsonObject().getAsJsonPrimitive("id").isString() ||
+                    !item.getAsJsonObject().has("object") ||
+                    !item.getAsJsonObject().get("object").isJsonPrimitive() ||
+                    !item.getAsJsonObject().get("object").getAsString().equals(itemType))
+                throw new FixtureViolation("INVALID_COLLECTION_ITEM");
+        }
+        if (body.get("has_more").getAsBoolean())
+            throw new FixtureViolation("UNSUPPORTED_COLLECTION");
+    }
+}
+
+final class FixtureViolation extends RuntimeException {
+    FixtureViolation(String code) { super(code); }
+}
+
+/** In-memory service doubles. The original consumer methods are inserted separately. */
+class FixtureSupport {
+    static final UUID ACCOUNT = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    final State state;
+    final Dao dao;
+    final PaymentServices killbillAPI;
+    final Clock clock = new Clock();
+    final Logger logger = new Logger();
+    final ConfigHandler stripeConfigPropertiesConfigurationHandler = new ConfigHandler();
+    FixtureSupport(State state) { this.state = state; dao = new Dao(state); killbillAPI = new PaymentServices(state); }
+    String getCustomerId(UUID account, CallContext context) { return "cus_curated"; }
+    Object getAccount(UUID account, CallContext context) { return account; }
+    public List<PaymentMethodInfoPlugin> getPaymentMethods(UUID account, boolean refresh,
+            Iterable<PluginProperty> properties, CallContext context) throws PaymentPluginApiException {
+        if (refresh) throw new FixtureViolation("UNEXPECTED_BASE_REFRESH");
+        return state.records.keySet().stream().sorted().map(PaymentMethodInfoPlugin::new).toList();
+    }
+    public void deletePaymentMethod(UUID account, UUID method, Iterable<PluginProperty> properties, CallContext context) {
+        String id = state.records.values().stream().filter(r -> r.localId.equals(method)).findFirst().orElseThrow().stripeId;
+        if (!state.methodsEnumerated || !state.sourcesEnumerated) state.unsafeDeleted.add(id);
+        state.deleted.add(id); state.records.remove(id);
+        state.events.add(Map.of("kind", "deactivate", "methodId", id, "sequence", state.events.size() + 1));
+    }
+    static final class State {
+        final JsonObject scenario;
+        final Map<String, StripePaymentMethodsRecord> records = new TreeMap<>();
+        final List<String> deleted = new ArrayList<>();
+        final List<String> unsafeDeleted = new ArrayList<>();
+        final List<Map<String, Object>> events = new ArrayList<>();
+        boolean methodsEnumerated;
+        boolean sourcesEnumerated;
+        State(JsonObject scenario) {
+            this.scenario = scenario;
+            for (JsonElement id : scenario.getAsJsonArray("initialLocalMethodIds")) add(id.getAsString());
+        }
+        void add(String id) { records.put(id, new StripePaymentMethodsRecord(id)); }
+    }
+    static final class StripePaymentMethodsRecord {
+        final String stripeId;
+        final UUID localId;
+        StripePaymentMethodsRecord(String id) { stripeId = id; localId = UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8)); }
+        String getStripeId() { return stripeId; }
+        String getKbPaymentMethodId() { return localId.toString(); }
+    }
+    static final class Dao {
+        final State state;
+        Dao(State state) { this.state = state; }
+        List<StripePaymentMethodsRecord> getPaymentMethods(UUID account, UUID tenant) throws SQLException {
+            return new ArrayList<>(state.records.values());
+        }
+        void updatePaymentMethod(UUID id, Map<String, Object> data, String stripeId, Instant now, UUID tenant) throws SQLException {
+            if (!state.records.containsKey(stripeId)) throw new FixtureViolation("UNKNOWN_LOCAL_METHOD");
+            state.events.add(Map.of("kind", "synchronize", "methodId", stripeId, "sequence", state.events.size() + 1));
+        }
+    }
+    static final class PaymentServices {
+        final State state;
+        PaymentServices(State state) { this.state = state; }
+        PaymentServices getPaymentApi() { return this; }
+        void addPaymentMethod(Object account, String id, String plugin, boolean isDefault,
+                StripePaymentMethodPlugin info, List<PluginProperty> properties, CallContext context) throws PaymentApiException {
+            state.add(id);
+            state.events.add(Map.of("kind", "create", "methodId", id, "sequence", state.events.size() + 1));
+        }
+    }
+    interface TenantContext { UUID getTenantId(); }
+    static final class CallContext implements TenantContext { public UUID getTenantId() { return ACCOUNT; } }
+    record PaymentMethodInfoPlugin(String id) {}
+    record PluginProperty(String name, Object value) {}
+    record StripePaymentMethodPlugin(Object ignored, String id, boolean isDefault, List<PluginProperty> properties) {}
+    static final class StripePluginProperties {
+        static Map<String, Object> toAdditionalDataMap(HasId value) { return Map.of("id", value.getId()); }
+    }
+    static final class PluginProperties {
+        static List<PluginProperty> buildPluginProperties(Map<String, Object> data) { return List.of(); }
+    }
+    static final class StripeActivator { static final String PLUGIN_NAME = "stripe"; }
+    static final class ImmutableList { static <T> List<T> of() { return List.of(); } }
+    static final class Clock { Instant getUTCNow() { return Instant.EPOCH; } }
+    static final class Logger { void info(String message, Object value) {} }
+    static final class ConfigHandler { StripeConfigProperties getConfigurable(UUID tenant) { return new StripeConfigProperties(); } }
+    static final class StripeConfigProperties {
+        String getConnectionTimeout() { return "1000"; }
+        String getReadTimeout() { return "1000"; }
+        String getApiKey() { return "fixture-only-not-a-credential"; }
+    }
+    static final class PaymentPluginApiException extends Exception {
+        PaymentPluginApiException(String message, Throwable cause) { super(message, cause); }
+    }
+    static final class PaymentApiException extends Exception {}
+}

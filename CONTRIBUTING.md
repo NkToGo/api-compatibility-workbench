@@ -3,6 +3,9 @@
 Use JDK 21 and the repository's Maven Wrapper. The commands in `README.md` compile
 the library with warnings treated as errors, run its tests and package the JAR.
 GitHub Actions is configured to run the same checks on Windows and Linux.
+Prepare the pinned historical SDK cache as described there before running the
+full test suite. The case runner's service doubles and generated source assembly
+are documented in `docs/stripe-case-runner.md`.
 
 ## Changes and validation
 

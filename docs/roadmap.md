@@ -8,9 +8,10 @@ The milestones below describe planned capabilities and their acceptance criteria
    immutable identities and deterministic assessment rules with focused tests.
 2. **Curated:** [Stripe customer-sources transition](../cases/stripe-customer-sources-2020-08-27/README.md)
    with source rights, pinned versions and expected behavior reviewed against
-   provider and consumer sources separately from the historical repair. Not executed.
-3. Execute the baseline and changed scenarios deterministically and record
-   artifacts with provenance.
+   provider and consumer sources separately from the historical repair.
+3. **Implemented:** [execute the isolated consumer methods](stripe-case-runner.md)
+   against baseline, unrepaired target and upstream reference; retain local
+   evidence, exact input identities and derived assessments.
 4. Add a readable case/result view showing coverage, observations and open issues.
 
 Acceptance: an actual demonstrated difference or an honest unresolved result for

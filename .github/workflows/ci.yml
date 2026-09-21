@@ -29,6 +29,9 @@ jobs:
       - name: Verify curated case inputs
         shell: pwsh
         run: ./scripts/Verify-CuratedCase.ps1
+      - name: Prepare pinned historical SDKs
+        shell: pwsh
+        run: ./scripts/Prepare-StripeCase.ps1
       - name: Verify on Windows
         if: runner.os == 'Windows'
         shell: pwsh
@@ -36,3 +39,11 @@ jobs:
       - name: Verify on Linux
         if: runner.os == 'Linux'
         run: sh ./mvnw -B -ntp -f backend/pom.xml clean verify
+      - name: Retain case reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: stripe-case-reports-${{ matrix.os }}
+          path: backend/target/test-case-runs/**/report.json
+          if-no-files-found: warn
+          retention-days: 14

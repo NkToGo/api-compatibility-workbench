@@ -74,13 +74,15 @@ successful connection is rejected. Missing requirements fail closed.
 The host uses a fixed command and fixed modes, not caller-supplied shell strings.
 The internal timeout kills the process group; container exit tears down its
 remaining processes. Host timeout, output overflow and ordinary exceptions enter
-cleanup, which targets only the newly generated container name. Control commands
+cleanup, which verifies the attempt's name, image and labels before removing its
+immutable container ID. Control commands
 have their own deadlines; cleanup can take additional time after the execution
 deadline. Failed cleanup is reported explicitly, never as a successful run.
 
 ## Results and failure handling
 
-Each attempt gets a unique directory under `backend/target/isolated-case-runs/`:
+Each scripted attempt gets a unique journal directory under `.workbench/executions/`.
+Its host exports are in `<run-id>/attempt/<run-id>/`:
 
 - `request.json`: fixed container arguments and deadline, without credentials.
 - `execution.json`: final host receipt, phase, execution status, image identity,
@@ -110,25 +112,27 @@ guard evidence and invalid output cannot become completed case reports.
 
 `execution.json` is written with an atomic final rename. If absent, the host attempt
 is incomplete. Always read its status before using a report. A failed export or
-cleanup may leave partial local files. CLI failure is nonzero and prints the
-receipt location; diagnostics are kept in files rather than echoed automatically.
+cleanup may leave partial local files. CLI failure is nonzero; the run identifier
+is printed before execution starts. Diagnostics remain in files.
 
 The full worker workspace is **not retained**: tmpfs contents disappear when its
 container stops. The worker report's internal inventory is provenance, not a
 promise that those files remain available. The host receipt hashes the actual
 exported artifacts separately. Final host receipts and these exports are now
 automatically copied to the [local evidence store](evidence-storage.md), including
-failed runs. A storage failure causes a nonzero CLI exit; the temporary receipt
-remains available for investigation or a later explicit import.
-Temporary reports and image build contexts are ignored by Git and removed by Maven
-`clean`; the default evidence store survives. Docker images use separate engine
+failed runs. A storage failure causes a nonzero CLI exit; the journal receipt
+remains available for [explicit recovery](execution-recovery.md). Cleanup failures
+require recovery before terminal journal publication.
+Build contexts are ignored by Git and removed by Maven `clean`; the default journal
+and evidence store survive. Docker images use separate engine
 storage and are not removed by Maven.
 
 Hard termination of the host, daemon failure and machine shutdown can prevent
 cleanup or receipt completion. The worker's deadline backstop limits normal orphan
-execution, but abandoned containers are not yet reconciled automatically. Recovery,
-durable cancellation and restart reconciliation remain later work. Inspect named
-containers with `docker ps -a --filter label=io.github.nktogo.acw=isolated-case-v1`.
+execution. The [recovery command](execution-recovery.md) reconciles registered
+attempts under an operating-system lease, verifies container ownership and stops
+orphan workers. It preserves final receipts and never replays ambiguous execution.
+There is no background recovery service; run recovery explicitly after interruption.
 
 ## Verification
 
@@ -136,7 +140,7 @@ After building the backend and image, run the actual container tests in PowerShe
 
 ```powershell
 $workerImage = (Get-Content -LiteralPath backend/target/worker-image.txt -Raw).Trim()
-./mvnw.cmd -B -ntp -f backend/pom.xml "-Dworkbench.container.image=$workerImage" '-Dtest=DockerCaseExecutorTest' test
+./mvnw.cmd -B -ntp -f backend/pom.xml "-Dworkbench.container.image=$workerImage" '-Dtest=DockerCaseExecutorTest,DurableExecutionContainerTest' test
 ```
 
 On Linux use `sh ./mvnw` with the same arguments. Tests execute the real case,
@@ -146,6 +150,8 @@ image without pulling or falling back to the host. They verify that each
 container is absent afterward and that failed runs have no case report. Ordinary
 tests separately reject mutable image references and arbitrary command modes,
 and exercise bounded subprocess capture without Docker.
+Recovery tests additionally kill a separate controller JVM, cancel a live worker,
+interrupt final publication and reject a container with mismatched ownership.
 
 Linux CI runs both suites and retains the exported evidence for 14 days. Windows
 CI runs the host tests; Docker Desktop execution is tested separately on Windows

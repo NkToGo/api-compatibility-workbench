@@ -153,7 +153,7 @@ public final class EvidenceStore {
         var receipt = CaseInputs.object(artifacts.get("execution.json"));
         CaseInputs.require(receipt.get("formatVersion").getAsInt() == 1, "Unsupported execution receipt");
         id(receipt.get("containerName").getAsString());
-        CaseInputs.require(Set.of("COMPLETED", "FAILED", "TIMED_OUT", "OUTPUT_LIMIT", "CANCELLED", "CLEANUP_FAILED").contains(receipt.get("status").getAsString()), "Unknown execution status");
+        CaseInputs.require(Set.of("COMPLETED", "FAILED", "TIMED_OUT", "OUTPUT_LIMIT", "CANCELLED", "CLEANUP_FAILED", "INTERRUPTED").contains(receipt.get("status").getAsString()), "Unknown execution status");
         var inventory = receipt.getAsJsonObject("artifacts");
         CaseInputs.require(inventory.size() + 1 == artifacts.size(), "Receipt inventory mismatch");
         for (var entry : inventory.entrySet()) {

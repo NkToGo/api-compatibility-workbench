@@ -32,7 +32,8 @@ public final class DockerCaseExecutor {
         CaseInputs.require(image.matches("sha256:[0-9a-f]{64}"), "An immutable local image ID is required");
         CaseInputs.require(name.matches("acw-[0-9a-f-]{36}") && MODES.contains(mode), "Invalid container request");
         return List.of("docker", "create", "--pull=never", "--platform=linux/amd64", "--name", name,
-                "--label", "io.github.nktogo.acw=isolated-case-v1", "--network=none", "--read-only", "--user=65532:65532",
+                "--label", "io.github.nktogo.acw=isolated-case-v1", "--label", "io.github.nktogo.acw.attempt=" + name,
+                "--network=none", "--read-only", "--user=65532:65532",
                 "--cap-drop=ALL", "--security-opt=no-new-privileges:true", "--init", "--restart=no", "--log-driver=none",
                 "--memory=1g", "--memory-swap=1g", "--cpus=2", "--pids-limit=128", "--ulimit=nofile=1024:1024",
                 "--tmpfs=/work:rw,noexec,nosuid,nodev,size=256m,mode=700,uid=65532,gid=65532",
@@ -48,7 +49,11 @@ public final class DockerCaseExecutor {
     }
 
     static Path run(String image, Path outputDirectory, String mode, Duration deadline, EvidenceStore store) throws Exception {
-        String name = "acw-" + UUID.randomUUID();
+        return runNamed(image, outputDirectory, mode, deadline, store, "acw-" + UUID.randomUUID(), () -> false);
+    }
+
+    static Path runNamed(String image, Path outputDirectory, String mode, Duration deadline, EvidenceStore store,
+                         String name, java.util.function.BooleanSupplier cancelled) throws Exception {
         var command = createArguments(image, name, mode);
         CaseInputs.require(!deadline.isZero() && !deadline.isNegative() && deadline.compareTo(Duration.ofSeconds(180)) <= 0, "Invalid deadline");
         Files.createDirectories(outputDirectory);
@@ -61,11 +66,13 @@ public final class DockerCaseExecutor {
         CaseInputs.write(directory.resolve("request.json"), Map.of("arguments", command, "deadlineMillis", deadline.toMillis()));
         boolean mayExist = false;
         try {
+            if (cancelled.getAsBoolean()) throw new java.util.concurrent.CancellationException();
             receipt.put("phase", "PREFLIGHT");
             JsonObject info = CaseInputs.object(requireCommand(List.of("docker", "info", "--format", "{{json .}}"), Duration.ofSeconds(15)).stdout());
             CaseInputs.require("linux".equals(info.get("OSType").getAsString()) && "2".equals(info.get("CgroupVersion").getAsString()), "Linux cgroup v2 required");
             CaseInputs.require(info.getAsJsonArray("SecurityOptions").asList().stream().anyMatch(e -> e.getAsString().contains("name=seccomp")), "Docker seccomp required");
             receipt.put("dockerServerVersion", info.get("ServerVersion").getAsString());
+            if (cancelled.getAsBoolean()) throw new java.util.concurrent.CancellationException();
             mayExist = true; // A failed CLI call can still have created the uniquely named container.
             receipt.put("phase", "CREATE");
             requireCommand(command, Duration.ofSeconds(20));
@@ -77,7 +84,8 @@ public final class DockerCaseExecutor {
                     "memorySwap", hostConfig.get("MemorySwap"), "nanoCpus", hostConfig.get("NanoCpus"), "pids", hostConfig.get("PidsLimit"),
                     "readOnlyRoot", hostConfig.get("ReadonlyRootfs"), "tmpfs", hostConfig.get("Tmpfs")));
             receipt.put("phase", "EXECUTE");
-            var execution = BoundedCommand.run(List.of("docker", "start", "--attach", name), deadline, OUTPUT_LIMIT);
+            if (cancelled.getAsBoolean()) throw new java.util.concurrent.CancellationException();
+            var execution = BoundedCommand.run(List.of("docker", "start", "--attach", name), deadline, OUTPUT_LIMIT, cancelled);
             var state = inspect(name).getAsJsonObject("State");
             receipt.put("runningBeforeCleanup", state.get("Running"));
             if (!state.get("Running").getAsBoolean()) receipt.put("exitCode", state.get("ExitCode"));
@@ -96,6 +104,8 @@ public final class DockerCaseExecutor {
                 else CaseInputs.write(directory.resolve("probe.json"), envelope);
                 receipt.put("status", "COMPLETED");
             }
+        } catch (java.util.concurrent.CancellationException e) {
+            receipt.put("status", "CANCELLED");
         } catch (InterruptedException e) {
             receipt.put("status", "CANCELLED");
             throw e;
@@ -105,13 +115,9 @@ public final class DockerCaseExecutor {
             boolean cleaned = !mayExist;
             if (mayExist) {
                 try {
-                    var removal = BoundedCommand.run(List.of("docker", "rm", "--force", name), Duration.ofSeconds(15), 65536);
-                    cleaned = removal.status() == BoundedCommand.Status.EXITED && removal.exitCode() == 0;
-                    if (!cleaned) {
-                        var remaining = BoundedCommand.run(List.of("docker", "ps", "--all", "--filter", "name=^/" + name + "$", "--format", "{{.ID}}"), Duration.ofSeconds(10), 65536);
-                        cleaned = remaining.status() == BoundedCommand.Status.EXITED && remaining.exitCode() == 0 && remaining.stdout().length == 0;
-                    }
-                } catch (IOException | InterruptedException e) { cleaned = false; }
+                    removeOwned(name, image);
+                    cleaned = true;
+                } catch (IOException | InterruptedException | RuntimeException e) { cleaned = false; }
             }
             receipt.put("containerRemoved", cleaned);
             if (!cleaned) receipt.put("status", "CLEANUP_FAILED");
@@ -131,8 +137,24 @@ public final class DockerCaseExecutor {
         if (result.status() != BoundedCommand.Status.EXITED || result.exitCode() != 0) throw new IOException("Docker control command failed: " + command.get(1));
         return result;
     }
-    private static JsonObject inspect(String name) throws IOException, InterruptedException {
+    static JsonObject inspect(String name) throws IOException, InterruptedException {
         return CaseInputs.object(requireCommand(List.of("docker", "inspect", "--format", "{{json .}}", name), Duration.ofSeconds(10)).stdout());
+    }
+
+    /** Reconcile only a registered attempt; never remove a container by name alone. */
+    static void removeOwned(String name, String image) throws IOException, InterruptedException {
+        var found = requireCommand(List.of("docker", "ps", "--all", "--filter", "name=^/" + name + "$", "--format", "{{.ID}}"), Duration.ofSeconds(10));
+        if (new String(found.stdout(), StandardCharsets.UTF_8).isBlank()) return;
+        var container = inspect(name);
+        var labels = container.getAsJsonObject("Config").getAsJsonObject("Labels");
+        CaseInputs.require(image.equals(container.get("Image").getAsString()) && ("/" + name).equals(container.get("Name").getAsString())
+                && labels != null && labels.has("io.github.nktogo.acw.attempt")
+                && name.equals(labels.get("io.github.nktogo.acw.attempt").getAsString())
+                && labels.has("io.github.nktogo.acw") && "isolated-case-v1".equals(labels.get("io.github.nktogo.acw").getAsString()),
+                "Container ownership mismatch; recovery refused");
+        String containerId = container.get("Id").getAsString();
+        CaseInputs.require(containerId.matches("[0-9a-f]{64}"), "Invalid container identity");
+        requireCommand(List.of("docker", "rm", "--force", containerId), Duration.ofSeconds(15));
     }
     static void verifyConfiguration(JsonObject inspection, String image) {
         var config = inspection.getAsJsonObject("HostConfig");

@@ -22,7 +22,7 @@ After building the backend:
 ./scripts/Evidence.ps1 -Action export -RunId acw-00000000-0000-0000-0000-000000000000 -Destination ./saved-run
 ```
 
-Replace the example identifier with the `Stored run` identifier printed by the
+Replace the example identifier with the `Registered run` identifier printed by the
 isolated-run command or an identifier from `list`. Export requires a new directory
 whose parent already exists. It never merges with an existing directory. Open
 its `report.html` when present and consult `execution.json` for the execution
@@ -86,12 +86,12 @@ The store manifest describes only bytes actually retained. An image digest is a
 reference, not an archived image. Exact offline re-execution still requires the
 corresponding image/input artifacts to remain available elsewhere.
 
-The store records final attempts, not running workflow state. A host killed before
-receipt finalization can still leave an incomplete attempt. Durable scheduling,
-restart reconciliation, cancellation, retention policies, backup automation and
-multi-user authorization are separate work. A storage failure does not rewrite
-the execution result: the CLI fails and the temporary finalized receipt can be
-imported after the storage problem is resolved.
+The store records final attempts, not running workflow state. The separate
+[execution journal](execution-recovery.md) registers attempts before execution,
+coordinates cancellation and recovers interrupted finalization. A storage failure
+does not rewrite the execution result: the CLI fails and recovery can publish the
+unchanged receipt after the problem is resolved. Distributed scheduling, retention
+policies, backup automation and multi-user authorization remain separate work.
 
 Tests cover source removal followed by reopening/export, conflicting history,
 interrupted publication, competing writers, missing/modified/oversized input,

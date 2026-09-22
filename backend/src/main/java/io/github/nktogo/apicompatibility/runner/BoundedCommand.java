@@ -10,10 +10,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Bounds Docker CLI output in memory; killing the CLI alone does not kill a container. */
 final class BoundedCommand {
-    enum Status { EXITED, TIMED_OUT, OUTPUT_LIMIT }
+    enum Status { EXITED, TIMED_OUT, OUTPUT_LIMIT, CANCELLED }
     record Result(Status status, int exitCode, byte[] stdout, byte[] stderr) {}
 
     static Result run(List<String> command, Duration deadline, int limit) throws IOException, InterruptedException {
+        return run(command, deadline, limit, () -> false);
+    }
+
+    static Result run(List<String> command, Duration deadline, int limit, java.util.function.BooleanSupplier cancelled) throws IOException, InterruptedException {
         if (deadline.isNegative() || deadline.isZero() || limit < 1) throw new IllegalArgumentException("Invalid process bounds");
         Process process = new ProcessBuilder(command).start();
         var exceeded = new AtomicBoolean();
@@ -25,6 +29,7 @@ final class BoundedCommand {
         long end = System.nanoTime() + deadline.toNanos();
         try {
             while (!process.waitFor(25, TimeUnit.MILLISECONDS)) {
+                if (cancelled.getAsBoolean()) { status = Status.CANCELLED; break; }
                 if (exceeded.get()) { status = Status.OUTPUT_LIMIT; break; }
                 if (System.nanoTime() >= end) { status = Status.TIMED_OUT; break; }
             }

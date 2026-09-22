@@ -30,7 +30,8 @@ view exposes these recorded outcomes and their coverage limits.
 2. **Implemented locally:** [append-only evidence storage](evidence-storage.md)
    for final execution records, exported artifacts and provenance, with integrity
    verification, atomic publication and explicit retention limits.
-3. Add durable execution, cancellation and restart recovery.
+3. **Implemented on one host:** [durable attempt registration, cancellation and recovery](execution-recovery.md)
+   with ownership leases, orphan cleanup and idempotent finalization without replay.
 4. Add credential brokering and test interruptions, expiry and revoked access.
 
 Acceptance: interrupted execution and revoked authorization recover or stop without

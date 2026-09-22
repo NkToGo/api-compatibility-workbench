@@ -26,9 +26,11 @@ compilation. The host controller enforces a fixed execution policy, captures bou
 output and removes the container. See [isolated execution](docs/isolated-execution.md).
 Final execution records and exported evidence are automatically retained in a
 local [evidence store](docs/evidence-storage.md), outside Maven build output.
+The isolated-run command also keeps a [durable attempt journal](docs/execution-recovery.md)
+with cancellation and explicit recovery after controller interruption.
 
 There is no hosted web application or general migration runner yet. Agent investigation,
-provider adapters, recoverable workflows and repair publication are
+provider adapters, distributed workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
 
@@ -54,7 +56,7 @@ sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 
 The default tests use local records and synthetic provider responses; they do not
 call OpenAI, Stripe or GitHub. They need no Docker, database or credentials. The
-four container integration tests are skipped unless an image ID is supplied;
+eight container integration tests are skipped unless an image ID is supplied;
 Linux CI builds that image and runs them explicitly. Preparation downloads
 checksum-pinned artifacts from Maven Central; execution then uses an offline fixture
 transport. The build produces a library JAR and runtime dependencies, not a server.
@@ -86,6 +88,8 @@ Never put credentials in case inputs, recorded observations or diagnostic output
 The isolated-run script accepts `-EvidenceDirectory` to select a local evidence
 store. Its default is the Git-ignored `.workbench/evidence/` directory. Maven
 `clean` does not remove that directory. It needs filesystem access, not credentials.
+`-ExecutionDirectory` selects the attempt journal, default `.workbench/executions/`.
+Keep both directories on a trusted local filesystem and preserve them together.
 
 ## Documentation
 
@@ -96,6 +100,7 @@ store. Its default is the Git-ignored `.workbench/evidence/` directory. Maven
 - [Reading the offline result view](docs/case-report.md)
 - [Container execution boundaries and verification](docs/isolated-execution.md)
 - [Evidence retention, integrity and export](docs/evidence-storage.md)
+- [Execution status, cancellation and recovery](docs/execution-recovery.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

@@ -93,8 +93,10 @@ guarantee survival of every hardware failure or power loss; preserve tested back
 
 Recovery is an explicit command, not a background service. Keep the same trusted
 Docker context for execution and recovery. The worker's independent deadline
-backstop still limits ordinary orphan execution. Credential brokering, revocation,
+backstop still limits ordinary orphan execution. Credential brokering,
 distributed scheduling and arbitrary repository execution are not implemented.
+New scripted attempts have [expiring, revocable local permission](execution-authorization.md).
+Recovery and cleanup remain available after permission is lost; they never renew it.
 
 Tests use real container execution and a forcibly killed controller process to
 verify lock release, orphan removal and honest interruption evidence. Additional

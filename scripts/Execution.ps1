@@ -1,7 +1,7 @@
 #requires -Version 7.0
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidateSet('status', 'cancel', 'recover')][string]$Action,
+    [Parameter(Mandatory)][ValidateSet('status', 'cancel', 'recover', 'revoke')][string]$Action,
     [string]$RunId,
     [string]$ExecutionDirectory,
     [string]$EvidenceDirectory

@@ -72,4 +72,25 @@ class DurableExecutionTest {
         assertThrows(IllegalArgumentException.class, () -> journal.execute(id));
         assertEquals("INTERRUPTED", journal.recover(id));
     }
+
+    @Test void revocationClosesQueuedAttemptsWithoutDockerAndPreservesFinalEvidence() throws Exception {
+        var journal = journal(); String id = create(journal);
+        assertEquals("AUTHORIZATION_DENIED", journal.revoke(id));
+        byte[] receipt = store().read(id).get("execution.json");
+        assertEquals("REVOKED", CaseInputs.object(receipt).get("authorizationDecision").getAsString());
+        assertEquals("AUTHORIZATION_DENIED", journal().execute(id));
+        assertEquals("AUTHORIZATION_DENIED", journal().revoke(id));
+        assertArrayEquals(receipt, store().read(id).get("execution.json"));
+    }
+
+    @Test void missingPermissionPreventsDockerAccessAndOldReceiptsRemainReadable() throws Exception {
+        var journal = journal(); String id = create(journal);
+        Files.delete(root.resolve("journal").resolve(id).resolve("authorization.json"));
+        assertEquals("AUTHORIZATION_DENIED", journal.execute(id));
+        var receipt = CaseInputs.object(store().read(id).get("execution.json"));
+        assertEquals("UNAVAILABLE", receipt.get("authorizationDecision").getAsString());
+        assertEquals("AUTHORIZE", receipt.get("phase").getAsString());
+        assertFalse(receipt.has("dockerServerVersion"));
+        assertEquals("AUTHORIZATION_DENIED", journal().recover(id));
+    }
 }

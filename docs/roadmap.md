@@ -32,7 +32,11 @@ view exposes these recorded outcomes and their coverage limits.
    verification, atomic publication and explicit retention limits.
 3. **Implemented on one host:** [durable attempt registration, cancellation and recovery](execution-recovery.md)
    with ownership leases, orphan cleanup and idempotent finalization without replay.
-4. Add credential brokering and test interruptions, expiry and revoked access.
+4. Add credential brokering and test interruptions, expiry and revoked access:
+   - **Implemented locally:** [scoped execution permission](execution-authorization.md),
+     expiry and persistent revocation, with live-worker stop checks and preserved history.
+   - **Remaining:** credential brokering for narrow host-side external operations;
+     provider credentials are not yet consumed or delivered by the runner.
 
 Acceptance: interrupted execution and revoked authorization recover or stop without
 losing evidence, leaking permissions or repeating unsafe actions.

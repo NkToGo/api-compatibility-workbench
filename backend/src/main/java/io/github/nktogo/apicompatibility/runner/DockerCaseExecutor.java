@@ -54,6 +54,11 @@ public final class DockerCaseExecutor {
 
     static Path runNamed(String image, Path outputDirectory, String mode, Duration deadline, EvidenceStore store,
                          String name, java.util.function.BooleanSupplier cancelled) throws Exception {
+        return runNamed(image, outputDirectory, mode, deadline, store, name, new ExecutionGuard(cancelled, null));
+    }
+
+    static Path runNamed(String image, Path outputDirectory, String mode, Duration deadline, EvidenceStore store,
+                         String name, ExecutionGuard cancelled) throws Exception {
         var command = createArguments(image, name, mode);
         CaseInputs.require(!deadline.isZero() && !deadline.isNegative() && deadline.compareTo(Duration.ofSeconds(180)) <= 0, "Invalid deadline");
         Files.createDirectories(outputDirectory);
@@ -62,7 +67,7 @@ public final class DockerCaseExecutor {
         receipt.put("formatVersion", 1); receipt.put("containerName", name); receipt.put("imageId", image);
         receipt.put("mode", mode); receipt.put("startedAt", Instant.now().toString());
         receipt.put("deadlineMillis", deadline.toMillis()); receipt.put("streamLimitBytes", OUTPUT_LIMIT);
-        receipt.put("status", "FAILED");
+        receipt.put("status", "FAILED"); receipt.put("phase", "AUTHORIZE");
         CaseInputs.write(directory.resolve("request.json"), Map.of("arguments", command, "deadlineMillis", deadline.toMillis()));
         boolean mayExist = false;
         try {
@@ -93,10 +98,12 @@ public final class DockerCaseExecutor {
             receipt.put("stdoutBytes", execution.stdout().length); receipt.put("stderrBytes", execution.stderr().length);
             // Diagnostics are bounded files, never echoed to the terminal.
             Files.write(directory.resolve("stderr.txt"), execution.stderr());
-            if (execution.status() != BoundedCommand.Status.EXITED) receipt.put("status", execution.status().name());
+            if (execution.status() == BoundedCommand.Status.CANCELLED) receipt.put("status", cancelled.stopStatus());
+            else if (execution.status() != BoundedCommand.Status.EXITED) receipt.put("status", execution.status().name());
             else if (execution.exitCode() == 0 && !state.get("Running").getAsBoolean()
                     && state.get("ExitCode").getAsInt() == 0 && !state.get("OOMKilled").getAsBoolean()) {
                 receipt.put("phase", "VALIDATE_REPORT");
+                if (cancelled.getAsBoolean()) throw new java.util.concurrent.CancellationException();
                 var envelope = CaseInputs.object(execution.stdout());
                 CaseInputs.require(envelope.get("formatVersion").getAsInt() == 1 && envelope.getAsJsonObject("isolation").get("verified").getAsBoolean(), "Worker guard evidence missing");
                 receipt.put("isolationProbe", envelope.getAsJsonObject("isolation"));
@@ -105,7 +112,7 @@ public final class DockerCaseExecutor {
                 receipt.put("status", "COMPLETED");
             }
         } catch (java.util.concurrent.CancellationException e) {
-            receipt.put("status", "CANCELLED");
+            receipt.put("status", cancelled.stopStatus());
         } catch (InterruptedException e) {
             receipt.put("status", "CANCELLED");
             throw e;
@@ -120,6 +127,8 @@ public final class DockerCaseExecutor {
                 } catch (IOException | InterruptedException | RuntimeException e) { cleaned = false; }
             }
             receipt.put("containerRemoved", cleaned);
+            if ("COMPLETED".equals(receipt.get("status")) && cancelled.getAsBoolean()) receipt.put("status", cancelled.stopStatus());
+            receipt.put("authorizationDecision", cancelled.authorizationDecision());
             if (!cleaned) receipt.put("status", "CLEANUP_FAILED");
             if ("COMPLETED".equals(receipt.get("status"))) receipt.put("phase", "DONE");
             receipt.put("finishedAt", Instant.now().toString());

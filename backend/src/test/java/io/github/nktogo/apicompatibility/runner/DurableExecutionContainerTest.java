@@ -67,7 +67,34 @@ class DurableExecutionContainerTest {
         assertEquals("COMPLETED", journal().recover(id));
         assertArrayEquals(receipt, store().read(id).get("execution.json"));
         assertEquals("COMPLETED", journal().recover(id));
+        assertEquals("COMPLETED", journal().revoke(id));
+        assertArrayEquals(receipt, store().read(id).get("execution.json"));
         assertAbsent(id);
+    }
+
+    @Test void revocationStopsALiveWorkerWithoutGrantingItsContainerCredentials() throws Exception {
+        assertAuthorizationStop(false);
+    }
+
+    @Test void expiryStopsALiveWorkerAndIsNotRenewedOnRecovery() throws Exception {
+        assertAuthorizationStop(true);
+    }
+
+    private void assertAuthorizationStop(boolean expire) throws Exception {
+        String id = journal().create(image(), "deadline-probe", Duration.ofSeconds(120), Duration.ofSeconds(expire ? 15 : 300));
+        try (var executor = Executors.newSingleThreadExecutor()) {
+            Future<String> execution = executor.submit(() -> journal().execute(id));
+            try {
+                awaitRunning(id);
+                if (!expire) assertEquals("REVOCATION_REQUESTED", journal().revoke(id));
+                assertEquals("AUTHORIZATION_DENIED", execution.get(40, TimeUnit.SECONDS));
+                var receipt = CaseInputs.object(store().read(id).get("execution.json"));
+                assertEquals(expire ? "EXPIRED" : "REVOKED", receipt.get("authorizationDecision").getAsString());
+                assertFalse(store().read(id).containsKey("report.html"));
+                assertEquals("AUTHORIZATION_DENIED", journal().recover(id));
+                assertAbsent(id);
+            } finally { execution.cancel(true); cleanup(id); }
+        }
     }
 
     @Test void recoveryRefusesAContainerWithDifferentOwnership() throws Exception {

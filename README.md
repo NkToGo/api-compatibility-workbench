@@ -28,6 +28,8 @@ Final execution records and exported evidence are automatically retained in a
 local [evidence store](docs/evidence-storage.md), outside Maven build output.
 The isolated-run command also keeps a [durable attempt journal](docs/execution-recovery.md)
 with cancellation and explicit recovery after controller interruption.
+Each new scripted attempt receives a narrowly scoped, expiring local execution
+permission that can be [revoked while running](docs/execution-authorization.md).
 
 There is no hosted web application or general migration runner yet. Agent investigation,
 provider adapters, distributed workflows and repair publication are
@@ -56,7 +58,7 @@ sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 
 The default tests use local records and synthetic provider responses; they do not
 call OpenAI, Stripe or GitHub. They need no Docker, database or credentials. The
-eight container integration tests are skipped unless an image ID is supplied;
+ten container integration tests are skipped unless an image ID is supplied;
 Linux CI builds that image and runs them explicitly. Preparation downloads
 checksum-pinned artifacts from Maven Central; execution then uses an offline fixture
 transport. The build produces a library JAR and runtime dependencies, not a server.
@@ -101,6 +103,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Container execution boundaries and verification](docs/isolated-execution.md)
 - [Evidence retention, integrity and export](docs/evidence-storage.md)
 - [Execution status, cancellation and recovery](docs/execution-recovery.md)
+- [Expiring execution permission and revocation](docs/execution-authorization.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

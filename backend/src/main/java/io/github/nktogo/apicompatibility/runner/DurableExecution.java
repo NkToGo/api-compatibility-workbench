@@ -22,11 +22,12 @@ public final class DurableExecution {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length < 3) throw new IllegalArgumentException("Usage: DurableExecution run JOURNAL STORE IMAGE | status/cancel/recover JOURNAL STORE [RUN_ID]");
+        if (args.length < 3) throw new IllegalArgumentException("Usage: DurableExecution run JOURNAL STORE IMAGE [AUTHORIZATION_SECONDS] | status/cancel/recover/revoke JOURNAL STORE [RUN_ID]");
         var journal = new DurableExecution(Path.of(args[1]), new EvidenceStore(Path.of(args[2])));
         if (args[0].equals("run")) {
-            if (args.length != 4) throw new IllegalArgumentException("An image ID is required");
-            String id = journal.create(args[3], "case", Duration.ofSeconds(180));
+            if (args.length < 4 || args.length > 5) throw new IllegalArgumentException("An image ID and optional authorization lifetime in seconds are required");
+            String id = journal.create(args[3], "case", Duration.ofSeconds(180),
+                    Duration.ofSeconds(args.length == 5 ? Long.parseLong(args[4]) : 300));
             System.out.println("Registered run: " + id);
             String status = journal.execute(id);
             System.out.println(id + " " + status);
@@ -34,11 +35,12 @@ public final class DurableExecution {
             System.out.println("Open in a browser: " + journal.receipt(id).resolveSibling("report.html"));
             return;
         }
-        if (args.length > 4 || !Set.of("status", "cancel", "recover").contains(args[0])) throw new IllegalArgumentException("Invalid journal command");
-        if (args[0].equals("cancel") && args.length != 4) throw new IllegalArgumentException("Cancellation requires a run ID");
+        if (args.length > 4 || !Set.of("status", "cancel", "recover", "revoke").contains(args[0])) throw new IllegalArgumentException("Invalid journal command");
+        if (Set.of("cancel", "revoke").contains(args[0]) && args.length != 4) throw new IllegalArgumentException("Cancellation or revocation requires a run ID");
         for (String id : args.length == 4 ? List.of(args[3]) : journal.list()) {
             String status = switch (args[0]) {
                 case "cancel" -> journal.cancel(id);
+                case "revoke" -> journal.revoke(id);
                 case "recover" -> journal.recover(id);
                 default -> journal.status(id);
             };
@@ -47,12 +49,17 @@ public final class DurableExecution {
     }
 
     public String create(String image, String mode, Duration deadline) throws IOException {
+        return create(image, mode, deadline, Duration.ofMinutes(5));
+    }
+
+    public String create(String image, String mode, Duration deadline, Duration authorizationLifetime) throws IOException {
         String id = "acw-" + UUID.randomUUID();
         DockerCaseExecutor.createArguments(image, id, mode);
         CaseInputs.require(deadline.toMillis() > 0 && deadline.compareTo(Duration.ofSeconds(180)) <= 0, "Invalid deadline");
         Path directory = Files.createDirectory(root.resolve(id));
+        new ExecutionAuthorization(directory, id, image, mode, Clock.systemUTC()).issue(authorizationLifetime);
         publish(directory.resolve("spec.json"), Map.of("formatVersion", 1, "runId", id, "imageId", image,
-                "mode", mode, "deadlineMillis", deadline.toMillis(), "createdAt", Instant.now().toString()));
+                "mode", mode, "deadlineMillis", deadline.toMillis(), "createdAt", Instant.now().toString(), "authorizationRequired", true));
         return id;
     }
 
@@ -68,7 +75,7 @@ public final class DurableExecution {
             publish(path(id).resolve("started.json"), Map.of("startedAt", Instant.now().toString()));
             DockerCaseExecutor.runNamed(spec.get("imageId").getAsString(), path(id).resolve("attempt"),
                     spec.get("mode").getAsString(), Duration.ofMillis(spec.get("deadlineMillis").getAsLong()),
-                    null, id, () -> exists(id, "cancel.request"));
+                    null, id, new ExecutionGuard(() -> exists(id, "cancel.request"), authorization(id, spec)));
             if (!read(receipt(id)).get("containerRemoved").getAsBoolean()) return "RECOVERY_REQUIRED";
             return finish(id, receipt(id), false, beforeFinalize);
         }
@@ -93,6 +100,17 @@ public final class DurableExecution {
         catch (FileAlreadyExistsException ignored) { /* Idempotent durable request. */ }
         String result = recover(id);
         return result.equals("ACTIVE") ? "CANCELLATION_REQUESTED" : result;
+    }
+
+    public String revoke(String id) throws Exception {
+        var spec = spec(id);
+        authorization(id, spec).revoke();
+        String result = recover(id);
+        return result.equals("ACTIVE") ? "REVOCATION_REQUESTED" : result;
+    }
+
+    private ExecutionAuthorization authorization(String id, JsonObject spec) {
+        return new ExecutionAuthorization(path(id), id, spec.get("imageId").getAsString(), spec.get("mode").getAsString(), Clock.systemUTC());
     }
 
     public String recover(String id) throws Exception {
@@ -121,6 +139,12 @@ public final class DurableExecution {
                 record.put("formatVersion", 1); record.put("containerName", id);
                 record.put("imageId", spec.get("imageId")); record.put("mode", spec.get("mode"));
                 record.put("status", exists(id, "cancel.request") ? "CANCELLED" : "INTERRUPTED");
+                if (spec.has("authorizationRequired")) {
+                    var decision = authorization(id, spec).decision();
+                    record.put("authorizationDecision", decision.name());
+                    if (!exists(id, "cancel.request") && decision != ExecutionAuthorization.Decision.ALLOWED)
+                        record.put("status", "AUTHORIZATION_DENIED");
+                }
                 record.put("phase", "RECOVERY"); record.put("containerRemoved", true);
                 record.put("reason", "No final worker receipt; no execution result inferred and no replay performed");
                 record.put("finishedAt", Instant.now().toString());
@@ -201,7 +225,7 @@ public final class DurableExecution {
             return CaseInputs.object(bytes);
         }
     }
-    private static void publish(Path path, Object value) throws IOException {
+    static void publish(Path path, Object value) throws IOException {
         // A deterministic temporary name can be overwritten after a crash while the attempt lease is held.
         Path pending = path.resolveSibling(path.getFileName() + ".pending");
         try (var channel = FileChannel.open(pending, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,

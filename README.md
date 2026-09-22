@@ -30,6 +30,9 @@ The isolated-run command also keeps a [durable attempt journal](docs/execution-r
 with cancellation and explicit recovery after controller interruption.
 Each new scripted attempt receives a narrowly scoped, expiring local execution
 permission that can be [revoked while running](docs/execution-authorization.md).
+A separate [host-side model broker](docs/model-credential-broker.md) supports scoped
+OpenAI calls while keeping the credential outside workers. Its opt-in connectivity
+check does not perform an investigation or alter compatibility results.
 
 There is no hosted web application or general migration runner yet. Agent investigation,
 provider adapters, distributed workflows and repair publication are
@@ -56,7 +59,7 @@ pwsh -NoProfile -File ./scripts/Prepare-StripeCase.ps1
 sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 ```
 
-The default tests use local records and synthetic provider responses; they do not
+The default tests use local records, loopback HTTP fixtures and synthetic provider responses; they do not
 call OpenAI, Stripe or GitHub. They need no Docker, database or credentials. The
 ten container integration tests are skipped unless an image ID is supplied;
 Linux CI builds that image and runs them explicitly. Preparation downloads
@@ -82,8 +85,8 @@ only; it does not authorize arbitrary repositories or generated repairs.
 
 ## Configuration
 
-The domain library needs no credentials. `.env.example` documents the
-credential name reserved for future agent execution. If `.env.local` is present,
+The domain library and offline runner need no credentials. The opt-in model broker
+uses `OPENAI_API_KEY`, documented in `.env.example`. If `.env.local` is present,
 keep it local; Git ignores it. The Java tests neither read nor transmit its contents.
 Never put credentials in case inputs, recorded observations or diagnostic output.
 
@@ -104,6 +107,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Evidence retention, integrity and export](docs/evidence-storage.md)
 - [Execution status, cancellation and recovery](docs/execution-recovery.md)
 - [Expiring execution permission and revocation](docs/execution-authorization.md)
+- [Host-side model credential broker](docs/model-credential-broker.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

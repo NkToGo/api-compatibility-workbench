@@ -35,11 +35,17 @@ view exposes these recorded outcomes and their coverage limits.
 4. Add credential brokering and test interruptions, expiry and revoked access:
    - **Implemented locally:** [scoped execution permission](execution-authorization.md),
      expiry and persistent revocation, with live-worker stop checks and preserved history.
-   - **Remaining:** credential brokering for narrow host-side external operations;
-     provider credentials are not yet consumed or delivered by the runner.
+   - **Implemented for model calls:** a [host-side credential broker](model-credential-broker.md)
+     with exact request grants, bounded transport, sanitized results and no automatic
+     replay after ambiguous dispatch. Workers never receive the API credential.
 
 Acceptance: interrupted execution and revoked authorization recover or stop without
 losing evidence, leaking permissions or repeating unsafe actions.
+
+The current local boundary meets this acceptance for the curated offline worker
+and bounded model calls. Tests cover live revocation, expiry and controller death.
+Multi-user authorization, managed secret storage and provider-specific action
+adapters remain part of their later integration and operational milestones.
 
 ## Milestone 3 — Add adaptive consumer investigation
 

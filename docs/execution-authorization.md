@@ -52,7 +52,8 @@ boundary. Anyone who can change the journal or invoke Docker directly remains a
 trusted operator. The low-level executor used by boundary tests is not an authorized
 service endpoint. Restrict filesystem and Docker access; do not expose these Java
 entry points as a public API. No external credential is read, brokered or delivered
-by this feature. Credential brokering remains a separate implementation step.
+by this feature. The separate [model broker](model-credential-broker.md) handles
+bounded host-side OpenAI calls with its own request-specific permission.
 
 Revocation is cooperative, not instantaneous: Docker control calls have bounded
 timeouts and an already issued action may finish before the next check. Completion

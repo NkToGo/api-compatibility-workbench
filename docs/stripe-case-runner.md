@@ -100,6 +100,10 @@ Tests keep the normal-case evidence under `backend/target/test-case-runs/`.
 - `report.json` contains both derived assessments, the exact input snapshots,
   observations, details and a SHA-256 inventory of the other evidence files. It
   is written last with an atomic rename. A directory without it is incomplete.
+- `report.html` is a self-contained [readable result view](case-report.md) of the
+  same observations. It is generated before the completion marker and included
+  in the JSON inventory. If `report.json` is absent, do not use the HTML as a
+  completed run. The view has no scripts, remote assets or live input checks.
 
 Source identity includes the repository, revision and exact excerpt digest.
 Configuration identifies the SDK bytes, effective API version and fixture side.
@@ -119,6 +123,6 @@ behavior; run identifiers, timestamps and serialized map-member order may differ
 
 Local evidence and SDK caches are Git-ignored. Maven `clean` removes backend
 evidence, so copy any report bundle that needs to survive a clean build. CI keeps
-the JSON reports as downloadable artifacts for 14 days; the full local bundles
+the JSON and HTML reports as downloadable artifacts for 14 days; the full local bundles
 are not uploaded. A CI report's hashes do not imply that its referenced files are
 still stored by GitHub. Durable artifact storage is not implemented yet.

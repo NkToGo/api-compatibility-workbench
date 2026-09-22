@@ -57,6 +57,7 @@ class StripeCaseRunnerTest {
     }
 
     @Test void evidenceInventoryMatchesRetainedBytes() throws Exception {
+        assertTrue(report.getAsJsonObject("artifacts").has("report.html"));
         for (var entry : report.getAsJsonObject("artifacts").entrySet()) {
             assertEquals(entry.getValue().getAsString(), CaseInputs.hash(Files.readAllBytes(reportPath.getParent().resolve(entry.getKey()))), entry.getKey());
         }
@@ -64,6 +65,19 @@ class StripeCaseRunnerTest {
         var target = report.getAsJsonObject("assessments").getAsJsonObject("target").getAsJsonObject("definition").getAsJsonObject("target");
         for (String key : List.of("expectations", "fixtures", "environment", "harness", "source")) assertEquals(baseline.get(key), target.get(key));
         assertNotEquals(baseline.get("configuration"), target.get("configuration"));
+    }
+
+    @Test void readableViewContainsActualCoverageAndUnsafeDeletionEvidence() throws Exception {
+        String html = Files.readString(reportPath.resolveSibling("report.html"));
+        assertEquals(2, html.split("<h3>Regression observed</h3>", -1).length - 1);
+        String coverage = html.substring(html.indexOf("<tbody>"), html.indexOf("</tbody>"));
+        assertEquals(9, coverage.split(">Passed</span>", -1).length - 1);
+        assertEquals(6, coverage.split(">Failed</span>", -1).length - 1);
+        assertFalse(coverage.contains(">Unresolved</span>"));
+        assertTrue(html.contains("Payment methods were deactivated without recorded absence evidence"));
+        assertTrue(html.contains("java.lang.NullPointerException"));
+        assertTrue(html.contains(report.get("completedAt").getAsString()));
+        assertTrue(html.contains("No live Stripe account or full Kill Bill installation was tested"));
     }
 
     @Test void refusesAlteredInputsAndUnreviewedExecutableEvenWithUpdatedIndex() throws Exception {
@@ -115,7 +129,14 @@ class StripeCaseRunnerTest {
                 value.addProperty("sha256", CaseInputs.hash(Files.readAllBytes(copy.resolve("fixtures.json"))));
         }
         CaseInputs.write(copy.resolve("integrity.json"), index);
-        var invalid = CaseInputs.object(Files.readAllBytes(StripeCaseRunner.run(copy, cache, temporary.resolve("negative-runs"))));
+        Path invalidReport = StripeCaseRunner.run(copy, cache, temporary.resolve("negative-runs"));
+        var invalid = CaseInputs.object(Files.readAllBytes(invalidReport));
+        String html = Files.readString(invalidReport.resolveSibling("report.html"));
+        assertTrue(html.contains("<h3>Unresolved</h3>"));
+        assertTrue(html.contains("EXECUTION_INCOMPLETE"));
+        assertTrue(html.contains("UNSUPPORTED_COLLECTION"));
+        assertTrue(html.contains("INVALID_COLLECTION"));
+        assertTrue(html.contains("<li>Keep a saved legacy card</li>"));
         var assessment = invalid.getAsJsonObject("assessments").getAsJsonObject("target");
         assertEquals("UNRESOLVED", assessment.get("conclusion").getAsString());
         assertTrue(CaseInputs.strings(assessment, "regressedScenarioIds").contains("legacy-method-not-lost"));

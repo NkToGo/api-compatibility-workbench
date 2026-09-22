@@ -35,6 +35,7 @@ public final class StripeCaseRunner {
             System.out.println(entry.getKey() + ": " + entry.getValue().getAsJsonObject().get("conclusion").getAsString());
         }
         System.out.println("Evidence: " + report);
+        System.out.println("Open in a browser: " + report.resolveSibling("report.html"));
     }
 
     public static Path run(Path caseDirectory, Path dependencies, Path outputDirectory) throws Exception {
@@ -130,10 +131,14 @@ public final class StripeCaseRunner {
         report.put("formatVersion", 1);
         report.put("caseId", CaseInputs.CASE_ID);
         report.put("evidenceKind", "isolated-consumer-methods-with-synthetic-fixtures");
-        report.put("completedAt", Instant.now().toString());
+        Instant completedAt = Instant.now();
+        report.put("completedAt", completedAt.toString());
         report.put("assessments", assessments);
         report.put("observations", observations);
         report.put("details", details);
+        var definitions = new LinkedHashMap<String, ComparisonDefinition>();
+        assessments.forEach((variant, assessment) -> definitions.put(variant, assessment.definition()));
+        Files.writeString(run.resolve("report.html"), CaseReportView.render(completedAt, definitions, observations, details, inputs.expectations));
         report.put("artifacts", CaseInputs.inventory(run));
         Path pending = run.resolve("report.json.pending");
         CaseInputs.write(pending, report);

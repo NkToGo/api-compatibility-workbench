@@ -12,10 +12,15 @@ The milestones below describe planned capabilities and their acceptance criteria
 3. **Implemented:** [execute the isolated consumer methods](stripe-case-runner.md)
    against baseline, unrepaired target and upstream reference; retain local
    evidence, exact input identities and derived assessments.
-4. Add a readable case/result view showing coverage, observations and open issues.
+4. **Implemented:** [offline case/result view](case-report.md) showing both
+   comparisons, per-scenario coverage, unresolved issues and expandable evidence.
 
 Acceptance: an actual demonstrated difference or an honest unresolved result for
 the curated case. Domain unit tests alone do not meet this milestone's acceptance.
+
+The runner demonstrates four failing upgrade scenarios and two remaining failures
+in the historical patch, with all five baseline checks passing. The generated
+view exposes these recorded outcomes and their coverage limits.
 
 ## Milestone 2 — Make execution safe and recoverable
 

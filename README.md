@@ -17,9 +17,11 @@ pins historical consumer code, SDK artifacts and synthetic fixtures with a
 separate expected-behavior contract. A deterministic local runner now executes
 the selected consumer methods with both SDKs and records bounded assessments.
 The isolated case exposes regressions in the unrepaired upgrade and remaining
-failures in the historical reference patch. See [running the case](docs/stripe-case-runner.md).
+failures in the historical reference patch. Every run includes an offline HTML
+report with scenario coverage, expandable observations and exact input identities.
+See [running the case](docs/stripe-case-runner.md) and [reading the report](docs/case-report.md).
 
-There is no web application or general migration runner yet. Agent investigation,
+There is no hosted web application or general migration runner yet. Agent investigation,
 provider adapters, isolated execution, persistence and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
@@ -50,7 +52,8 @@ checksum-pinned artifacts from Maven Central; execution then uses an offline fix
 transport. The build produces a library JAR and runtime dependencies, not a server.
 
 After building, run `./scripts/Run-StripeCase.ps1` in PowerShell to produce a new
-local report. The [runner documentation](docs/stripe-case-runner.md) explains the
+local report. Open the printed `report.html` path in a browser; no server or account
+is required. The [runner documentation](docs/stripe-case-runner.md) explains the
 results, artifacts and isolation limits.
 
 ## Configuration
@@ -66,6 +69,7 @@ Never put credentials in case inputs, recorded observations or diagnostic output
 - [Compatibility and evidence contract](docs/compatibility-contract.md)
 - [Stripe customer-sources case](cases/stripe-customer-sources-2020-08-27/README.md)
 - [Local case execution and evidence](docs/stripe-case-runner.md)
+- [Reading the offline result view](docs/case-report.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

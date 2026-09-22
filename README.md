@@ -21,8 +21,12 @@ failures in the historical reference patch. Every run includes an offline HTML
 report with scenario coverage, expandable observations and exact input identities.
 See [running the case](docs/stripe-case-runner.md) and [reading the report](docs/case-report.md).
 
+The case can also run inside a constrained Linux container, including consumer
+compilation. The host controller enforces a fixed execution policy, captures bounded
+output and removes the container. See [isolated execution](docs/isolated-execution.md).
+
 There is no hosted web application or general migration runner yet. Agent investigation,
-provider adapters, isolated execution, persistence and repair publication are
+provider adapters, durable execution, persistence and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
 
@@ -46,8 +50,10 @@ pwsh -NoProfile -File ./scripts/Prepare-StripeCase.ps1
 sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 ```
 
-Tests use local records and synthetic provider responses; they do not call OpenAI,
-Stripe or GitHub. They need no Docker, database or credentials. Preparation downloads
+The default tests use local records and synthetic provider responses; they do not
+call OpenAI, Stripe or GitHub. They need no Docker, database or credentials. The
+four container integration tests are skipped unless an image ID is supplied;
+Linux CI builds that image and runs them explicitly. Preparation downloads
 checksum-pinned artifacts from Maven Central; execution then uses an offline fixture
 transport. The build produces a library JAR and runtime dependencies, not a server.
 
@@ -55,6 +61,18 @@ After building, run `./scripts/Run-StripeCase.ps1` in PowerShell to produce a ne
 local report. Open the printed `report.html` path in a browser; no server or account
 is required. The [runner documentation](docs/stripe-case-runner.md) explains the
 results, artifacts and isolation limits.
+
+For container isolation, start a Linux Docker engine with cgroup v2 and default
+seccomp support, then run these commands after building the backend:
+
+```powershell
+./scripts/Build-IsolatedWorker.ps1
+./scripts/Run-IsolatedStripeCase.ps1
+```
+
+Preparation may download the pinned base image. Execution has no external network
+and never falls back to the local process runner. This supports the curated case
+only; it does not authorize arbitrary repositories or generated repairs.
 
 ## Configuration
 
@@ -70,6 +88,7 @@ Never put credentials in case inputs, recorded observations or diagnostic output
 - [Stripe customer-sources case](cases/stripe-customer-sources-2020-08-27/README.md)
 - [Local case execution and evidence](docs/stripe-case-runner.md)
 - [Reading the offline result view](docs/case-report.md)
+- [Container execution boundaries and verification](docs/isolated-execution.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

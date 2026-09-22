@@ -39,6 +39,18 @@ jobs:
       - name: Verify on Linux
         if: runner.os == 'Linux'
         run: sh ./mvnw -B -ntp -f backend/pom.xml clean verify
+      - name: Build immutable case worker
+        if: runner.os == 'Linux'
+        shell: pwsh
+        run: ./scripts/Build-IsolatedWorker.ps1
+      - name: Verify real container boundaries
+        if: runner.os == 'Linux'
+        shell: pwsh
+        run: |
+          $workerImage = (Get-Content -LiteralPath backend/target/worker-image.txt -Raw).Trim()
+          if ($workerImage -cnotmatch '^sha256:[0-9a-f]{64}$') { throw 'Missing worker image identity.' }
+          sh ./mvnw -B -ntp -f backend/pom.xml "-Dworkbench.container.image=$workerImage" '-Dtest=DockerCaseExecutorTest' test
+          if ($LASTEXITCODE -ne 0) { throw 'Container verification failed.' }
       - name: Retain case reports
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -47,5 +59,13 @@ jobs:
           path: |
             backend/target/test-case-runs/**/report.json
             backend/target/test-case-runs/**/report.html
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Retain isolated execution receipts
+        if: always() && runner.os == 'Linux'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: isolated-case-receipts
+          path: backend/target/isolated-test-runs/
           if-no-files-found: warn
           retention-days: 14

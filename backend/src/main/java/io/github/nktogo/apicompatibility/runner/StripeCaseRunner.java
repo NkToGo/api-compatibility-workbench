@@ -39,6 +39,10 @@ public final class StripeCaseRunner {
     }
 
     public static Path run(Path caseDirectory, Path dependencies, Path outputDirectory) throws Exception {
+        return run(caseDirectory, dependencies, outputDirectory, Map.of("boundary", "local-process"));
+    }
+
+    static Path run(Path caseDirectory, Path dependencies, Path outputDirectory, Map<String, String> executionEnvironment) throws Exception {
         CaseInputs.require(Runtime.version().feature() == 21, "This case runner requires JDK 21");
         var inputs = new CaseInputs(caseDirectory, dependencies);
         Files.createDirectories(outputDirectory);
@@ -70,6 +74,7 @@ public final class StripeCaseRunner {
         environment.put("javaBinary", CaseInputs.hash(Files.readAllBytes(Path.of(FixtureProcess.javaExecutable()))));
         environment.put("jdkModules", CaseInputs.hash(Files.readAllBytes(Path.of(System.getProperty("java.home"), "lib", "modules"))));
         environment.put("workerOptions", String.join(" ", WORKER_OPTIONS));
+        executionEnvironment.forEach((key, value) -> environment.put("execution." + key, value));
         CaseInputs.write(captured.resolve("harness.json"), harness);
         CaseInputs.write(captured.resolve("environment.json"), environment);
 

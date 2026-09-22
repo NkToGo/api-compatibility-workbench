@@ -24,7 +24,9 @@ view exposes these recorded outcomes and their coverage limits.
 
 ## Milestone 2 — Make execution safe and recoverable
 
-1. Define and enforce isolated worker inputs, egress and resource limits.
+1. **Implemented for the curated case:** [constrained container execution](isolated-execution.md)
+   with immutable image inputs, blocked egress, resource limits, bounded output
+   and cleanup verification. Arbitrary consumer code remains unsupported.
 2. Persist artifact provenance and execution records.
 3. Add durable execution, cancellation and restart recovery.
 4. Add credential brokering and test interruptions, expiry and revoked access.

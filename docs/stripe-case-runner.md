@@ -5,6 +5,10 @@ the original consumer/SDK, the original consumer with the newer SDK, and the
 upstream reference patch with that newer SDK. It derives assessments using the
 same domain comparator as other recorded observations.
 
+This page describes the local process runner. The [container controller](isolated-execution.md)
+adds a Linux container boundary around the entire case, including compilation;
+its report retention and operational requirements differ as documented there.
+
 ## Build and run
 
 Use JDK 21, PowerShell 7 and the Maven Wrapper. From the repository root:
@@ -113,6 +117,11 @@ deadline; environment identity includes Java/OS metadata, Java executable and JD
 module-image digests, and worker options. Sorted JSON maps are used for generated
 identity manifests. These hashes support provenance and stale-result detection,
 not signatures, authorization or tamper-proof storage.
+
+Environment identity also includes the execution boundary. Container runs add the
+immutable image ID, verified isolation-check digest and internal deadline backstop.
+Local and container runs therefore have distinct identities even when their
+behavioral outcomes agree.
 
 Process launch/compile failures, unsupported fixture behavior, missing or invalid
 results, and deadlines cannot become passing assertions. A caught consumer null

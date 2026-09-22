@@ -190,18 +190,8 @@ public final class DurableExecution {
     Path receipt(String id) { return path(id).resolve("attempt").resolve(id).resolve("execution.json"); }
     private boolean exists(String id, String name) { return Files.exists(path(id).resolve(name), LinkOption.NOFOLLOW_LINKS); }
 
-    private Lease lease(String id) throws IOException {
-        var channel = FileChannel.open(path(id).resolve("owner.lock"), StandardOpenOption.CREATE, StandardOpenOption.WRITE, LinkOption.NOFOLLOW_LINKS);
-        try {
-            FileLock lock;
-            try { lock = channel.tryLock(); }
-            catch (OverlappingFileLockException e) { lock = null; }
-            if (lock == null) { channel.close(); return null; }
-            return new Lease(channel, lock);
-        } catch (IOException | RuntimeException e) { channel.close(); throw e; }
-    }
-    private record Lease(FileChannel channel, FileLock lock) implements AutoCloseable {
-        @Override public void close() throws IOException { try { lock.release(); } finally { channel.close(); } }
+    private LocalFileLease lease(String id) throws IOException {
+        return LocalFileLease.tryAcquire(path(id).resolve("owner.lock"));
     }
     private static JsonObject read(Path path) throws IOException {
         CaseInputs.require(Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS), "Missing or linked journal file");

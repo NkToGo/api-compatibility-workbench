@@ -71,22 +71,20 @@ public final class EvidenceStore {
         byte[] manifestBytes = encode(manifest);
         String manifestHash = CaseInputs.hash(manifestBytes);
         // One writer per store across processes. Concurrent in-process callers retry a held JVM lock.
-        try (var channel = FileChannel.open(root.resolve("writer.lock"), StandardOpenOption.CREATE, StandardOpenOption.WRITE, LinkOption.NOFOLLOW_LINKS)) {
-            try (var lock = lock(channel)) {
-                if (!lock.isValid()) throw new IOException("Store lock lost");
-                Path reference = root.resolve("runs").resolve(id + ".json");
-                if (Files.exists(reference, LinkOption.NOFOLLOW_LINKS)) {
-                    CaseInputs.require(manifestHash.equals(reference(reference)), "Run identity already exists with different evidence");
-                    read(id); // Idempotent retries must not conceal damaged existing objects.
-                    return id;
-                }
-                for (byte[] bytes : captured.values()) put(bytes);
-                put(manifestBytes);
-                beforePublish.run();
-                var ref = new JsonObject(); ref.addProperty("formatVersion", 1); ref.addProperty("manifestSha256", manifestHash);
-                publish(reference, encode(ref));
+        try (var lease = LocalFileLease.acquire(root.resolve("writer.lock"))) {
+            if (!lease.lock().isValid()) throw new IOException("Store lock lost");
+            Path reference = root.resolve("runs").resolve(id + ".json");
+            if (Files.exists(reference, LinkOption.NOFOLLOW_LINKS)) {
+                CaseInputs.require(manifestHash.equals(reference(reference)), "Run identity already exists with different evidence");
+                read(id); // Idempotent retries must not conceal damaged existing objects.
                 return id;
             }
+            for (byte[] bytes : captured.values()) put(bytes);
+            put(manifestBytes);
+            beforePublish.run();
+            var ref = new JsonObject(); ref.addProperty("formatVersion", 1); ref.addProperty("manifestSha256", manifestHash);
+            publish(reference, encode(ref));
+            return id;
         }
     }
 
@@ -196,15 +194,6 @@ public final class EvidenceStore {
     private static void directory(Path path) throws IOException {
         Files.createDirectories(path);
         CaseInputs.require(Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS), "Evidence directory must not be a link");
-    }
-    private static java.nio.channels.FileLock lock(FileChannel channel) throws IOException {
-        while (true) {
-            try { return channel.lock(); }
-            catch (java.nio.channels.OverlappingFileLockException e) {
-                try { Thread.sleep(10); }
-                catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); throw new IOException("Interrupted while waiting for evidence writer", interrupted); }
-            }
-        }
     }
     private static byte[] encode(Object value) { return (CaseInputs.JSON.toJson(value) + "\n").getBytes(java.nio.charset.StandardCharsets.UTF_8); }
     private static void id(String value) { CaseInputs.require(value.matches("acw-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"), "Invalid run identity"); }

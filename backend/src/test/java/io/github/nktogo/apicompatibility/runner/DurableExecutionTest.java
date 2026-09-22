@@ -1,7 +1,6 @@
 package io.github.nktogo.apicompatibility.runner;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.nio.channels.FileChannel;
 import java.nio.file.*;
 import java.time.Duration;
 import org.junit.jupiter.api.Test;
@@ -37,9 +36,8 @@ class DurableExecutionTest {
 
     @Test void activeLeasePreventsConcurrentRecoveryAndMakesCancellationARequest() throws Exception {
         var journal = journal(); String id = create(journal);
-        try (var channel = FileChannel.open(root.resolve("journal").resolve(id).resolve("owner.lock"),
-                StandardOpenOption.CREATE, StandardOpenOption.WRITE); var lock = channel.lock()) {
-            assertTrue(lock.isValid());
+        try (var lease = LocalFileLease.tryAcquire(root.resolve("journal").resolve(id).resolve("owner.lock"))) {
+            assertNotNull(lease);
             assertEquals("ACTIVE", journal().status(id));
             assertEquals("ACTIVE", journal().recover(id));
             assertEquals("CANCELLATION_REQUESTED", journal().cancel(id));

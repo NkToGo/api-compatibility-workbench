@@ -42,6 +42,9 @@ An `owner.lock` file persists, but its existence does not imply ownership. The
 operating-system file lock does. Process death releases that lock; recovery never
 guesses ownership from a PID or a timeout. Concurrent recovery skips a live owner.
 Only one cooperating process may execute or recover an attempt at once.
+An in-process guard prevents competing callers from opening a second channel for
+the same held lock. This also protects against platforms where closing any channel
+to a file releases the process's locks; see Java's [file-lock platform dependencies](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/channels/FileLock.html).
 
 The specification and start marker are forced to disk and atomically published
 before external actions. The cancellation marker is durable and checked before

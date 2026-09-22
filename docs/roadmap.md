@@ -27,7 +27,9 @@ view exposes these recorded outcomes and their coverage limits.
 1. **Implemented for the curated case:** [constrained container execution](isolated-execution.md)
    with immutable image inputs, blocked egress, resource limits, bounded output
    and cleanup verification. Arbitrary consumer code remains unsupported.
-2. Persist artifact provenance and execution records.
+2. **Implemented locally:** [append-only evidence storage](evidence-storage.md)
+   for final execution records, exported artifacts and provenance, with integrity
+   verification, atomic publication and explicit retention limits.
 3. Add durable execution, cancellation and restart recovery.
 4. Add credential brokering and test interruptions, expiry and revoked access.
 

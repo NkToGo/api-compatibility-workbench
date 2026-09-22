@@ -24,9 +24,11 @@ See [running the case](docs/stripe-case-runner.md) and [reading the report](docs
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded
 output and removes the container. See [isolated execution](docs/isolated-execution.md).
+Final execution records and exported evidence are automatically retained in a
+local [evidence store](docs/evidence-storage.md), outside Maven build output.
 
 There is no hosted web application or general migration runner yet. Agent investigation,
-provider adapters, durable execution, persistence and repair publication are
+provider adapters, recoverable workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
 
@@ -76,10 +78,14 @@ only; it does not authorize arbitrary repositories or generated repairs.
 
 ## Configuration
 
-The current library has no runtime configuration. `.env.example` documents the
+The domain library needs no credentials. `.env.example` documents the
 credential name reserved for future agent execution. If `.env.local` is present,
 keep it local; Git ignores it. The Java tests neither read nor transmit its contents.
 Never put credentials in case inputs, recorded observations or diagnostic output.
+
+The isolated-run script accepts `-EvidenceDirectory` to select a local evidence
+store. Its default is the Git-ignored `.workbench/evidence/` directory. Maven
+`clean` does not remove that directory. It needs filesystem access, not credentials.
 
 ## Documentation
 
@@ -89,6 +95,7 @@ Never put credentials in case inputs, recorded observations or diagnostic output
 - [Local case execution and evidence](docs/stripe-case-runner.md)
 - [Reading the offline result view](docs/case-report.md)
 - [Container execution boundaries and verification](docs/isolated-execution.md)
+- [Evidence retention, integrity and export](docs/evidence-storage.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

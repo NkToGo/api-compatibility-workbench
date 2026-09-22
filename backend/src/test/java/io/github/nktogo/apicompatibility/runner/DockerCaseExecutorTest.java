@@ -13,7 +13,11 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 class DockerCaseExecutorTest {
     private static Path run(String mode, Duration timeout) throws Exception {
         return DockerCaseExecutor.run(System.getProperty("workbench.container.image"),
-                Path.of(System.getProperty("workbench.repository"), "backend/target/isolated-test-runs"), mode, timeout);
+                Path.of(System.getProperty("workbench.repository"), "backend/target/isolated-test-runs"), mode, timeout, store());
+    }
+
+    private static EvidenceStore store() throws Exception {
+        return new EvidenceStore(Path.of(System.getProperty("workbench.repository"), "backend/target/test-evidence-store"));
     }
 
     @Test void realCaseKeepsRegressionsAndEnforcesKernelLimits() throws Exception {
@@ -32,6 +36,10 @@ class DockerCaseExecutorTest {
         assertEquals(4, report.getAsJsonObject("assessments").getAsJsonObject("target").getAsJsonArray("regressedScenarioIds").size());
         assertEquals(2, report.getAsJsonObject("assessments").getAsJsonObject("upstream-reference").getAsJsonArray("regressedScenarioIds").size());
         assertTrue(Files.readString(receipt.resolveSibling("report.html")).contains("Regression observed"));
+        var retained = store().read(record.get("containerName").getAsString());
+        assertArrayEquals(Files.readAllBytes(receipt), retained.get("execution.json"));
+        for (String file : List.of("worker-provenance.json", "worker-sources.json", "worker-harness.json", "worker-expectations.json"))
+            assertArrayEquals(Files.readAllBytes(receipt.resolveSibling(file)), retained.get(file));
         for (var artifact : record.getAsJsonObject("artifacts").entrySet())
             assertEquals(artifact.getValue().getAsString(), CaseInputs.hash(Files.readAllBytes(receipt.getParent().resolve(artifact.getKey()))));
         assertContainerAbsent(record.get("containerName").getAsString());
@@ -47,6 +55,7 @@ class DockerCaseExecutorTest {
             if (record.get("runningBeforeCleanup").getAsBoolean()) assertFalse(record.has("exitCode"), "A running worker has no exit code yet");
             assertFalse(Files.exists(receipt.resolveSibling("worker-report.json")));
             assertFalse(Files.exists(receipt.resolveSibling("report.html")));
+            assertEquals(expected, CaseInputs.object(store().read(record.get("containerName").getAsString()).get("execution.json")).get("status").getAsString());
             assertContainerAbsent(record.get("containerName").getAsString());
         }
     }

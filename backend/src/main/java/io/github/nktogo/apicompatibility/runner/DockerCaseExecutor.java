@@ -15,11 +15,12 @@ public final class DockerCaseExecutor {
     static final int OUTPUT_LIMIT = 2 * 1024 * 1024;
     static final Set<String> MODES = Set.of("case", "probe", "deadline-probe", "output-probe", "failure-probe", "scratch-probe");
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) throw new IllegalArgumentException("Usage: DockerCaseExecutor IMAGE_ID OUTPUT_DIRECTORY");
-        Path receipt = run(args[0], Path.of(args[1]), "case", Duration.ofSeconds(180));
+        if (args.length != 3) throw new IllegalArgumentException("Usage: DockerCaseExecutor IMAGE_ID OUTPUT_DIRECTORY EVIDENCE_STORE");
+        Path receipt = run(args[0], Path.of(args[1]), "case", Duration.ofSeconds(180), new EvidenceStore(Path.of(args[2])));
         var record = CaseInputs.object(Files.readAllBytes(receipt));
         System.out.println("Execution: " + record.get("status").getAsString());
         System.out.println("Receipt: " + receipt);
+        System.out.println("Stored run: " + record.get("containerName").getAsString());
         if (!"COMPLETED".equals(record.get("status").getAsString())) throw new IllegalStateException("Isolated execution did not produce a completed report");
         var report = CaseInputs.object(Files.readAllBytes(receipt.resolveSibling("worker-report.json")));
         for (var assessment : report.getAsJsonObject("assessments").entrySet())
@@ -43,6 +44,10 @@ public final class DockerCaseExecutor {
     }
 
     static Path run(String image, Path outputDirectory, String mode, Duration deadline) throws Exception {
+        return run(image, outputDirectory, mode, deadline, null);
+    }
+
+    static Path run(String image, Path outputDirectory, String mode, Duration deadline, EvidenceStore store) throws Exception {
         String name = "acw-" + UUID.randomUUID();
         var command = createArguments(image, name, mode);
         CaseInputs.require(!deadline.isZero() && !deadline.isNegative() && deadline.compareTo(Duration.ofSeconds(180)) <= 0, "Invalid deadline");
@@ -116,6 +121,7 @@ public final class DockerCaseExecutor {
             Path pending = directory.resolve("execution.json.pending");
             CaseInputs.write(pending, receipt);
             Files.move(pending, directory.resolve("execution.json"), StandardCopyOption.ATOMIC_MOVE);
+            if (store != null) store.save(directory.resolve("execution.json"));
         }
         return directory.resolve("execution.json");
     }
@@ -153,6 +159,11 @@ public final class DockerCaseExecutor {
         }
         String expectations = envelope.get("expectations").getAsString();
         var environment = envelope.getAsJsonObject("environment");
+        var harness = envelope.getAsJsonObject("harness");
+        var sources = envelope.getAsJsonObject("sources");
+        String provenance = envelope.get("provenance").getAsString();
+        CaseInputs.require(CaseInputs.hash(provenance.getBytes(StandardCharsets.UTF_8)).equals(
+                report.getAsJsonObject("artifacts").get("inputs/provenance.json").getAsString()), "Provenance digest mismatch");
         CaseInputs.require(image.equals(environment.get("execution.imageId").getAsString()), "Worker environment image mismatch");
         CaseInputs.require(environment.get("execution.isolationChecks").getAsString().equals(
                 CaseInputs.identity(new TreeMap<>(envelope.getAsJsonObject("isolation").asMap()))), "Isolation identity mismatch");
@@ -161,6 +172,9 @@ public final class DockerCaseExecutor {
             CaseInputs.require(assessment.equals(CompatibilityComparison.compare(assessment.definition(), observations.get("baseline"), observations.get(variant))), "Worker assessment disagrees with recorded observations");
             CaseInputs.require(assessment.definition().baseline().expectations().sha256().equals(CaseInputs.hash(expectations.getBytes(StandardCharsets.UTF_8))), "Expectation identity mismatch");
             CaseInputs.require(assessment.definition().baseline().environment().sha256().equals(CaseInputs.identity(environment)), "Environment identity mismatch");
+            CaseInputs.require(assessment.definition().baseline().harness().sha256().equals(CaseInputs.identity(harness)), "Harness identity mismatch");
+            CaseInputs.require(assessment.definition().baseline().source().sha256().equals(CaseInputs.identity(new TreeMap<>(sources.getAsJsonObject("baseline").asMap())))
+                    && assessment.definition().target().source().sha256().equals(CaseInputs.identity(new TreeMap<>(sources.getAsJsonObject(variant).asMap()))), "Source provenance mismatch");
             definitions.put(variant, assessment.definition());
         }
         var expected = new LinkedHashMap<String, JsonObject>();
@@ -171,6 +185,10 @@ public final class DockerCaseExecutor {
         String html = CaseReportView.render(Instant.parse(report.get("completedAt").getAsString()), definitions, observations, details, expected);
         CaseInputs.write(directory.resolve("worker-report.json"), report);
         CaseInputs.write(directory.resolve("worker-environment.json"), environment);
+        CaseInputs.write(directory.resolve("worker-harness.json"), harness);
+        CaseInputs.write(directory.resolve("worker-sources.json"), sources);
+        Files.writeString(directory.resolve("worker-provenance.json"), provenance);
+        Files.writeString(directory.resolve("worker-expectations.json"), expectations);
         Files.writeString(directory.resolve("report.html"), html);
     }
 }

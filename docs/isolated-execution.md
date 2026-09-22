@@ -90,6 +90,10 @@ Each attempt gets a unique directory under `backend/target/isolated-case-runs/`:
   case. Its inventory references files inside the ephemeral worker workspace.
 - `worker-environment.json`: retained environment manifest, including image ID
   and isolation-check identity, checked against the assessment's environment digest.
+- `worker-sources.json`, `worker-provenance.json`, `worker-harness.json` and
+  `worker-expectations.json`: retained revisions, source and dependency provenance,
+  harness identity and expected behavior, checked against the worker's identities
+  or artifact inventory before export.
 - `report.html`: freshly rendered on the host from validated typed observations;
   no worker-supplied HTML or destination paths are accepted.
 
@@ -112,9 +116,13 @@ receipt location; diagnostics are kept in files rather than echoed automatically
 The full worker workspace is **not retained**: tmpfs contents disappear when its
 container stops. The worker report's internal inventory is provenance, not a
 promise that those files remain available. The host receipt hashes the actual
-exported artifacts separately. Durable evidence storage belongs to the next step.
-Local reports and image build contexts are ignored by Git and removed by Maven
-`clean`. Docker images use separate engine storage and are not removed by Maven.
+exported artifacts separately. Final host receipts and these exports are now
+automatically copied to the [local evidence store](evidence-storage.md), including
+failed runs. A storage failure causes a nonzero CLI exit; the temporary receipt
+remains available for investigation or a later explicit import.
+Temporary reports and image build contexts are ignored by Git and removed by Maven
+`clean`; the default evidence store survives. Docker images use separate engine
+storage and are not removed by Maven.
 
 Hard termination of the host, daemon failure and machine shutdown can prevent
 cleanup or receipt completion. The worker's deadline backstop limits normal orphan

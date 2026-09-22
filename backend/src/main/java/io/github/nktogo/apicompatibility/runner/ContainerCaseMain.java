@@ -17,8 +17,14 @@ public final class ContainerCaseMain {
             case "case" -> {
                 Path report = StripeCaseRunner.run(Path.of("/opt/workbench/case"), Path.of("/opt/workbench/dependencies"), Path.of("/work/runs"),
                         Map.of("boundary", "linux-container-v1", "imageId", args[1], "isolationChecks", CaseInputs.identity(new TreeMap<>(isolation)), "backstopSeconds", "185"));
+                var sources = new TreeMap<String, Object>();
+                for (String variant : List.of("baseline", "target", "upstream-reference"))
+                    sources.put(variant, CaseInputs.object(Files.readAllBytes(report.getParent().resolve(variant + "/source.json"))));
                 System.out.println(CaseInputs.JSON.toJson(Map.of("formatVersion", 1, "isolation", isolation,
                         "report", CaseInputs.object(Files.readAllBytes(report)),
+                        "sources", sources,
+                        "provenance", Files.readString(report.getParent().resolve("inputs/provenance.json")),
+                        "harness", CaseInputs.object(Files.readAllBytes(report.getParent().resolve("inputs/harness.json"))),
                         "environment", CaseInputs.object(Files.readAllBytes(report.getParent().resolve("inputs/environment.json"))),
                         "expectations", Files.readString(Path.of("/opt/workbench/case/expectations.json")))));
             }

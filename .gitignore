@@ -5,6 +5,7 @@
 
 # Build output and local tooling
 **/target/
+.workbench/
 .idea/
 *.iml
 .vscode/

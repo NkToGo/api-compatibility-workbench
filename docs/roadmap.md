@@ -49,7 +49,9 @@ adapters remain part of their later integration and operational milestones.
 
 ## Milestone 3 — Add adaptive consumer investigation
 
-1. Expose narrow read and test tools over registered inputs.
+1. **Implemented for the curated case:** [narrow read and test tools](investigation-tools.md)
+   over captured registered inputs, with bounded access, deduplicated test requests
+   and verified input-to-result identity.
 2. Add one investigating agent with typed findings and bounded resource use.
 3. Generate scoped repair candidates in isolated checkouts.
 4. Verify against protected expectations and establish an evaluation baseline.

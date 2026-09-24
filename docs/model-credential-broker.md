@@ -44,6 +44,8 @@ bytes and adds host-defined instructions and one forced function schema. Paralle
 function calls are disabled. Callers cannot supply tool definitions or arbitrary
 instructions through this option. Schema and instructions are included in the
 exact request hash; changing them invalidates an outstanding grant.
+The separate `repair-v1` protocol uses the same transport and grant boundaries
+with a host-defined repair-proposal schema; its output cannot execute code.
 
 The only production destination is `https://api.openai.com/v1/responses`, with
 redirects and proxies disabled, a ten-second connection timeout, a 90-second

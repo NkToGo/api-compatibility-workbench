@@ -37,7 +37,9 @@ The host can expose [registered investigation tools](docs/investigation-tools.md
 for bounded input reads and fixed test requests, with retained evidence and retry
 deduplication. A [bounded consumer investigator](docs/consumer-investigator.md)
 now uses those tools to inspect the curated case and return cited advisory findings
-or abstain. It does not generate or validate repairs.
+or abstain. A separate [candidate generator](docs/repair-candidates.md) can propose
+scoped source changes in an isolated source-only checkout. Generated candidates
+are not yet compiled or behaviorally verified.
 
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are
@@ -115,6 +117,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Host-side model credential broker](docs/model-credential-broker.md)
 - [Registered investigation tools](docs/investigation-tools.md)
 - [Bounded consumer investigator](docs/consumer-investigator.md)
+- [Scoped repair candidates](docs/repair-candidates.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

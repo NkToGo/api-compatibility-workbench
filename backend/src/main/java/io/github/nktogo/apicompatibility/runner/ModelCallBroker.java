@@ -29,7 +29,7 @@ public final class ModelCallBroker {
     public record Request(String model, String input, int maxOutputTokens, String protocol) {
         public Request(String model, String input, int maxOutputTokens) { this(model, input, maxOutputTokens, null); }
         public Request {
-            CaseInputs.require(protocol == null || protocol.equals("investigation-v1"), "Unsupported model protocol");
+            CaseInputs.require(protocol == null || Set.of("investigation-v1", "repair-v1").contains(protocol), "Unsupported model protocol");
             CaseInputs.require(model != null && model.matches("gpt-[a-zA-Z0-9.\\-]{1,80}"), "Invalid model identity");
             CaseInputs.require(input != null && !input.isBlank() && input.getBytes(StandardCharsets.UTF_8).length <= (protocol == null ? 16000 : 64000), "Invalid model input size");
             CaseInputs.require(maxOutputTokens >= 16 && maxOutputTokens <= 4096, "Invalid output budget");
@@ -38,10 +38,11 @@ public final class ModelCallBroker {
             var body = new TreeMap<String, Object>(Map.of("model", model, "input", input, "max_output_tokens", maxOutputTokens,
                     "store", false, "background", false));
             if (protocol != null) {
-                body.put("instructions", InvestigationDecision.INSTRUCTIONS);
-                body.put("tools", List.of(Map.of("type", "function", "name", "investigation_decision", "description", "Select exactly one next investigation action; the host executes it after this response.",
-                        "strict", true, "parameters", InvestigationDecision.schema())));
-                body.put("tool_choice", Map.of("type", "function", "name", "investigation_decision"));
+                boolean repair = protocol.equals("repair-v1"); String function = repair ? "repair_proposal" : "investigation_decision";
+                body.put("instructions", repair ? RepairProposal.INSTRUCTIONS : InvestigationDecision.INSTRUCTIONS);
+                body.put("tools", List.of(Map.of("type", "function", "name", function, "description", repair ? "Submit one unverified scoped repair proposal or abstention." : "Select exactly one next investigation action; the host executes it after this response.",
+                        "strict", true, "parameters", repair ? RepairProposal.schema() : InvestigationDecision.schema())));
+                body.put("tool_choice", Map.of("type", "function", "name", function));
                 body.put("parallel_tool_calls", false);
             }
             return CaseInputs.JSON.toJson(canonical(CaseInputs.JSON.toJsonTree(body))).getBytes(StandardCharsets.UTF_8);
@@ -107,7 +108,7 @@ public final class ModelCallBroker {
                 else {
                     String raw = new String(response.body(), StandardCharsets.UTF_8);
                     if (raw.contains(key)) status = "UNSAFE_RESPONSE";
-                    else status = extract(response.body(), metadata, request.protocol() != null);
+                    else status = extract(response.body(), metadata, request.protocol());
                     if (metadata.getOrDefault("outputText", "").toString().contains(key)) {
                         metadata.clear(); status = "UNSAFE_RESPONSE";
                     }
@@ -161,7 +162,9 @@ public final class ModelCallBroker {
         } catch (IOException | RuntimeException e) { return false; }
     }
 
-    private static String extract(byte[] body, Map<String, Object> metadata, boolean decision) {
+    private static String extract(byte[] body, Map<String, Object> metadata, String protocol) {
+        boolean decision = protocol != null;
+        String function = "repair-v1".equals(protocol) ? "repair_proposal" : "investigation_decision";
         try {
             var response = CaseInputs.object(body);
             if (!"completed".equals(response.get("status").getAsString())) return "INCOMPLETE";
@@ -169,7 +172,7 @@ public final class ModelCallBroker {
             for (var item : response.getAsJsonArray("output")) {
                 var output = item.getAsJsonObject();
                 if (decision && "function_call".equals(output.get("type").getAsString())) {
-                    if (!"investigation_decision".equals(output.get("name").getAsString()) || ++decisions > 1) return "INVALID_RESPONSE";
+                    if (!function.equals(output.get("name").getAsString()) || ++decisions > 1) return "INVALID_RESPONSE";
                     text.append(output.get("arguments").getAsString()); continue;
                 }
                 if (!"message".equals(output.get("type").getAsString())) continue;

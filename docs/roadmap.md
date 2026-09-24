@@ -55,7 +55,9 @@ adapters remain part of their later integration and operational milestones.
 2. **Implemented for the curated case:** [one investigating agent](consumer-investigator.md)
    with adaptive tool selection, cited advisory findings, abstention and bounded
    model requests. Repair-quality evaluation remains part of step 4.
-3. Generate scoped repair candidates in isolated checkouts.
+3. **Implemented for the extracted consumer:** [scoped repair candidates](repair-candidates.md)
+   in isolated source-only checkouts, with exact replacements, receipt binding and
+   unverified artifact manifests. Full repository checkout support remains later work.
 4. Verify against protected expectations and establish an evaluation baseline.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.

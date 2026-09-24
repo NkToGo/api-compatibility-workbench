@@ -35,9 +35,11 @@ OpenAI calls while keeping the credential outside workers. Its opt-in connectivi
 check does not perform an investigation or alter compatibility results.
 The host can expose [registered investigation tools](docs/investigation-tools.md)
 for bounded input reads and fixed test requests, with retained evidence and retry
-deduplication. An agent runtime is not yet connected to these tools.
+deduplication. A [bounded consumer investigator](docs/consumer-investigator.md)
+now uses those tools to inspect the curated case and return cited advisory findings
+or abstain. It does not generate or validate repairs.
 
-There is no hosted web application or general migration runner yet. Agent investigation,
+There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
@@ -112,6 +114,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Expiring execution permission and revocation](docs/execution-authorization.md)
 - [Host-side model credential broker](docs/model-credential-broker.md)
 - [Registered investigation tools](docs/investigation-tools.md)
+- [Bounded consumer investigator](docs/consumer-investigator.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

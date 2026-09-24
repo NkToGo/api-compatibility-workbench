@@ -52,7 +52,9 @@ adapters remain part of their later integration and operational milestones.
 1. **Implemented for the curated case:** [narrow read and test tools](investigation-tools.md)
    over captured registered inputs, with bounded access, deduplicated test requests
    and verified input-to-result identity.
-2. Add one investigating agent with typed findings and bounded resource use.
+2. **Implemented for the curated case:** [one investigating agent](consumer-investigator.md)
+   with adaptive tool selection, cited advisory findings, abstention and bounded
+   model requests. Repair-quality evaluation remains part of step 4.
 3. Generate scoped repair candidates in isolated checkouts.
 4. Verify against protected expectations and establish an evaluation baseline.
 

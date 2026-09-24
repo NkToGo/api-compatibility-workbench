@@ -2,7 +2,9 @@
 
 The host can register the curated Stripe case and expose four narrow operations
 over it. These are application tools, not an agent runtime, MCP server or general
-repository interface. They make no model calls and require no API key.
+repository interface. They make no model calls and require no API key. The separate
+[consumer investigator](consumer-investigator.md) can dispatch these tools while
+keeping their permissions and evidence rules intact.
 
 ## Run locally
 

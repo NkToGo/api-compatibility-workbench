@@ -3,7 +3,7 @@
 The broker supports one bounded OpenAI Responses request per registered call. It
 keeps `OPENAI_API_KEY` in the trusted host process and does not return credentials
 to callers, put them in command arguments or mount them into a worker. This is
-the credential boundary for upcoming model investigation, not an investigating
+the credential boundary used by the [consumer investigator](consumer-investigator.md), not an investigating
 agent, a general HTTP proxy or a migration verdict.
 
 ## Connectivity check
@@ -39,6 +39,12 @@ JSON ordering across JVM restarts. Changing the input, model or budget invalidat
 permission. No caller-supplied endpoint, header, tool, remote file, conversation,
 background job or provider storage flag is accepted.
 
+The fixed `investigation-v1` protocol raises the input ceiling to 64,000 UTF-8
+bytes and adds host-defined instructions and one forced function schema. Parallel
+function calls are disabled. Callers cannot supply tool definitions or arbitrary
+instructions through this option. Schema and instructions are included in the
+exact request hash; changing them invalidates an outstanding grant.
+
 The only production destination is `https://api.openai.com/v1/responses`, with
 redirects and proxies disabled, a ten-second connection timeout, a 90-second
 whole-response deadline and a 256 KiB response limit. A loopback HTTP endpoint is
@@ -64,7 +70,8 @@ Recovery can close unfinished calls but cannot renew permission or repeat them.
 
 ## Outcomes and retained data
 
-- `COMPLETED`: selected final message text and input/output token counts were read.
+- `COMPLETED`: message text (probe) or exactly one expected function's arguments
+  (investigation protocol), plus input/output token counts, were read.
   Output remains untrusted model content, separate from compatibility evidence.
 - `AUTHORIZATION_DENIED` or `CREDENTIAL_UNAVAILABLE`: no dispatch was attempted.
 - `CREDENTIAL_REJECTED`: HTTP 401/403; `RATE_LIMITED`: HTTP 429. Numeric Retry-After
@@ -76,7 +83,7 @@ Recovery can close unfinished calls but cannot renew permission or repeat them.
 - `CLOSED_WITHOUT_DISPATCH`: recovery or revocation closed an unstarted call.
 
 The journal retains approved input, a scoped grant, optional revocation/start
-markers and a sanitized result. Successful results contain final text only, never
+markers and a sanitized result. Successful results contain extracted text or function arguments, never
 reasoning items. Provider error bodies, raw headers and exception messages are
 discarded. A bounded request ID and numeric retry delay may be retained. Exact key
 echoes in selected response content are rejected, including JSON-escaped echoes;

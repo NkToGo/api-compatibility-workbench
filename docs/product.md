@@ -37,8 +37,9 @@ and approval checks remain deterministic. Known transformations should run
 directly. The team must be evaluated against deterministic tools, one capable agent
 and independent parallel workers under comparable budgets.
 
-These agents are not implemented yet. The present contract supplies the evidence
-boundary their findings will have to satisfy. Agent assertions cannot become test
+A single [bounded investigator](consumer-investigator.md) can now read the curated
+case, request its fixed test execution and return advisory findings. The team and
+repair workflow are not implemented yet. Agent assertions cannot become test
 results merely because they conform to a schema.
 
 ## Planned system boundaries

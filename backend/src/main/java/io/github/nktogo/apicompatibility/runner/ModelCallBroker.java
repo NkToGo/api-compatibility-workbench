@@ -26,17 +26,39 @@ public final class ModelCallBroker {
         this.credential = credential; this.transport = transport; this.clock = clock;
     }
 
-    public record Request(String model, String input, int maxOutputTokens) {
+    public record Request(String model, String input, int maxOutputTokens, String protocol) {
+        public Request(String model, String input, int maxOutputTokens) { this(model, input, maxOutputTokens, null); }
         public Request {
+            CaseInputs.require(protocol == null || protocol.equals("investigation-v1"), "Unsupported model protocol");
             CaseInputs.require(model != null && model.matches("gpt-[a-zA-Z0-9.\\-]{1,80}"), "Invalid model identity");
-            CaseInputs.require(input != null && !input.isBlank() && input.getBytes(StandardCharsets.UTF_8).length <= 16000, "Invalid model input size");
+            CaseInputs.require(input != null && !input.isBlank() && input.getBytes(StandardCharsets.UTF_8).length <= (protocol == null ? 16000 : 64000), "Invalid model input size");
             CaseInputs.require(maxOutputTokens >= 16 && maxOutputTokens <= 4096, "Invalid output budget");
         }
         byte[] body() {
-            return CaseInputs.JSON.toJson(new TreeMap<>(Map.of("model", model, "input", input, "max_output_tokens", maxOutputTokens,
-                    "store", false, "background", false))).getBytes(StandardCharsets.UTF_8);
+            var body = new TreeMap<String, Object>(Map.of("model", model, "input", input, "max_output_tokens", maxOutputTokens,
+                    "store", false, "background", false));
+            if (protocol != null) {
+                body.put("instructions", InvestigationDecision.INSTRUCTIONS);
+                body.put("tools", List.of(Map.of("type", "function", "name", "investigation_decision", "description", "Select exactly one next investigation action; the host executes it after this response.",
+                        "strict", true, "parameters", InvestigationDecision.schema())));
+                body.put("tool_choice", Map.of("type", "function", "name", "investigation_decision"));
+                body.put("parallel_tool_calls", false);
+            }
+            return CaseInputs.JSON.toJson(canonical(CaseInputs.JSON.toJsonTree(body))).getBytes(StandardCharsets.UTF_8);
         }
         @Override public String toString() { return "Model request (content omitted)"; }
+    }
+
+    private static com.google.gson.JsonElement canonical(com.google.gson.JsonElement value) {
+        if (value.isJsonObject()) {
+            var sorted = new JsonObject();
+            value.getAsJsonObject().keySet().stream().sorted().forEach(key -> sorted.add(key, canonical(value.getAsJsonObject().get(key))));
+            return sorted;
+        }
+        if (value.isJsonArray()) {
+            var array = new com.google.gson.JsonArray(); value.getAsJsonArray().forEach(item -> array.add(canonical(item))); return array;
+        }
+        return value;
     }
 
     public String register(Request request, Duration lifetime) throws IOException {
@@ -85,7 +107,7 @@ public final class ModelCallBroker {
                 else {
                     String raw = new String(response.body(), StandardCharsets.UTF_8);
                     if (raw.contains(key)) status = "UNSAFE_RESPONSE";
-                    else status = extract(response.body(), metadata);
+                    else status = extract(response.body(), metadata, request.protocol() != null);
                     if (metadata.getOrDefault("outputText", "").toString().contains(key)) {
                         metadata.clear(); status = "UNSAFE_RESPONSE";
                     }
@@ -122,6 +144,8 @@ public final class ModelCallBroker {
         }
     }
 
+    public JsonObject outcome(String id) throws IOException { return read(directory(id).resolve("result.json")); }
+
     private boolean permitted(Path directory, String id, byte[] body) {
         try {
             if (exists(directory, "revoked")) return false;
@@ -137,21 +161,25 @@ public final class ModelCallBroker {
         } catch (IOException | RuntimeException e) { return false; }
     }
 
-    private static String extract(byte[] body, Map<String, Object> metadata) {
+    private static String extract(byte[] body, Map<String, Object> metadata, boolean decision) {
         try {
             var response = CaseInputs.object(body);
             if (!"completed".equals(response.get("status").getAsString())) return "INCOMPLETE";
-            var text = new StringBuilder();
+            var text = new StringBuilder(); int decisions = 0;
             for (var item : response.getAsJsonArray("output")) {
                 var output = item.getAsJsonObject();
+                if (decision && "function_call".equals(output.get("type").getAsString())) {
+                    if (!"investigation_decision".equals(output.get("name").getAsString()) || ++decisions > 1) return "INVALID_RESPONSE";
+                    text.append(output.get("arguments").getAsString()); continue;
+                }
                 if (!"message".equals(output.get("type").getAsString())) continue;
                 for (var itemContent : output.getAsJsonArray("content")) {
                     var content = itemContent.getAsJsonObject();
                     if ("refusal".equals(content.get("type").getAsString())) return "REFUSED";
-                    if ("output_text".equals(content.get("type").getAsString())) text.append(content.get("text").getAsString());
+                    if (!decision && "output_text".equals(content.get("type").getAsString())) text.append(content.get("text").getAsString());
                 }
             }
-            if (text.isEmpty() || text.toString().getBytes(StandardCharsets.UTF_8).length > 32768) return "INVALID_RESPONSE";
+            if ((decision && decisions != 1) || text.isEmpty() || text.toString().getBytes(StandardCharsets.UTF_8).length > 32768) return "INVALID_RESPONSE";
             var usage = response.getAsJsonObject("usage");
             long input = usage.get("input_tokens").getAsLong(), output = usage.get("output_tokens").getAsLong();
             if (input < 0 || output < 0) return "INVALID_RESPONSE";

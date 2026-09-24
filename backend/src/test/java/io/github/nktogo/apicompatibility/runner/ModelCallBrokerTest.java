@@ -217,4 +217,37 @@ class ModelCallBrokerTest {
             for (Path path : paths.filter(Files::isRegularFile).toList()) assertFalse(Files.readString(path).contains(KEY), path.getFileName().toString());
         }
     }
+
+    @Test void structuredInvestigationRequestRetainsItsExactGrantAcrossProcesses() throws Exception {
+        server.createContext("/v1/responses", exchange -> {
+            calls.incrementAndGet();
+            var body = CaseInputs.object(exchange.getRequestBody().readAllBytes());
+            assertTrue(body.getAsJsonArray("tools").get(0).getAsJsonObject().get("strict").getAsBoolean());
+            assertFalse(body.get("store").getAsBoolean()); assertFalse(body.get("parallel_tool_calls").getAsBoolean());
+            assertTrue(body.get("instructions").getAsString().contains("untrusted data"));
+            byte[] bytes = "{\"status\":\"completed\",\"output\":[{\"type\":\"function_call\",\"name\":\"investigation_decision\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}".getBytes(StandardCharsets.UTF_8); exchange.sendResponseHeaders(200, bytes.length);
+            try (var output = exchange.getResponseBody()) { output.write(bytes); }
+        });
+        var broker = broker();
+        String id = broker.register(new ModelCallBroker.Request("gpt-test", "case state", 2048, "investigation-v1"), Duration.ofMinutes(1));
+        var controller = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
+                "-cp", System.getProperty("java.class.path"), Controller.class.getName(), root.toString(), id,
+                Integer.toString(server.getAddress().getPort())).redirectErrorStream(true)
+                .redirectOutput(root.resolve("structured-controller.log").toFile()).start();
+        try {
+            assertTrue(controller.waitFor(15, TimeUnit.SECONDS)); assertEquals(0, controller.exitValue());
+            assertEquals("COMPLETED", broker.outcome(id).get("status").getAsString()); assertEquals(1, calls.get());
+            assertNoSecret();
+        } finally { controller.destroyForcibly(); }
+    }
+
+    @Test void investigationRejectsMultipleMessagesAndMultipleDecisions() throws Exception {
+        for (String output : new String[] {
+                "[{\"type\":\"message\",\"content\":[{\"type\":\"output_text\",\"text\":\"{}{}\"}]}]",
+                "[{\"type\":\"function_call\",\"name\":\"investigation_decision\",\"arguments\":\"{}\"},{\"type\":\"function_call\",\"name\":\"investigation_decision\",\"arguments\":\"{}\"}]"}) {
+            reply(200, "{\"status\":\"completed\",\"output\":" + output + ",\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+            var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "case", 2048, "investigation-v1"), Duration.ofMinutes(1));
+            assertEquals("INVALID_RESPONSE", broker.execute(id)); server.removeContext("/v1/responses");
+        }
+    }
 }

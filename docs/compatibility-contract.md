@@ -120,7 +120,9 @@ enforce permissions or prove that a reported execution happened. Those guarantee
 belong at the execution, artifact-storage and authorization boundaries in later
 steps. Agent output must not directly populate trusted execution observations.
 
-Repair validation will additionally require a repaired target, protected regression
-checks and review of intended behavior. This step has no repair-success or release
-approval state. A later API will also need a versioned wire schema; these Java
+The separate [repair evaluator](repair-evaluation.md) adds a repaired target and
+three-way scenario outcomes. It enforces equal declared test conditions but does
+not physically protect tests or authenticate observations. Generated-code execution
+still requires a protected adapter and review of intended behavior; there is no
+release approval state. A later API will also need a versioned wire schema; these Java
 records do not yet establish a public JSON contract.

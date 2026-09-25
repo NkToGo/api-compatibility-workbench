@@ -139,6 +139,9 @@ public final class StripeCaseRunner {
         Instant completedAt = Instant.now();
         report.put("completedAt", completedAt.toString());
         report.put("assessments", assessments);
+        report.put("historicalRepairEvaluation", RepairEvaluation.evaluate(
+                new RepairEvaluation.Definition(assessments.get("target").definition(), snapshots.get("upstream-reference")),
+                observations.get("baseline"), observations.get("target"), observations.get("upstream-reference")));
         report.put("observations", observations);
         report.put("details", details);
         var definitions = new LinkedHashMap<String, ComparisonDefinition>();

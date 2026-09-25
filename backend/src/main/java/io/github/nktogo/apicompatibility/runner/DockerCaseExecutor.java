@@ -214,6 +214,9 @@ public final class DockerCaseExecutor {
         }
         // Never write worker-supplied HTML or accept worker-controlled destination paths.
         String html = CaseReportView.render(Instant.parse(report.get("completedAt").getAsString()), definitions, observations, details, expected);
+        report.add("historicalRepairEvaluation", CaseInputs.JSON.toJsonTree(RepairEvaluation.evaluate(
+                new RepairEvaluation.Definition(definitions.get("target"), definitions.get("upstream-reference").target()),
+                observations.get("baseline"), observations.get("target"), observations.get("upstream-reference"))));
         CaseInputs.write(directory.resolve("worker-report.json"), report);
         CaseInputs.write(directory.resolve("worker-environment.json"), environment);
         CaseInputs.write(directory.resolve("worker-harness.json"), harness);

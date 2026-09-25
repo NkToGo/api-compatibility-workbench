@@ -56,6 +56,21 @@ class StripeCaseRunnerTest {
         assertEquals("FAILED", removed.get("assertionOutcome").getAsString());
     }
 
+    @Test void historicalRepairBaselineSeparatesFixedFailuresFromRemainingFailures() throws Exception {
+        var evaluation = report.getAsJsonObject("historicalRepairEvaluation");
+        assertEquals("REGRESSIONS_REMAIN", evaluation.get("conclusion").getAsString());
+        var outcomes = new java.util.TreeMap<String, String>();
+        for (var item : evaluation.getAsJsonArray("scenarios")) {
+            var scenario = item.getAsJsonObject();
+            outcomes.put(scenario.get("scenarioId").getAsString(), scenario.get("outcome").getAsString());
+        }
+        assertEquals(java.util.Map.of("modern-method-survives-omission", "FIXED", "empty-account-survives-omission", "FIXED",
+                "legacy-method-not-lost", "STILL_FAILING", "confirmed-removed-legacy-method", "STILL_FAILING",
+                "present-legacy-collection-control", "STILL_PASSING"), outcomes);
+        assertTrue(Files.readString(reportPath.resolveSibling("report.html")).contains(
+                "2 fixed; 2 still failing; 0 newly failing; 1 still passing; 0 unresolved."));
+    }
+
     @Test void evidenceInventoryMatchesRetainedBytes() throws Exception {
         assertTrue(report.getAsJsonObject("artifacts").has("report.html"));
         for (var entry : report.getAsJsonObject("artifacts").entrySet()) {

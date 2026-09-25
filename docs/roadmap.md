@@ -58,7 +58,11 @@ adapters remain part of their later integration and operational milestones.
 3. **Implemented for the extracted consumer:** [scoped repair candidates](repair-candidates.md)
    in isolated source-only checkouts, with exact replacements, receipt binding and
    unverified artifact manifests. Full repository checkout support remains later work.
-4. Verify against protected expectations and establish an evaluation baseline.
+4. Verify against protected expectations and establish an evaluation baseline:
+   - **Implemented:** [repair evaluation rules](repair-evaluation.md) for three-way
+     evidence, with a historical reference baseline and explicit unresolved results.
+   - **Pending:** isolated generated-candidate execution with protected observations,
+     adversarial verification and repair/abstention evaluation beyond the reference case.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

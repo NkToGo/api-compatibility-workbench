@@ -92,7 +92,23 @@ final class CaseReportView {
             }
             html.append("</article>");
         }
-        html.append("</div><p class=\"notice\">A historical patch is a comparison point, not a verified repair. These results do not authorize a deployment.</p></section>")
+        html.append("</div><p class=\"notice\">A historical patch is a comparison point, not a verified repair. These results do not authorize a deployment.</p></section>");
+        var repair = RepairEvaluation.evaluate(new RepairEvaluation.Definition(upgrade, reference.target()),
+                observations.getOrDefault("baseline", List.of()), observations.getOrDefault("target", List.of()),
+                observations.getOrDefault("upstream-reference", List.of()));
+        html.append("<section id=\"repair\" aria-labelledby=\"repair-title\"><h2 id=\"repair-title\">What did the historical patch fix?</h2>")
+                .append("<p>Within the declared scenarios: ").append(repair.count(RepairEvaluation.Outcome.FIXED)).append(" fixed; ")
+                .append(repair.count(RepairEvaluation.Outcome.STILL_FAILING)).append(" still failing; ")
+                .append(repair.count(RepairEvaluation.Outcome.NEW_FAILURE)).append(" newly failing; ")
+                .append(repair.count(RepairEvaluation.Outcome.STILL_PASSING)).append(" still passing; ")
+                .append(repair.count(RepairEvaluation.Outcome.UNRESOLVED)).append(" unresolved.</p>")
+                .append("<p>Evaluation: <strong>").append(switch (repair.conclusion()) {
+                    case UNRESOLVED -> "Unresolved";
+                    case REGRESSIONS_REMAIN -> "Regressions remain";
+                    case ALL_OBSERVED_REGRESSIONS_FIXED -> "All observed regressions fixed";
+                    case NO_REPAIR_NEEDED -> "No repair needed within these scenarios";
+                }).append("</strong>. ")
+                .append("This evaluates the curated historical patch, not a generated candidate or general repair success rate.</p></section>")
                 .append("<section id=\"coverage\" aria-labelledby=\"coverage-title\"><h2 id=\"coverage-title\">Scenario coverage</h2>")
                 .append("<p>Passed and failed refer to behavioral assertions. Unresolved means an assertion could not be used. Select a scenario for its evidence.</p>")
                 .append("<div class=\"table-scroll\" tabindex=\"0\" role=\"region\" aria-label=\"Scenario comparison table\"><table>")

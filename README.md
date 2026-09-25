@@ -40,6 +40,9 @@ now uses those tools to inspect the curated case and return cited advisory findi
 or abstain. A separate [candidate generator](docs/repair-candidates.md) can propose
 scoped source changes in an isolated source-only checkout. Generated candidates
 are not yet compiled or behaviorally verified.
+The [repair evaluator](docs/repair-evaluation.md) now distinguishes fixed, remaining
+and new failures in supplied evidence. The case report applies it to the historical
+reference patch: two regressions fixed, two remaining and one passing control.
 
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are
@@ -118,6 +121,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Registered investigation tools](docs/investigation-tools.md)
 - [Bounded consumer investigator](docs/consumer-investigator.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
+- [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

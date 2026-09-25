@@ -103,4 +103,16 @@ class RepairVerificationTest {
         }
         public void clean(String name, String image) { cleaned++; }
     }
+    @Test void verifierIdentityIsStableAcrossIndependentJvmProcesses() throws Exception {
+        String expected = RepairVerification.harness();
+        for (int i = 0; i < 4; i++) {
+            var process = BoundedCommand.run(List.of(FixtureProcess.javaExecutable(), "-cp", System.getProperty("java.class.path"), IdentityProbe.class.getName()), Duration.ofSeconds(10), 4096);
+            assertEquals(0, process.exitCode());
+            assertEquals(expected, new String(process.stdout(), java.nio.charset.StandardCharsets.UTF_8).trim());
+        }
+    }
+    public static final class IdentityProbe {
+        private IdentityProbe() {}
+        public static void main(String[] args) throws Exception { System.out.println(RepairVerification.harness()); }
+    }
 }

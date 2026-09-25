@@ -152,16 +152,16 @@ public final class RepairVerification {
         var hashes = spec.getAsJsonObject("inputs");
         return new InputSnapshot(CaseInputs.CASE_ID, "stripe", variant.equals("baseline") ? "2019-12-03" : "2020-08-27",
                 new ContentDigest(hashes.get(variant.equals("candidate") ? "candidate.txt" : "baseline.txt").getAsString()),
-                new ContentDigest(CaseInputs.identity(Map.of("sdkSha256", CaseInputs.EXECUTABLES.get(variant.equals("baseline") ? "stripe-java-17.4.0.jar" : "stripe-java-20.33.0.jar"), "protocol", "host-service-v1"))),
+                new ContentDigest(CaseInputs.identity(new TreeMap<>(Map.of("sdkSha256", CaseInputs.EXECUTABLES.get(variant.equals("baseline") ? "stripe-java-17.4.0.jar" : "stripe-java-20.33.0.jar"), "protocol", "host-service-v1")))),
                 new ContentDigest(hashes.get("expectations.json").getAsString()), new ContentDigest(hashes.get("fixtures.json").getAsString()),
-                new ContentDigest(spec.get("harnessSha256").getAsString()), new ContentDigest(CaseInputs.identity(Map.of("imageId", spec.get("imageId"), "boundary", "repair-container-v1"))));
+                new ContentDigest(spec.get("harnessSha256").getAsString()), new ContentDigest(CaseInputs.identity(new TreeMap<>(Map.of("imageId", spec.get("imageId"), "boundary", "repair-container-v1")))));
     }
-    private static String harness() throws IOException {
+    static String harness() throws IOException {
         try {
             Path code = Path.of(RepairVerification.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             Path gson = Path.of(Gson.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-            return CaseInputs.identity(Map.of("code", Files.isDirectory(code) ? CaseInputs.identity(CaseInputs.inventory(code)) : CaseInputs.hash(Files.readAllBytes(code)),
-                    "json", CaseInputs.hash(Files.readAllBytes(gson)), "java", System.getProperty("java.runtime.version")));
+            return CaseInputs.identity(new TreeMap<>(Map.of("code", Files.isDirectory(code) ? CaseInputs.identity(CaseInputs.inventory(code)) : CaseInputs.hash(Files.readAllBytes(code)),
+                    "json", CaseInputs.hash(Files.readAllBytes(gson)), "java", System.getProperty("java.runtime.version"))));
         } catch (java.net.URISyntaxException e) { throw new IOException(e); }
     }
     private static ExecutionAuthorization authorization(Path directory, String image) {

@@ -51,6 +51,18 @@ jobs:
           if ($workerImage -cnotmatch '^sha256:[0-9a-f]{64}$') { throw 'Missing worker image identity.' }
           sh ./mvnw -B -ntp -f backend/pom.xml "-Dworkbench.container.image=$workerImage" '-Dtest=DockerCaseExecutorTest,DurableExecutionContainerTest,InvestigationToolsContainerTest' test
           if ($LASTEXITCODE -ne 0) { throw 'Container verification failed.' }
+      - name: Build isolated repair worker
+        if: runner.os == 'Linux'
+        shell: pwsh
+        run: ./scripts/Build-IsolatedWorker.ps1 -RepairWorker
+      - name: Verify protected repair execution
+        if: runner.os == 'Linux'
+        shell: pwsh
+        run: |
+          $repairImage = (Get-Content -LiteralPath backend/target/repair-worker-image.txt -Raw).Trim()
+          if ($repairImage -cnotmatch '^sha256:[0-9a-f]{64}$') { throw 'Missing repair image identity.' }
+          sh ./mvnw -B -ntp -f backend/pom.xml "-Dworkbench.repair.image=$repairImage" '-Dtest=RepairSandboxContainerTest' test
+          if ($LASTEXITCODE -ne 0) { throw 'Protected repair verification failed.' }
       - name: Retain case reports
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -71,5 +83,6 @@ jobs:
             backend/target/test-evidence-store/
             backend/target/durable-test-runs/
             backend/target/investigation-test-runs/
+            backend/target/repair-container-tests/
           if-no-files-found: warn
           retention-days: 14

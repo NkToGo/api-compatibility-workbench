@@ -1,0 +1,110 @@
+import com.google.gson.*;
+import com.stripe.Stripe;
+import com.stripe.model.HasId;
+import com.stripe.net.*;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+import java.time.Instant;
+import java.util.*;
+
+/** Untrusted-side adapters. No expectations or authoritative service state live here. */
+public final class RemoteFixtureMain {
+    public static void main(String[] args) {
+        try {
+            ApiResource.setStripeResponseGetter(new LiveStripeResponseGetter(new RemoteTransport()));
+            var result = new Consumer().getPaymentMethods(FixtureSupport.ACCOUNT, true, List.of(), new FixtureSupport.CallContext());
+            Rpc.call(Map.of("op", "return", "ids", result.stream().map(FixtureSupport.PaymentMethodInfoPlugin::id).toList()));
+        } catch (NullPointerException e) {
+            Rpc.call(Map.of("op", "exception", "kind", "NullPointerException"));
+        }
+        catch (Exception e) { System.exit(5); }
+    }
+}
+final class Rpc {
+    private static final Gson JSON = new Gson();
+    static synchronized JsonElement call(Object request) {
+        try {
+            System.out.println(JSON.toJson(request)); System.out.flush();
+            var bytes = new ByteArrayOutputStream();
+            for (int c; (c = System.in.read()) != '\n';) {
+                if (c < 0 || bytes.size() >= 16384) throw new IOException("Protocol closed");
+                bytes.write(c);
+            }
+            return JsonParser.parseString(bytes.toString(StandardCharsets.UTF_8));
+        } catch (IOException e) { throw new IllegalStateException("Protocol unavailable"); }
+    }
+    static List<String> list() {
+        var result = new ArrayList<String>();
+        for (var item : Rpc.call(Map.of("op", "list")).getAsJsonArray()) result.add(item.getAsString());
+        return result;
+    }
+}
+final class RemoteTransport extends HttpClient {
+    @Override public StripeResponse request(StripeRequest request) {
+        // The SDK also serializes GET params into the URL; the oracle validates the structured params separately.
+        String endpoint = request.url().getProtocol() + "://" + request.url().getAuthority() + request.url().getPath();
+        var response = Rpc.call(Map.of("op", "provider", "method", request.method().name(), "url", endpoint,
+                "version", request.headers().firstValue("Stripe-Version").orElse(""),
+                "params", request.params() == null ? Map.of() : request.params()));
+        return new StripeResponse(200, HttpHeaders.of(Map.of()), response.toString());
+    }
+}
+class FixtureSupport {
+    static final UUID ACCOUNT = UUID.fromString("00000000-0000-0000-0000-000000000001");
+    final Dao dao = new Dao();
+    final PaymentServices killbillAPI = new PaymentServices();
+    final Clock clock = new Clock();
+    final Logger logger = new Logger();
+    final ConfigHandler stripeConfigPropertiesConfigurationHandler = new ConfigHandler();
+    String getCustomerId(UUID account, CallContext context) { return "cus_curated"; }
+    Object getAccount(UUID account, CallContext context) { return account; }
+    public List<PaymentMethodInfoPlugin> getPaymentMethods(UUID account, boolean refresh,
+            Iterable<PluginProperty> properties, CallContext context) throws PaymentPluginApiException {
+        if (refresh) throw new IllegalStateException("Unsupported refresh");
+        return Rpc.list().stream().map(PaymentMethodInfoPlugin::new).toList();
+    }
+    public void deletePaymentMethod(UUID account, UUID method, Iterable<PluginProperty> properties, CallContext context) {
+        Rpc.call(Map.of("op", "delete", "id", method.toString()));
+    }
+    static final class StripePaymentMethodsRecord {
+        final String stripeId;
+        StripePaymentMethodsRecord(String id) { stripeId = id; }
+        String getStripeId() { return stripeId; }
+        String getKbPaymentMethodId() { return UUID.nameUUIDFromBytes(stripeId.getBytes(StandardCharsets.UTF_8)).toString(); }
+    }
+    static final class Dao {
+        List<StripePaymentMethodsRecord> getPaymentMethods(UUID account, UUID tenant) throws SQLException {
+            return Rpc.list().stream().map(StripePaymentMethodsRecord::new).toList();
+        }
+        void updatePaymentMethod(UUID id, Map<String, Object> data, String stripeId, Instant now, UUID tenant) throws SQLException {
+            Rpc.call(Map.of("op", "sync", "id", stripeId));
+        }
+    }
+    static final class PaymentServices {
+        PaymentServices getPaymentApi() { return this; }
+        void addPaymentMethod(Object account, String id, String plugin, boolean isDefault,
+                StripePaymentMethodPlugin info, List<PluginProperty> properties, CallContext context) throws PaymentApiException {
+            Rpc.call(Map.of("op", "create", "id", id));
+        }
+    }
+    interface TenantContext { UUID getTenantId(); }
+    static final class CallContext implements TenantContext { public UUID getTenantId() { return ACCOUNT; } }
+    record PaymentMethodInfoPlugin(String id) {}
+    record PluginProperty(String name, Object value) {}
+    record StripePaymentMethodPlugin(Object ignored, String id, boolean isDefault, List<PluginProperty> properties) {}
+    static final class StripePluginProperties { static Map<String, Object> toAdditionalDataMap(HasId value) { return Map.of("id", value.getId()); } }
+    static final class PluginProperties { static List<PluginProperty> buildPluginProperties(Map<String, Object> data) { return List.of(); } }
+    static final class StripeActivator { static final String PLUGIN_NAME = "stripe"; }
+    static final class ImmutableList { static <T> List<T> of() { return List.of(); } }
+    static final class Clock { Instant getUTCNow() { return Instant.EPOCH; } }
+    static final class Logger { void info(String message, Object value) {} }
+    static final class ConfigHandler { StripeConfigProperties getConfigurable(UUID tenant) { return new StripeConfigProperties(); } }
+    static final class StripeConfigProperties {
+        String getConnectionTimeout() { return "1000"; }
+        String getReadTimeout() { return "1000"; }
+        String getApiKey() { return "fixture-only-not-a-credential"; }
+    }
+    static final class PaymentPluginApiException extends Exception { PaymentPluginApiException(String message, Throwable cause) { super(message, cause); } }
+    static final class PaymentApiException extends Exception {}
+}

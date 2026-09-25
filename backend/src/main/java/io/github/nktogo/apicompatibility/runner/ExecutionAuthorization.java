@@ -22,7 +22,7 @@ final class ExecutionAuthorization {
         CaseInputs.require(!Files.exists(directory.resolve("authorization.json"), LinkOption.NOFOLLOW_LINKS), "An existing authorization cannot be renewed");
         Instant now = clock.instant();
         DurableExecution.publish(directory.resolve("authorization.json"), Map.of("formatVersion", 1,
-                "runId", runId, "imageId", image, "mode", mode, "permission", "execute-curated-case",
+                "runId", runId, "imageId", image, "mode", mode, "permission", permission(),
                 "issuedAt", now.toString(), "expiresAt", now.plus(lifetime).toString()));
     }
 
@@ -42,7 +42,7 @@ final class ExecutionAuthorization {
             var grant = CaseInputs.object(bytes);
             if (grant.get("formatVersion").getAsInt() != 1 || !runId.equals(grant.get("runId").getAsString())
                     || !image.equals(grant.get("imageId").getAsString()) || !mode.equals(grant.get("mode").getAsString())
-                    || !"execute-curated-case".equals(grant.get("permission").getAsString())) return Decision.INVALID;
+                    || !permission().equals(grant.get("permission").getAsString())) return Decision.INVALID;
             Instant issued = Instant.parse(grant.get("issuedAt").getAsString());
             Instant expires = Instant.parse(grant.get("expiresAt").getAsString());
             Instant now = clock.instant();
@@ -52,4 +52,6 @@ final class ExecutionAuthorization {
         } catch (IOException e) { return Decision.UNAVAILABLE; }
         catch (RuntimeException e) { return Decision.INVALID; }
     }
+
+    private String permission() { return mode.equals("repair-verification") ? "execute-repair-verification" : "execute-curated-case"; }
 }

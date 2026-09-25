@@ -55,19 +55,18 @@ of model repair quality. No model produced these historical reference changes.
 Run the normal build and `./scripts/Run-StripeCase.ps1` to regenerate the report.
 This executes only the previously allowlisted curated sources.
 
-## Generated-code execution remains pending
+## Generated-code execution
 
-The generated candidate is still inert. The current fixture harness shares a
+Candidate generation itself remains inert. The original fixture harness shares a
 process and mutable bookkeeping with the curated consumer. Its allowlist is
 essential: filesystem isolation alone would not stop generated code from forging
 stdout or interfering with in-process assertion data. This evaluator must receive
 observations from a trusted adapter, never directly from candidate output or an
 agent's claimed result.
 
-Before generated repairs can be evaluated, the execution adapter must separate
-untrusted execution from protected expectations and authoritative observations,
-bind both to the exact candidate and test inputs, and retain interrupted or invalid
-outcomes without replay. Adversarial checks must cover forged output and attempts
-to mutate the test state. Candidate compilation and execution must stay inside
-the isolated worker boundary. A broader curated suite and independently reviewed
+The separate [protected execution adapter](protected-repair-execution.md) now keeps
+expectations and authoritative service state on the host, compiles and runs candidates
+in containers, and retains interrupted or invalid outcomes without replay. It reruns
+all three variants under its own harness and records new identities. Tests cover
+forged output and attempts to mutate test bookkeeping. A broader curated suite and independently reviewed
 abstention labels are also needed before reporting repair or abstention accuracy.

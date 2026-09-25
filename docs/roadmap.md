@@ -61,8 +61,9 @@ adapters remain part of their later integration and operational milestones.
 4. Verify against protected expectations and establish an evaluation baseline:
    - **Implemented:** [repair evaluation rules](repair-evaluation.md) for three-way
      evidence, with a historical reference baseline and explicit unresolved results.
-   - **Pending:** isolated generated-candidate execution with protected observations,
-     adversarial verification and repair/abstention evaluation beyond the reference case.
+   - **Implemented for the extracted case:** [isolated candidate execution](protected-repair-execution.md)
+     with host-owned observations, adversarial checks and interruption recovery.
+   - **Pending:** broader repair/abstention evaluation and feedback beyond the reference case.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

@@ -41,8 +41,10 @@ map edits back to a supported full consumer checkout.
 
 `CANDIDATE_READY` means the edit and artifact boundaries passed, not that the
 candidate compiles or fixes a regression. Treat its code and summary as untrusted
-model output. Protected execution and repair evaluation are the next capability;
-the existing fixed-case worker still rejects unreviewed executable inputs.
+model output. Use the separate [protected verifier](protected-repair-execution.md)
+to execute a candidate. The existing fixed-case worker still rejects unreviewed
+executable inputs. Generation records remain inert historical artifacts; verification
+adds a separate record rather than rewriting the candidate's `executed: false` field.
 
 ## Scope enforcement
 

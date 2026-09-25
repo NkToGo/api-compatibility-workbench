@@ -38,8 +38,10 @@ for bounded input reads and fixed test requests, with retained evidence and retr
 deduplication. A [bounded consumer investigator](docs/consumer-investigator.md)
 now uses those tools to inspect the curated case and return cited advisory findings
 or abstain. A separate [candidate generator](docs/repair-candidates.md) can propose
-scoped source changes in an isolated source-only checkout. Generated candidates
-are not yet compiled or behaviorally verified.
+scoped source changes in an isolated source-only checkout. A separate
+[protected verifier](docs/protected-repair-execution.md) now compiles and executes
+registered candidates in isolated containers while the host owns fixture state
+and assertions. Results remain limited to the declared synthetic scenarios.
 The [repair evaluator](docs/repair-evaluation.md) now distinguishes fixed, remaining
 and new failures in supplied evidence. The case report applies it to the historical
 reference patch: two regressions fixed, two remaining and one passing control.
@@ -71,8 +73,8 @@ sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 
 The default tests use local records, loopback HTTP fixtures and synthetic provider responses; they do not
 call OpenAI, Stripe or GitHub. They need no Docker, database or credentials. The
-eleven container integration tests are skipped unless an image ID is supplied;
-Linux CI builds that image and runs them explicitly. Preparation downloads
+seventeen container integration tests are skipped unless their image IDs are supplied;
+Linux CI builds both worker images and runs them explicitly. Preparation downloads
 checksum-pinned artifacts from Maven Central; execution then uses an offline fixture
 transport. The build produces a library JAR and runtime dependencies, not a server.
 
@@ -91,7 +93,8 @@ seccomp support, then run these commands after building the backend:
 
 Preparation may download the pinned base image. Execution has no external network
 and never falls back to the local process runner. This supports the curated case
-only; it does not authorize arbitrary repositories or generated repairs.
+only. Generated repairs use the separate verifier described above; arbitrary
+repositories remain unsupported.
 
 ## Configuration
 
@@ -122,6 +125,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Bounded consumer investigator](docs/consumer-investigator.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
+- [Protected candidate execution and recovery](docs/protected-repair-execution.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

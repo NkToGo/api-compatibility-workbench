@@ -122,7 +122,8 @@ steps. Agent output must not directly populate trusted execution observations.
 
 The separate [repair evaluator](repair-evaluation.md) adds a repaired target and
 three-way scenario outcomes. It enforces equal declared test conditions but does
-not physically protect tests or authenticate observations. Generated-code execution
-still requires a protected adapter and review of intended behavior; there is no
+not physically protect tests or authenticate observations. The separate
+[protected adapter](protected-repair-execution.md) supplies host-recorded synthetic
+observations for extracted candidates; intended behavior still requires review. There is no
 release approval state. A later API will also need a versioned wire schema; these Java
 records do not yet establish a public JSON contract.

@@ -48,6 +48,10 @@ reference patch: two regressions fixed, two remaining and one passing control.
 A separate opt-in [investigation evaluation](docs/investigation-evaluation.md)
 records completion and abstention under three controlled evidence-availability
 conditions, keeping operational failures separate from model decisions.
+A second [subscription-period case](cases/stripe-subscription-periods-2025-07-30/README.md)
+executes authored controls against eight synthetic scenarios. It distinguishes
+item-aware repairs from first-item and minimum/maximum substitutions. Its agent
+and protected candidate-execution integration remains pending.
 
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are

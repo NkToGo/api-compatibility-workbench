@@ -1,0 +1,59 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-subscription-periods-2025-07-30",
+  "policy": "bound-item-renewal-v1",
+  "scenarios": [
+    {
+      "id": "single-item",
+      "expected": {
+        "status": "RESOLVED",
+        "periodEnd": 1769904000
+      }
+    },
+    {
+      "id": "addon-first-later",
+      "expected": {
+        "status": "RESOLVED",
+        "periodEnd": 1769904000
+      }
+    },
+    {
+      "id": "addon-first-earlier",
+      "expected": {
+        "status": "RESOLVED",
+        "periodEnd": 1775001600
+      }
+    },
+    {
+      "id": "reordered-items",
+      "expected": {
+        "status": "RESOLVED",
+        "periodEnd": 1769904000
+      }
+    },
+    {
+      "id": "missing-binding",
+      "expected": {
+        "status": "DEFERRED"
+      }
+    },
+    {
+      "id": "selected-item-absent",
+      "expected": {
+        "status": "DEFERRED"
+      }
+    },
+    {
+      "id": "incomplete-items",
+      "expected": {
+        "status": "DEFERRED"
+      }
+    },
+    {
+      "id": "duplicate-item-identity",
+      "expected": {
+        "status": "DEFERRED"
+      }
+    }
+  ]
+}

@@ -72,6 +72,9 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** bounded unavailable-tool retries with preserved legacy sessions
      and per-trial usage counts for evaluating evidence-handling efficiency.
    - **Pending:** broader repair/abstention evaluation and feedback beyond the reference case.
+   - **Implemented:** a distinct [subscription-period case](../cases/stripe-subscription-periods-2025-07-30/README.md)
+     with independently declared application expectations and executable authored
+     repair controls. Agent integration and generated repair measurement remain pending.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

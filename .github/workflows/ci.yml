@@ -71,6 +71,7 @@ jobs:
           path: |
             backend/target/test-case-runs/**/report.json
             backend/target/test-case-runs/**/report.html
+            backend/target/subscription-period-case-reports/
           if-no-files-found: warn
           retention-days: 14
       - name: Retain isolated execution receipts

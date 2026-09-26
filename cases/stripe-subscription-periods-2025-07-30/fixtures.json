@@ -1,0 +1,387 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-subscription-periods-2025-07-30",
+  "origin": "authored-synthetic",
+  "apiVersions": {
+    "baseline": "2025-02-24.acacia",
+    "target": "2025-07-30.basil"
+  },
+  "scenarios": [
+    {
+      "id": "single-item",
+      "binding": "si_core",
+      "category": "synthetic-projection",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1769904000,
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "addon-first-later",
+      "binding": "si_core",
+      "category": "synthetic-projection",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1769904000,
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_addon",
+              "object": "subscription_item"
+            },
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_addon",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1775001600
+            },
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "addon-first-earlier",
+      "binding": "si_core",
+      "category": "synthetic-projection",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1775001600,
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_addon",
+              "object": "subscription_item"
+            },
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_addon",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            },
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1775001600
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reordered-items",
+      "binding": "si_core",
+      "category": "synthetic-projection",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1769904000,
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            },
+            {
+              "id": "si_addon",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            },
+            {
+              "id": "si_addon",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1775001600
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "missing-binding",
+      "binding": null,
+      "category": "synthetic-projection",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1769904000,
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "selected-item-absent",
+      "binding": "si_core",
+      "category": "synthetic-projection",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1769904000,
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_addon",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_addon",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "incomplete-items",
+      "binding": "si_core",
+      "category": "synthetic-projection",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1769904000,
+        "items": {
+          "object": "list",
+          "has_more": true,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": true,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "duplicate-item-identity",
+      "binding": "si_core",
+      "category": "adversarial-malformed",
+      "baseline": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "current_period_start": 1767225600,
+        "current_period_end": 1769904000,
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            },
+            {
+              "id": "si_core",
+              "object": "subscription_item"
+            }
+          ]
+        }
+      },
+      "target": {
+        "id": "sub_curated",
+        "object": "subscription",
+        "status": "active",
+        "billing_mode": {
+          "type": "flexible"
+        },
+        "items": {
+          "object": "list",
+          "has_more": false,
+          "data": [
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1769904000
+            },
+            {
+              "id": "si_core",
+              "object": "subscription_item",
+              "current_period_start": 1767225600,
+              "current_period_end": 1775001600
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

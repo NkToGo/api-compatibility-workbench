@@ -66,6 +66,10 @@ final class RepairOracle {
         if (url.equals("https://api.stripe.com/v1/payment_methods")) {
             CaseInputs.require(request.get("params").equals(CaseInputs.JSON.toJsonTree(Map.of("customer", "cus_curated", "type", "card"))), "Unexpected query");
             body = fixture.getAsJsonObject("paymentMethodListResponse"); collection(body, "payment_method"); methodsRead = true;
+        } else if (url.equals("https://api.stripe.com/v1/customers/cus_curated/sources")) {
+            CaseInputs.require(request.getAsJsonObject("params").isEmpty(), "Unsupported source-list query");
+            body = fixture.getAsJsonObject("sourceListResponse");
+            collection(body, "card"); sourcesRead = true;
         } else {
             CaseInputs.require(url.equals("https://api.stripe.com/v1/customers/cus_curated") && request.getAsJsonObject("params").isEmpty(), "Unsupported provider endpoint");
             body = fixture.getAsJsonObject(side).getAsJsonObject("customerResponse");

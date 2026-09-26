@@ -55,6 +55,42 @@ class RepairVerificationTest {
         oracle.request(request(Map.of("op", "return", "ids", List.of())));
         assertEquals("NOT_EVALUATED", oracle.result("TIMED_OUT").get("assertionOutcome").getAsString());
     }
+    static JsonObject provider(String path, Map<String, String> params) {
+        return request(Map.of("op", "provider", "method", "GET", "url", "https://api.stripe.com/v1/" + path,
+                "version", "2020-08-27", "params", params));
+    }
+    @Test void onlyAnExplicitCompleteSourceReadMakesRemovalSafeWhenEmbeddedSourcesAreOmitted() throws Exception {
+        for (boolean explicit : List.of(false, true)) {
+            var oracle = oracle("confirmed-removed-legacy-method");
+            oracle.request(provider("payment_methods", Map.of("customer", "cus_curated", "type", "card")));
+            var customer = oracle.request(provider("customers/cus_curated", Map.of())).getAsJsonObject();
+            assertFalse(customer.has("sources"));
+            if (explicit) oracle.request(provider("customers/cus_curated/sources", Map.of()));
+            oracle.request(request(Map.of("op", "delete", "id", UUID.nameUUIDFromBytes("card_curated_legacy".getBytes(java.nio.charset.StandardCharsets.UTF_8)).toString())));
+            oracle.request(request(Map.of("op", "return", "ids", List.of())));
+            var result = oracle.result("COMPLETED");
+            assertEquals(explicit ? "PASSED" : "FAILED", result.get("assertionOutcome").getAsString());
+            assertEquals(explicit ? List.of() : List.of("card_curated_legacy"), CaseInputs.strings(result, "unsafeDeactivationIds"));
+        }
+    }
+    @Test void readingSourcesAfterDeletionCannotEraseUnsafeHistory() throws Exception {
+        var oracle = oracle("confirmed-removed-legacy-method");
+        oracle.request(provider("payment_methods", Map.of("customer", "cus_curated", "type", "card")));
+        oracle.request(request(Map.of("op", "delete", "id", UUID.nameUUIDFromBytes("card_curated_legacy".getBytes(java.nio.charset.StandardCharsets.UTF_8)).toString())));
+        oracle.request(provider("customers/cus_curated/sources", Map.of()));
+        oracle.request(request(Map.of("op", "return", "ids", List.of())));
+        assertEquals("FAILED", oracle.result("COMPLETED").get("assertionOutcome").getAsString());
+    }
+    @Test void incompleteSourceCollectionsAndUnsupportedQueriesRemainUnresolved() throws Exception {
+        var inputs = inputs(); var fixture = inputs.scenarios.get("legacy-method-not-lost").deepCopy();
+        fixture.getAsJsonObject("sourceListResponse").addProperty("has_more", true);
+        var oracle = new RepairOracle(fixture, inputs.expectations.get("legacy-method-not-lost"), "target", "2020-08-27");
+        assertThrows(IllegalArgumentException.class, () -> oracle.request(provider("customers/cus_curated/sources", Map.of())));
+        assertEquals("NOT_EVALUATED", oracle.result("COMPLETED").get("assertionOutcome").getAsString());
+        var other = oracle("legacy-method-not-lost");
+        assertThrows(IllegalArgumentException.class, () -> other.request(provider("customers/cus_curated/sources", Map.of("starting_after", "card_unknown"))));
+        assertEquals("NOT_EVALUATED", other.result("COMPLETED").get("assertionOutcome").getAsString());
+    }
     @Test void exhaustedProtocolBudgetCannotBeRecoveredBySendingSuccess() throws Exception {
         var oracle = oracle("empty-account-survives-omission");
         for (int i = 0; i < 100; i++) oracle.request(request(Map.of("op", "list")));

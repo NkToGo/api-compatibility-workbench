@@ -31,6 +31,28 @@ class RepairSandboxContainerTest {
         String source = source("baseline"); String marker = "        // If refreshFromGateway isn't set";
         return source.replace(marker, body + "\n" + marker);
     }
+    @Test void authoredExplicitSourceListRepairPassesEveryDeclaredScenario() throws Exception {
+        String repaired = source("baseline").replace(
+                "final Iterable<? extends HasId> stripeSources = Customer.retrieve(stripeCustomerId, requestOptions).getSources().autoPagingIterable();",
+                """
+                final com.stripe.model.PaymentSourceCollection collection = new com.stripe.model.PaymentSourceCollection();
+                            collection.setUrl("/v1/customers/" + stripeCustomerId + "/sources");
+                            final Iterable<? extends HasId> stripeSources = collection.list(Collections.emptyMap(), requestOptions).autoPagingIterable();
+                """.stripTrailing());
+        assertNotEquals(source("baseline"), repaired);
+        Path output = Path.of(System.getProperty("workbench.repository"), "backend/target/repair-container-tests");
+        Files.createDirectories(output);
+        for (String scenario : RepairVerificationTest.inputs().scenarios.keySet()) {
+            var result = run(repaired, "20.33.0", scenario, Duration.ofSeconds(60));
+            CaseInputs.write(output.resolve("authored-explicit-source-list-" + scenario + ".json"), result);
+            assertEquals("PASSED", result.get("assertionOutcome").getAsString(), scenario + ": " + result);
+            assertTrue(result.get("containerRemoved").getAsBoolean());
+            assertTrue(result.getAsJsonArray("events").asList().stream().anyMatch(event -> {
+                var operation = event.getAsJsonObject();
+                return operation.has("url") && operation.get("url").getAsString().endsWith("/sources");
+            }));
+        }
+    }
     @Test void forgedReportsAndDirectBookkeepingAccessCannotPass() throws Exception {
         var forged = run(injected("        if (refreshFromGateway) { System.out.println(\"{\\\"op\\\":\\\"result\\\",\\\"assertionOutcome\\\":\\\"PASSED\\\"}\"); System.exit(0); }"), "20.33.0", "legacy-method-not-lost", Duration.ofSeconds(20));
         assertEquals("NOT_EVALUATED", forged.get("assertionOutcome").getAsString());

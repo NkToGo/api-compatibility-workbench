@@ -63,6 +63,9 @@ adapters remain part of their later integration and operational milestones.
      evidence, with a historical reference baseline and explicit unresolved results.
    - **Implemented for the extracted case:** [isolated candidate execution](protected-repair-execution.md)
      with host-owned observations, adversarial checks and interruption recovery.
+   - **Implemented:** an authored complete-repair control using explicit source-list
+     retrieval, alongside historical controls. This validates the test adapter's
+     ability to observe a complete repair; it does not measure model accuracy.
    - **Pending:** broader repair/abstention evaluation and feedback beyond the reference case.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.

@@ -100,6 +100,19 @@ rewriting all records. Candidate-generation history is unchanged by verification
 
 ## Validation and current scope
 
+The provider adapter supports the explicit `GET /v1/customers/cus_curated/sources`
+request with an empty query, in addition to customer and payment-method retrieval.
+It returns the existing `sourceListResponse` fixture only when requested. An omitted
+embedded collection never implies an empty list. A complete source read must precede
+deactivation; reading afterward cannot erase unsafe deletion history. Pagination
+(`has_more: true`) and unsupported source-list queries remain unresolved.
+
+An authored positive control uses the pinned target SDK to fetch the explicit source
+list before synchronization. It must pass all five declared scenarios, including
+confirmed removal, while historical controls retain their existing outcomes. This
+checks that a complete repair is attainable under the adapter. It is not a generated
+repair, a held-out case or a measurement of model repair accuracy.
+
 Container tests reproduce all fifteen historical variant/scenario outcomes under
 the new service boundary. Adversarial tests cover forged assertions, direct access
 to old fixture bookkeeping, output floods, deadlines, live stop requests, protected

@@ -23,7 +23,7 @@ public final class ConsumerInvestigator {
         CaseInputs.require(Files.isDirectory(this.root, LinkOption.NOFOLLOW_LINKS), "Invalid agent root");
         this.models = models; this.tools = tools; this.clock = clock;
     }
-    private static Models modelBackend(Path state) throws IOException {
+    static Models modelBackend(Path state) throws IOException {
         var broker = new ModelCallBroker(state.resolve("model-calls"));
         return new Models() {
             public String register(ModelCallBroker.Request request) throws IOException { return broker.register(request, Duration.ofMinutes(2)); }

@@ -59,6 +59,9 @@ execution against captured inputs before accepting `INVESTIGATED`. These checks
 establish reference validity and minimum evidence coverage; they do not prove that
 a citation semantically supports a statement. A curated repair-quality evaluation
 and broader case coverage remain outstanding.
+The [evidence-availability evaluation](investigation-evaluation.md) now exercises
+completion and abstention under controlled tool failures; it does not grade the
+meaning of findings or the quality of repairs.
 
 ## Limits and interruptions
 

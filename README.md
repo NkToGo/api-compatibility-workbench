@@ -45,6 +45,9 @@ and assertions. Results remain limited to the declared synthetic scenarios.
 The [repair evaluator](docs/repair-evaluation.md) now distinguishes fixed, remaining
 and new failures in supplied evidence. The case report applies it to the historical
 reference patch: two regressions fixed, two remaining and one passing control.
+A separate opt-in [investigation evaluation](docs/investigation-evaluation.md)
+records completion and abstention under three controlled evidence-availability
+conditions, keeping operational failures separate from model decisions.
 
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are
@@ -73,7 +76,7 @@ sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 
 The default tests use local records, loopback HTTP fixtures and synthetic provider responses; they do not
 call OpenAI, Stripe or GitHub. They need no Docker, database or credentials. The
-seventeen container integration tests are skipped unless their image IDs are supplied;
+container integration tests are skipped unless their image IDs are supplied;
 Linux CI builds both worker images and runs them explicitly. Preparation downloads
 checksum-pinned artifacts from Maven Central; execution then uses an offline fixture
 transport. The build produces a library JAR and runtime dependencies, not a server.
@@ -126,6 +129,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)
+- [Investigation evidence-availability evaluation](docs/investigation-evaluation.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)

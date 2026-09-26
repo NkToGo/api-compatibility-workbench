@@ -66,6 +66,9 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** an authored complete-repair control using explicit source-list
      retrieval, alongside historical controls. This validates the test adapter's
      ability to observe a complete repair; it does not measure model accuracy.
+   - **Implemented:** [controlled evidence-availability trials](investigation-evaluation.md)
+     for investigation completion and abstention, with operational failures kept
+     separate. These use one case and do not measure semantic or repair accuracy.
    - **Pending:** broader repair/abstention evaluation and feedback beyond the reference case.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.

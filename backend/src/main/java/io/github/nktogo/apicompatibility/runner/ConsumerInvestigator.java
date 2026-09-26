@@ -34,13 +34,13 @@ public final class ConsumerInvestigator {
         };
     }
     public String create(String context, String model) throws IOException {
-        new ModelCallBroker.Request(model, "check", 2048, "investigation-v1");
+        new ModelCallBroker.Request(model, "check", 2048, "investigation-v2");
         var description = tools.invoke(context, "describe_case", new JsonObject());
         CaseInputs.require(description.get("ok").getAsBoolean(), "Invalid registered context");
         String id = "agent-" + UUID.randomUUID(); Path directory = Files.createDirectory(root.resolve(id));
         DurableExecution.publish(directory.resolve("session.json"), Map.of("formatVersion", 1, "agentId", id,
                 "contextId", context, "model", model, "expiresAt", clock.instant().plus(Duration.ofMinutes(20)).toString(),
-                "case", description, "maxDecisions", MAX_DECISIONS));
+                "case", description, "maxDecisions", MAX_DECISIONS, "protocol", "investigation-v2"));
         return id;
     }
 
@@ -52,6 +52,9 @@ public final class ConsumerInvestigator {
             var session = read(directory.resolve("session.json"));
             CaseInputs.require(id.equals(session.get("agentId").getAsString()) && session.get("formatVersion").getAsInt() == 1
                     && session.get("maxDecisions").getAsInt() == MAX_DECISIONS, "Invalid agent session");
+            String protocol = session.has("protocol") ? session.get("protocol").getAsString() : "investigation-v1";
+            CaseInputs.require(Set.of("investigation-v1", "investigation-v2").contains(protocol), "Unsupported investigation protocol");
+            boolean boundedRetries = protocol.equals("investigation-v2");
             var history = new JsonArray(); long inputTokens = 0, outputTokens = 0;
             for (int turn = 1; turn <= MAX_DECISIONS; turn++) {
                 if (!clock.instant().isBefore(Instant.parse(session.get("expiresAt").getAsString())))
@@ -59,11 +62,13 @@ public final class ConsumerInvestigator {
                 Path callFile = directory.resolve("call-" + turn + ".json"); String call;
                 if (Files.exists(callFile)) call = read(callFile).get("callId").getAsString();
                 else {
-                    String input = CaseInputs.JSON.toJson(Map.of("case", session.get("case"), "events", history,
+                    var payload = new TreeMap<String, Object>(Map.of("case", session.get("case"), "events", history,
                             "decisionsRemaining", MAX_DECISIONS - turn + 1));
+                    if (boundedRetries) payload.put("unavailableAttempts", unavailableAttempts(history));
+                    String input = CaseInputs.JSON.toJson(payload);
                     if (input.getBytes(StandardCharsets.UTF_8).length > 64000)
                         return finish(directory, "CONTEXT_BUDGET_EXHAUSTED", history, inputTokens, outputTokens, null);
-                    call = models.register(new ModelCallBroker.Request(session.get("model").getAsString(), input, 2048, "investigation-v1"));
+                    call = models.register(new ModelCallBroker.Request(session.get("model").getAsString(), input, 2048, protocol));
                     DurableExecution.publish(callFile, Map.of("callId", call));
                 }
                 var response = models.execute(call); String status = response.get("status").getAsString();
@@ -77,7 +82,7 @@ public final class ConsumerInvestigator {
                 catch (RuntimeException e) { return finish(directory, "INVALID_MODEL_DECISION", history, inputTokens, outputTokens, null); }
                 String action = decision.get("action").getAsString();
                 if (action.equals("finish")) {
-                    if (!validFindings(decision, history)) return finish(directory, "UNSUPPORTED_FINDINGS", history, inputTokens, outputTokens, null);
+                    if (!validFindings(decision, history, boundedRetries)) return finish(directory, "UNSUPPORTED_FINDINGS", history, inputTokens, outputTokens, null);
                     // Recheck retained execution against captured inputs before accepting a completed investigation.
                     if (decision.get("outcome").getAsString().equals("INVESTIGATED")) {
                         var check = tools.invoke(session.get("contextId").getAsString(), "read_run", json(Map.of("requestId", id)));
@@ -89,6 +94,8 @@ public final class ConsumerInvestigator {
                 if (Files.exists(eventFile)) event = read(eventFile);
                 else {
                     JsonObject arguments = action.equals("read_input") ? decision.deepCopy() : json(Map.of("requestId", id));
+                    if (boundedRetries && unavailableAttempts(history).getOrDefault(resource(action, arguments), 0) >= 2)
+                        return finish(directory, "TOOL_RETRY_BUDGET_EXHAUSTED", history, inputTokens, outputTokens, null);
                     arguments.remove("action"); long started = System.nanoTime();
                     var result = tools.invoke(session.get("contextId").getAsString(), action, arguments);
                     event = json(Map.of("eventId", "event-" + turn, "tool", action, "arguments", arguments, "result", result,
@@ -101,10 +108,25 @@ public final class ConsumerInvestigator {
         }
     }
 
-    static boolean validFindings(JsonObject decision, JsonArray history) {
-        Set<String> citations = new HashSet<>(); boolean source = false, execution = false;
+    private static String resource(String action, JsonObject arguments) {
+        return action.equals("read_input") ? "input:" + arguments.get("inputId").getAsString() : "execution";
+    }
+    static Map<String, Integer> unavailableAttempts(JsonArray history) {
+        var counts = new TreeMap<String, Integer>();
         for (var item : history) {
             var event = item.getAsJsonObject(); var result = event.getAsJsonObject("result");
+            String resource = resource(event.get("tool").getAsString(), event.getAsJsonObject("arguments"));
+            if (result.get("ok").getAsBoolean()) counts.remove(resource);
+            else if (result.has("error") && result.get("error").getAsString().equals("UNAVAILABLE")) counts.merge(resource, 1, Integer::sum);
+        }
+        return counts;
+    }
+
+    static boolean validFindings(JsonObject decision, JsonArray history, boolean allowFailedLimitations) {
+        Set<String> citations = new HashSet<>(), observed = new HashSet<>(); boolean source = false, execution = false;
+        for (var item : history) {
+            var event = item.getAsJsonObject(); var result = event.getAsJsonObject("result");
+            observed.add(event.get("eventId").getAsString());
             if (!result.get("ok").getAsBoolean()) continue;
             citations.add(event.get("eventId").getAsString());
             source |= event.get("tool").getAsString().equals("read_input")
@@ -112,9 +134,12 @@ public final class ConsumerInvestigator {
                     && !result.getAsJsonObject("value").get("content").getAsString().isEmpty();
             execution |= completed(result);
         }
-        for (var finding : decision.getAsJsonArray("findings"))
-            for (var citation : finding.getAsJsonObject().getAsJsonArray("citations"))
-                if (!citations.contains(citation.getAsString())) return false;
+        for (var finding : decision.getAsJsonArray("findings")) {
+            var value = finding.getAsJsonObject();
+            var allowed = allowFailedLimitations && value.get("kind").getAsString().equals("LIMITATION") ? observed : citations;
+            for (var citation : value.getAsJsonArray("citations"))
+                if (!allowed.contains(citation.getAsString())) return false;
+        }
         return !decision.get("outcome").getAsString().equals("INVESTIGATED") || (source && execution && !decision.getAsJsonArray("findings").isEmpty());
     }
     private static boolean completed(JsonObject result) {

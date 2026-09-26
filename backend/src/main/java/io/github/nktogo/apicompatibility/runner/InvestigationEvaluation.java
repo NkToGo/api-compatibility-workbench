@@ -76,6 +76,13 @@ public final class InvestigationEvaluation {
                 var outcome = investigator.run(agent);
                 if (outcome.get("status").getAsString().equals("ACTIVE")) return json(Map.of("status", "ACTIVE", "evaluationId", id));
                 var row = score(trial, outcome); row.addProperty("agentId", agent); rows.add(row);
+                row.addProperty("protocol", session.has("protocol") ? session.get("protocol").getAsString() : "investigation-v1");
+                try (var calls = Files.list(sessionPath.getParent())) {
+                    row.addProperty("registeredModelCalls", calls.filter(path -> path.getFileName().toString().matches("call-[0-9]+\\.json")).count());
+                }
+                row.addProperty("toolEvents", outcome.getAsJsonArray("events").size());
+                row.add("unavailableAttempts", json(ConsumerInvestigator.unavailableAttempts(outcome.getAsJsonArray("events"))));
+                row.add("inputTokens", outcome.get("inputTokens")); row.add("outputTokens", outcome.get("outputTokens"));
                 inputTokens += outcome.get("inputTokens").getAsLong(); outputTokens += outcome.get("outputTokens").getAsLong();
                 for (Path path : List.of(mapping, sessionPath, sessionPath.resolveSibling("result.json")))
                     artifacts.put(directory.relativize(path).toString().replace('\\', '/'), hash(path));

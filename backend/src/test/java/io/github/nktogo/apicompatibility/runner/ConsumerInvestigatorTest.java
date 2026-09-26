@@ -108,17 +108,92 @@ class ConsumerInvestigatorTest {
         assertEquals("CONTEXT_BUDGET_EXHAUSTED", investigator.run(id).get("status").getAsString());
         assertEquals(2, models.registered);
     }
+    @Test void unavailableReadsShareRetryBudgetAcrossPagesAndProcessResumption() throws Exception {
+        models.outputs.addAll(List.of(READ, READ.replace("\"offset\":0", "\"offset\":2000"), READ));
+        int[] reads = {0};
+        ToolsFixture fixture = new ToolsFixture(reads);
+        var investigator = new ConsumerInvestigator(root, models, fixture::invoke, Clock.systemUTC());
+        String id = investigator.create("context", "gpt-test"); models.interruptAt = "call-3";
+        assertThrows(IOException.class, () -> investigator.run(id));
+        assertEquals(2, reads[0]);
+        var resumed = new ConsumerInvestigator(root, models, fixture::invoke, Clock.systemUTC()).run(id);
+        assertEquals("TOOL_RETRY_BUDGET_EXHAUSTED", resumed.get("status").getAsString());
+        assertEquals(2, reads[0]); assertEquals(3, models.registered);
+        assertEquals(2, resumed.getAsJsonArray("events").size());
+        assertEquals(2, JsonParser.parseString(models.requests.get(2).input()).getAsJsonObject()
+                .getAsJsonObject("unavailableAttempts").get("input:baseline-source").getAsInt());
+    }
+    @Test void runAndReadRunShareOneUnavailableBudget() throws Exception {
+        models.outputs.addAll(List.of(RUN, "{\"decision\":{\"action\":\"read_run\"}}", RUN));
+        int[] calls = {0}; var fixture = new ToolsFixture(calls);
+        var investigator = new ConsumerInvestigator(root, models, fixture::invoke, Clock.systemUTC());
+        assertEquals("TOOL_RETRY_BUDGET_EXHAUSTED", investigator.run(investigator.create("context", "gpt-test")).get("status").getAsString());
+        assertEquals(2, calls[0]);
+    }
+    @Test void successfulRecoveryResetsOnlyItsOwnResourceBudget() throws Exception {
+        models.outputs.addAll(List.of(READ, READ, READ, READ, finish("ABSTAINED", "event-2")));
+        int[] calls = {0};
+        var investigator = new ConsumerInvestigator(root, models, (context, tool, args) -> {
+            if (tool.equals("describe_case")) return json(Map.of("ok", true, "value", Map.of()));
+            return ++calls[0] % 2 == 1 ? json(Map.of("ok", false, "error", "UNAVAILABLE"))
+                    : json(Map.of("ok", true, "value", Map.of("content", "source")));
+        }, Clock.systemUTC());
+        var result = investigator.run(investigator.create("context", "gpt-test"));
+        assertEquals("ABSTAINED", result.get("status").getAsString()); assertEquals(4, calls[0]);
+        assertTrue(ConsumerInvestigator.unavailableAttempts(result.getAsJsonArray("events")).isEmpty());
+    }
+    @Test void unavailableOptionalInputDoesNotBlockOtherResourcesOrForceAbstention() throws Exception {
+        String optional = READ.replace("baseline-source", "provenance");
+        models.outputs.addAll(List.of(optional, optional, READ, RUN, finish("INVESTIGATED", "event-4")));
+        var investigator = new ConsumerInvestigator(root, models, (context, tool, args) -> {
+            if (tool.equals("describe_case")) return json(Map.of("ok", true, "value", Map.of()));
+            if (tool.equals("read_input")) return args.get("inputId").getAsString().equals("provenance")
+                    ? json(Map.of("ok", false, "error", "UNAVAILABLE")) : json(Map.of("ok", true, "value", Map.of("content", "source")));
+            return json(Map.of("ok", true, "value", Map.of("status", "COMPLETED", "authority", "recorded-execution")));
+        }, Clock.systemUTC());
+        var result = investigator.run(investigator.create("context", "gpt-test"));
+        assertEquals("INVESTIGATED", result.get("status").getAsString());
+        assertEquals(Map.of("input:provenance", 2), ConsumerInvestigator.unavailableAttempts(result.getAsJsonArray("events")));
+    }
+    @Test void legacySessionsKeepTheirOriginalRequestProtocolAndRetryBehavior() throws Exception {
+        models.outputs.addAll(List.of(READ, READ, READ, "{\"decision\":{\"action\":\"finish\",\"outcome\":\"ABSTAINED\",\"summary\":\"Unavailable\",\"findings\":[]}}"));
+        int[] calls = {0}; var fixture = new ToolsFixture(calls);
+        var investigator = new ConsumerInvestigator(root, models, fixture::invoke, Clock.systemUTC());
+        String id = investigator.create("context", "gpt-test"); Path sessionPath = root.resolve(id).resolve("session.json");
+        var session = CaseInputs.object(Files.readAllBytes(sessionPath)); session.remove("protocol");
+        Files.writeString(sessionPath, CaseInputs.JSON.toJson(session));
+        assertEquals("ABSTAINED", investigator.run(id).get("status").getAsString()); assertEquals(3, calls[0]);
+        assertTrue(models.requests.stream().allMatch(request -> request.protocol().equals("investigation-v1") && !request.input().contains("unavailableAttempts")));
+    }
+    @Test void failedToolCitationsSupportLimitationsButNotHypothesesOrUnseenReferences() throws Exception {
+        for (String kind : List.of("LIMITATION", "HYPOTHESIS")) {
+            for (String citation : List.of("event-1", "event-99")) {
+                models.outputs.addAll(List.of(READ, finish("ABSTAINED", citation).replace("HYPOTHESIS", kind)));
+                var fixture = new ToolsFixture(new int[1]);
+                var investigator = new ConsumerInvestigator(root, models, fixture::invoke, Clock.systemUTC());
+                assertEquals(kind.equals("LIMITATION") && citation.equals("event-1") ? "ABSTAINED" : "UNSUPPORTED_FINDINGS",
+                        investigator.run(investigator.create("context", "gpt-test")).get("status").getAsString());
+            }
+        }
+    }
+    private record ToolsFixture(int[] calls) {
+        JsonObject invoke(String context, String tool, JsonObject arguments) {
+            if (tool.equals("describe_case")) return json(Map.of("ok", true, "value", Map.of()));
+            calls[0]++; return json(Map.of("ok", false, "error", "UNAVAILABLE"));
+        }
+    }
     private static final class FakeModels implements ConsumerInvestigator.Models {
         final Queue<String> outputs = new ArrayDeque<>();
         final List<ModelCallBroker.Request> requests = new ArrayList<>();
         final Map<String, JsonObject> results = new HashMap<>();
-        int registered; boolean interruptOnce; String failure;
+        int registered; boolean interruptOnce; String failure, interruptAt;
         public String register(ModelCallBroker.Request request) {
             registered++; requests.add(request); String id = "call-" + registered;
             results.put(id, failure != null ? json(Map.of("status", failure)) : json(Map.of("status", "COMPLETED",
                     "inputTokens", 10, "outputTokens", 20, "outputText", outputs.remove()))); return id;
         }
         public JsonObject execute(String id) throws IOException {
+            if (id.equals(interruptAt)) { interruptAt = null; throw new IOException("Injected later interruption"); }
             if (interruptOnce) { interruptOnce = false; throw new IOException("Injected interruption"); } return results.get(id);
         }
     }

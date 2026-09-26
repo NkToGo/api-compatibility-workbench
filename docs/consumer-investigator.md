@@ -53,8 +53,10 @@ is assigned by the host from the agent ID; the model cannot choose a different
 context or repeatedly create new attempts. Input text cannot authorize additional
 tools, commands, access or external requests.
 
-Final findings are `HYPOTHESIS` or `LIMITATION`. Citation IDs must refer to
-successful tool events the model actually received. The host rechecks completed
+Final findings are `HYPOTHESIS` or `LIMITATION`. Hypothesis citations must refer to
+successful tool events the model actually received. In protocol v2, limitations
+may also cite observed failed events to explain unavailable evidence; an error
+does not thereby support a hypothesis about consumer behavior. The host rechecks completed
 execution against captured inputs before accepting `INVESTIGATED`. These checks
 establish reference validity and minimum evidence coverage; they do not prove that
 a citation semantically supports a statement. A curated repair-quality evaluation
@@ -64,6 +66,25 @@ completion and abstention under controlled tool failures; it does not grade the
 meaning of findings or the quality of repairs.
 
 ## Limits and interruptions
+
+New investigations use protocol `investigation-v2`. The host supplies consecutive
+`UNAVAILABLE` counts by input ID or by the shared execution resource. An unavailable
+resource permits one retry. Page offsets do not create new allowances; `run_case`
+and `read_run` share one allowance. A successful tool response resets its resource's
+count. Other inputs remain accessible, and failed optional reads do not force an
+abstention when required evidence is already available.
+
+The model is instructed to finish with an explicit abstention if required evidence
+remains unavailable. A third model-directed request for an exhausted resource is rejected before
+tool dispatch and ends with `TOOL_RETRY_BUDGET_EXHAUSTED`, not `ABSTAINED`. Counts are
+reconstructed from retained events on resume. This bounds tool retries; it does not
+add automatic retries to model requests or uncertain execution attempts. The normal
+12-decision budget still applies. Other error types retain their existing behavior.
+
+Sessions without a protocol field retain `investigation-v1` instructions and retry
+behavior; saved model grants are not reinterpreted with the new prompt. Completed
+historical results remain unchanged. The new guidance also prioritizes required
+evidence and avoids redundant reads of an already completed execution response.
 
 Each registered agent has these fixed ceilings:
 

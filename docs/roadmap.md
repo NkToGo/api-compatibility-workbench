@@ -69,6 +69,8 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** [controlled evidence-availability trials](investigation-evaluation.md)
      for investigation completion and abstention, with operational failures kept
      separate. These use one case and do not measure semantic or repair accuracy.
+   - **Implemented:** bounded unavailable-tool retries with preserved legacy sessions
+     and per-trial usage counts for evaluating evidence-handling efficiency.
    - **Pending:** broader repair/abstention evaluation and feedback beyond the reference case.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.

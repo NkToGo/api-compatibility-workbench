@@ -23,6 +23,19 @@ final class InvestigationDecision {
             Unused tools, shell commands, registration, permissions, external requests and code writes are unavailable.
             """;
 
+    static final String BOUNDED_INSTRUCTIONS = INSTRUCTIONS + """
+            Establish required baseline-source access and completed execution early. Read other inputs as needed.
+            A COMPLETED run_case response already contains execution evidence; do not read_run just to repeat it.
+            The host supplies unavailableAttempts by logical resource: input:<inputId> or execution.
+            After UNAVAILABLE you may retry that resource once. Changing offset or switching run_case/read_run
+            does not reset this allowance. A successful response resets that resource's failure count.
+            After two UNAVAILABLE responses, do not request that resource again. If required evidence is still
+            missing, finish ABSTAINED with the observed limitation. If already sufficient, finish with supported
+            findings or inspect other necessary resources. The host rejects further attempts; rejection is not abstention.
+            In this protocol a LIMITATION may cite observed failed tool event IDs to explain missing evidence.
+            HYPOTHESIS citations still require successful events. Never cite invented or unseen events.
+            """;
+
     static JsonObject schema() {
         var read = object(Map.of("action", enumeration("read_input"), "inputId", enumeration(InvestigationTools.INPUTS.keySet().stream().sorted().toArray(String[]::new)),
                 "offset", Map.of("type", "integer", "minimum", 0, "maximum", 262144),

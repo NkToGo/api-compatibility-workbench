@@ -241,6 +241,20 @@ class ModelCallBrokerTest {
         } finally { controller.destroyForcibly(); }
     }
 
+    @Test void boundedInvestigationUsesSeparateInstructionsWithUnchangedToolPermissions() throws Exception {
+        var original = new ModelCallBroker.Request("gpt-test", "case", 2048, "investigation-v1");
+        var bounded = new ModelCallBroker.Request("gpt-test", "case", 2048, "investigation-v2");
+        var oldBody = CaseInputs.object(original.body()); var newBody = CaseInputs.object(bounded.body());
+        assertEquals(InvestigationDecision.INSTRUCTIONS, oldBody.get("instructions").getAsString());
+        assertEquals(InvestigationDecision.BOUNDED_INSTRUCTIONS, newBody.get("instructions").getAsString());
+        assertEquals(oldBody.get("tools"), newBody.get("tools"));
+        assertEquals(oldBody.get("tool_choice"), newBody.get("tool_choice"));
+        assertNotEquals(CaseInputs.hash(original.body()), CaseInputs.hash(bounded.body()));
+        reply(200, "{\"status\":\"completed\",\"output\":[{\"type\":\"function_call\",\"name\":\"investigation_decision\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+        var broker = broker(); String id = broker.register(bounded, Duration.ofMinutes(1));
+        assertEquals("COMPLETED", broker.execute(id)); assertNoSecret();
+    }
+
     @Test void investigationRejectsMultipleMessagesAndMultipleDecisions() throws Exception {
         for (String output : new String[] {
                 "[{\"type\":\"message\",\"content\":[{\"type\":\"output_text\",\"text\":\"{}{}\"}]}]",

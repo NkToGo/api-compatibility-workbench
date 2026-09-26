@@ -77,3 +77,11 @@ they met expectations. Agent findings remain untrusted advisory text. Citation
 validity and minimum evidence access do not establish semantic correctness.
 Broader consumer cases, independent labels, repair-quality evaluation and repeated
 model trials remain necessary before drawing general conclusions.
+
+New reports also retain each trial's investigator protocol, registered model-call
+count, tool-event count, token usage and outstanding unavailable-response counts.
+These make retry behavior visible alongside the decision judgment. A registered
+call is not necessarily a billed or completed request. Historical reports are not
+rewritten to add these fields. Compare protocol versions with the same declared
+conditions, and retain failed trials; one run per version cannot establish a
+general efficiency improvement or remove model variability.

@@ -75,6 +75,9 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** a distinct [subscription-period case](../cases/stripe-subscription-periods-2025-07-30/README.md)
      with independently declared application expectations and executable authored
      repair controls. Agent integration and generated repair measurement remain pending.
+   - **Implemented:** a [host-side subscription result protocol](subscription-period-protocol.md)
+     that keeps assertions outside candidate output and rejects invalid exchanges.
+     Container transport and candidate integration for this case remain pending.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

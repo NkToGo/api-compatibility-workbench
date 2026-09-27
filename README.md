@@ -52,6 +52,9 @@ A second [subscription-period case](cases/stripe-subscription-periods-2025-07-30
 executes authored controls against eight synthetic scenarios. It distinguishes
 item-aware repairs from first-item and minimum/maximum substitutions. Its agent
 and protected candidate-execution integration remains pending.
+Its [host-side result protocol](docs/subscription-period-protocol.md) now validates
+consumer responses against separately held expectations; it is not yet connected
+to a container worker.
 
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are

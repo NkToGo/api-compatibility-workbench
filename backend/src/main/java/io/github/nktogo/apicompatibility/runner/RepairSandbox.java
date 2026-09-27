@@ -57,7 +57,7 @@ final class RepairSandbox {
                         int nesting = 0;
                         for (byte c : line) { if (c == '{' || c == '[') nesting++; CaseInputs.require(nesting <= 128, "Protocol nesting limit"); }
                         var response = oracle.request(CaseInputs.object(line));
-                        byte[] reply = (new Gson().toJson(response) + "\n").getBytes(StandardCharsets.UTF_8);
+                        byte[] reply = responseBytes(response);
                         CaseInputs.require(reply.length <= 16384, "Response budget exceeded"); output.write(reply); output.flush();
                     }
                 } catch (IOException | RuntimeException | StackOverflowError e) { status.compareAndSet("COMPLETED", "PROTOCOL_ERROR"); }
@@ -102,6 +102,9 @@ final class RepairSandbox {
         result.addProperty("workerExitCode", exitCode);
         result.addProperty("containerName", name); result.addProperty("containerRemoved", cleaned);
         return result;
+    }
+    static byte[] responseBytes(JsonElement response) {
+        return (new GsonBuilder().serializeNulls().create().toJson(response) + "\n").getBytes(StandardCharsets.UTF_8);
     }
     private static byte[] line(InputStream input) throws IOException {
         var bytes = new ByteArrayOutputStream();

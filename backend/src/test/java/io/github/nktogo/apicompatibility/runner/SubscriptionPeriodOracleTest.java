@@ -14,6 +14,14 @@ class SubscriptionPeriodOracleTest {
     }
     private static JsonObject returned(String result) { return json("{\"op\":\"return\",\"result\":" + result + "}"); }
 
+    @Test void transportPreservesExplicitMissingBinding() {
+        var oracle = new SubscriptionPeriodOracle(json("{}"), JsonNull.INSTANCE, json("{\"status\":\"DEFERRED\"}"));
+        var wire = RepairSandbox.responseBytes(oracle.request(json("{\"op\":\"read\"}")));
+        var decoded = CaseInputs.object(wire);
+        assertTrue(decoded.has("binding"));
+        assertTrue(decoded.get("binding").isJsonNull());
+    }
+
     @Test void protocolPreservesEveryAuthoredControlOutcome() throws Exception {
         var root = Path.of(System.getProperty("workbench.repository"), "cases", SubscriptionPeriodCase.CASE_ID);
         var files = SubscriptionPeriodCase.load(root);

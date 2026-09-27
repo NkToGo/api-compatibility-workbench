@@ -21,6 +21,15 @@ final class RepairSandbox {
     static JsonObject run(String image, String name, String source, String sdk, RepairOracle oracle,
                           Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
         CaseInputs.require(source.length() <= 32000 && Set.of("17.4.0", "20.33.0").contains(sdk), "Invalid sandbox input");
+        return runProtocol(image, name, source, sdk, oracle, deadline, stopped);
+    }
+    static JsonObject runSubscription(String image, String name, String source, SubscriptionPeriodOracle oracle,
+                                      Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
+        CaseInputs.require(source.length() <= 32000, "Invalid subscription source");
+        return runProtocol(image, name, source, "subscription-period-v1", oracle, deadline, stopped);
+    }
+    private static JsonObject runProtocol(String image, String name, String source, String sdk, WorkerOracle oracle,
+                                         Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
         CaseInputs.require(deadline.toMillis() > 0 && deadline.compareTo(Duration.ofSeconds(180)) <= 0, "Invalid sandbox deadline");
         var command = command(image, name);
         var status = new AtomicReference<>("COMPLETED");

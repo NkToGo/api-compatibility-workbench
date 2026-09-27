@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /** Host-owned service state. Worker messages request operations; they never supply assertions. */
-final class RepairOracle {
+final class RepairOracle implements WorkerOracle {
     private final JsonObject fixture, expected;
     private final String side, api;
     private final Set<String> records = new TreeSet<>(), deleted = new TreeSet<>(), unsafe = new TreeSet<>(), observed = new HashSet<>();
@@ -19,7 +19,7 @@ final class RepairOracle {
         records.addAll(CaseInputs.strings(fixture, "initialLocalMethodIds"));
     }
 
-    synchronized JsonElement request(JsonObject request) {
+    public synchronized JsonElement request(JsonObject request) {
         try {
             CaseInputs.require(!terminal && !invalid && ++calls <= 100, "Protocol closed or budget exceeded");
             String op = text(request, "op");
@@ -86,7 +86,7 @@ final class RepairOracle {
             observed.add(text(value, "id"));
         }
     }
-    synchronized JsonObject result(String executionStatus) {
+    public synchronized JsonObject result(String executionStatus) {
         boolean usable = executionStatus.equals("COMPLETED") && terminal && !invalid;
         var result = CaseInputs.JSON.toJsonTree(Map.of("status", usable ? "COMPLETED" : "UNRESOLVED", "completed", completed,
                 "finalMethodIds", records, "returnedMethodIds", returned, "deactivatedMethodIds", deleted,

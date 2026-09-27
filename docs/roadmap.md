@@ -77,7 +77,9 @@ adapters remain part of their later integration and operational milestones.
      repair controls. Agent integration and generated repair measurement remain pending.
    - **Implemented:** a [host-side subscription result protocol](subscription-period-protocol.md)
      that keeps assertions outside candidate output and rejects invalid exchanges.
-     Container transport and candidate integration for this case remain pending.
+   - **Implemented:** subscription consumer compilation and protocol transport inside
+     the existing constrained repair container, with host-owned assertions. Durable
+     candidate registration and agent integration for this case remain pending.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

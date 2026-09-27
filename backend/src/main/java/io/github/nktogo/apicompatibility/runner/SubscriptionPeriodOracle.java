@@ -4,7 +4,7 @@ import com.google.gson.*;
 import java.util.*;
 
 /** Host-owned assertions for one subscription projection; accepts no worker verdicts. */
-final class SubscriptionPeriodOracle {
+final class SubscriptionPeriodOracle implements WorkerOracle {
     private final JsonObject input, expected;
     private final List<JsonObject> events = new ArrayList<>();
     private JsonObject returned;
@@ -18,7 +18,7 @@ final class SubscriptionPeriodOracle {
         this.expected = expected.deepCopy();
     }
 
-    synchronized JsonElement request(JsonObject request) {
+    public synchronized JsonElement request(JsonObject request) {
         try {
             CaseInputs.require(!invalid && returned == null && request != null, "Protocol closed");
             var op = request.get("op");
@@ -41,7 +41,7 @@ final class SubscriptionPeriodOracle {
         } catch (RuntimeException e) { invalid = true; throw e; }
     }
 
-    synchronized JsonObject result(String executionStatus) {
+    public synchronized JsonObject result(String executionStatus) {
         boolean usable = "COMPLETED".equals(executionStatus) && returned != null && !invalid;
         var result = new JsonObject();
         result.addProperty("status", usable ? "COMPLETED" : "UNRESOLVED");

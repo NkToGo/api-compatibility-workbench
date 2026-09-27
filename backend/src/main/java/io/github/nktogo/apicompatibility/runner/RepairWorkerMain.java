@@ -12,8 +12,11 @@ public final class RepairWorkerMain {
         ContainerCaseMain.verifyIsolation();
         var input = CaseInputs.object(System.in.readNBytes(readLength()));
         String sdk = input.get("sdk").getAsString(), source = input.get("source").getAsString();
-        CaseInputs.require(Set.of("17.4.0", "20.33.0").contains(sdk) && source.length() <= 32000, "Invalid worker input");
+        CaseInputs.require(Set.of("17.4.0", "20.33.0", "subscription-period-v1").contains(sdk) && source.length() <= 32000, "Invalid worker input");
         Path work = Path.of("/work"); Path classes = Files.createDirectory(work.resolve("classes"));
+        if (sdk.equals("subscription-period-v1")) {
+            runSubscription(work, classes, source); return;
+        }
         String prefix = resource("Consumer.prefix").replace("Consumer(State state) { super(state); }", "Consumer() { super(); }");
         Path consumer = work.resolve("Consumer.java"), support = work.resolve("RemoteFixtureMain.java");
         Files.writeString(consumer, prefix + "\n" + source + "\n}\n");
@@ -25,6 +28,19 @@ public final class RepairWorkerMain {
         }
         var command = new ArrayList<String>(); command.add(FixtureProcess.javaExecutable()); command.addAll(StripeCaseRunner.WORKER_OPTIONS);
         command.addAll(List.of("-cp", classes + ":" + cp, "RemoteFixtureMain"));
+        System.exit(new ProcessBuilder(command).inheritIO().start().waitFor());
+    }
+    private static void runSubscription(Path work, Path classes, String source) throws Exception {
+        Path consumer = work.resolve("PeriodConsumer.java"), adapter = work.resolve("PeriodMain.java");
+        Files.writeString(consumer, source);
+        Files.writeString(adapter, resource("PeriodMain.java.txt"));
+        String cp = "/opt/workbench/lib/gson-2.14.0.jar";
+        try (var errors = Files.newOutputStream(work.resolve("compiler.txt"))) {
+            if (ToolProvider.getSystemJavaCompiler().run(null, errors, errors, "--release", "21", "-proc:none", "-encoding", "UTF-8",
+                    "-classpath", cp, "-d", classes.toString(), consumer.toString(), adapter.toString()) != 0) System.exit(4);
+        }
+        var command = new ArrayList<String>(); command.add(FixtureProcess.javaExecutable()); command.addAll(StripeCaseRunner.WORKER_OPTIONS);
+        command.addAll(List.of("-cp", classes + ":" + cp, "PeriodMain"));
         System.exit(new ProcessBuilder(command).inheritIO().start().waitFor());
     }
     private static int readLength() throws java.io.IOException {

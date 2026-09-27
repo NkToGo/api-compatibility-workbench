@@ -11,7 +11,7 @@ jobs:
   backend:
     name: Java domain (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -61,7 +61,7 @@ jobs:
         run: |
           $repairImage = (Get-Content -LiteralPath backend/target/repair-worker-image.txt -Raw).Trim()
           if ($repairImage -cnotmatch '^sha256:[0-9a-f]{64}$') { throw 'Missing repair image identity.' }
-          sh ./mvnw -B -ntp -f backend/pom.xml "-Dworkbench.repair.image=$repairImage" '-Dtest=RepairSandboxContainerTest' test
+          sh ./mvnw -B -ntp -f backend/pom.xml "-Dworkbench.repair.image=$repairImage" '-Dtest=RepairSandboxContainerTest,SubscriptionSandboxContainerTest' test
           if ($LASTEXITCODE -ne 0) { throw 'Protected repair verification failed.' }
       - name: Retain case reports
         if: always()
@@ -85,5 +85,6 @@ jobs:
             backend/target/durable-test-runs/
             backend/target/investigation-test-runs/
             backend/target/repair-container-tests/
+            backend/target/subscription-container-tests/
           if-no-files-found: warn
           retention-days: 14

@@ -4,7 +4,7 @@ The host-side `SubscriptionPeriodOracle` checks a consumer result against one
 separately supplied expectation. This is a protocol component for the second
 curated case. The repair sandbox now connects it to container-only compilation
 and execution. Supplied source pairs support durable registration and recovery;
-agent-generated candidate integration remains pending.
+[bounded model-generated candidates](subscription-candidates.md) use the same verifier.
 
 For each scenario the host supplies the selected baseline or target subscription
 projection, configured item binding and expected result. The oracle copies these
@@ -85,4 +85,5 @@ still performs cleanup. Changed captured inputs or evidence prevent result reuse
 
 This remains a trusted single-host workflow over synthetic cases. Preserve the whole
 verification directory; hashes cannot defend against an operator rewriting the records
-and hashes together. There is no automatic repair generation, approval or publication.
+and hashes together. Separate bounded generation is available; there is no approval
+or publication workflow.

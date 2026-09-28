@@ -59,6 +59,13 @@ final class RepairProposal {
         int next = baseline.indexOf("    private void syncPaymentMethods(", start);
         int end = baseline.lastIndexOf('}', next);
         CaseInputs.require(method >= 0 && start > method && next > start && end > start, "Unsupported source shape");
+        return "// Unverified candidate modification of the extracted getPaymentMethods method.\n" + replace(baseline, proposal, start, end);
+    }
+    static String applySubscription(String baseline, Proposal proposal) {
+        CaseInputs.require(proposal.status().equals("PROPOSED"), "No proposed edits");
+        return replace(baseline, proposal, 0, baseline.length());
+    }
+    private static String replace(String baseline, Proposal proposal, int start, int end) {
         var positions = new TreeMap<Integer, Edit>();
         for (var edit : proposal.edits()) {
             int at = baseline.indexOf(edit.before());
@@ -74,8 +81,8 @@ final class RepairProposal {
         for (var entry : positions.descendingMap().entrySet()) candidate.replace(entry.getKey(), entry.getKey() + entry.getValue().before().length(), entry.getValue().after());
         CaseInputs.require(candidate.length() <= 31900 && baseline.endsWith("\n") && candidate.toString().endsWith("\n")
                 && !baseline.contains("\r") && candidate.indexOf("\r") < 0, "Candidate size or newline format unsupported");
-        // Preserve the upstream notice while marking that this derivative changes the extracted method.
-        return "// Unverified candidate modification of the extracted getPaymentMethods method.\n" + candidate;
+        CaseInputs.require(!candidate.toString().equals(baseline), "No effective edit");
+        return candidate.toString();
     }
     static String patch(String baseline, String candidate) {
         CaseInputs.require(baseline.endsWith("\n") && candidate.endsWith("\n") && !baseline.contains("\r") && !candidate.contains("\r"), "Patch requires LF source with final newline");

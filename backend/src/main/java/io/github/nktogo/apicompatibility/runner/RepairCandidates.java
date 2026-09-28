@@ -18,7 +18,7 @@ public final class RepairCandidates {
         this.state = state.toAbsolutePath().normalize(); this.models = models; this.tools = tools;
         Files.createDirectories(this.state.resolve("candidates"));
     }
-    private static ConsumerInvestigator.Models backend(Path state) throws IOException {
+    static ConsumerInvestigator.Models backend(Path state) throws IOException {
         var broker = new ModelCallBroker(state.resolve("model-calls"));
         return new ConsumerInvestigator.Models() {
             public String register(ModelCallBroker.Request request) throws IOException { return broker.register(request, Duration.ofMinutes(5)); }

@@ -255,6 +255,16 @@ class ModelCallBrokerTest {
         assertEquals("COMPLETED", broker.execute(id)); assertNoSecret();
     }
 
+    @Test void subscriptionProtocolUsesScopedInstructionsAndRepairFunction() throws Exception {
+        var request = new ModelCallBroker.Request("gpt-test", "evidence", 4096, "subscription-repair-v1");
+        var body = CaseInputs.object(request.body());
+        assertEquals(SubscriptionCandidates.INSTRUCTIONS, body.get("instructions").getAsString());
+        assertEquals("repair_proposal", body.getAsJsonObject("tool_choice").get("name").getAsString());
+        assertFalse(body.get("parallel_tool_calls").getAsBoolean());
+        reply(200, "{\"status\":\"completed\",\"output\":[{\"type\":\"function_call\",\"name\":\"repair_proposal\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+        var broker = broker(); String id = broker.register(request, Duration.ofMinutes(1));
+        assertEquals("COMPLETED", broker.execute(id)); assertNoSecret();
+    }
     @Test void investigationRejectsMultipleMessagesAndMultipleDecisions() throws Exception {
         for (String output : new String[] {
                 "[{\"type\":\"message\",\"content\":[{\"type\":\"output_text\",\"text\":\"{}{}\"}]}]",

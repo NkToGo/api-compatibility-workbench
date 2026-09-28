@@ -80,6 +80,9 @@ public final class RepairVerification {
         return id;
     }
     public String registerSubscription(Path caseRoot, String baseline, String candidate, String image) throws IOException {
+        return registerSubscription(caseRoot, baseline, candidate, image, "supplied-source", null);
+    }
+    String registerSubscription(Path caseRoot, String baseline, String candidate, String image, String candidateId, String manifest) throws IOException {
         CaseInputs.require(!baseline.isBlank() && !candidate.isBlank() && baseline.length() <= 32000 && candidate.length() <= 32000
                 && image.matches("sha256:[0-9a-f]{64}"), "Invalid subscription verification input");
         var files = SubscriptionPeriodCase.load(caseRoot);
@@ -108,7 +111,8 @@ public final class RepairVerification {
         var spec = new TreeMap<String, Object>();
         spec.put("formatVersion", 1); spec.put("verificationId", id); spec.put("imageId", image);
         spec.put("caseId", SubscriptionPeriodCase.CASE_ID); spec.put("protocol", "subscription-period-v1");
-        spec.put("candidateId", "supplied-source"); spec.put("inputs", CaseInputs.inventory(captured));
+        spec.put("candidateId", candidateId); if (manifest != null) spec.put("candidateManifestSha256", manifest);
+        spec.put("inputs", CaseInputs.inventory(captured));
         spec.put("jobs", jobs); spec.put("harnessSha256", harness()); spec.put("deadlineSeconds", 60);
         spec.put("createdAt", Instant.now().toString());
         DurableExecution.publish(directory.resolve("spec.json"), spec);
@@ -193,7 +197,7 @@ public final class RepairVerification {
         if (Files.exists(directory.resolve("observations.json"))) result.addProperty("observationsSha256", CaseInputs.hash(Files.readAllBytes(directory.resolve("observations.json"))));
         DurableExecution.publish(directory.resolve("result.json"), result); return result;
     }
-    private static JsonObject retained(Path directory) throws IOException {
+    static JsonObject retained(Path directory) throws IOException {
         var result = read(directory.resolve("result.json"));
         CaseInputs.require(result.get("specSha256").getAsString().equals(CaseInputs.hash(Files.readAllBytes(directory.resolve("spec.json")))), "Verification registration changed");
         var spec = read(directory.resolve("spec.json")); verifyInputs(directory, spec);

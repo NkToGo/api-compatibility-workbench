@@ -21,6 +21,15 @@ class SubscriptionSandboxContainerTest {
         assertEquals("ALL_OBSERVED_REGRESSIONS_FIXED", result.getAsJsonObject("evaluation").get("conclusion").getAsString());
         assertEquals(24, result.getAsJsonObject("jobArtifacts").size());
         assertEquals(result, verifier.execute(id));
+        var models = new SubscriptionCandidatesTest.Models();
+        models.proposal = CaseInputs.JSON.toJson(Map.of("status", "PROPOSED", "summary", "Use the bound item.", "edits", List.of(Map.of(
+                "before", "subscription.get(\"current_period_end\").getAsLong()", "after", "selected.get(\"current_period_end\").getAsLong()"))));
+        var candidates = new SubscriptionCandidates(state, models);
+        String candidate = candidates.create(id, "gpt-test");
+        assertEquals("CANDIDATE_READY", candidates.generate(candidate).get("status").getAsString());
+        String generatedVerification = candidates.verification(candidate, System.getProperty("workbench.repair.image"));
+        assertEquals("ALL_OBSERVED_REGRESSIONS_FIXED", verifier.execute(generatedVerification).getAsJsonObject("evaluation").get("conclusion").getAsString());
+        assertEquals(1, models.calls);
     }
     static String source(String expression) {
         return """

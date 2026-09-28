@@ -50,8 +50,10 @@ records completion and abstention under three controlled evidence-availability
 conditions, keeping operational failures separate from model decisions.
 A second [subscription-period case](cases/stripe-subscription-periods-2025-07-30/README.md)
 executes authored controls against eight synthetic scenarios. It distinguishes
-item-aware repairs from first-item and minimum/maximum substitutions. Its agent
-integration remains pending.
+item-aware repairs from first-item and minimum/maximum substitutions. A bounded
+[subscription candidate generator](docs/subscription-candidates.md) now proposes
+one repair or abstains from retained execution evidence; adaptive investigation
+and broader repair-quality evaluation for this case remain pending.
 Its [host-side result protocol](docs/subscription-period-protocol.md) now validates
 consumer responses against separately held expectations. A container adapter now
 compiles subscription consumer source with host-owned assertions. Supplied source

@@ -86,6 +86,10 @@ adapters remain part of their later integration and operational milestones.
      from retained execution evidence, with abstention, inert source artifacts and
      separate manifest-bound verification. Adaptive investigation and repeated
      repair-quality/abstention trials across cases remain pending.
+   - **Implemented:** [repeated subscription repair trials](subscription-repair-evaluation.md)
+     with fixed budgets, durable child mappings, separate operational/behavioral
+     outcomes and token counts. These repeat one known case and do not establish
+     held-out accuracy or abstention correctness.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

@@ -53,7 +53,9 @@ executes authored controls against eight synthetic scenarios. It distinguishes
 item-aware repairs from first-item and minimum/maximum substitutions. A bounded
 [subscription candidate generator](docs/subscription-candidates.md) now proposes
 one repair or abstains from retained execution evidence; adaptive investigation
-and broader repair-quality evaluation for this case remain pending.
+remains pending. A [repeated repair evaluation](docs/subscription-repair-evaluation.md)
+now records per-trial repairs, abstentions and operational failures on this case;
+broader repair-quality evaluation remains pending.
 Its [host-side result protocol](docs/subscription-period-protocol.md) now validates
 consumer responses against separately held expectations. A container adapter now
 compiles subscription consumer source with host-owned assertions. Supplied source

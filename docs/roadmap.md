@@ -78,8 +78,10 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** a [host-side subscription result protocol](subscription-period-protocol.md)
      that keeps assertions outside candidate output and rejects invalid exchanges.
    - **Implemented:** subscription consumer compilation and protocol transport inside
-     the existing constrained repair container, with host-owned assertions. Durable
-     candidate registration and agent integration for this case remain pending.
+     the existing constrained repair container, with host-owned assertions.
+   - **Implemented:** durable subscription verification of supplied source pairs,
+     including captured identities, three-way evaluation, cancellation, revocation
+     and no-replay recovery. Agent-generated candidate integration remains pending.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

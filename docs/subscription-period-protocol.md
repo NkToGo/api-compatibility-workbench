@@ -3,7 +3,8 @@
 The host-side `SubscriptionPeriodOracle` checks a consumer result against one
 separately supplied expectation. This is a protocol component for the second
 curated case. The repair sandbox now connects it to container-only compilation
-and execution. Durable candidate registration and agent integration remain pending.
+and execution. Supplied source pairs support durable registration and recovery;
+agent-generated candidate integration remains pending.
 
 For each scenario the host supplies the selected baseline or target subscription
 projection, configured item binding and expected result. The oracle copies these
@@ -35,7 +36,7 @@ in-process assertion boundary; they do not establish generated repair quality.
 `JsonObject`. The fixed adapter performs the read/return exchange. Compilation uses
 JDK 21, Gson 2.14.0 and disabled annotation processing inside the existing repair
 image. No Stripe SDK is used for these reduced JSON projections. Compilation never
-runs on the host. This package-level entry point is not yet a public candidate CLI.
+runs on the host.
 
 The transport reuses the repair sandbox's network-disabled, read-only container,
 resource limits, bounded protocol streams, deadline, cancellation and verified
@@ -48,6 +49,40 @@ Linux CI compiles baseline, unrepaired, first-item and bound-item controls over 
 eight scenarios and retains host result records. Additional tests exercise invalid
 Java, forged verdicts, nontermination, cancellation and absent host expectations.
 The existing repair tests continue to exercise shared isolation and recovery controls.
-The subscription entry point itself has no durable registration or restart command
-yet; it is available only to the internal harness. Do not use it as an unattended
-candidate service. No AI-generated repair is evaluated by these controls.
+No AI-generated repair is evaluated by these controls.
+
+## Durable supplied-source verification
+
+After building the backend and `./scripts/Build-IsolatedWorker.ps1 -RepairWorker`,
+supply two UTF-8 Java source files implementing the adapter signature:
+
+```powershell
+./scripts/Verify-SubscriptionCandidate.ps1 -BaselineSource ./original/PeriodConsumer.java -CandidateSource ./repair/PeriodConsumer.java
+./scripts/Verify-SubscriptionCandidate.ps1 -Action resume -VerificationId verification-EXISTING-UUID
+./scripts/Verify-SubscriptionCandidate.ps1 -Action cancel -VerificationId verification-EXISTING-UUID
+./scripts/Verify-SubscriptionCandidate.ps1 -Action revoke -VerificationId verification-EXISTING-UUID
+```
+
+The command registers an attempt under `.workbench/verifications/`, prints its ID,
+then executes eight baseline, eight unrepaired-target and eight candidate scenarios.
+The original source is used for both baseline and unrepaired target. The command
+makes no model or provider API calls. Sources are supplied by the operator; their
+hashes identify the exact code, not an upstream repository revision or a model
+generation receipt. A failing baseline keeps the repair assessment unresolved.
+
+Registration captures the source pair, fixture bundle, expectations, case documentation,
+their hashes, worker image, verifier identity and every container name before dispatch.
+The existing single-host journal supplies a 30-minute permission, ownership lease,
+live cancellation/revocation checks, per-scenario records, observations and a three-way
+repair evaluation. `COMPLETED` describes execution, not repair correctness.
+
+Resume reuses a finalized result only after checking retained hashes. A started but
+unfinished attempt cleans its registered containers and becomes `INTERRUPTED` without
+replaying scenarios. Existing job evidence remains available, but no complete assessment
+is inferred from partial work. Cleanup failure leaves the attempt recoverable. A changed
+verifier requires a new registration before dispatch; recovery of old started attempts
+still performs cleanup. Changed captured inputs or evidence prevent result reuse.
+
+This remains a trusted single-host workflow over synthetic cases. Preserve the whole
+verification directory; hashes cannot defend against an operator rewriting the records
+and hashes together. There is no automatic repair generation, approval or publication.

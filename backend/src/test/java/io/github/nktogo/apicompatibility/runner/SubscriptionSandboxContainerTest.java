@@ -10,6 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @EnabledIfSystemProperty(named = "workbench.repair.image", matches = "sha256:[0-9a-f]{64}")
 class SubscriptionSandboxContainerTest {
+    @Test void durableVerificationExecutesCapturedSourcesAndReusesFinalEvidence() throws Exception {
+        Path state = Path.of(System.getProperty("workbench.repository"), "backend/target/subscription-container-tests", UUID.randomUUID().toString());
+        var verifier = new RepairVerification(state);
+        String id = verifier.registerSubscription(SubscriptionVerificationTest.caseRoot(),
+                source("subscription.get(\"current_period_end\").getAsLong()"),
+                source("selected.get(\"current_period_end\").getAsLong()"), System.getProperty("workbench.repair.image"));
+        var result = verifier.execute(id);
+        assertEquals("COMPLETED", result.get("status").getAsString());
+        assertEquals("ALL_OBSERVED_REGRESSIONS_FIXED", result.getAsJsonObject("evaluation").get("conclusion").getAsString());
+        assertEquals(24, result.getAsJsonObject("jobArtifacts").size());
+        assertEquals(result, verifier.execute(id));
+    }
     static String source(String expression) {
         return """
             import com.google.gson.*;

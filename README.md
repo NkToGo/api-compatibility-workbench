@@ -51,11 +51,12 @@ conditions, keeping operational failures separate from model decisions.
 A second [subscription-period case](cases/stripe-subscription-periods-2025-07-30/README.md)
 executes authored controls against eight synthetic scenarios. It distinguishes
 item-aware repairs from first-item and minimum/maximum substitutions. Its agent
-and protected candidate-execution integration remains pending.
+integration remains pending.
 Its [host-side result protocol](docs/subscription-period-protocol.md) now validates
 consumer responses against separately held expectations. A container adapter now
-compiles subscription consumer source with host-owned assertions; durable candidate
-registration and agent integration for this case remain pending.
+compiles subscription consumer source with host-owned assertions. Supplied source
+pairs can now be registered for durable three-way verification, cancellation and
+interruption recovery.
 
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are

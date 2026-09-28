@@ -14,6 +14,10 @@ public final class RepairVerification {
         JsonObject run(String image, String name, String source, String sdk, RepairOracle oracle, Duration deadline,
                        java.util.function.BooleanSupplier stopped) throws Exception;
         void clean(String name, String image) throws Exception;
+        default JsonObject subscription(String image, String name, String source, SubscriptionPeriodOracle oracle,
+                                        Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
+            throw new UnsupportedOperationException("Subscription sandbox unavailable");
+        }
     }
     private final Path state;
     private final Sandbox sandbox;
@@ -24,6 +28,10 @@ public final class RepairVerification {
                 return RepairSandbox.run(image, name, source, sdk, oracle, deadline, stopped);
             }
             public void clean(String name, String image) throws Exception { DockerCaseExecutor.removeOwned(name, image); }
+            public JsonObject subscription(String image, String name, String source, SubscriptionPeriodOracle oracle,
+                                           Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
+                return RepairSandbox.runSubscription(image, name, source, oracle, deadline, stopped);
+            }
         });
     }
     RepairVerification(Path state, Sandbox sandbox) throws IOException {
@@ -71,6 +79,42 @@ public final class RepairVerification {
         authorization(directory, image).issue(Duration.ofMinutes(30));
         return id;
     }
+    public String registerSubscription(Path caseRoot, String baseline, String candidate, String image) throws IOException {
+        CaseInputs.require(!baseline.isBlank() && !candidate.isBlank() && baseline.length() <= 32000 && candidate.length() <= 32000
+                && image.matches("sha256:[0-9a-f]{64}"), "Invalid subscription verification input");
+        var files = SubscriptionPeriodCase.load(caseRoot);
+        var fixtures = CaseInputs.object(files.get("fixtures.json"));
+        var expected = CaseInputs.object(files.get("expectations.json"));
+        CaseInputs.require(SubscriptionPeriodCase.CASE_ID.equals(fixtures.get("caseId").getAsString())
+                && SubscriptionPeriodCase.CASE_ID.equals(expected.get("caseId").getAsString())
+                && "bound-item-renewal-v1".equals(expected.get("policy").getAsString())
+                && fixtures.get("formatVersion").getAsInt() == 1 && expected.get("formatVersion").getAsInt() == 1
+                && "2025-02-24.acacia".equals(fixtures.getAsJsonObject("apiVersions").get("baseline").getAsString())
+                && "2025-07-30.basil".equals(fixtures.getAsJsonObject("apiVersions").get("target").getAsString()), "Unsupported subscription case");
+        var scenarios = indexed(fixtures); var expectations = indexed(expected);
+        CaseInputs.require(!scenarios.isEmpty() && scenarios.keySet().equals(expectations.keySet()), "Scenario coverage mismatch");
+        for (var scenario : scenarios.entrySet()) for (String side : List.of("baseline", "target"))
+            new SubscriptionPeriodOracle(scenario.getValue().getAsJsonObject(side), scenario.getValue().get("binding"),
+                    expectations.get(scenario.getKey()).getAsJsonObject("expected"));
+        String id = "verification-" + UUID.randomUUID(); Path directory = Files.createDirectory(state.resolve("verifications").resolve(id));
+        Path captured = Files.createDirectory(directory.resolve("inputs"));
+        for (var file : files.entrySet()) Files.write(captured.resolve(file.getKey()), file.getValue());
+        Files.writeString(captured.resolve("baseline.txt"), baseline, StandardCharsets.UTF_8);
+        Files.writeString(captured.resolve("candidate.txt"), candidate, StandardCharsets.UTF_8);
+        var jobs = new ArrayList<Map<String, String>>();
+        for (String variant : List.of("baseline", "target", "candidate"))
+            for (String scenario : scenarios.keySet()) jobs.add(Map.of("variant", variant, "scenarioId", scenario, "containerName", "acw-" + UUID.randomUUID()));
+        Files.createDirectory(directory.resolve("jobs"));
+        var spec = new TreeMap<String, Object>();
+        spec.put("formatVersion", 1); spec.put("verificationId", id); spec.put("imageId", image);
+        spec.put("caseId", SubscriptionPeriodCase.CASE_ID); spec.put("protocol", "subscription-period-v1");
+        spec.put("candidateId", "supplied-source"); spec.put("inputs", CaseInputs.inventory(captured));
+        spec.put("jobs", jobs); spec.put("harnessSha256", harness()); spec.put("deadlineSeconds", 60);
+        spec.put("createdAt", Instant.now().toString());
+        DurableExecution.publish(directory.resolve("spec.json"), spec);
+        authorization(directory, image).issue(Duration.ofMinutes(30));
+        return id;
+    }
     public JsonObject execute(String id) throws Exception {
         Path directory = directory(id); var spec = read(directory.resolve("spec.json"));
         try (var lease = LocalFileLease.tryAcquire(directory.resolve("owner.lock"))) {
@@ -90,11 +134,20 @@ public final class RepairVerification {
                 if (guard.getAsBoolean()) return finish(directory, spec, guard.stopStatus(), null);
                 var job = value.getAsJsonObject(); String variant = job.get("variant").getAsString(), scenario = job.get("scenarioId").getAsString();
                 String sdk = variant.equals("baseline") ? "17.4.0" : "20.33.0", api = variant.equals("baseline") ? "2019-12-03" : "2020-08-27";
-                var oracle = new RepairOracle(fixtures.get(scenario), expectations.get(scenario), variant.equals("baseline") ? "baseline" : "target", api);
                 String source = Files.readString(directory.resolve("inputs/" + (variant.equals("candidate") ? "candidate" : "baseline") + ".txt"));
                 // The registration fixes names before any Docker action; recovery can always find owned workers.
-                var result = sandbox.run(image, job.get("containerName").getAsString(), source, sdk, oracle,
-                        Duration.ofSeconds(spec.get("deadlineSeconds").getAsLong()), guard);
+                JsonObject result;
+                if (subscription(spec)) {
+                    var fixture = fixtures.get(scenario);
+                    var oracle = new SubscriptionPeriodOracle(fixture.getAsJsonObject(variant.equals("baseline") ? "baseline" : "target"),
+                            fixture.get("binding"), expectations.get(scenario).getAsJsonObject("expected"));
+                    result = sandbox.subscription(image, job.get("containerName").getAsString(), source, oracle,
+                            Duration.ofSeconds(spec.get("deadlineSeconds").getAsLong()), guard);
+                } else {
+                    var oracle = new RepairOracle(fixtures.get(scenario), expectations.get(scenario), variant.equals("baseline") ? "baseline" : "target", api);
+                    result = sandbox.run(image, job.get("containerName").getAsString(), source, sdk, oracle,
+                            Duration.ofSeconds(spec.get("deadlineSeconds").getAsLong()), guard);
+                }
                 result.addProperty("variant", variant); result.addProperty("scenarioId", scenario);
                 DurableExecution.publish(directory.resolve("jobs/" + variant + "-" + scenario + ".json"), result);
                 CaseInputs.require(result.get("containerRemoved").getAsBoolean(), "Worker cleanup incomplete");
@@ -150,6 +203,13 @@ public final class RepairVerification {
     }
     private static InputSnapshot snapshot(JsonObject spec, String variant) {
         var hashes = spec.getAsJsonObject("inputs");
+        if (subscription(spec)) return new InputSnapshot(SubscriptionPeriodCase.CASE_ID, "stripe",
+                variant.equals("baseline") ? "2025-02-24.acacia" : "2025-07-30.basil",
+                new ContentDigest(hashes.get(variant.equals("candidate") ? "candidate.txt" : "baseline.txt").getAsString()),
+                new ContentDigest(CaseInputs.identity("bound-item-renewal-v1/subscription-period-v1")),
+                new ContentDigest(hashes.get("expectations.json").getAsString()), new ContentDigest(hashes.get("fixtures.json").getAsString()),
+                new ContentDigest(spec.get("harnessSha256").getAsString()),
+                new ContentDigest(CaseInputs.identity(new TreeMap<>(Map.of("imageId", spec.get("imageId"), "boundary", "repair-container-v1")))));
         return new InputSnapshot(CaseInputs.CASE_ID, "stripe", variant.equals("baseline") ? "2019-12-03" : "2020-08-27",
                 new ContentDigest(hashes.get(variant.equals("candidate") ? "candidate.txt" : "baseline.txt").getAsString()),
                 new ContentDigest(CaseInputs.identity(new TreeMap<>(Map.of("sdkSha256", CaseInputs.EXECUTABLES.get(variant.equals("baseline") ? "stripe-java-17.4.0.jar" : "stripe-java-20.33.0.jar"), "protocol", "host-service-v1")))),
@@ -176,8 +236,17 @@ public final class RepairVerification {
     }
     private static Map<String, JsonObject> indexed(JsonObject data) {
         var result = new LinkedHashMap<String, JsonObject>();
-        for (var item : data.getAsJsonArray("scenarios")) { var value = item.getAsJsonObject(); result.put(value.get("id").getAsString(), value); }
+        for (var item : data.getAsJsonArray("scenarios")) {
+            var value = item.getAsJsonObject(); String id = value.get("id").getAsString();
+            CaseInputs.require(id.matches("[a-z0-9-]+") && result.putIfAbsent(id, value) == null, "Invalid scenario identity");
+        }
         return result;
+    }
+    private static boolean subscription(JsonObject spec) {
+        if (!spec.has("protocol")) return false;
+        CaseInputs.require("subscription-period-v1".equals(spec.get("protocol").getAsString())
+                && SubscriptionPeriodCase.CASE_ID.equals(spec.get("caseId").getAsString()), "Unsupported verification protocol");
+        return true;
     }
     private static JsonObject read(Path path) throws IOException {
         CaseInputs.require(Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS) && Files.size(path) < 1048576, "Invalid verification record");
@@ -187,7 +256,9 @@ public final class RepairVerification {
     public static void main(String[] args) throws Exception {
         CaseInputs.require(args.length == 3 || args.length == 6, "Usage: RepairVerification start STATE CANDIDATE CASE DEPENDENCIES IMAGE | resume/cancel/revoke STATE ID");
         var verifier = new RepairVerification(Path.of(args[1])); String id;
-        if (args[0].equals("start") && args.length == 6) id = verifier.create(args[2], Path.of(args[3]), Path.of(args[4]), args[5]);
+        if (args[0].equals("subscription") && args.length == 6)
+            id = verifier.registerSubscription(Path.of(args[4]), sourceFile(Path.of(args[2])), sourceFile(Path.of(args[3])), args[5]);
+        else if (args[0].equals("start") && args.length == 6) id = verifier.create(args[2], Path.of(args[3]), Path.of(args[4]), args[5]);
         else { CaseInputs.require(args.length == 3 && Set.of("resume", "cancel", "revoke").contains(args[0]), "Invalid verification command"); id = args[2]; }
         System.out.println("Verification: " + id);
         if (args[0].equals("revoke")) verifier.revoke(id);
@@ -195,5 +266,9 @@ public final class RepairVerification {
         System.out.println("Status: " + result.get("status").getAsString());
         if (result.has("evaluation")) System.out.println("Evaluation: " + result.getAsJsonObject("evaluation").get("conclusion").getAsString());
         System.out.println("Result: " + verifier.directory(id).resolve("result.json"));
+    }
+    private static String sourceFile(Path path) throws IOException {
+        CaseInputs.require(Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS) && Files.size(path) <= 128000, "Invalid source file");
+        return Files.readString(path, StandardCharsets.UTF_8);
     }
 }

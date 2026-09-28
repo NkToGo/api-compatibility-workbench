@@ -89,9 +89,16 @@ class RepairSandboxContainerTest {
         assertTrue(result.get("containerRemoved").getAsBoolean());
     }
     @Test void killedControllerRecoversOwnedWorkersWithoutReplaying() throws Exception {
+        killedController(false);
+        killedController(true);
+    }
+    private void killedController(boolean subscription) throws Exception {
         Path state = Path.of(System.getProperty("workbench.repository"), "backend/target/repair-container-tests", UUID.randomUUID().toString());
         var verifier = new RepairVerification(state);
-        String id = verifier.register(RepairVerificationTest.inputs(), source("baseline"), "test-control", "b".repeat(64), image());
+        String id = subscription ? verifier.registerSubscription(SubscriptionVerificationTest.caseRoot(),
+                "public class PeriodConsumer { public static com.google.gson.JsonObject consume(com.google.gson.JsonObject s, String b) { while(true) {} } }",
+                SubscriptionSandboxContainerTest.source("selected.get(\"current_period_end\").getAsLong()"), image())
+                : verifier.register(RepairVerificationTest.inputs(), source("baseline"), "test-control", "b".repeat(64), image());
         Path directory = state.resolve("verifications").resolve(id);
         var spec = CaseInputs.object(Files.readAllBytes(directory.resolve("spec.json")));
         String first = spec.getAsJsonArray("jobs").get(0).getAsJsonObject().get("containerName").getAsString();

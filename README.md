@@ -52,8 +52,9 @@ A second [subscription-period case](cases/stripe-subscription-periods-2025-07-30
 executes authored controls against eight synthetic scenarios. It distinguishes
 item-aware repairs from first-item and minimum/maximum substitutions. A bounded
 [subscription candidate generator](docs/subscription-candidates.md) now proposes
-one repair or abstains from retained execution evidence; adaptive investigation
-remains pending. A [repeated repair evaluation](docs/subscription-repair-evaluation.md)
+one repair or abstains from retained execution evidence. A [subscription investigator](docs/subscription-investigation.md)
+now adaptively reads that evidence; connecting its findings to generation remains pending.
+A [repeated repair evaluation](docs/subscription-repair-evaluation.md)
 now records per-trial repairs, abstentions and operational failures on this case;
 broader repair-quality evaluation remains pending.
 Its [host-side result protocol](docs/subscription-period-protocol.md) now validates

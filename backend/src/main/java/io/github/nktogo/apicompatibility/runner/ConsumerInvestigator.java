@@ -16,7 +16,13 @@ public final class ConsumerInvestigator {
     private final Clock clock;
 
     public ConsumerInvestigator(Path state) throws IOException {
-        this(state.resolve("agents"), modelBackend(state), new InvestigationTools(state)::invoke, Clock.systemUTC());
+        this(state.resolve("agents"), modelBackend(state), toolBackend(state), Clock.systemUTC());
+    }
+    static Tools toolBackend(Path state) throws IOException {
+        var original = new InvestigationTools(state);
+        var subscription = new SubscriptionInvestigationTools(state);
+        return (context, tool, arguments) -> context.startsWith("subscription-investigation-")
+                ? subscription.invoke(context, tool, arguments) : original.invoke(context, tool, arguments);
     }
     ConsumerInvestigator(Path root, Models models, Tools tools, Clock clock) throws IOException {
         this.root = root.toAbsolutePath().normalize(); Files.createDirectories(this.root);

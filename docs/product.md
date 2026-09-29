@@ -41,7 +41,8 @@ A single [bounded investigator](consumer-investigator.md) can now read the curat
 customer-sources case, request its fixed test execution and return advisory findings.
 Scoped repair generation and separate protected verification are implemented for
 that extracted consumer. Subscription-period repair generation uses retained
-execution evidence directly; adaptive investigation for that case remains pending.
+execution evidence directly. Adaptive subscription investigation now reads retained
+evidence separately; connecting its findings to generation remains pending.
 Repeated subscription repair trials retain behavioral and operational outcomes.
 Coordinated agents and the repository-to-PR workflow are not implemented yet.
 Agent assertions cannot become test results merely because they conform to a schema.

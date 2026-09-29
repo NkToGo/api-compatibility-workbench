@@ -10,7 +10,7 @@ The checklist below is planned work unless explicitly marked implemented.
 | Capability | Customer sources | Subscription periods |
 | --- | --- | --- |
 | Authored baseline and repair controls | Implemented, five scenarios | Implemented, eight scenarios |
-| Adaptive read/test investigation | Implemented | Pending; generation currently reads retained evidence directly |
+| Adaptive investigation | Implemented with fixed execution tool | Implemented over retained execution; generation handoff pending |
 | Scoped generated candidate | Implemented | Implemented |
 | Separate protected candidate execution | Implemented | Implemented |
 | Repeated generated-repair suite | Pending | Implemented on one known case |

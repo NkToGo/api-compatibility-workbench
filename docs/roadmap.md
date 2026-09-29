@@ -71,7 +71,8 @@ adapters remain part of their later integration and operational milestones.
      separate. These use one case and do not measure semantic or repair accuracy.
    - **Implemented:** bounded unavailable-tool retries with preserved legacy sessions
      and per-trial usage counts for evaluating evidence-handling efficiency.
-   - **Pending:** broader repair/abstention evaluation and feedback beyond the reference case.
+   - **Pending:** complete the two-case repair and abstention acceptance exercise
+     defined in the [Milestone 3 checklist](milestone-3-acceptance.md).
    - **Implemented:** a distinct [subscription-period case](../cases/stripe-subscription-periods-2025-07-30/README.md)
      with independently declared application expectations and executable authored
      repair controls. Broader generated repair measurement remains pending.
@@ -92,6 +93,10 @@ adapters remain part of their later integration and operational milestones.
      held-out accuracy or abstention correctness.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
+
+The [acceptance checklist](milestone-3-acceptance.md) defines the remaining sequence,
+fixed trial conditions and exit thresholds. Milestone 3 remains open. Further
+provider families and automatic repair-feedback loops are not required to close it.
 
 ## Milestone 4 — Coordinate multiple investigations
 

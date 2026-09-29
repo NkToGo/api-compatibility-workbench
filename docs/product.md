@@ -38,17 +38,28 @@ directly. The team must be evaluated against deterministic tools, one capable ag
 and independent parallel workers under comparable budgets.
 
 A single [bounded investigator](consumer-investigator.md) can now read the curated
-case, request its fixed test execution and return advisory findings. The team and
-repair workflow are not implemented yet. Agent assertions cannot become test
-results merely because they conform to a schema.
+customer-sources case, request its fixed test execution and return advisory findings.
+Scoped repair generation and separate protected verification are implemented for
+that extracted consumer. Subscription-period repair generation uses retained
+execution evidence directly; adaptive investigation for that case remains pending.
+Repeated subscription repair trials retain behavioral and operational outcomes.
+Coordinated agents and the repository-to-PR workflow are not implemented yet.
+Agent assertions cannot become test results merely because they conform to a schema.
 
-## Planned system boundaries
+## Current and planned system boundaries
 
-The product API will own registration, access and review records. Durable workflows
-will own execution progress. Isolated workers will produce versioned artifacts;
-protected verification will run separately from repair. A credential broker will
-control authorized provider and GitHub actions. The first library does not yet
-enforce these process, storage or permission boundaries.
+The current host controller owns local registration, scoped execution permissions,
+durable attempt journals and retained evidence. Constrained containers execute the
+curated consumers and candidate source; the host owns behavioral assertions.
+A host-side model broker holds the API credential and enforces exact-request grants.
+Recovery retains ambiguous outcomes without automatically replaying dispatched work.
+These are single-host boundaries with trusted local storage, not multi-tenant controls.
+
+The planned product API will own organization access and maintainer review records.
+Selected repository access, provider actions, repair publication and distributed
+execution remain future integrations. No current result approves a deployment.
+The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) separates implemented
+evaluation machinery from the measurements still required before agent coordination.
 
 The full release should include an installable application, documented operations,
 cost and execution visibility, recoverable campaigns and a public gallery of

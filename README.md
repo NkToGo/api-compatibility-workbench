@@ -144,6 +144,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)
 - [Investigation evidence-availability evaluation](docs/investigation-evaluation.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
+- [Milestone 3 acceptance criteria and remaining work](docs/milestone-3-acceptance.md)
 - [Development workflow](CONTRIBUTING.md)
 - [First-step review guide](docs/reviews/m1-step-1.md)
 

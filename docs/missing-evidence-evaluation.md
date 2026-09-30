@@ -96,7 +96,9 @@ completed-response input/output tokens and artifact identities.
 | `TECHNICAL_UNRESOLVED` | An unrelated tool failure, invalid execution authority or incomplete execution confounds the decision |
 | `INVESTIGATION_FAILED` | Runtime rejection, invalid output, exhausted bounds, provider failure or unknown outcome; no explicit abstention credit |
 
-All rows have `semanticReview: PENDING`. A structurally accepted citation and an
+The immutable raw rows have `semanticReview: PENDING`. A separate
+[claim-level review](missing-evidence-review.md) now records judgments for the
+measurement below without rewriting those rows. A structurally accepted citation and an
 encountered missing tool do not prove that the explanation accurately describes
 the limitation or avoids unsupported claims. Review each rationale against its
 cited events before crediting the [Milestone 3 acceptance criterion](milestone-3-acceptance.md).
@@ -108,8 +110,9 @@ completed responses only; incomplete or unknown requests can also incur charges.
 Suite `evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f` ran on 30 September 2026
 with `gpt-5.6-terra`, three repetitions per cell and the existing 12-decision
 per-investigator bound. All 12 trials explicitly abstained after encountering the
-withheld operation; none had an unrelated tool failure. Every rationale remains
-pending semantic review. No repairs were generated or credited.
+withheld operation; none had an unrelated tool failure. The raw report leaves
+semantic review pending; the separate bound review covers all 12 rationales.
+No repairs were generated or credited.
 
 | Case | Withheld evidence | Abstentions after injected failure | Registered calls | Recorded input/output tokens |
 | --- | --- | --- | --- | --- |
@@ -130,5 +133,6 @@ execution, session and event hashes remain in the retained suite.
 
 Completed resume preserved the result bytes and registered zero additional model
 calls. No case-worker containers remained. These are repeated known-case decision
-measurements; they do not establish supported explanations, satisfy the semantic
-acceptance criterion or estimate general model accuracy. Milestone 3 remains open.
+measurements; by themselves they do not establish supported explanations, satisfy
+the semantic acceptance criterion or estimate general model accuracy. The separate
+review supplies bounded semantic judgments. Milestone 3 remains open.

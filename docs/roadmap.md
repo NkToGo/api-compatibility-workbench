@@ -110,7 +110,12 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** [repeated two-case missing-evidence investigations](missing-evidence-evaluation.md)
      with fresh contexts, blocked source/execution aliases, sealed trial inputs and
      retained operational failures. Decision checks do not establish supported
-     explanations; semantic acceptance review remains pending.
+     explanations.
+   - **Implemented:** [bound claim-level review of missing-evidence explanations](missing-evidence-review.md)
+     with per-summary/finding judgments against recorded tool evidence, complete
+     claim coverage and an offline metadata checker. All 12 reviewed abstention
+     reasons are supported within the recorded scope. Sufficient-evidence finding
+     review and the complete acceptance report remain pending.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

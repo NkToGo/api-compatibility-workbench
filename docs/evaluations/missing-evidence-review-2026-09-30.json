@@ -1,0 +1,502 @@
+{
+  "formatVersion": 1,
+  "reviewId": "missing-evidence-2026-09-30",
+  "reviewedOn": "2026-09-30",
+  "evaluationId": "evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f",
+  "repositoryRevision": "3cd608126bc95866d17330960b088356f9c6ae95",
+  "method": "Model-assisted claim-level inspection of visible summaries, findings and recorded tool events; no independent human adjudication.",
+  "scope": "Supported operational abstention reasons in two curated synthetic cases; not repair quality, live provider availability or general model accuracy.",
+  "storeArtifacts": {
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/suite.json": "83d5fda5af1374fa1ec052162bf37a1dd220ede13394501a9e614662dfd1ac5e",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/result.json": "c62b0e71fa00de8bd4a0cd9e0084da96275d70eae1e6528c3657d27048669491",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-1/agent.json": "462920a24c2ec50e0ca6d7ab65f1f91b8e6577d1af0e1f5bc5902de39251d1c6",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-1/agents/agent-c6a09d3b-562c-4fb1-b99e-955221a08420/result.json": "56e73715d37a64d313e82ad5de27a01c6e54533d616204cdc3f8e18a53ac3261",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-1/agents/agent-c6a09d3b-562c-4fb1-b99e-955221a08420/session.json": "09e937eacffcd377efb661dfc829abec62f33b94150e7c7abdf8e9d366d11238",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-1/agents/agent-c6a09d3b-562c-4fb1-b99e-955221a08420/event-1.json": "4c5903b47e32a785eb9ea61518d4624622748bc67c55e5e7c83aea6ac07aa12f",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-1/agents/agent-c6a09d3b-562c-4fb1-b99e-955221a08420/event-2.json": "24967991d000557be90d1cd9fff005c02f134ff34c22fe7c2eea141b656d62ca",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-2/agent.json": "d311620f4920d2d1f6cbf520ac6d39fabbe8d7bef13514c998401c1258f423a9",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-2/agents/agent-fb1cb5f8-0e87-4e6d-a453-c38aa304d372/result.json": "e57b79270aca31f54b2ce2b2823e569358e51bde2a41142ebf24b56499c6958b",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-2/agents/agent-fb1cb5f8-0e87-4e6d-a453-c38aa304d372/session.json": "6fd808c7b69afc81e07a6fdb3c4208026092c834de951c97fe0b135582ce68c0",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-2/agents/agent-fb1cb5f8-0e87-4e6d-a453-c38aa304d372/event-1.json": "218bb4ffcc6ad642c6b0d6cee69e1b1d90a6b70e455cfc2fac1aa1c33ce1c2b9",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-2/agents/agent-fb1cb5f8-0e87-4e6d-a453-c38aa304d372/event-2.json": "a0ca5b1bc46c420a39ce339a4f350108bcea6dec4de88a8e77dd74b185206220",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-3/agent.json": "bfbbd9b2b3fab4467d059d903402e3dfcd7b44fc6f9978819ea42004179359f5",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-3/agents/agent-775359ce-2cb9-415b-824a-a94c38a93d9c/result.json": "a65820628111c175dd41dedc179f22f0c720dcdc4044e529ad62442ca7be7a29",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-3/agents/agent-775359ce-2cb9-415b-824a-a94c38a93d9c/session.json": "703c0160ad02b14e6cfe8abc7f1fd38723bd544358da1330aed65cbd72063a93",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-3/agents/agent-775359ce-2cb9-415b-824a-a94c38a93d9c/event-1.json": "91e0892bfc579a1c3eea42c347472a0496867bd6536dea396307a4234e30785c",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-3/agents/agent-775359ce-2cb9-415b-824a-a94c38a93d9c/event-2.json": "13f27279cb497faf3f39b280e2b4613eaf366b0392b0d65229c81d9f58621de5",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-4/agent.json": "4094444664feed766eff13a0215bf7d834f15bc500580142db77f56c003b88e0",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-4/agents/agent-88f98da5-6314-412b-b03f-155fea4a7b52/result.json": "3b3f085e2fe88a363b78522d04dbaa7627cdf06f781f3aa669e6bc196789453b",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-4/agents/agent-88f98da5-6314-412b-b03f-155fea4a7b52/session.json": "e439bcc8f8bf2f4cc9d3e9da54cbf8115f086894825ed37724b5dca266db6c11",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-4/agents/agent-88f98da5-6314-412b-b03f-155fea4a7b52/event-1.json": "6fe10f1766dfc58d6eacb6d53cdf1d6cc0ae93a34adc53f8ed4592314a57f679",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-4/agents/agent-88f98da5-6314-412b-b03f-155fea4a7b52/event-2.json": "771548fbe597e33b98fcedd1efa06ee8fe5acfb1b1f8324691819f4ec56cbb9b",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-4/agents/agent-88f98da5-6314-412b-b03f-155fea4a7b52/event-3.json": "21f24403fd6f61001132fcb7956b61d7fa46f81f3af3c589788973d10a2fc02b",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-4/agents/agent-88f98da5-6314-412b-b03f-155fea4a7b52/event-4.json": "c5d8abc3e905dd608ee7b6344ce9b102e21ec93555d94884ad75e146c487b216",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-5/agent.json": "312751324cbdfc98f7e415e83b3e05d3451a5aaa16a3c2ff84a2387405f3c087",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-5/agents/agent-842f46f3-f382-455c-b06c-1e2b364016e1/result.json": "8c5203db73fcd121adf2abeec3195daad08e54a36efebec73b6c7868d57dcbb2",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-5/agents/agent-842f46f3-f382-455c-b06c-1e2b364016e1/session.json": "83918e98fe009c19b0fa7df1959bf93e1bb42591f98ca8b2ae0e071c66bbadc6",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-5/agents/agent-842f46f3-f382-455c-b06c-1e2b364016e1/event-1.json": "bafca76f67ce66ea4281dbd5cb239acd923cb0094c89ede66829c4c1a5555fa5",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-5/agents/agent-842f46f3-f382-455c-b06c-1e2b364016e1/event-2.json": "ea59a25c4cf9e3ab306f1d01603746c2ee66b808be955c2d7d05723595a50fbc",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-5/agents/agent-842f46f3-f382-455c-b06c-1e2b364016e1/event-3.json": "f32ec7733dd0aa6380d3b85ee6a592d304d5cec2d24e034fe923347697ecf53f",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-5/agents/agent-842f46f3-f382-455c-b06c-1e2b364016e1/event-4.json": "96075f9c261c14d21b5f7dae9daecdc985abf667c35167458c80488bcccfc5c4",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-6/agent.json": "a667a4f113fa053f428a44878a95cbd562587db9b09a10b4f5a40f427b177447",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-6/agents/agent-01195412-7990-43d7-bad5-8da589f1e344/result.json": "aa0622d4d4729db5c7eeb90c59ed8a52d64fa02c9ea20a467c2fb8e359be7f04",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-6/agents/agent-01195412-7990-43d7-bad5-8da589f1e344/session.json": "4c57b08de98a3d0776042062e87da07273e420e75921905121563b6f02ef3033",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-6/agents/agent-01195412-7990-43d7-bad5-8da589f1e344/event-1.json": "4f5572ba567f5bc99b46d2030a2c686833b85474e92d06d86254f15150960cc4",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-6/agents/agent-01195412-7990-43d7-bad5-8da589f1e344/event-2.json": "54adff3b3ade6cf9a2c687e6f45d9ce6b09578e77d0c24c5955b637f59b8c306",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-6/agents/agent-01195412-7990-43d7-bad5-8da589f1e344/event-3.json": "f1ee8c5cae3c2f023db407e5b28576b4a1ac00f7e76c01580fc8be36b851b141",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-7/agent.json": "0e83fb333148fe79b18675e232475e37999a1540de81bf779309b30c1d03e34d",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-7/agents/agent-3b21faca-44b0-4aba-9be8-33fef45d75cf/result.json": "1a05d827883e3547e55067eff3408469329ef7528eef611958cf060538bc4f58",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-7/agents/agent-3b21faca-44b0-4aba-9be8-33fef45d75cf/session.json": "ca8b330ddf5f69b00ec2622282f152dfc829e5e94aca018266e85d81589a8d59",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-7/agents/agent-3b21faca-44b0-4aba-9be8-33fef45d75cf/event-1.json": "90903ef27ac2eac9c2f245fd1e203ef02bb590815faeab2db52efb9d1b0612a6",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-7/agents/agent-3b21faca-44b0-4aba-9be8-33fef45d75cf/event-2.json": "269d5df6a3662b008f933daba0b3881f1c90a805bd06915f7aaf6138aba593b2",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-8/agent.json": "5b9a8dd7eecec0a64e911f3586bd8175ee3e3c325807a96ae3190c549ef1bd08",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-8/agents/agent-7c13428c-7274-45c4-bd54-171d78ba0463/result.json": "dbdf031b49c4bbeca8cc8190b37c3e9e1b210707566a633af414930ed5886ae3",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-8/agents/agent-7c13428c-7274-45c4-bd54-171d78ba0463/session.json": "6316d1cdfc8d5fc1b50f7951ed6f393cdf2455b070f083eb2088f64a57e52087",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-8/agents/agent-7c13428c-7274-45c4-bd54-171d78ba0463/event-1.json": "568e30e57ef11153aeaab5e04310977348b4b116a5de70329afc00c4952270a7",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-8/agents/agent-7c13428c-7274-45c4-bd54-171d78ba0463/event-2.json": "08a0f688fe55d585d07484c9793aa2e34b1005cf6dc314b3d7c2495366f8f26d",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-9/agent.json": "525be7333d3567782f4366afee38d6b3a3a6cf15ba4026573d8c0948c0bf17cc",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-9/agents/agent-43db148e-af2a-416d-b53d-0bf70f28d313/result.json": "8419e97d8d6783d7381ecd09cec02b1f5169aedecce9f1d348d4428a1d1df1ea",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-9/agents/agent-43db148e-af2a-416d-b53d-0bf70f28d313/session.json": "cb6261086c9e5bdba09a58d8baaa983840298e25e12ecefba27fac90134441ce",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-9/agents/agent-43db148e-af2a-416d-b53d-0bf70f28d313/event-1.json": "c2ed045b85c8c49d86882df06a6262e2f337cd6f7f60a05e6e1b5958058b07c2",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-9/agents/agent-43db148e-af2a-416d-b53d-0bf70f28d313/event-2.json": "2933c7564e60451f4699a04673b22b98c44c357695b39d606e0a50feb5b6585f",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-10/agent.json": "e4f626dd65149c0c507a118dff102c39ff4820a85d1366a4118ac36c4d74006d",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-10/agents/agent-69de6963-f145-4845-8a39-737191789e26/result.json": "cb56969c4dc34a80f0c753a00a40ecc8c18adc9e25b8f4972d0114ad1f080481",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-10/agents/agent-69de6963-f145-4845-8a39-737191789e26/session.json": "e37a4d34389ed32a2a68b00a66241104502bcd278f5afbb9f5d2ba330ad5a90c",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-10/agents/agent-69de6963-f145-4845-8a39-737191789e26/event-1.json": "7c00cc033b67739dd6f8fdfb668a9b29ab518ab3b10b5f7d767d482cde2a73fa",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-10/agents/agent-69de6963-f145-4845-8a39-737191789e26/event-2.json": "07f81d9b5f6f1db4b3bbf505bdf3772f17c6a5700ccf31b5b1bda0da50de666e",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-10/agents/agent-69de6963-f145-4845-8a39-737191789e26/event-3.json": "18a83d2e65f03b4545ff203b438842bd646f2f01ad5e44a1cdff85427f3d1b6b",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-11/agent.json": "1c59c734f86195b2f048e45486303ce8e60276c8cb694b3808ea90a1651b530f",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-11/agents/agent-e95de88e-5385-4664-a1df-0353f6b25fca/result.json": "d25dd9e2c5a6bd9ed21ff0bd548603dcc67963365c44de3cf7693372cb0b21f4",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-11/agents/agent-e95de88e-5385-4664-a1df-0353f6b25fca/session.json": "bdf3291b5f6d9e2e2007ded0a3089c85895d8c7b1d032081a72cbb096460da73",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-11/agents/agent-e95de88e-5385-4664-a1df-0353f6b25fca/event-1.json": "37ccac451a2755c0c93a427d2eb7e3fdd1478279aa7a095f7b389d17aa6e381f",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-11/agents/agent-e95de88e-5385-4664-a1df-0353f6b25fca/event-2.json": "e914bd7c2bc746ee932c90361f45d0f6ae1d68ae00db139bc564b01e52c2a218",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-11/agents/agent-e95de88e-5385-4664-a1df-0353f6b25fca/event-3.json": "9d4b982ae6a20ed5caded05a31450b679dc579c2570724668e856640a55efe10",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-12/agent.json": "b1a2a0128298ca913a7eeb35ff67771395818bcb26c8698500023f0489670ebf",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-12/agents/agent-05e7e5e3-297a-4544-b6e6-98d97ce5f739/result.json": "306f616dce2e3d20f2ae9ec10dc80affbef5798cbea6a4a840d7bf192da298c7",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-12/agents/agent-05e7e5e3-297a-4544-b6e6-98d97ce5f739/session.json": "902ac79fa25916c5fb35f76646f94ad7c7eed9fbe9c9d460e9ee6226e9c99142",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-12/agents/agent-05e7e5e3-297a-4544-b6e6-98d97ce5f739/event-1.json": "e9d2cb4b6e6e7030fcf60b289fb75d58559148c5a0c38628b5bb38ad0357fd53",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-12/agents/agent-05e7e5e3-297a-4544-b6e6-98d97ce5f739/event-2.json": "9cc64e0e786cf522093b39649f0376e8b8f1bf7118d5bec403d7a6f721896a4e",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/trial-12/agents/agent-05e7e5e3-297a-4544-b6e6-98d97ce5f739/event-3.json": "b0025244ebe17cfd7f92a3d3c94a26dee33e35ecbab3740b8c7d9297fcdff6a2"
+  },
+  "repositoryArtifacts": {
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvestigationDecision.java": "7b56418fde507f6dac21fba49480016d8c4f6812b3eb392ec4940b15d8f2819c",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/ConsumerInvestigator.java": "e64923f3395dbed2a33b44472b4fcc3c2663ed22f5f1c60eea87d8fcb5e2487e",
+    "docs/compatibility-contract.md": "1a9f61f5e332b530ce339009c5c62503024e935ffd39c66bff2d9a2860fea562"
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "registration": {
+        "caseKind": "CUSTOMER_SOURCES",
+        "condition": "SOURCE_UNAVAILABLE",
+        "repetition": 1,
+        "contextId": "investigation-7f161799-e799-4838-b3fa-4c05b18c7aab"
+      },
+      "agentId": "agent-c6a09d3b-562c-4fb1-b99e-955221a08420",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Abstained because the required baseline source was unavailable twice; no completed execution was requested because baseline evidence is mandatory for an investigated result.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "Required baseline-source evidence could not be obtained: both permitted access attempts returned UNAVAILABLE. Without baseline access, the consumer assumptions cannot be compared against the registered baseline.",
+          "citations": [
+            "event-1",
+            "event-2"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+        }
+      ]
+    },
+    {
+      "trial": 2,
+      "registration": {
+        "caseKind": "CUSTOMER_SOURCES",
+        "condition": "SOURCE_UNAVAILABLE",
+        "repetition": 2,
+        "contextId": "investigation-d0486a5c-b8d3-48a7-b872-3141882387c2"
+      },
+      "agentId": "agent-fb1cb5f8-0e87-4e6d-a453-c38aa304d372",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Abstained: required baseline-source access is unavailable, and no completed execution evidence was obtained. Therefore no supported compatibility findings can be reported.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "The required baseline-source could not be retrieved after the two permitted attempts, so the consumer baseline cannot be assessed.",
+          "citations": [
+            "event-1",
+            "event-2"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+        }
+      ]
+    },
+    {
+      "trial": 3,
+      "registration": {
+        "caseKind": "CUSTOMER_SOURCES",
+        "condition": "SOURCE_UNAVAILABLE",
+        "repetition": 3,
+        "contextId": "investigation-3f49cdee-e0ed-4fbd-818c-fb000ec8cd22"
+      },
+      "agentId": "agent-775359ce-2cb9-415b-824a-a94c38a93d9c",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Unable to investigate compatibility because required baseline-source access is unavailable. No execution was requested, since the required baseline evidence remains missing.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "Required baseline-source evidence could not be retrieved: both permitted access attempts returned UNAVAILABLE. Under the investigation protocol, no further attempt may be made.",
+          "citations": [
+            "event-1",
+            "event-2"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+        }
+      ]
+    },
+    {
+      "trial": 4,
+      "registration": {
+        "caseKind": "CUSTOMER_SOURCES",
+        "condition": "EXECUTION_UNAVAILABLE",
+        "repetition": 1,
+        "contextId": "investigation-51443954-b7f7-4984-8ed5-729ad644b7cf"
+      },
+      "agentId": "agent-88f98da5-6314-412b-b03f-155fea4a7b52",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Baseline source access was established, but the required execution evidence could not be obtained because both allowed execution attempts returned UNAVAILABLE. I therefore cannot investigate this migration case to a supported conclusion.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2",
+          "event-3",
+          "event-4"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The subsequent source page does not change the failed execution reads or establish runtime behavior."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "The fixed case execution was unavailable on both permitted attempts, so no COMPLETED execution evidence was obtained. Compatibility, observed failure mode, and consumer-impact conclusions cannot be established.",
+          "citations": [
+            "event-2",
+            "event-3"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The subsequent source page does not change the failed execution reads or establish runtime behavior."
+        }
+      ]
+    },
+    {
+      "trial": 5,
+      "registration": {
+        "caseKind": "CUSTOMER_SOURCES",
+        "condition": "EXECUTION_UNAVAILABLE",
+        "repetition": 2,
+        "contextId": "investigation-f0f92002-81f3-448d-acea-18c564fa684c"
+      },
+      "agentId": "agent-842f46f3-f382-455c-b06c-1e2b364016e1",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Investigation abstained: baseline source was accessed, but the required completed execution could not be obtained after two unavailable execution attempts. No conclusion about the consumer’s runtime assumptions or migration compatibility is supported.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2",
+          "event-3",
+          "event-4"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The subsequent source page does not change the failed execution reads or establish runtime behavior."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "The fixed case execution was unavailable on both permitted attempts, so no COMPLETED execution evidence was obtained and compatibility cannot be assessed from source excerpts alone.",
+          "citations": [
+            "event-2",
+            "event-3"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The subsequent source page does not change the failed execution reads or establish runtime behavior."
+        }
+      ]
+    },
+    {
+      "trial": 6,
+      "registration": {
+        "caseKind": "CUSTOMER_SOURCES",
+        "condition": "EXECUTION_UNAVAILABLE",
+        "repetition": 3,
+        "contextId": "investigation-a93a615e-6650-4a2d-8fda-c5bfa18272b2"
+      },
+      "agentId": "agent-01195412-7990-43d7-bad5-8da589f1e344",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Investigation abstained because the required fixed execution could not be obtained after two unavailable attempts. Baseline-source access succeeded, but no compatibility conclusion is supported without completed run evidence.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2",
+          "event-3"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "The fixed case execution was unavailable on both permitted attempts, so no COMPLETED execution evidence was obtained. Compatibility, observed failures, and consumer assumptions therefore cannot be assessed from a run.",
+          "citations": [
+            "event-2",
+            "event-3"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one."
+        },
+        {
+          "index": 2,
+          "kind": "LIMITATION",
+          "statement": "Baseline source access was established, but only its initial page was read; without completed execution evidence, the excerpt cannot validate any migration behavior or repair.",
+          "citations": [
+            "event-1"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "The complete history contains one successful source page, event-1: offset 0, nextOffset 4000, totalCharacters 8207. No later source page was read. Events event-2 and event-3 returned UNAVAILABLE for execution. The statement correctly distinguishes a partial source read from behavioral verification."
+        }
+      ]
+    },
+    {
+      "trial": 7,
+      "registration": {
+        "caseKind": "SUBSCRIPTION_PERIODS",
+        "condition": "SOURCE_UNAVAILABLE",
+        "repetition": 1,
+        "contextId": "subscription-investigation-2fab4f53-1551-4300-8519-e8767cbb1faa"
+      },
+      "agentId": "agent-3b21faca-44b0-4aba-9be8-33fef45d75cf",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Abstained because required baseline-source evidence was unavailable after both permitted attempts. No compatibility finding or repair assessment is supported.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "The required baseline source could not be accessed: both permitted retrieval attempts returned UNAVAILABLE. Without that source, the registered consumer assumptions cannot be compared against the baseline.",
+          "citations": [
+            "event-1",
+            "event-2"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+        }
+      ]
+    },
+    {
+      "trial": 8,
+      "registration": {
+        "caseKind": "SUBSCRIPTION_PERIODS",
+        "condition": "SOURCE_UNAVAILABLE",
+        "repetition": 2,
+        "contextId": "subscription-investigation-4d1ad542-008b-482e-ab43-b79b9f72e310"
+      },
+      "agentId": "agent-7c13428c-7274-45c4-bd54-171d78ba0463",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Investigation abstained: required baseline-source evidence is unavailable. No compatibility conclusion or inferred migration cause is supported.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "The required baseline-source could not be accessed after two UNAVAILABLE responses, so the consumer implementation and its assumptions could not be inspected.",
+          "citations": [
+            "event-1",
+            "event-2"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+        }
+      ]
+    },
+    {
+      "trial": 9,
+      "registration": {
+        "caseKind": "SUBSCRIPTION_PERIODS",
+        "condition": "SOURCE_UNAVAILABLE",
+        "repetition": 3,
+        "contextId": "subscription-investigation-ffe32f0a-bb64-455d-9813-bc998af84019"
+      },
+      "agentId": "agent-43db148e-af2a-416d-b53d-0bf70f28d313",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Abstained because required baseline-source access remained unavailable after both allowed attempts. No compatibility conclusion or repair assessment is supported.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "The required baseline-source could not be retrieved: both permitted access attempts returned UNAVAILABLE. Without that source, the required baseline evidence is missing, so the consumer assumptions cannot be assessed reliably.",
+          "citations": [
+            "event-1",
+            "event-2"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-1 and event-2 are baseline-source reads that both returned UNAVAILABLE. No successful source page or execution observation appears in the history. Required baseline access and the two-response retry limit are declared in investigation-v2. The explanation reports an access limitation, not an observed provider defect."
+        }
+      ]
+    },
+    {
+      "trial": 10,
+      "registration": {
+        "caseKind": "SUBSCRIPTION_PERIODS",
+        "condition": "EXECUTION_UNAVAILABLE",
+        "repetition": 1,
+        "contextId": "subscription-investigation-17e6b964-28de-4b97-8598-74b69a990df5"
+      },
+      "agentId": "agent-69de6963-f145-4845-8a39-737191789e26",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Unable to investigate compatibility because required completed execution evidence could not be obtained. The baseline source was accessed, but the retained execution record was unavailable twice.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2",
+          "event-3"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The session declares retained-only execution: these attempts retrieved evidence, not new worker execution. The limitation is availability to this investigator, not absence of the retained verification."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "Completed execution evidence is unavailable: both permitted execution retrieval attempts returned UNAVAILABLE, and no further execution request is allowed.",
+          "citations": [
+            "event-2",
+            "event-3"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The session declares retained-only execution: these attempts retrieved evidence, not new worker execution. The limitation is availability to this investigator, not absence of the retained verification."
+        }
+      ]
+    },
+    {
+      "trial": 11,
+      "registration": {
+        "caseKind": "SUBSCRIPTION_PERIODS",
+        "condition": "EXECUTION_UNAVAILABLE",
+        "repetition": 2,
+        "contextId": "subscription-investigation-ac39165c-a3fc-47f5-ab00-5c3e7d53f8fc"
+      },
+      "agentId": "agent-e95de88e-5385-4664-a1df-0353f6b25fca",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Baseline source was accessed, but the required completed execution evidence remains unavailable after two execution attempts. I cannot investigate the migration case to a supported conclusion.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2",
+          "event-3"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The session declares retained-only execution: these attempts retrieved evidence, not new worker execution. The limitation is availability to this investigator, not absence of the retained verification."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "Completed execution evidence could not be obtained: both permitted execution requests returned UNAVAILABLE. The registered process therefore cannot be assessed for compatibility from run evidence.",
+          "citations": [
+            "event-2",
+            "event-3"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The session declares retained-only execution: these attempts retrieved evidence, not new worker execution. The limitation is availability to this investigator, not absence of the retained verification."
+        }
+      ]
+    },
+    {
+      "trial": 12,
+      "registration": {
+        "caseKind": "SUBSCRIPTION_PERIODS",
+        "condition": "EXECUTION_UNAVAILABLE",
+        "repetition": 3,
+        "contextId": "subscription-investigation-2b0356d8-e4fe-438a-b748-6d9e9af0c889"
+      },
+      "agentId": "agent-05e7e5e3-297a-4544-b6e6-98d97ce5f739",
+      "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+      "summary": {
+        "text": "Abstained because no completed execution evidence is available. Baseline source access was obtained, but compatibility cannot be assessed from source alone.",
+        "evidenceEvents": [
+          "event-1",
+          "event-2",
+          "event-3"
+        ],
+        "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The session declares retained-only execution: these attempts retrieved evidence, not new worker execution. The limitation is availability to this investigator, not absence of the retained verification."
+      },
+      "findings": [
+        {
+          "index": 1,
+          "kind": "LIMITATION",
+          "statement": "Required completed execution evidence could not be obtained: both permitted execution attempts returned UNAVAILABLE. The execution resource must not be retried.",
+          "citations": [
+            "event-2",
+            "event-3"
+          ],
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "rationale": "Events event-2 and event-3 both returned UNAVAILABLE for run_case. No completed execution observation appears in the history. Successful baseline-source access is recorded separately in event-1. The declared evidence contract requires execution observations before a behavioral compatibility conclusion; source access alone cannot establish one. The session declares retained-only execution: these attempts retrieved evidence, not new worker execution. The limitation is availability to this investigator, not absence of the retained verification."
+        }
+      ]
+    }
+  ]
+}

@@ -15,13 +15,18 @@ The checklist below is planned work unless explicitly marked implemented.
 | Separate protected candidate execution | Implemented | Implemented |
 | Repeated generated-repair suite | Implemented with fresh investigations | Implemented on one known case |
 | Controlled evidence-availability investigation trials | Implemented, repeated missing-evidence suite | Implemented, repeated missing-evidence suite |
-| Semantic review of findings and abstention rationale | Pending | Pending |
+| Semantic review of findings and abstention rationale | Missing-evidence rationales reviewed; sufficient-evidence findings pending | Missing-evidence rationales reviewed; sufficient-evidence findings pending |
 
 Automated tests of the evaluator establish runtime behavior, not model quality.
 The availability suites check encountered tool failures and decision statuses;
 they do not establish that a written explanation is supported. The
 [repeated missing-evidence suite](missing-evidence-evaluation.md) covers both cases
-with separate fresh contexts and leaves each semantic review explicitly pending.
+with separate fresh contexts and leaves its raw semantic-review fields pending.
+A separate [claim-level review](missing-evidence-review.md) covers all 12 summaries
+and 13 findings from the repeated missing-evidence measurement: each is supported
+within its recorded scope. The review is model-assisted, with no independent human
+adjudication; it is not a general correctness claim. Sufficient-evidence finding
+review remains pending.
 The existing subscription repair suite measures repeated behavioral results but
 does not judge abstention correctness. These suites are not held-out evaluations.
 

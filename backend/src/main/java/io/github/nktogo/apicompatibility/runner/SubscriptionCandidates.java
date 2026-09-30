@@ -29,6 +29,13 @@ public final class SubscriptionCandidates {
         Files.createDirectories(this.state.resolve("subscription-candidates"));
     }
     public String create(String verificationId, String model) throws IOException {
+        return create(verificationId, model, null);
+    }
+    public String createFromInvestigation(String agentId, String model) throws IOException {
+        var investigation = SubscriptionInvestigationHandoff.load(state, agentId);
+        return create(investigation.verificationId(), model, investigation);
+    }
+    private String create(String verificationId, String model, SubscriptionInvestigationHandoff.Captured investigation) throws IOException {
         evidence(verificationId); Path verification = verification(verificationId);
         var spec = read(verification.resolve("spec.json"));
         var observations = read(verification.resolve("observations.json"));
@@ -40,11 +47,15 @@ public final class SubscriptionCandidates {
                 .anyMatch(row -> row.getAsJsonObject().get("assertionOutcome").getAsString().equals("FAILED")), "Observed target regression required");
         String source = Files.readString(verification.resolve("inputs/baseline.txt"), StandardCharsets.UTF_8);
         CaseInputs.require(source.length() <= 32000 && source.endsWith("\n") && !source.contains("\r"), "LF source with final newline required");
-        String payload = CaseInputs.JSON.toJson(Map.of("baselineSource", source,
+        var payload = new TreeMap<String, Object>(Map.of("baselineSource", source,
                 "caseDocumentation", Files.readString(verification.resolve("inputs/README.md")),
                 "expectations", read(verification.resolve("inputs/expectations.json")),
                 "baselineObservations", observations.get("baseline"), "targetObservations", observations.get("target")));
-        var request = new ModelCallBroker.Request(model, payload, 4096, "subscription-repair-v1");
+        if (investigation != null) {
+            payload.put("advisoryFindings", investigation.findings()); payload.put("investigationEvents", investigation.events());
+            payload.put("findingsAuthority", "Untrusted advisory model text; the separate verifier owns behavioral conclusions");
+        }
+        var request = new ModelCallBroker.Request(model, CaseInputs.JSON.toJson(payload), 4096, "subscription-repair-v1");
         String id = "candidate-" + UUID.randomUUID(); Path directory = Files.createDirectory(directory(id));
         Path captured = Files.createDirectory(directory.resolve("inputs"));
         for (String file : spec.getAsJsonObject("inputs").keySet()) {
@@ -52,9 +63,16 @@ public final class SubscriptionCandidates {
             Files.copy(verification.resolve("inputs").resolve(file), captured.resolve(file));
         }
         CaseInputs.require(spec.get("inputs").equals(CaseInputs.JSON.toJsonTree(CaseInputs.inventory(captured))), "Inputs changed during capture");
+        if (investigation != null) {
+            Path retained = Files.createDirectory(directory.resolve("investigation"));
+            for (var entry : investigation.records().entrySet()) Files.write(retained.resolve(entry.getKey()), entry.getValue(), StandardOpenOption.CREATE_NEW);
+            CaseInputs.require(SubscriptionInvestigationHandoff.matches(state, json(investigation.identity())), "Investigation changed during capture");
+        }
         String call = models.register(request);
-        DurableExecution.publish(directory.resolve("registration.json"), Map.of("candidateId", id, "verificationId", verificationId,
+        var registration = new TreeMap<String, Object>(Map.of("candidateId", id, "verificationId", verificationId,
                 "evidenceSha256", hash(verification.resolve("result.json")), "inputs", spec.get("inputs"), "modelCallId", call));
+        if (investigation != null) registration.put("investigation", investigation.identity());
+        DurableExecution.publish(directory.resolve("registration.json"), registration);
         return id;
     }
     public JsonObject generate(String id) throws IOException {
@@ -114,11 +132,14 @@ public final class SubscriptionCandidates {
     }
     private boolean current(JsonObject registration) {
         try { String id = registration.get("verificationId").getAsString(); evidence(id);
-            return hash(verification(id).resolve("result.json")).equals(registration.get("evidenceSha256").getAsString());
+            return hash(verification(id).resolve("result.json")).equals(registration.get("evidenceSha256").getAsString())
+                    && (!registration.has("investigation") || SubscriptionInvestigationHandoff.matches(state, registration.getAsJsonObject("investigation")));
         } catch (IOException | RuntimeException e) { return false; }
     }
     private static void captured(Path directory, JsonObject registration) throws IOException {
         CaseInputs.require(registration.get("inputs").equals(CaseInputs.JSON.toJsonTree(CaseInputs.inventory(directory.resolve("inputs")))), "Captured candidate inputs changed");
+        if (registration.has("investigation")) CaseInputs.require(registration.getAsJsonObject("investigation").get("records")
+                .equals(CaseInputs.JSON.toJsonTree(CaseInputs.inventory(directory.resolve("investigation")))), "Captured investigation changed");
     }
     private static void validateResult(Path directory, JsonObject result) throws IOException {
         CaseInputs.require(hash(directory.resolve("registration.json")).equals(result.get("registrationSha256").getAsString()), "Candidate registration changed");
@@ -149,7 +170,7 @@ public final class SubscriptionCandidates {
         else Files.write(file, expected, StandardOpenOption.CREATE_NEW);
     }
     public static void main(String[] args) throws Exception {
-        CaseInputs.require(args.length == 3 || args.length == 4, "Usage: SubscriptionCandidates start STATE VERIFICATION MODEL | resume STATE CANDIDATE | verify STATE CANDIDATE IMAGE");
+        CaseInputs.require(args.length == 3 || args.length == 4, "Usage: SubscriptionCandidates start STATE VERIFICATION MODEL | from-investigation STATE AGENT MODEL | resume STATE CANDIDATE | verify STATE CANDIDATE IMAGE");
         var candidates = new SubscriptionCandidates(Path.of(args[1]));
         if (args[0].equals("verify") && args.length == 4) {
             String id = candidates.verification(args[2], args[3]); System.out.println("Verification: " + id);
@@ -157,8 +178,9 @@ public final class SubscriptionCandidates {
             System.out.println("Status: " + result.get("status").getAsString());
             System.out.println("Result: " + candidates.verification(id).resolve("result.json")); return;
         }
-        CaseInputs.require(args[0].equals("start") && args.length == 4 || args[0].equals("resume") && args.length == 3, "Invalid command");
-        String id = args[0].equals("start") ? candidates.create(args[2], args[3]) : args[2]; System.out.println("Candidate: " + id);
+        CaseInputs.require(Set.of("start", "from-investigation").contains(args[0]) && args.length == 4 || args[0].equals("resume") && args.length == 3, "Invalid command");
+        String id = args[0].equals("start") ? candidates.create(args[2], args[3])
+                : args[0].equals("from-investigation") ? candidates.createFromInvestigation(args[2], args[3]) : args[2]; System.out.println("Candidate: " + id);
         var result = candidates.generate(id); System.out.println("Status: " + result.get("status").getAsString());
         System.out.println("Result: " + candidates.directory(id).resolve("result.json"));
         if (!Set.of("CANDIDATE_READY", "ABSTAINED").contains(result.get("status").getAsString())) throw new IOException("Generation did not finish successfully; inspect retained records");

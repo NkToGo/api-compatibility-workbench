@@ -10,7 +10,7 @@ The checklist below is planned work unless explicitly marked implemented.
 | Capability | Customer sources | Subscription periods |
 | --- | --- | --- |
 | Authored baseline and repair controls | Implemented, five scenarios | Implemented, eight scenarios |
-| Adaptive investigation | Implemented with fixed execution tool | Implemented over retained execution; generation handoff pending |
+| Adaptive investigation | Implemented with fixed execution tool | Implemented over retained execution with identity-bound generation handoff |
 | Scoped generated candidate | Implemented | Implemented |
 | Separate protected candidate execution | Implemented | Implemented |
 | Repeated generated-repair suite | Pending | Implemented on one known case |
@@ -25,11 +25,10 @@ judge abstention correctness. Neither suite is a held-out evaluation.
 
 ## Remaining implementation sequence
 
-1. **Subscription investigation:** expose bounded registered source, policy and
-   retained execution reads through the existing investigator boundary. Preserve
-   case identity, citation validation, unavailable-resource budgets and no-replay
-   recovery. Connect a completed investigation to candidate generation without
-   giving advisory findings authority over execution conclusions.
+1. **Implemented — subscription investigation and handoff:** bounded registered
+   source, policy and retained execution reads reuse the existing investigator.
+   Completed findings can enter generation with captured agent, context and event
+   identities. Advisory findings remain separate from execution conclusions.
 2. **Two-case acceptance trials:** add repeatable customer-sources repair trials
    and explicit insufficient-evidence conditions for both cases. Reuse the existing
    candidate and verification boundaries. Register conditions, expected decisions,

@@ -31,7 +31,7 @@ public final class RepairCandidates {
     public String create(String agentId, String model) throws IOException {
         return create(agentId, model, "No additional SDK signature evidence supplied.");
     }
-    private String create(String agentId, String model, String sdkEvidence) throws IOException {
+    String create(String agentId, String model, String sdkEvidence) throws IOException {
         validateId(agentId, "agent");
         Path agent = state.resolve("agents").resolve(agentId);
         var session = read(agent.resolve("session.json")); var findings = read(agent.resolve("result.json"));

@@ -13,7 +13,7 @@ The checklist below is planned work unless explicitly marked implemented.
 | Adaptive investigation | Implemented with fixed execution tool | Implemented over retained execution with identity-bound generation handoff |
 | Scoped generated candidate | Implemented | Implemented |
 | Separate protected candidate execution | Implemented | Implemented |
-| Repeated generated-repair suite | Pending | Implemented on one known case |
+| Repeated generated-repair suite | Implemented with fresh investigations | Implemented on one known case |
 | Controlled evidence-availability investigation trials | Implemented | Pending |
 | Semantic review of findings and abstention rationale | Pending | Pending |
 

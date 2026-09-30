@@ -99,6 +99,10 @@ adapters remain part of their later integration and operational milestones.
      session, findings, context and event identities; changed records stop unfinished
      generation or new verification. Abstained and failed investigations are blocked.
      Advisory findings do not replace protected execution conclusions.
+   - **Implemented:** [repeated customer-sources trials](customer-repair-evaluation.md)
+     with fresh bounded investigations, one-shot generation and separate protected
+     verification. Durable stage mappings retain failed trials and completed-response
+     usage; controlled missing-evidence conditions and semantic review remain pending.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

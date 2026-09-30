@@ -57,6 +57,9 @@ now adaptively reads that evidence and can pass identity-bound advisory findings
 A [repeated repair evaluation](docs/subscription-repair-evaluation.md)
 now records per-trial repairs, abstentions and operational failures on this case;
 broader repair-quality evaluation remains pending.
+A [customer-sources repair suite](docs/customer-repair-evaluation.md) now repeats
+fresh investigations, generation and protected verification with retained stage
+outcomes. Two-case missing-evidence and semantic acceptance review remain pending.
 Its [host-side result protocol](docs/subscription-period-protocol.md) now validates
 consumer responses against separately held expectations. A container adapter now
 compiles subscription consumer source with host-owned assertions. Supplied source

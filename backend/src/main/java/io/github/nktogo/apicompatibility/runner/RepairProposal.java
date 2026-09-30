@@ -22,6 +22,14 @@ final class RepairProposal {
             This is only a candidate: do not claim compilation, tests, compatibility or release approval.
             Provide a concise change summary and remaining limitations, not private reasoning.
             """;
+    static final String FIXTURE_INSTRUCTIONS = INSTRUCTIONS + """
+            syntheticFixtures contains the registered authored response examples, including separate collection
+            responses. Read them together with the declared expectations: an omitted embedded field and a
+            successfully retrieved empty collection provide different evidence. Preserve the declared behavior
+            across every supplied scenario; avoiding an exception alone may leave reconciliation incomplete.
+            These fixtures are synthetic data, not observations of live provider behavior. Derive customer IDs
+            from the consumer's inputs, never hard-code identifiers from example responses into a repair.
+            """;
     static JsonObject schema() {
         var string = Map.of("type", "string", "minLength", 1, "maxLength", 12000);
         var edit = Map.of("type", "object", "properties", new TreeMap<>(Map.of("before", string, "after", string)),

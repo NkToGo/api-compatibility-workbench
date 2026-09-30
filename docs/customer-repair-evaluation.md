@@ -17,9 +17,10 @@ Build the backend and both worker images, then run:
 ```
 
 The default model is `gpt-5.6-terra`. This makes paid OpenAI calls with the configured
-host credential and sends curated source, application expectations and observed
-tool results. Target SDK signatures come from the existing checksum-pinned `javap`
-inspection; consumer code is never run for signature discovery. No live model
+host credential and sends curated source, application expectations, registered
+synthetic fixture responses and observed tool results. Target SDK signatures and
+the selected public source-list implementation come from checksum-pinned `javap`
+inspection; consumer code is never run for evidence discovery. No live model
 evaluation runs in CI.
 
 ## Bounds and durable stages
@@ -70,3 +71,37 @@ Completed reports can be reused after validating suite mappings and retained chi
 artifacts, including original source, manifests, event records and verification logs.
 New dispatch still follows the individual runtimes' input and permission checks.
 The store assumes a trusted single host; hashes are integrity checks, not signatures.
+
+## Recorded sufficient-evidence measurements
+
+Three separately registered suites used `gpt-5.6-terra`, three repetitions each,
+the unchanged five scenarios and the existing one-shot generation budget. Each
+permitted at most 39 model calls. The source/fixture/expectation/dependency bundle
+identity was `f12b86c6eacedf02fed8f1841ebbab36c236597e4cb1456500d8e6122390d897`.
+No candidate received an authored complete-repair control or verifier source.
+
+| Generation evidence | Fully passing repairs | Other outcomes | Actual model calls | Recorded input/output tokens |
+| --- | --- | --- | --- | --- |
+| Original signatures and outcome summary | 0/3 | Three repairs passed 4/5; confirmed removal remained failing | 30 | 154,181 / 6,317 |
+| Complete registered synthetic responses added | 0/3 | Two repairs passed 4/5; one generator abstained | 31 | 172,536 / 6,064 |
+| Selected pinned source-list implementation added | 2/3 | One repair passed 1/5; all four original regressions remained | 29 | 155,071 / 6,169 |
+
+The suite IDs, in row order, are:
+
+- `evaluation-0374e04b-580e-437f-bb06-41398e77d93c`
+- `evaluation-e1907a9d-c38c-48d0-b009-0788595229bb`
+- `evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d`
+
+Each retains its exact build/image identities, input hashes, child mappings,
+requests, findings, candidate sources and protected results in the local state
+store. The final suite's failed candidate constructed a collection but iterated
+it without first fetching the collection contents. It was not credited as a repair.
+Completed report reuse preserved result bytes and registered no new model calls;
+no worker containers remained after completion.
+
+The final suite reaches the customer's sufficient-evidence repair threshold only.
+Milestone 3 remains open: missing-evidence trials and semantic finding/rationale
+review are incomplete. These small known-case measurements are not a controlled
+estimate of general model accuracy or live-provider compatibility. Recorded tokens
+cover completed responses, not an invoice or unknown request charges. Earlier
+unsuccessful suites remain retained rather than being replaced by the later result.

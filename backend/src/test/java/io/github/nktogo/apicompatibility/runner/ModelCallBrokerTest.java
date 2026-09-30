@@ -265,6 +265,28 @@ class ModelCallBrokerTest {
         var broker = broker(); String id = broker.register(request, Duration.ofMinutes(1));
         assertEquals("COMPLETED", broker.execute(id)); assertNoSecret();
     }
+    @Test void fixtureRepairProtocolPreservesLegacyPromptGrantsAndToolPermissions() throws Exception {
+        // Snapshot the deployed repair-v1 prompt: old grants bind its exact wire bytes.
+        assertEquals("6991ec1c448f6a05b47247a60f338516c4abe288c8bcff8e10690bf33a003686",
+                CaseInputs.hash(RepairProposal.INSTRUCTIONS.getBytes(StandardCharsets.UTF_8)));
+        var oldRequest = new ModelCallBroker.Request("gpt-test", "evidence", 4096, "repair-v1");
+        var newRequest = new ModelCallBroker.Request("gpt-test", "evidence", 4096, "repair-v2");
+        var oldBody = CaseInputs.object(oldRequest.body()); var newBody = CaseInputs.object(newRequest.body());
+        assertEquals(RepairProposal.INSTRUCTIONS, oldBody.get("instructions").getAsString());
+        assertEquals(RepairProposal.FIXTURE_INSTRUCTIONS, newBody.get("instructions").getAsString());
+        assertEquals(oldBody.get("tools"), newBody.get("tools"));
+        assertEquals(oldBody.get("tool_choice"), newBody.get("tool_choice"));
+        assertFalse(newBody.get("parallel_tool_calls").getAsBoolean());
+        assertNotEquals(CaseInputs.hash(oldRequest.body()), CaseInputs.hash(newRequest.body()));
+        reply(200, "{\"status\":\"completed\",\"output\":[{\"type\":\"function_call\",\"name\":\"repair_proposal\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+        var broker = broker();
+        for (var request : new ModelCallBroker.Request[] {oldRequest, newRequest}) {
+            String id = broker.register(request, Duration.ofMinutes(1));
+            assertEquals("COMPLETED", broker().execute(id));
+            assertEquals("COMPLETED", broker().execute(id));
+        }
+        assertEquals(2, calls.get()); assertNoSecret();
+    }
     @Test void investigationRejectsMultipleMessagesAndMultipleDecisions() throws Exception {
         for (String output : new String[] {
                 "[{\"type\":\"message\",\"content\":[{\"type\":\"output_text\",\"text\":\"{}{}\"}]}]",

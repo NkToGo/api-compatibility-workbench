@@ -41,14 +41,19 @@ public final class RepairCandidates {
         var evidence = execution(context, agentId);
         String source = input(context, "baseline-source", 32000);
         String expectations = input(context, "expectations", 16000);
+        String fixtures = input(context, "fixtures", 16000);
+        var evidenceInputs = Map.of("expectations", hash(expectations), "fixtures", hash(fixtures));
         String payload = CaseInputs.JSON.toJson(Map.of("baselineSource", source, "expectations", expectations,
-                "execution", evidence, "advisoryFindings", findings.get("findings"), "targetSdkSignatures", sdkEvidence));
-        var request = new ModelCallBroker.Request(model, payload, 4096, "repair-v1");
+                "execution", evidence, "advisoryFindings", findings.get("findings"), "targetSdkSignatures", sdkEvidence,
+                "syntheticFixtures", Map.of("inputId", "fixtures", "sha256", hash(fixtures), "content", fixtures,
+                        "authority", "authored-synthetic-responses", "contentTrust", "untrusted-data")));
+        var request = new ModelCallBroker.Request(model, payload, 4096, "repair-v2");
         String id = "candidate-" + UUID.randomUUID(); Path directory = Files.createDirectory(state.resolve("candidates").resolve(id));
         put(directory.resolve("baseline.java.txt"), source);
         String call = models.register(request);
         DurableExecution.publish(directory.resolve("registration.json"), Map.of("candidateId", id, "agentId", agentId,
-                "contextId", context, "modelCallId", call, "baselineSha256", hash(source), "receiptSha256", evidence.getAsJsonObject("value").get("receiptSha256").getAsString()));
+                "contextId", context, "modelCallId", call, "baselineSha256", hash(source), "receiptSha256", evidence.getAsJsonObject("value").get("receiptSha256").getAsString(),
+                "evidenceInputHashes", evidenceInputs));
         return id;
     }
     public JsonObject generate(String id) throws IOException {
@@ -94,6 +99,13 @@ public final class RepairCandidates {
     private boolean current(JsonObject registration) {
         try {
             String context = registration.get("contextId").getAsString();
+            // Earlier registrations retain their original evidence contract on resume.
+            if (registration.has("evidenceInputHashes")) {
+                var hashes = registration.getAsJsonObject("evidenceInputHashes");
+                CaseInputs.require(hashes.keySet().equals(Set.of("expectations", "fixtures")), "Invalid generation evidence inventory");
+                for (String id : hashes.keySet())
+                    if (!hash(input(context, id, 16000)).equals(hashes.get(id).getAsString())) return false;
+            }
             return hash(input(context, "baseline-source", 32000)).equals(registration.get("baselineSha256").getAsString())
                     && execution(context, registration.get("agentId").getAsString()).getAsJsonObject("value").get("receiptSha256").equals(registration.get("receiptSha256"));
         } catch (RuntimeException e) { return false; }
@@ -154,8 +166,18 @@ public final class RepairCandidates {
                     "-public", "-classpath", jar.toAbsolutePath().toString(), "com.stripe.model.Customer",
                     "com.stripe.model.PaymentSourceCollection", "com.stripe.model.StripeCollection"), Duration.ofSeconds(10), 32000);
             CaseInputs.require(inspected.status() == BoundedCommand.Status.EXITED && inspected.exitCode() == 0, "SDK inspection failed");
+            var bytecode = BoundedCommand.run(List.of(Path.of(System.getProperty("java.home"), "bin", "javap").toString(),
+                    "-c", "-public", "-classpath", jar.toAbsolutePath().toString(), "com.stripe.model.PaymentSourceCollection"), Duration.ofSeconds(10), 64000);
+            CaseInputs.require(bytecode.status() == BoundedCommand.Status.EXITED && bytecode.exitCode() == 0, "SDK implementation inspection failed");
+            String implementation = new String(bytecode.stdout(), StandardCharsets.UTF_8);
+            String method = "  public com.stripe.model.PaymentSourceCollection list(java.util.Map<java.lang.String, java.lang.Object>, com.stripe.net.RequestOptions)";
+            int start = implementation.indexOf(method), end = implementation.indexOf("\n  public ", Math.max(0, start) + method.length());
+            CaseInputs.require(start >= 0 && end > start && end - start <= 8000, "Missing bounded SDK source-list implementation");
+            CaseInputs.require(CaseInputs.hash(Files.readAllBytes(jar)).equals(CaseInputs.EXECUTABLES.get("stripe-java-20.33.0.jar")), "SDK changed during inspection");
             return "stripe-java 20.33.0 SHA-256 " + CaseInputs.EXECUTABLES.get("stripe-java-20.33.0.jar") + "\n"
-                    + new String(inspected.stdout(), StandardCharsets.UTF_8);
+                    + new String(inspected.stdout(), StandardCharsets.UTF_8)
+                    + "\nPinned SDK implementation evidence (not live provider behavior): PaymentSourceCollection.list(Map, RequestOptions)\n"
+                    + implementation.substring(start, end).stripTrailing() + "\n";
         } catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IOException("SDK inspection interrupted"); }
     }
     public static void main(String[] args) throws IOException {

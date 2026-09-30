@@ -16,11 +16,21 @@ Build the backend and prepare the pinned SDK dependencies first. Complete an
 
 The default model remains `gpt-5.6-terra`. This is an opt-in paid API request using
 the existing host credential. The request includes the registered source,
-expectations, recorded execution summary, advisory findings and public signatures
-from the pinned target SDK. The host reads signatures with JDK `javap`; it does
+expectations, complete registered synthetic fixture responses, recorded execution
+summary, advisory findings and public signatures plus the source-list implementation
+from the pinned target SDK. The host reads signatures and the selected public
+`PaymentSourceCollection.list(Map, RequestOptions)` bytecode with JDK `javap`; it does
 not initialize SDK classes or execute the consumer. The JAR digest is checked
-before inspection. API signatures establish method availability, not provider
-behavior or repair correctness.
+before and after inspection. API signatures establish method availability; the
+selected bytecode shows how the SDK uses its collection URL and request options.
+Neither establishes live provider behavior or repair correctness. Inspection
+is bounded and stops if the expected method is unavailable.
+
+Fixture content is labeled authored synthetic data with its captured input hash;
+it is not a live provider observation. Separate list responses can establish the
+declared distinction between an omitted embedded collection and a retrieved empty
+collection. The generator receives these examples, not an authored complete repair,
+verifier source or candidate test results. This is a known-case repair exercise.
 
 Each command prints a candidate ID and a result path under
 `.workbench/candidates/<candidate-id>/`. A ready candidate contains:
@@ -31,7 +41,7 @@ Each command prints a candidate ID and a result path under
 | `checkout/consumer/baseline.java.txt` | Proposed source, isolated from case inputs |
 | `candidate.patch` | Full-file unified diff for review/application to the extracted source |
 | `proposal.json` | Model's exact replacements and advisory summary |
-| `registration.json` | Investigation, context, source hash, receipt hash and model-call identity |
+| `registration.json` | Investigation, context, source/expectation/fixture hashes, receipt hash and model-call identity |
 | `result.json` | Status and artifact hashes; explicitly `executed: false` |
 
 This checkout contains the curated method-excerpt file only. It is not a full
@@ -62,9 +72,11 @@ must not run outside an appropriately isolated verifier.
 The original source is limited to 32,000 characters, expectations to 16,000 and
 each replacement field to 12,000. The resulting source is bounded, and patches use
 LF source with a final newline. Source reads verify captured input hashes across
-pages. Generation checks the execution receipt before dispatch and again before
-publishing a candidate. Fixtures, expectations and SDKs are never copied into the
-editable checkout. A modified-derivative notice is added to the candidate.
+pages. Generation checks captured expectation and fixture hashes, source and the
+execution receipt before dispatch and again before publishing a candidate. Fixtures
+are limited to 16,000 characters. Unavailable, oversized or changed inputs stop work;
+they are never silently omitted. Fixtures, expectations and SDKs are never copied
+into the editable checkout. A modified-derivative notice is added to the candidate.
 
 ## Failures, retention and limits
 
@@ -90,6 +102,12 @@ malicious host operator rewriting all records and hashes.
 edits. `INPUT_IDENTITY_MISMATCH` stops stale work. `MODEL_*` statuses retain the
 broker's failure distinction. None of these outcomes creates a ready checkout or
 approves a repair. Original evidence and failed attempts remain available.
+
+New generation uses `repair-v2`; `repair-v1` retains its exact prompt and wire
+body for existing model grants. Earlier candidate registrations retain their
+original request and resume contract. Completed candidates remain historical
+artifacts; adding evidence to new registrations does not rewrite old prompts,
+proposals or results.
 
 Tests cover edit scope, overlap, no-op rejection, abstention, materialization,
 artifact tampering, stale evidence and uncertain model outcomes. The model/API

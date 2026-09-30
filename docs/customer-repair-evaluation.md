@@ -100,8 +100,9 @@ Completed report reuse preserved result bytes and registered no new model calls;
 no worker containers remained after completion.
 
 The final suite reaches the customer's sufficient-evidence repair threshold only.
-Milestone 3 remains open: missing-evidence trials and semantic finding/rationale
-review are incomplete. These small known-case measurements are not a controlled
+Milestone 3 remains open: the separate [missing-evidence suite](missing-evidence-evaluation.md)
+does not grade semantic finding/rationale support, and acceptance review remains
+incomplete. These small known-case measurements are not a controlled
 estimate of general model accuracy or live-provider compatibility. Recorded tokens
 cover completed responses, not an invoice or unknown request charges. Earlier
 unsuccessful suites remain retained rather than being replaced by the later result.

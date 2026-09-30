@@ -59,7 +59,9 @@ now records per-trial repairs, abstentions and operational failures on this case
 broader repair-quality evaluation remains pending.
 A [customer-sources repair suite](docs/customer-repair-evaluation.md) now repeats
 fresh investigations, generation and protected verification with retained stage
-outcomes. Two-case missing-evidence and semantic acceptance review remain pending.
+outcomes. A [repeated missing-evidence suite](docs/missing-evidence-evaluation.md)
+now withholds required source or execution access in fresh investigations on both
+cases. Semantic acceptance review remains pending.
 Its [host-side result protocol](docs/subscription-period-protocol.md) now validates
 consumer responses against separately held expectations. A container adapter now
 compiles subscription consumer source with host-owned assertions. Supplied source
@@ -147,6 +149,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)
 - [Investigation evidence-availability evaluation](docs/investigation-evaluation.md)
+- [Repeated two-case missing-evidence evaluation](docs/missing-evidence-evaluation.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Milestone 3 acceptance criteria and remaining work](docs/milestone-3-acceptance.md)
 - [Development workflow](CONTRIBUTING.md)

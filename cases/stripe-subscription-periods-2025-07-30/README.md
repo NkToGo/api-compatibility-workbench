@@ -71,7 +71,10 @@ operator from replacing both inputs and hashes.
 
 Only reviewed compiled controls execute locally. This runner does not load or
 compile candidate source, call Stripe or OpenAI, use a Stripe SDK, or certify a
-full API transition. It is not yet connected to the investigator or protected
-candidate executor. Agent-generated repairs for this case remain subsequent work.
+full API transition. Separate [protected execution](../../docs/subscription-period-protocol.md)
+and [candidate generation](../../docs/subscription-candidates.md) workflows now support
+this case. The [investigator](../../docs/subscription-investigation.md) reads retained
+baseline/target evidence and can pass bound advisory findings to generation.
+Those workflows remain limited to the declared synthetic scenarios.
 All new fixtures, policy and controls are authored under the repository license;
 provider documentation is linked rather than redistributed.

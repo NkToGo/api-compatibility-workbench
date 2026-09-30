@@ -102,11 +102,15 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** [repeated customer-sources trials](customer-repair-evaluation.md)
      with fresh bounded investigations, one-shot generation and separate protected
      verification. Durable stage mappings retain failed trials and completed-response
-     usage; controlled missing-evidence conditions and semantic review remain pending.
+     usage; semantic review remains pending.
    - **Implemented:** complete registered synthetic response evidence in customer
      repair generation, with pinned SDK source-list implementation evidence and
      expectation/fixture identity checks before and after dispatch. Earlier
      candidate requests and trial outcomes remain unchanged.
+   - **Implemented:** [repeated two-case missing-evidence investigations](missing-evidence-evaluation.md)
+     with fresh contexts, blocked source/execution aliases, sealed trial inputs and
+     retained operational failures. Decision checks do not establish supported
+     explanations; semantic acceptance review remains pending.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 

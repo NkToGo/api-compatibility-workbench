@@ -6,6 +6,10 @@ outcomes, abstentions and operational failures separately. It does not score whe
 an abstention was justified, measure general accuracy or provide a held-out test.
 The generator sees application expectations and case documentation.
 
+For trials that begin with fresh adaptive investigation, use the separate
+[full workflow suite](subscription-investigated-repair-evaluation.md). This command
+retains its original generation-only behavior and record format.
+
 After building the backend and repair worker, supply a completed subscription
 verification with a passing baseline and observed target failures:
 

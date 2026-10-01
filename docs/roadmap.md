@@ -99,6 +99,10 @@ adapters remain part of their later integration and operational milestones.
      session, findings, context and event identities; changed records stop unfinished
      generation or new verification. Abstained and failed investigations are blocked.
      Advisory findings do not replace protected execution conclusions.
+   - **Implemented:** [repeated full subscription workflow trials](subscription-investigated-repair-evaluation.md)
+     with fresh retained-evidence investigations, identity-bound one-shot generation,
+     separate protected verification and retained model-record inventories.
+     Sufficient-evidence semantic review and final acceptance remain pending.
    - **Implemented:** [repeated customer-sources trials](customer-repair-evaluation.md)
      with fresh bounded investigations, one-shot generation and separate protected
      verification. Durable stage mappings retain failed trials and completed-response

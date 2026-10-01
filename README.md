@@ -57,6 +57,9 @@ now adaptively reads that evidence and can pass identity-bound advisory findings
 A [repeated repair evaluation](docs/subscription-repair-evaluation.md)
 now records per-trial repairs, abstentions and operational failures on this case;
 broader repair-quality evaluation remains pending.
+A separate [full subscription workflow suite](docs/subscription-investigated-repair-evaluation.md)
+now repeats fresh investigations, identity-bound generation and protected verification,
+retaining stage outcomes and model-record identities. Semantic review remains pending.
 A [customer-sources repair suite](docs/customer-repair-evaluation.md) now repeats
 fresh investigations, generation and protected verification with retained stage
 outcomes. A [repeated missing-evidence suite](docs/missing-evidence-evaluation.md)

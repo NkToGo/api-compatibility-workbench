@@ -13,7 +13,7 @@ The checklist below is planned work unless explicitly marked implemented.
 | Adaptive investigation | Implemented with fixed execution tool | Implemented over retained execution with identity-bound generation handoff |
 | Scoped generated candidate | Implemented | Implemented |
 | Separate protected candidate execution | Implemented | Implemented |
-| Repeated generated-repair suite | Implemented with fresh investigations | Implemented on one known case |
+| Repeated generated-repair suite | Implemented with fresh investigations | Implemented with fresh retained-evidence investigations |
 | Controlled evidence-availability investigation trials | Implemented, repeated missing-evidence suite | Implemented, repeated missing-evidence suite |
 | Semantic review of findings and abstention rationale | Missing-evidence rationales reviewed; sufficient-evidence findings pending | Missing-evidence rationales reviewed; sufficient-evidence findings pending |
 
@@ -30,19 +30,25 @@ review remains pending.
 The existing subscription repair suite measures repeated behavioral results but
 does not judge abstention correctness. These suites are not held-out evaluations.
 
+Recorded sufficient-evidence results reach the numerical repair thresholds:
+[customer sources](customer-repair-evaluation.md) has two complete repairs in
+three fresh trials, and [subscription periods](subscription-investigated-repair-evaluation.md)
+has three in three. Earlier unsuccessful customer suites remain separately
+retained. Sufficient-evidence semantic review and the combined acceptance report
+are still required before closing this milestone.
+
 ## Remaining implementation sequence
 
 1. **Implemented — subscription investigation and handoff:** bounded registered
    source, policy and retained execution reads reuse the existing investigator.
    Completed findings can enter generation with captured agent, context and event
    identities. Advisory findings remain separate from execution conclusions.
-2. **Two-case acceptance trials:** repeated fresh customer investigations and
-   protected repairs, and repeated insufficient-evidence investigations for both
-   cases, are implemented. Repeated sufficient-evidence subscription trials still
-   need fresh adaptive investigation-to-generation handoffs; the earlier
-   generator-only suite does not meet that requirement. Reuse the existing
-   candidate and verification boundaries. Register conditions, expected decisions,
-   repetitions, model, execution identities and budgets before dispatch.
+2. **Implemented — two-case trial capabilities:** repeated fresh investigations,
+   one-shot generation and protected repairs exist for both cases, alongside
+   repeated insufficient-evidence investigations. The [full subscription suite](subscription-investigated-repair-evaluation.md)
+   uses fresh adaptive investigation-to-generation handoffs; its earlier
+   generator-only trials remain separately identified. Conditions, repetitions,
+   model, execution identities and budgets are registered before dispatch.
 3. **Acceptance review:** run the fixed trials, review findings and abstention
    rationales against their cited observations, and publish a bounded results
    summary. Preserve unsuccessful trials and unresolved review findings. A failed

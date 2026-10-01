@@ -59,14 +59,17 @@ now records per-trial repairs, abstentions and operational failures on this case
 broader repair-quality evaluation remains pending.
 A separate [full subscription workflow suite](docs/subscription-investigated-repair-evaluation.md)
 now repeats fresh investigations, identity-bound generation and protected verification,
-retaining stage outcomes and model-record identities. Semantic review remains pending.
+retaining stage outcomes and model-record identities.
 A [customer-sources repair suite](docs/customer-repair-evaluation.md) now repeats
 fresh investigations, generation and protected verification with retained stage
 outcomes. A [repeated missing-evidence suite](docs/missing-evidence-evaluation.md)
 now withholds required source or execution access in fresh investigations on both
 cases. Their abstention reasons now have a [recorded claim-level review](docs/missing-evidence-review.md);
-sufficient-evidence finding review remains pending.
-Its [host-side result protocol](docs/subscription-period-protocol.md) now validates
+sufficient-evidence findings now have a [bound review and acceptance report](docs/milestone-3-results.md).
+The declared two-case exercise meets its criteria with one investigation excluded
+from acceptance for an unsupported executor-scope explanation. This closes the
+bounded single-investigator milestone without certifying a migration or release.
+The subscription [host-side result protocol](docs/subscription-period-protocol.md) now validates
 consumer responses against separately held expectations. A container adapter now
 compiles subscription consumer source with host-owned assertions. Supplied source
 pairs can now be registered for durable three-way verification, cancellation and

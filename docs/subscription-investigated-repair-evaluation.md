@@ -71,8 +71,9 @@ children separately. Completed suites remain readable under later builds after
 checking suite, original evidence, contexts, child artifacts and model records.
 These hashes detect changes in a trusted local store; they are not signatures.
 
-Semantic review and the combined two-case acceptance report remain required by
-the [Milestone 3 checklist](milestone-3-acceptance.md).
+The [Milestone 3 checklist](milestone-3-acceptance.md) requires semantic review
+and a combined two-case acceptance report, now available as
+[bound results](milestone-3-results.md).
 
 ## Recorded sufficient-evidence measurement
 
@@ -119,8 +120,10 @@ Completed-suite resume preserved result bytes and left the model-call store coun
 unchanged at 255 registrations. No workbench worker containers remained.
 
 This reaches the subscription case's numerical sufficient-evidence repair
-threshold. Investigation explanations still require semantic review, and
-Milestone 3 remains open until the combined acceptance report meets its criteria.
+threshold. Later semantic review rejected trial 2's executor-scope explanation,
+excluding that entire trial from acceptance credit while preserving these raw
+behavioral results. Trials 1 and 3 supply the two accepted repairs; the combined
+report meets the bounded milestone criteria with this explicit block.
 Three successes on this known synthetic case do not establish general model
 accuracy, live-provider compatibility or multi-agent benefit. Token totals are
 recorded usage, not an invoice or a dollar-cost estimate.

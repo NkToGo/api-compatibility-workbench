@@ -1,0 +1,701 @@
+{
+  "formatVersion": 1,
+  "reportId": "milestone-3-2026-10-01",
+  "recordedOn": "2026-10-01",
+  "evidenceRepositoryRevision": "ed820269c603b69e8bc5658d6884cc00e3b77ad8",
+  "plannedTrials": 18,
+  "conclusion": "CRITERIA_MET_WITH_EXPLICIT_BLOCK",
+  "retainedSubscriptionVerificationId": "verification-e5839039-37d2-4ce8-bbfc-554088f63620",
+  "scope": "Bounded milestone acceptance across separately registered known-case suites, with all failed and review-blocked trials retained. Not a controlled model comparison, held-out accuracy, release approval or multi-agent evidence.",
+  "sufficientEvidence": [
+    {
+      "caseKind": "CUSTOMER_SOURCES",
+      "evaluationId": "evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d",
+      "model": "gpt-5.6-terra",
+      "harnessSha256": "1a062fc3e2e055498c141e0c923d8f14b5eaa5661a7eb8bffbcdfb105714ac20",
+      "repairImage": "sha256:8525edc3f1fa8dbdea50eaa7851fa8832cae1ae73a6b2fefc48ebbe9d1994e2b",
+      "maxRegisteredModelCalls": 39,
+      "registeredModelCalls": 29,
+      "inputTokens": 155071,
+      "outputTokens": 6169,
+      "rawCompleteRepairs": 2,
+      "acceptedRepairs": 2,
+      "trials": [
+        {
+          "trial": 1,
+          "contextId": "investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a",
+          "agentId": "agent-d7abd812-3860-439f-a0aa-eb6891248e08",
+          "candidateId": "candidate-6b867a64-724a-484e-a026-5d55f71d7d78",
+          "verificationId": "verification-e46e7f5e-3f0e-4e2a-bcf2-12503e9ae8b0",
+          "outcome": "OBSERVED_REGRESSIONS_FIXED",
+          "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "acceptedRepair": true,
+          "registeredModelCalls": 11,
+          "scenarioOutcomes": [
+            {
+              "scenarioId": "modern-method-survives-omission",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "empty-account-survives-omission",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "legacy-method-not-lost",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "present-legacy-collection-control",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "confirmed-removed-legacy-method",
+              "outcome": "FIXED"
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "contextId": "investigation-601b5fb5-07d3-481f-9a9e-bfdd6e178907",
+          "agentId": "agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef",
+          "candidateId": "candidate-a6f1824a-eea2-45e9-9a28-5a68593a0a7c",
+          "verificationId": "verification-50a05cd9-383a-4b4d-9317-ce5c918eb70d",
+          "outcome": "OBSERVED_REGRESSIONS_FIXED",
+          "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "acceptedRepair": true,
+          "registeredModelCalls": 9,
+          "scenarioOutcomes": [
+            {
+              "scenarioId": "modern-method-survives-omission",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "empty-account-survives-omission",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "legacy-method-not-lost",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "present-legacy-collection-control",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "confirmed-removed-legacy-method",
+              "outcome": "FIXED"
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "contextId": "investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40",
+          "agentId": "agent-f4a4c016-0718-41be-927d-8769707869f0",
+          "candidateId": "candidate-b982e7f9-4d7a-4180-bd50-78f6b72131dd",
+          "verificationId": "verification-d22beb12-c349-4cd2-912b-4f676a0d3702",
+          "outcome": "REGRESSIONS_REMAIN",
+          "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "acceptedRepair": false,
+          "registeredModelCalls": 9,
+          "scenarioOutcomes": [
+            {
+              "scenarioId": "modern-method-survives-omission",
+              "outcome": "STILL_FAILING"
+            },
+            {
+              "scenarioId": "empty-account-survives-omission",
+              "outcome": "STILL_FAILING"
+            },
+            {
+              "scenarioId": "legacy-method-not-lost",
+              "outcome": "STILL_FAILING"
+            },
+            {
+              "scenarioId": "present-legacy-collection-control",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "confirmed-removed-legacy-method",
+              "outcome": "STILL_FAILING"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseKind": "SUBSCRIPTION_PERIODS",
+      "evaluationId": "evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725",
+      "model": "gpt-5.6-terra",
+      "harnessSha256": "c04bf25b71d075a9cd6dff573d1c461571c7621a2ff694b876532f706852777e",
+      "repairImage": "sha256:83e5270f52b49c79414afe38383488f91fbdba62c44372c9cb0cb4dc88ba360d",
+      "maxRegisteredModelCalls": 39,
+      "registeredModelCalls": 28,
+      "inputTokens": 149697,
+      "outputTokens": 3561,
+      "rawCompleteRepairs": 3,
+      "acceptedRepairs": 2,
+      "trials": [
+        {
+          "trial": 1,
+          "contextId": "subscription-investigation-c15959db-dd3c-48bc-af6f-d853878a107f",
+          "agentId": "agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73",
+          "candidateId": "candidate-9e944a78-d0bd-4cfc-92e6-d42777ff7105",
+          "verificationId": "verification-6c3f1ad3-d133-43eb-8f9f-5e67644a50ff",
+          "outcome": "OBSERVED_REGRESSIONS_FIXED",
+          "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "acceptedRepair": true,
+          "registeredModelCalls": 10,
+          "scenarioOutcomes": [
+            {
+              "scenarioId": "single-item",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "addon-first-later",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "addon-first-earlier",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "reordered-items",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "missing-binding",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "selected-item-absent",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "incomplete-items",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "duplicate-item-identity",
+              "outcome": "STILL_PASSING"
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "contextId": "subscription-investigation-ef5882ec-719d-4aec-8bac-7c4e22ae570b",
+          "agentId": "agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d",
+          "candidateId": "candidate-f8fd7c41-f7de-4e88-b724-8614971f5ea4",
+          "verificationId": "verification-fc64862f-32e6-41a7-b8aa-b0f62a371484",
+          "outcome": "OBSERVED_REGRESSIONS_FIXED",
+          "semanticVerdict": "UNSUPPORTED",
+          "acceptanceDisposition": "BLOCKED_FROM_ACCEPTANCE",
+          "acceptedRepair": false,
+          "registeredModelCalls": 9,
+          "scenarioOutcomes": [
+            {
+              "scenarioId": "single-item",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "addon-first-later",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "addon-first-earlier",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "reordered-items",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "missing-binding",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "selected-item-absent",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "incomplete-items",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "duplicate-item-identity",
+              "outcome": "STILL_PASSING"
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "contextId": "subscription-investigation-82831ee5-49eb-4251-a6f2-057e3c559278",
+          "agentId": "agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262",
+          "candidateId": "candidate-c276ddc0-f15b-41d0-b0a4-3b2abfc840d8",
+          "verificationId": "verification-84fdc1ea-cba7-41b9-aa03-6cb99eebb9ab",
+          "outcome": "OBSERVED_REGRESSIONS_FIXED",
+          "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "acceptedRepair": true,
+          "registeredModelCalls": 9,
+          "scenarioOutcomes": [
+            {
+              "scenarioId": "single-item",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "addon-first-later",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "addon-first-earlier",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "reordered-items",
+              "outcome": "FIXED"
+            },
+            {
+              "scenarioId": "missing-binding",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "selected-item-absent",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "incomplete-items",
+              "outcome": "STILL_PASSING"
+            },
+            {
+              "scenarioId": "duplicate-item-identity",
+              "outcome": "STILL_PASSING"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "missingEvidence": {
+    "evaluationId": "evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f",
+    "model": "gpt-5.6-terra",
+    "harnessSha256": "66fcf3062f0476cb39ef091dd8d97412041a026b4ec9ec4f1ef85295366b311c",
+    "maxRegisteredModelCalls": 144,
+    "registeredModelCalls": 44,
+    "inputTokens": 75815,
+    "outputTokens": 3466,
+    "trials": [
+      {
+        "trial": 1,
+        "registration": {
+          "caseKind": "CUSTOMER_SOURCES",
+          "condition": "SOURCE_UNAVAILABLE",
+          "repetition": 1,
+          "contextId": "investigation-7f161799-e799-4838-b3fa-4c05b18c7aab"
+        },
+        "agentId": "agent-c6a09d3b-562c-4fb1-b99e-955221a08420",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 3
+      },
+      {
+        "trial": 2,
+        "registration": {
+          "caseKind": "CUSTOMER_SOURCES",
+          "condition": "SOURCE_UNAVAILABLE",
+          "repetition": 2,
+          "contextId": "investigation-d0486a5c-b8d3-48a7-b872-3141882387c2"
+        },
+        "agentId": "agent-fb1cb5f8-0e87-4e6d-a453-c38aa304d372",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 3
+      },
+      {
+        "trial": 3,
+        "registration": {
+          "caseKind": "CUSTOMER_SOURCES",
+          "condition": "SOURCE_UNAVAILABLE",
+          "repetition": 3,
+          "contextId": "investigation-3f49cdee-e0ed-4fbd-818c-fb000ec8cd22"
+        },
+        "agentId": "agent-775359ce-2cb9-415b-824a-a94c38a93d9c",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 3
+      },
+      {
+        "trial": 4,
+        "registration": {
+          "caseKind": "CUSTOMER_SOURCES",
+          "condition": "EXECUTION_UNAVAILABLE",
+          "repetition": 1,
+          "contextId": "investigation-51443954-b7f7-4984-8ed5-729ad644b7cf"
+        },
+        "agentId": "agent-88f98da5-6314-412b-b03f-155fea4a7b52",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 5
+      },
+      {
+        "trial": 5,
+        "registration": {
+          "caseKind": "CUSTOMER_SOURCES",
+          "condition": "EXECUTION_UNAVAILABLE",
+          "repetition": 2,
+          "contextId": "investigation-f0f92002-81f3-448d-acea-18c564fa684c"
+        },
+        "agentId": "agent-842f46f3-f382-455c-b06c-1e2b364016e1",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 5
+      },
+      {
+        "trial": 6,
+        "registration": {
+          "caseKind": "CUSTOMER_SOURCES",
+          "condition": "EXECUTION_UNAVAILABLE",
+          "repetition": 3,
+          "contextId": "investigation-a93a615e-6650-4a2d-8fda-c5bfa18272b2"
+        },
+        "agentId": "agent-01195412-7990-43d7-bad5-8da589f1e344",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 4
+      },
+      {
+        "trial": 7,
+        "registration": {
+          "caseKind": "SUBSCRIPTION_PERIODS",
+          "condition": "SOURCE_UNAVAILABLE",
+          "repetition": 1,
+          "contextId": "subscription-investigation-2fab4f53-1551-4300-8519-e8767cbb1faa"
+        },
+        "agentId": "agent-3b21faca-44b0-4aba-9be8-33fef45d75cf",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 3
+      },
+      {
+        "trial": 8,
+        "registration": {
+          "caseKind": "SUBSCRIPTION_PERIODS",
+          "condition": "SOURCE_UNAVAILABLE",
+          "repetition": 2,
+          "contextId": "subscription-investigation-4d1ad542-008b-482e-ab43-b79b9f72e310"
+        },
+        "agentId": "agent-7c13428c-7274-45c4-bd54-171d78ba0463",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 3
+      },
+      {
+        "trial": 9,
+        "registration": {
+          "caseKind": "SUBSCRIPTION_PERIODS",
+          "condition": "SOURCE_UNAVAILABLE",
+          "repetition": 3,
+          "contextId": "subscription-investigation-ffe32f0a-bb64-455d-9813-bc998af84019"
+        },
+        "agentId": "agent-43db148e-af2a-416d-b53d-0bf70f28d313",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 3
+      },
+      {
+        "trial": 10,
+        "registration": {
+          "caseKind": "SUBSCRIPTION_PERIODS",
+          "condition": "EXECUTION_UNAVAILABLE",
+          "repetition": 1,
+          "contextId": "subscription-investigation-17e6b964-28de-4b97-8598-74b69a990df5"
+        },
+        "agentId": "agent-69de6963-f145-4845-8a39-737191789e26",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 4
+      },
+      {
+        "trial": 11,
+        "registration": {
+          "caseKind": "SUBSCRIPTION_PERIODS",
+          "condition": "EXECUTION_UNAVAILABLE",
+          "repetition": 2,
+          "contextId": "subscription-investigation-ac39165c-a3fc-47f5-ab00-5c3e7d53f8fc"
+        },
+        "agentId": "agent-e95de88e-5385-4664-a1df-0353f6b25fca",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 4
+      },
+      {
+        "trial": 12,
+        "registration": {
+          "caseKind": "SUBSCRIPTION_PERIODS",
+          "condition": "EXECUTION_UNAVAILABLE",
+          "repetition": 3,
+          "contextId": "subscription-investigation-2b0356d8-e4fe-438a-b748-6d9e9af0c889"
+        },
+        "agentId": "agent-05e7e5e3-297a-4544-b6e6-98d97ce5f739",
+        "decisionCheck": "ABSTAINED_AFTER_WITHHELD_EVIDENCE",
+        "semanticVerdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+        "supportedAbstention": true,
+        "registeredModelCalls": 4
+      }
+    ]
+  },
+  "historicalCustomerSuites": [
+    {
+      "evaluationId": "evaluation-0374e04b-580e-437f-bb06-41398e77d93c",
+      "plannedTrials": 3,
+      "counts": {
+        "REGRESSIONS_REMAIN": 3
+      },
+      "inputTokens": 154181,
+      "outputTokens": 6317,
+      "acceptanceCredit": "NONE_SEPARATE_HISTORICAL_CONFIGURATION"
+    },
+    {
+      "evaluationId": "evaluation-e1907a9d-c38c-48d0-b009-0788595229bb",
+      "plannedTrials": 3,
+      "counts": {
+        "ABSTAINED": 1,
+        "REGRESSIONS_REMAIN": 2
+      },
+      "inputTokens": 172536,
+      "outputTokens": 6064,
+      "acceptanceCredit": "NONE_SEPARATE_HISTORICAL_CONFIGURATION"
+    }
+  ],
+  "totals": {
+    "rawCompleteRepairs": 5,
+    "acceptedRepairs": 4,
+    "blockedInvestigations": 1,
+    "supportedAbstentions": 12,
+    "registeredModelCalls": 101,
+    "maxRegisteredModelCalls": 222,
+    "inputTokens": 380583,
+    "outputTokens": 13196
+  },
+  "repositoryArtifacts": {
+    "docs/evaluations/sufficient-evidence-review-2026-10-01.json": "f30638449f88932072e73dd79a4acd40569a14c15a0216a0aab850fe0c624c32",
+    "docs/evaluations/missing-evidence-review-2026-09-30.json": "e0b0971361854f78589d40dbd023c3366acd6b6903e5042758c3bd98702bdec7",
+    "scripts/Verify-MissingEvidenceReview.ps1": "6193e00c5d10f2fcb05a8aed75f430e3ce6520f75eacc0d69e86c80c6beec258",
+    "scripts/Verify-Milestone3Acceptance.ps1": "05c7b497b6862197b5e9e52baac3982541192b7af5cb13e3fc3584da57477c47",
+    "docs/compatibility-contract.md": "1a9f61f5e332b530ce339009c5c62503024e935ffd39c66bff2d9a2860fea562",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/ConsumerInvestigator.java": "e64923f3395dbed2a33b44472b4fcc3c2663ed22f5f1c60eea87d8fcb5e2487e",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvestigationDecision.java": "7b56418fde507f6dac21fba49480016d8c4f6812b3eb392ec4940b15d8f2819c",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/SubscriptionInvestigationTools.java": "886a799ea8974b2a104ce82fcb32c16fc4759b2fd5d23f5ddbfd8cd4e4427b4d",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/RepairWorkerMain.java": "5f51ca98adc7ee739038a71570d4f64fddcc8e514f5d19bcbee11e02efd5f91c"
+  },
+  "storeArtifacts": {
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/suite.json": "e4db6b5862e7d28bcf0bf76253eabf2a990a6c660a2fd024cf15a11385402cc7",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/result.json": "31e7a70b22676e4aa638054b1a34dde0ad2cb0ad91f75f1960b7a45f88b038b6",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/agent-1.json": "0101827cc7a6f5c6179e0163f2e47a8e35953840f1d7941baf05b4b0c97ec241",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/candidate-1.json": "7693f8c44eb49fa17cab6c35e7e1a306417d33dd33316f0f36f38f56f5bbb8d0",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/verification-1.json": "8f4b9097150fb8c2b91c507cc029d625c196fa1a252645e53be346ad8edab866",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/result.json": "a14f9b2dd95ef3e9f88368b6ecb89dccb43591f4a707b38845cf7bcdb0ced532",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/session.json": "0810383e10bdf60ddc46efc54938d8509bcfc833bbcbd59f10fdfe752dfb7221",
+    "investigations/investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a/registration.json": "b41d46d1b2a1ce36c2e003c78c14793204f91d8b1baf715930747b8a73f47ddc",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-1.json": "68b8cea31c037f63f70542b41afe949620dda4ff3ce30a6c0dc2b391ae86214f",
+    "investigations/investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a/inputs/baseline-source": "c383bcc6696d43daa875690ba81de46874c3b98c832eef8455d935135b10c6df",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-2.json": "e2d8e5902ba9587674e9d8f5144d01ccbedcb5f5e61b88cc9b18ca1746edc284",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-3.json": "aff7e772fe6b7a85c59bfa7c2c2c9c58bff383fda1221d8114478b321fb5b94b",
+    "investigations/investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a/inputs/expectations": "21c7456708d03e236dd909fbd4b76e4ad1ec6ec8d7af85d0784df6117b9bc273",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-4.json": "4dacb8bf03c903fdef2512df6b1a2ff20532075f70fbbd90f4847ecd731a53fb",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-5.json": "3de1afb131e553fa16e7c8f0a3b9a7b96e82cffa52f7efcb98e0fef4e612b0c6",
+    "investigations/investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a/inputs/case-index": "d0bab374e9a1c40ebff8470fa16c29ef9b88b300d5f6df98d043909da8a1f09d",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-6.json": "5e6c6d0e5c58a40d01dbae1180b8ce6aae36bcae7c7ad2b5b5e244e2ca6fd9b6",
+    "investigations/investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a/inputs/fixtures": "fe657ee4a5cc4707a1d16938059267852bc0003602e3a0f0d0ae9209a573008b",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-7.json": "dfed0808c684a1a3587c9657856a56fa597deb70cbda2c550e1dc60930b609a7",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-8.json": "f027048927de4f0987e537ac07b93b09d7f82ee85ed62452a6a426127dbcdeb5",
+    "investigations/investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a/inputs/provenance": "c5d194275e778c5ed6099d7b4a946086ae2a5697ec6f9b6a46f3bb96cac2fc85",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/event-9.json": "758d0fdf8a57c8e5892dd885c8a96f741362f583d0ebe63498591f2a301c5797",
+    "investigations/investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a/inputs/reference-source": "92e6e05bfca15ad3b7af3a72f164c79b2d7c56ae004168ad5a1cbbfcf282fcc0",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-1.json": "1b2598f53daeea3389b5448c45f1b96adcbd82d0b901039fffbd084ff2a41f55",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-10.json": "cb642c41177a6fef1444536f9598f17c4b073076ed83f651e3e8f36996b5e522",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-2.json": "fe55dead8c91d79b4ab31eacba324ce0f97790966d2aea32b62c45e8bb9ec40d",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-3.json": "16adc570cdcdd2215c50819fb4aa5752d01a76ee149b4b523b5009dacfe506d7",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-4.json": "dbfae652919f8ef64f80b630f14d42e47dad21a4195f9f26864c40bbbe98e8dd",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-5.json": "6ecebbfc12a4060f73e5d1f668befeff749cc62bce48b7b37c995e7ee592645a",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-6.json": "c1d58eed1f68aee8471009dea64d3340c69f29d5d1799ded450d83ff886e7653",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-7.json": "cc6f6ac87d631b14356c8f399b814f49556b04bbd69bb061dd65410912f0fc2d",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-8.json": "af5a86762556049ec2a602d5b859f41a3e3b09aabd400d1ac00b9f202d1e9cb1",
+    "agents/agent-d7abd812-3860-439f-a0aa-eb6891248e08/call-9.json": "49957c82067169c65d3ac15d21586c30524956342db0532dea438fee233714c8",
+    "candidates/candidate-6b867a64-724a-484e-a026-5d55f71d7d78/registration.json": "873ce5f14e53daa9e3dd73243b916545b0d69777054cfab247cf863590969c26",
+    "candidates/candidate-6b867a64-724a-484e-a026-5d55f71d7d78/result.json": "213713df1cfac7bf408f93034e1c55636af0a6ff4b2b7752b38af7eadedaa08e",
+    "verifications/verification-e46e7f5e-3f0e-4e2a-bcf2-12503e9ae8b0/spec.json": "7c41b38a35b9afee98aceafed79c84f9faa0117568f4341b886a8b12b3d7d208",
+    "verifications/verification-e46e7f5e-3f0e-4e2a-bcf2-12503e9ae8b0/result.json": "acd0dd299fd5ebef9d9a2bb4bdb5d75a0e0b5c20d5aa701a717cf65f36859a00",
+    "verifications/verification-e46e7f5e-3f0e-4e2a-bcf2-12503e9ae8b0/observations.json": "c50d7db6491fc78e42dc159a9caec45dc8ac1f38469d9677a7232a413fcacf91",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/agent-2.json": "a2ebc2b4ae0ec508134456f0cab4e961dd44c9902f5191e3b5905d9885b7f19d",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/candidate-2.json": "c40bd188dfdf9fa9ca97a35a05454cf412a5b68d7556388711b7b10afe0ba04d",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/verification-2.json": "5103615d373467680e89ed82e5292522d352ffc7c382f38aae7dad4df4effa96",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/result.json": "61e7dbb9a24d4cd8dd6e323cd8fdece3a3bff878da869a2ae073d37476597294",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/session.json": "65449a117a8ab00c1aa0e60737e7e3391342cacf9ee779cfb2dff036b7f2bd20",
+    "investigations/investigation-601b5fb5-07d3-481f-9a9e-bfdd6e178907/registration.json": "7fc685109dcbc7419424ee978802dad4a675eb4f7c0f164bc66333362d53021f",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/event-1.json": "1d08e863aaa9464c19ac0f2165d4055e32c63e0d668ae3f9a524e66b9a0be419",
+    "investigations/investigation-601b5fb5-07d3-481f-9a9e-bfdd6e178907/inputs/baseline-source": "c383bcc6696d43daa875690ba81de46874c3b98c832eef8455d935135b10c6df",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/event-2.json": "16845a08cd4f2972731977ff0089ff0f3718ce194c9ae7e8d55b334508ec4f89",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/event-3.json": "d87589aeff7a87b6e99b43b901a9bf76c06f1e9dde3b5aa6daadba34f030ad47",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/event-4.json": "8566c84658294d41a996d39aa15a5088ed8f32a6a05a3e4dcaf36cda18c25af5",
+    "investigations/investigation-601b5fb5-07d3-481f-9a9e-bfdd6e178907/inputs/case-index": "d0bab374e9a1c40ebff8470fa16c29ef9b88b300d5f6df98d043909da8a1f09d",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/event-5.json": "0ae31d1a2f9689e776c86fbc72792b472c44ae557bdcd62b66dd6c2a4120949a",
+    "investigations/investigation-601b5fb5-07d3-481f-9a9e-bfdd6e178907/inputs/expectations": "21c7456708d03e236dd909fbd4b76e4ad1ec6ec8d7af85d0784df6117b9bc273",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/event-6.json": "ae52924a9ae545a54cf58c1a9e78fd371afee22471cb1dbe16ccd150bc2e5c31",
+    "investigations/investigation-601b5fb5-07d3-481f-9a9e-bfdd6e178907/inputs/fixtures": "fe657ee4a5cc4707a1d16938059267852bc0003602e3a0f0d0ae9209a573008b",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/event-7.json": "74cac01e56bc6ac931e018f4384a3bbb61783bc4c43aac9cabea3a7feb06aa3c",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-1.json": "082daf6de729f36cef35258b089b823056719cedc711218e08f21f3db4695e7a",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-2.json": "af8e64a3acc1b30cab834454c3e10be975eb5381193d00c8ae1ad614e7f7ca63",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-3.json": "0772184581a604d08af440a8139706497eb67562d28b5e48dc6ba3d331109e65",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-4.json": "64326a7984ebc4dc39ad51fd119b4b71c2cafb70102d58b4c5e9a06e8e5d35fa",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-5.json": "4d1d6283eef1a37d5f36aca98d2a82c79c3ea69e49be4c4e9ebf41eadcf7cf43",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-6.json": "980cef8d1cc224734c29cee38042e2278f22bb619a3089b97ecddd272532614b",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-7.json": "bd3e369575dd81acd9b9ad762213b70284bbe40b0ee4f74f606dbe8b26e5ef56",
+    "agents/agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef/call-8.json": "f7550a0e1d3b0a1097110e841caadbd6ae8b0ddb2ba078fc84863b9cc9b8ecef",
+    "candidates/candidate-a6f1824a-eea2-45e9-9a28-5a68593a0a7c/registration.json": "54939d23e1c44e4499b5792161216a1cffc7c4a4bfc08b1962d958b486eff0ee",
+    "candidates/candidate-a6f1824a-eea2-45e9-9a28-5a68593a0a7c/result.json": "33113b17e7b3ae6553b397adef419d5818eca45ca3b9393070590db2284464a2",
+    "verifications/verification-50a05cd9-383a-4b4d-9317-ce5c918eb70d/spec.json": "717f9ba7630c9b35068b585976d4d491f7a8f2b104fd1a1998488a249f61c86d",
+    "verifications/verification-50a05cd9-383a-4b4d-9317-ce5c918eb70d/result.json": "3284cac7d0205c5d1e8e8a771a8dace5c0d6f0a5a87b9fd4415295a8f88e4696",
+    "verifications/verification-50a05cd9-383a-4b4d-9317-ce5c918eb70d/observations.json": "8a6c92e44da24217fd24646e45c1fa07c4b990e1b1eba3c8401e3bb5565117d7",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/agent-3.json": "680f98445e19d7186610a409ab2931136bc3817b2253047b0f5ac1b3b5f2b159",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/candidate-3.json": "4247b49b3698c19b75b753eeb1bf9653f7474032cd6770c863c781022b9e751e",
+    "customer-repair-evaluations/evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d/verification-3.json": "ece26debc7e01ded0255777ad1920b2fb77d3042c51c0c5a2e3058774a4388b4",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/result.json": "4c07784462236475f4b8d5149e16d950f7b1fccfee2aa5b56109e22b9d7aa172",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/session.json": "2e92b87b5f9b328f49f82b2a116c5fb400d1ddca455beabf144f12f44b28a39f",
+    "investigations/investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40/registration.json": "c1c26b00f0effdb384e32a05de05fdf865362e5d84df243b33929c0ac05d1ae0",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/event-1.json": "50dfba4e6929fa6a8a0f77f0e33ec21b7d20e5500ca30bd9f859279f0003aea8",
+    "investigations/investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40/inputs/baseline-source": "c383bcc6696d43daa875690ba81de46874c3b98c832eef8455d935135b10c6df",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/event-2.json": "923ee099e5c44b2998ca59274a629d84ba38b42a4dbe2be69ff6d6773754d300",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/event-3.json": "2e9af76b2818aca879f3dc375c35fc55f3df4e9d3c0963988d9152dba94f9b5f",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/event-4.json": "345b524801d9b28a4353bfb1b4e079241330553279538b04311c22b8a658ceb3",
+    "investigations/investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40/inputs/expectations": "21c7456708d03e236dd909fbd4b76e4ad1ec6ec8d7af85d0784df6117b9bc273",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/event-5.json": "d555e279a456de75ba5a4566d9907bd70d7e96deeacf74f2fc343f7086f5c797",
+    "investigations/investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40/inputs/fixtures": "fe657ee4a5cc4707a1d16938059267852bc0003602e3a0f0d0ae9209a573008b",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/event-6.json": "459ad1fd5e7b67f62eb7bb4da79a8bcbaf31eee424c0dfaae6afe8a87499f039",
+    "investigations/investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40/inputs/reference-source": "92e6e05bfca15ad3b7af3a72f164c79b2d7c56ae004168ad5a1cbbfcf282fcc0",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/event-7.json": "3e5ca84ee5d19bc3b12031a882002433f2f9982a44a00cf49fd5adaebfc6c1db",
+    "investigations/investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40/inputs/case-index": "d0bab374e9a1c40ebff8470fa16c29ef9b88b300d5f6df98d043909da8a1f09d",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-1.json": "32250914969542c10404d8a2fb5dfca2786549959e0e6ac974bca89d93c62956",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-2.json": "fc0cad9d9a0c9d0da7416d7f9a23862cfdadd16432f9d8cb983a6089178244b2",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-3.json": "939592525f48eadcd35ef606c9a7a5aaa6669aa8da6b413e3e95e68199f7afb5",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-4.json": "4d8ff73e76de3710ead23c2724c5304e8ac469da1277903717bb2436d8690f24",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-5.json": "475eb3d957db5091d57fc3fb32a2c29f178779c87a7f8eb67d8a79d5e5637003",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-6.json": "032a484e7e81fbca468aaeb3c39e44599ecaaa9ddd798040efe806cdbab52873",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-7.json": "08f3d6ca45f18c7acdbd75740bf2d6d8a9b6b0bfb927e41fa62bacaed50f9ea1",
+    "agents/agent-f4a4c016-0718-41be-927d-8769707869f0/call-8.json": "b8bbf1cae60dd26e7f60af871d7f51530c7378b61a4ba4f7e21b8499bb833e81",
+    "candidates/candidate-b982e7f9-4d7a-4180-bd50-78f6b72131dd/registration.json": "91e04e5c78adc23962e61ca846fb5b4ee20682c583ae21338a85241fb2d64c67",
+    "candidates/candidate-b982e7f9-4d7a-4180-bd50-78f6b72131dd/result.json": "0c9fe7833367d12b220254cd843f9a21bba23c85d1b2981fc65f2315cdb0c327",
+    "verifications/verification-d22beb12-c349-4cd2-912b-4f676a0d3702/spec.json": "79123457018b1528e64ef7bfbe379fe2ec1edc5025c127ea7fb9d32a219227dc",
+    "verifications/verification-d22beb12-c349-4cd2-912b-4f676a0d3702/result.json": "4ab530dcb66705912d9390331e4e667c0df4f0c45409915b4cea591e67f5b0fa",
+    "verifications/verification-d22beb12-c349-4cd2-912b-4f676a0d3702/observations.json": "4dbd5e5f506deaf89ec8832b5df60e36205e4287119b694344673a08b139ef61",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/suite.json": "dafaee24146ae88e98350e4bc99f969b065189bed08ea3d18d4456e67596bbe8",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/result.json": "172749b1391db1ff446aadb244a086ea54d1624b0283c933c636f8e280a29e32",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/agent-1.json": "b7de24139105532c55e8165cf0a4b44ceefcdc3a6f8c9fc5c1ee8b5a36497cbb",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/candidate-1.json": "61329532fb194b97278019bbcd354447ef3e7e043d3218a4451a096dfd9c8144",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/verification-1.json": "c8c6546695628f209d3bcd639304ff1130a10d5281ab78680f199adaf3e5ccbb",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/result.json": "b60645a32b2a9c4c9b36979cf3fbeabe73b01d4ed0ca98fb7a6e53fba62a0311",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/session.json": "553533c869b70f90075e98bc4670ff7cd4a20ba8af553c6b31968961283a5cc9",
+    "subscription-investigations/subscription-investigation-c15959db-dd3c-48bc-af6f-d853878a107f/registration.json": "fd707edc8fcb5df3bd0c816023d8f9cc1cb7b8206e0dc881a8aac82525bb9fc0",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-1.json": "140b238aa4ffe22706aeec9b0b7d8a6e77628dedeed16a497aa6f183061efa5c",
+    "verifications/verification-e5839039-37d2-4ce8-bbfc-554088f63620/inputs/baseline.txt": "0092774df675acd4cc4db59dc1fe280b89e9249893bbd011e33a847f79a04fdf",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-2.json": "4361b35b59dcee80685230ce08991c40f0bebb55f3cfdcff4f229fc7aa0712a0",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-3.json": "97af75bff9185a6b3b154ed1f8293e9aa4dd7bcb1fc92d256bdf7ffb276536f7",
+    "verifications/verification-e5839039-37d2-4ce8-bbfc-554088f63620/inputs/expectations.json": "b3f42ded863d5004b8060b6f5e5fd215df14156440b84763e46687ca147a39e0",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-4.json": "f7a5870f9309f58513c75ab092fa48c4bc201a1278964c1b914e173969b5c175",
+    "verifications/verification-e5839039-37d2-4ce8-bbfc-554088f63620/inputs/fixtures.json": "c31154b82f5fe320fc790261bd100c7a2481832aae953d7c2960204c014559f4",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-5.json": "6de04c3be4392c55db029e3c2d6d6694a415110fb040eef489cbabd9e4bad274",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-6.json": "99a13700eebe420c2c5800315b14686ef339c31d97463970571145adc8559e9c",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-7.json": "f673eece84191ecdb8b06fb402c8f5bd68bd48579120677e9b44ad6eb5d0d3b1",
+    "verifications/verification-e5839039-37d2-4ce8-bbfc-554088f63620/inputs/README.md": "2c192ce824d4737094a163f743a327ce287743abf5332836f47107a95fa0ca84",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/event-8.json": "36cb48ebc073edf3c83ff3626c11bd2dbd2177fc98bf6ce5897548f0c0ef501d",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-1.json": "e13527c507c375ead3f3a8c9eda00f9ffdad4ae50ce6c4824f08ab086450a93a",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-2.json": "446fdebff26bfc9af7f3f88bd18fe96998bc16aa6c63d86fd335b79e562d3d01",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-3.json": "6a621684ed4e90c99a2e12636bc0f71ca8330353c3fefeb26fd8685b91f0aa64",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-4.json": "0c02cb0067ee158ec7dcfd18b3525a05f7e157a85cb476176ede8a0ca41234b5",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-5.json": "eb57398b5f11cbc6b04a031628a657c2672d859297a3d262f05023e9abb310b2",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-6.json": "dbb62be25d2664e8bec18100d20192404708e0cc473551204132d7765a365171",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-7.json": "ea7c6457b75ad113211c571ff195a9c5b62559f982fa9c05438516a59891f960",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-8.json": "66ba2ff4cb8cedba9379c5ed8dfd9aba222d3c12371d81a2908844dd8d0e96b2",
+    "agents/agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73/call-9.json": "666109ea6693d0cc5492192af44e50a50efba51368b5daca0c49f8c0e336d867",
+    "subscription-candidates/candidate-9e944a78-d0bd-4cfc-92e6-d42777ff7105/registration.json": "c636032bd80d2b6798afc6a5ea70aa832b607a370355f3f67da3accfadd87b61",
+    "subscription-candidates/candidate-9e944a78-d0bd-4cfc-92e6-d42777ff7105/result.json": "7947397731e111973553696a1767f5bbd359c982f31430a65022169624090dd0",
+    "verifications/verification-6c3f1ad3-d133-43eb-8f9f-5e67644a50ff/spec.json": "59ce6681fda92e5466c723595c7fc33034c2455549013283d24de1557a6262bb",
+    "verifications/verification-6c3f1ad3-d133-43eb-8f9f-5e67644a50ff/result.json": "3b10cb0991e2c62b9e9f74946843dc5ecdcd4aa36b167a065aa5ca5ed29986b0",
+    "verifications/verification-6c3f1ad3-d133-43eb-8f9f-5e67644a50ff/observations.json": "ac98e83483814297cf5a6b4d457368a60cae540d0943c4d7851cecb86987e574",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/agent-2.json": "cc12a13b26548113430ee42c7ced45c13651ac23d479198c6c98a171208e7274",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/candidate-2.json": "989788003e44a751b68b75d843a18e29d2287bf7f6e870131296f23a1547b617",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/verification-2.json": "b19c3c0282ea03349028c728f73ebaf632169d9a940a2fa3b4033a7f200f88c6",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/result.json": "47c923f1e7be6084f50c86e781afda97e23b1219ffbe75b11c28343c4424c458",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/session.json": "6fba93ed188f762543f1c6ddfed0f0c953706ddfe2cd2f6bfc84a5342410507a",
+    "subscription-investigations/subscription-investigation-ef5882ec-719d-4aec-8bac-7c4e22ae570b/registration.json": "1a2f37ed52a3fe4791c37565d64d824eea75e1ae92d81e57ba2863fb78ef6905",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/event-1.json": "d1004bb1fb3bfb7971bbce93b240bf6965050560cd7682f61fde7a77e18a8663",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/event-2.json": "e3654e5451c610b1f46af0bf2e55c9a8b5fb8435c1c03ed61127e1527af9d12f",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/event-3.json": "60e6ac887d3393e8a0939e92677722ef30ed189d0de21e8e940f30e890710e7e",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/event-4.json": "c85093f852940b1b8cb4db9f8d4bbb4a13d00651f3a2e10d50fc226f553c6047",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/event-5.json": "678df9ab665c91c8bde97e8d475c4e4148e9691161c62aefcca848618e180df7",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/event-6.json": "dfc96c4cc5aa1a867f3ab3d1708b5e69dc49ef762e2ef335d2ac2f5dcf40f108",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/event-7.json": "ab5b1cee193cb1024f29fc280998a57c00c42012f83081d498a345a5de7007f2",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-1.json": "0918537b9c752e796ce5906ec0aabba49f52b76b4c14a3d0af02d2f351f6c98c",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-2.json": "fa7f466ba30ea739b06728c4c7d3b63b2721244b9f1b10a42dccd850e8e91131",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-3.json": "4540260edf3d8449caafec71dae2e0607e79726f16c3ef462dcf4bc76c7b6526",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-4.json": "65d86387d60e32c0e75b5b05b4276c63afdeb5a66707381c2e79c00ccb3174df",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-5.json": "c2c5c978f7cbcd29e7170f0ed9e664879e8b54a68fbb0e031a554b0f95686710",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-6.json": "8e88274663e0a35618c2fdd64e1d8fd118f37b3422ff74b35b24d367e9dd4e7d",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-7.json": "4e8719e431f3f17aa5450314bb9f3325679a74f0050381e81496193f39d7cd0f",
+    "agents/agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d/call-8.json": "7e2d359fb1ca914588e044d5f1f16e34cee10cdaa6c8ceae666366e5c6d15f50",
+    "subscription-candidates/candidate-f8fd7c41-f7de-4e88-b724-8614971f5ea4/registration.json": "6ef27ec6e4711c1090845213cb376f89f85a9d3ae4e1fde5fd2487f42717ec82",
+    "subscription-candidates/candidate-f8fd7c41-f7de-4e88-b724-8614971f5ea4/result.json": "c47ce1752470ea830280ea019ff8b15c6e2c0429e49fe6490d0ff93691c0ba20",
+    "verifications/verification-fc64862f-32e6-41a7-b8aa-b0f62a371484/spec.json": "9ba2821573f5128f807db3eebb910677f140943787c440e12f0ef379669d6ae6",
+    "verifications/verification-fc64862f-32e6-41a7-b8aa-b0f62a371484/result.json": "eeeb2e29f1b30487b2317a344105e895b52da4df2e66708bdc0349a379e158a5",
+    "verifications/verification-fc64862f-32e6-41a7-b8aa-b0f62a371484/observations.json": "ac98e83483814297cf5a6b4d457368a60cae540d0943c4d7851cecb86987e574",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/agent-3.json": "5ee6b7c412363755a1a42d860edbf9eb88f02e5d3ccd357c6111816e2a21f791",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/candidate-3.json": "b92b920f449f34a0fbd502396a93c191ee150d05e9d3ca37ded61d231e1286ef",
+    "subscription-investigation-repair-evaluations/evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725/verification-3.json": "989d253b27d81657b5687ba1ed1f7b098f24aa21d0552e42b418544c932c1047",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/result.json": "b3c35580516b571e8f2f5e3610920734f3ea17cb495ee1b25319466318e48810",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/session.json": "6d42aec29157b4977b77084eb178249043840208fc20a00889da5e46d51b5ef5",
+    "subscription-investigations/subscription-investigation-82831ee5-49eb-4251-a6f2-057e3c559278/registration.json": "2085727cf8e3e3811871e690222f7d581d16157c578a0e7ebd4f08e93deec7a6",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/event-1.json": "f7cc0650644f2b2cc840df7b655a9f0b3274a3e0074545f49b73708bfc185114",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/event-2.json": "5fda67a061f33ebfa681b9e1ac01f731337da9725c51f7c7d0e7b40424209eb3",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/event-3.json": "8f1d6026a96b30790ca8f70fe81254cb4ec928c1561c64dc7c33943805fef5f6",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/event-4.json": "2b49589a01a2c1fa21c33af0d69e0be822feb1309aa317218cfb0f208a0a6fa7",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/event-5.json": "97f5505b0ebb012824b28e5fe16fbb87ac3a2736c06452f0e7fa9accea08d0d6",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/event-6.json": "cf68dd5710caf1a1fd12ed0445f33ecb40cac69ce7988c6f2f93d468d7626427",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/event-7.json": "54da022fea66175cf72878d311f468154576e1a1cc9a0d6101995f9459f603b8",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-1.json": "c9cb1057ee7952c3118d9e00b1c7f53980d39c71e71c43342093c9d3f388f7fd",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-2.json": "ca1b86c33243329689b142d694d0c1e27710402c4d665a8937a11a2a8b940aaa",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-3.json": "7f93be59e2ee83822e7e62cd78037324e8ddc2cb1a372d39971456dc4d7d1179",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-4.json": "a090c49e59d1ebf598117ec7b4734f9484cf01e80faeec952c2ae8eb7705c968",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-5.json": "da7b81b8397b6f2e4716adb8dbaa4e1d4cd92c91aa80fd6d7d131f4798b166ac",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-6.json": "7e085a0e43d1ac111bbf9a3505216f9b6631ee6ab5a052c54f6c35f409e9d9cc",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-7.json": "3e9506e245e075d98837339d4049625fe28dca98fa90507411fcb021c60babf0",
+    "agents/agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262/call-8.json": "3501e88b701e8a3c5fba832022a9e8c9d9f6691ec74b82f7dcecd4fb6ca89269",
+    "subscription-candidates/candidate-c276ddc0-f15b-41d0-b0a4-3b2abfc840d8/registration.json": "34f7a0ed51a612fcfcb2dd5733a41d7c83ab10a81d28ab566b45dd1500af9b10",
+    "subscription-candidates/candidate-c276ddc0-f15b-41d0-b0a4-3b2abfc840d8/result.json": "7e0058d14b7b9bee522aaa371114b055c6d20d4f8d403b2444efddc64b8b85b9",
+    "verifications/verification-84fdc1ea-cba7-41b9-aa03-6cb99eebb9ab/spec.json": "58c6faebfe0b06cfa1a0ed220c7dab87fbf896545cf41bf69ca8d5e6dca49a4a",
+    "verifications/verification-84fdc1ea-cba7-41b9-aa03-6cb99eebb9ab/result.json": "133b3db0499c9cd0b59a6edcd48ada3bdb95d7556345e626eba822895ff52cf3",
+    "verifications/verification-84fdc1ea-cba7-41b9-aa03-6cb99eebb9ab/observations.json": "ac98e83483814297cf5a6b4d457368a60cae540d0943c4d7851cecb86987e574",
+    "verifications/verification-e5839039-37d2-4ce8-bbfc-554088f63620/spec.json": "6a164c54c1161a3c420a2b6dcc5776ec8f1e17cb88008f9ec8f965ed3a99057f",
+    "verifications/verification-e5839039-37d2-4ce8-bbfc-554088f63620/result.json": "1565c4840429f77449f535ffa5b93b33859f12f63bd8dd8ba8decb6cf991ce70",
+    "verifications/verification-e5839039-37d2-4ce8-bbfc-554088f63620/jobs/baseline-single-item.json": "12fb5e7e0095bee291aad84390b1293e5b48f61e3553599376c5e80122ec2b6a",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/suite.json": "83d5fda5af1374fa1ec052162bf37a1dd220ede13394501a9e614662dfd1ac5e",
+    "missing-evidence-evaluations/evaluation-7271379f-19c0-4ce7-a479-c8f08ed2210f/result.json": "c62b0e71fa00de8bd4a0cd9e0084da96275d70eae1e6528c3657d27048669491",
+    "customer-repair-evaluations/evaluation-0374e04b-580e-437f-bb06-41398e77d93c/suite.json": "614305bea05db7692f3842f5fcdd9a1b540fa14e2cde219cef9a760184304671",
+    "customer-repair-evaluations/evaluation-0374e04b-580e-437f-bb06-41398e77d93c/result.json": "aba069c1d0bf6f0834eb0f93a3a1fd675926193c570c5bcf900dee2fddf2fe53",
+    "customer-repair-evaluations/evaluation-e1907a9d-c38c-48d0-b009-0788595229bb/suite.json": "9f1e2aefe9e169cd6e805012c7a837e56deb1bebf6156cfc7b29ff7395e8a6e8",
+    "customer-repair-evaluations/evaluation-e1907a9d-c38c-48d0-b009-0788595229bb/result.json": "418625b17ecf6ef907d7f8f12e17e2d87679c1aebfcaea3243b2b2683fce08be"
+  }
+}

@@ -3,7 +3,8 @@
 Milestone 3 requires useful repairs and justified abstentions measured on the two
 existing curated cases. This is a bounded acceptance exercise, not a general
 migration benchmark, release certification or evidence of multi-agent benefit.
-The checklist below is planned work unless explicitly marked implemented.
+The declared exercise is complete under the recorded model-assisted review and
+explicit blocked-trial rule. See the [bound results](milestone-3-results.md).
 
 ## Current evidence boundaries
 
@@ -15,7 +16,7 @@ The checklist below is planned work unless explicitly marked implemented.
 | Separate protected candidate execution | Implemented | Implemented |
 | Repeated generated-repair suite | Implemented with fresh investigations | Implemented with fresh retained-evidence investigations |
 | Controlled evidence-availability investigation trials | Implemented, repeated missing-evidence suite | Implemented, repeated missing-evidence suite |
-| Semantic review of findings and abstention rationale | Missing-evidence rationales reviewed; sufficient-evidence findings pending | Missing-evidence rationales reviewed; sufficient-evidence findings pending |
+| Semantic review of findings and abstention rationale | Reviewed; failed repair retained | Reviewed; one unsupported explanation blocks its trial from acceptance |
 
 Automated tests of the evaluator establish runtime behavior, not model quality.
 The availability suites check encountered tool failures and decision statuses;
@@ -25,19 +26,22 @@ with separate fresh contexts and leaves its raw semantic-review fields pending.
 A separate [claim-level review](missing-evidence-review.md) covers all 12 summaries
 and 13 findings from the repeated missing-evidence measurement: each is supported
 within its recorded scope. The review is model-assisted, with no independent human
-adjudication; it is not a general correctness claim. Sufficient-evidence finding
-review remains pending.
+adjudication; it is not a general correctness claim. A separate
+[sufficient-evidence review](evaluations/sufficient-evidence-review-2026-10-01.json)
+covers all six summaries and 25 findings: 30 claims are supported and one is
+rejected. The affected subscription trial is excluded from acceptance credit.
 The existing subscription repair suite measures repeated behavioral results but
 does not judge abstention correctness. These suites are not held-out evaluations.
 
 Recorded sufficient-evidence results reach the numerical repair thresholds:
 [customer sources](customer-repair-evaluation.md) has two complete repairs in
 three fresh trials, and [subscription periods](subscription-investigated-repair-evaluation.md)
-has three in three. Earlier unsuccessful customer suites remain separately
-retained. Sufficient-evidence semantic review and the combined acceptance report
-are still required before closing this milestone.
+has three in three. After excluding the unsupported subscription investigation,
+two subscription repairs remain accepted in the same three-trial denominator.
+Earlier unsuccessful customer suites remain separately retained. The
+[combined report](milestone-3-results.md) meets the bounded criteria with that exclusion.
 
-## Remaining implementation sequence
+## Completed implementation sequence
 
 1. **Implemented — subscription investigation and handoff:** bounded registered
    source, policy and retained execution reads reuse the existing investigator.
@@ -49,11 +53,11 @@ are still required before closing this milestone.
    uses fresh adaptive investigation-to-generation handoffs; its earlier
    generator-only trials remain separately identified. Conditions, repetitions,
    model, execution identities and budgets are registered before dispatch.
-3. **Acceptance review:** run the fixed trials, review findings and abstention
-   rationales against their cited observations, and publish a bounded results
-   summary. Preserve unsuccessful trials and unresolved review findings. A failed
-   criterion requires a targeted correction and a separately identified rerun;
-   it must not disappear by replacing the original report.
+3. **Complete — acceptance review:** the fixed trials and claim-level reviews
+   have a bound results report, retaining failed trials and a rejected explanation.
+   The offline checker refuses acceptance credit for blocked investigations and
+   verifies full denominators. Any later failed criterion requires a targeted
+   correction and separately identified rerun, preserving the original report.
 
 These are capability boundaries; each may require multiple cohesive changes.
 Additional provider families, arbitrary repositories, a repair-feedback loop and
@@ -105,6 +109,10 @@ The review record must cite observable source/execution events, state the judgme
 and explain any unresolved disagreement briefly. Reference validity alone is not
 semantic support. No hidden reasoning is requested or recorded. Material unsupported
 claims must be corrected or explicitly blocked from the accepted workflow.
+In this exercise, a blocked investigation's whole trial receives no accepted-
+repair credit and remains in the original denominator. The milestone evidence
+set excludes that trial; this is separate from runtime authorization or release
+approval, neither of which is supplied by the acceptance report.
 
 Report per-case counts, planned and actual calls, recorded tokens, declared budgets,
 model and input identities, verifier identity and remaining limitations. Unknown
@@ -112,6 +120,6 @@ charges remain unknown. Demonstrate resume without extra dispatched work and
 rejection of changed input evidence using the existing automated checks and the
 new integrations' regression tests.
 
-Milestone 3 remains open until this report and its supporting records exist and
-meet the criteria. Milestone 4 then evaluates coordination across the two distinct
-consumer behaviors; this checklist makes no claim that coordination already works.
+The report and supporting records meet these criteria under the declared review
+method and explicit block. Milestone 4 evaluates coordination across the two
+distinct consumer behaviors; this checklist makes no claim that it already works.

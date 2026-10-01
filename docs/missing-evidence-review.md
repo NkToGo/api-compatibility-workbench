@@ -27,8 +27,9 @@ limitations; none claims a provider defect, a passing migration or a verified re
 
 These judgments support the four missing-evidence cells of the
 [Milestone 3 checklist](milestone-3-acceptance.md) under this review method. They
-do not close the milestone: repeated fresh subscription investigation-to-repair
-trials, sufficient-evidence finding review and the final acceptance report remain.
+do not close the milestone by themselves. The later [combined acceptance report](milestone-3-results.md)
+includes fresh subscription repair trials and sufficient-evidence review, with
+one investigation excluded from acceptance.
 
 ## Individual judgments
 

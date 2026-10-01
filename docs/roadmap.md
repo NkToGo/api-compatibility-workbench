@@ -71,8 +71,9 @@ adapters remain part of their later integration and operational milestones.
      separate. These use one case and do not measure semantic or repair accuracy.
    - **Implemented:** bounded unavailable-tool retries with preserved legacy sessions
      and per-trial usage counts for evaluating evidence-handling efficiency.
-   - **Pending:** complete the two-case repair and abstention acceptance exercise
-     defined in the [Milestone 3 checklist](milestone-3-acceptance.md).
+   - **Complete for the declared exercise:** the [two-case acceptance report](milestone-3-results.md)
+     meets the repair and supported-abstention criteria with one investigation
+     blocked from acceptance for an unsupported executor-scope explanation.
    - **Implemented:** a distinct [subscription-period case](../cases/stripe-subscription-periods-2025-07-30/README.md)
      with independently declared application expectations and executable authored
      repair controls. Broader generated repair measurement remains pending.
@@ -102,11 +103,12 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** [repeated full subscription workflow trials](subscription-investigated-repair-evaluation.md)
      with fresh retained-evidence investigations, identity-bound one-shot generation,
      separate protected verification and retained model-record inventories.
-     Sufficient-evidence semantic review and final acceptance remain pending.
+     Sufficient-evidence findings have bound review and blocked-trial acceptance
+     handling in the combined report.
    - **Implemented:** [repeated customer-sources trials](customer-repair-evaluation.md)
      with fresh bounded investigations, one-shot generation and separate protected
      verification. Durable stage mappings retain failed trials and completed-response
-     usage; semantic review remains pending.
+     usage; sufficient-evidence findings have bound review in the combined report.
    - **Implemented:** complete registered synthetic response evidence in customer
      repair generation, with pinned SDK source-list implementation evidence and
      expectation/fixture identity checks before and after dispatch. Earlier
@@ -118,14 +120,15 @@ adapters remain part of their later integration and operational milestones.
    - **Implemented:** [bound claim-level review of missing-evidence explanations](missing-evidence-review.md)
      with per-summary/finding judgments against recorded tool evidence, complete
      claim coverage and an offline metadata checker. All 12 reviewed abstention
-     reasons are supported within the recorded scope. Sufficient-evidence finding
-     review and the complete acceptance report remain pending.
+     reasons are supported within the recorded scope. The combined acceptance
+     report also completes sufficient-evidence review, retaining rejected claims.
 
 Acceptance: useful repairs and correct abstentions measured against curated cases.
 
-The [acceptance checklist](milestone-3-acceptance.md) defines the remaining sequence,
-fixed trial conditions and exit thresholds. Milestone 3 remains open. Further
-provider families and automatic repair-feedback loops are not required to close it.
+The [acceptance checklist](milestone-3-acceptance.md) defines the completed sequence,
+fixed trial conditions and exit thresholds. Milestone 3 is complete for that bounded
+exercise under the recorded model-assisted review and explicit exclusion. Further
+provider families and automatic repair-feedback loops remain outside its scope.
 
 ## Milestone 4 — Coordinate multiple investigations
 

@@ -1,0 +1,467 @@
+{
+  "formatVersion": 1,
+  "reviewId": "sufficient-evidence-2026-10-01",
+  "reviewedOn": "2026-10-01",
+  "evidenceRepositoryRevision": "ed820269c603b69e8bc5658d6884cc00e3b77ad8",
+  "method": "Model-assisted claim-level inspection of visible summaries, source pages and recorded execution; no independent human adjudication.",
+  "scope": "Six fresh sufficient-evidence investigations on two known synthetic cases. Hypotheses are judged as bounded inferences, not proven production causes. Rejected claims block trial-level acceptance credit.",
+  "suites": [
+    {
+      "caseKind": "CUSTOMER_SOURCES",
+      "evaluationId": "evaluation-34cd92c5-a5c9-4ac1-a853-720e3b20801d",
+      "trials": [
+        {
+          "trial": 1,
+          "agentId": "agent-d7abd812-3860-439f-a0aa-eb6891248e08",
+          "contextId": "investigation-2cdd4e70-74e1-4a7f-a71f-3988236fa26a",
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "summary": {
+            "text": "The fixed case completed. Its recorded target assessment shows regressions in four of five curated scenarios, consistent with a non-null legacy-sources assumption when the target customer payload omits that field. The expected contract requires evidence before deactivation. A historical reference improves omission handling but does not satisfy all legacy-source scenarios, so it is not validated as a complete remedy.",
+            "evidenceEvents": [
+              "event-1",
+              "event-2",
+              "event-3",
+              "event-4",
+              "event-5",
+              "event-6",
+              "event-7",
+              "event-8",
+              "event-9"
+            ],
+            "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+            "rationale": "Event-2 records five passing baseline assertions, four failed target assertions and two failed historical-reference assertions. Source events 1 and 4 expose the unguarded getSources().autoPagingIterable() call and reconciliation path; event-3 supplies the evidence-before-deactivation policy. The causal wording remains a hypothesis about this experiment, not a provider-wide cause."
+          },
+          "findings": [
+            {
+              "index": 1,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer appears to assume that Customer.retrieve(...).getSources() is non-null before calling autoPagingIterable(). In the curated target fixtures, customer responses omit sources, and the target fails the modern-method, empty-account, legacy-retention, and confirmed-removal scenarios; this is consistent with omission preventing the refresh/reconciliation flow from reaching its intended outcomes.",
+              "citations": [
+                "event-1",
+                "event-4",
+                "event-6",
+                "event-7",
+                "event-2"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Baseline pages in events 1 and 4 contain Customer.retrieve(...).getSources().autoPagingIterable() without a null guard. Fixture pages 6 and 7 omit the embedded collection in the four regressed target scenarios, and event-2 records their failures. The statement is framed as consistency with a source assumption; it does not prove a live-provider cause."
+            },
+            {
+              "index": 2,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer's reconciliation contract appears to require evidence from the legacy source collection before deactivating locally known methods: the expected outcomes retain methods when evidence is absent or present, but deactivate the legacy method only in the confirmed-empty collection scenario. The target's failures in both retention and confirmed-removal cases suggest it cannot distinguish those states under the omitted-field response.",
+              "citations": [
+                "event-3",
+                "event-6",
+                "event-7",
+                "event-2"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-3 declares preservation unless absence is evidenced and deactivation for confirmed removal. The complete fixture pages in events 6 and 7 distinguish retained and confirmed-empty source cases; event-2 reports target failure in both. The interpretation is limited to those declared cases."
+            },
+            {
+              "index": 3,
+              "kind": "LIMITATION",
+              "statement": "The historical upstream-reference variant passes the two omission scenarios but still regresses legacy retention and confirmed removal. It is therefore evidence of a historical behavioral difference, not a validated repair for the full curated contract.",
+              "citations": [
+                "event-9",
+                "event-2"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-2 independently records the reference variant passing modern/empty omission and the present-collection control, but failing legacy retention/removal. Event-9 exposes only an initial reference-source page; the behavioral statement is supported by execution, not a claim that the full reference source was read."
+            },
+            {
+              "index": 4,
+              "kind": "LIMITATION",
+              "statement": "Execution evidence is limited to the five curated synthetic scenarios and their recorded assertions. Completion of the process does not establish compatibility with live Stripe responses, unmodeled payment-source types, pagination/error behavior, or the consumer's broader integration surface.",
+              "citations": [
+                "event-2",
+                "event-3"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-2 contains only five synthetic scenario observations and event-3 declares their expectations. There is no live-provider, broad integration, multipage or error-transport evidence. The limitation correctly avoids extending the completed process to those surfaces."
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "agentId": "agent-59a78403-cb01-4ab0-a1d8-42bfd88fc9ef",
+          "contextId": "investigation-601b5fb5-07d3-481f-9a9e-bfdd6e178907",
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "summary": {
+            "text": "Baseline source was reviewed and the fixed execution completed. The run shows target regressions in four curated scenarios, consistent with an embedded-customer-sources assumption; the remaining passing control is the target response that still supplies that collection. No repair is proposed or validated.",
+            "evidenceEvents": [
+              "event-1",
+              "event-2",
+              "event-3",
+              "event-4",
+              "event-5",
+              "event-6",
+              "event-7"
+            ],
+            "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+            "rationale": "Baseline pages 1 and 3 expose the collection access. Event-2 has four target failures and the one present-collection passing control. The summary reports an assumption consistent with these observations and correctly states that the investigator itself proposed and verified no repair."
+          },
+          "findings": [
+            {
+              "index": 1,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer appears to assume that Customer.retrieve(...).getSources() always yields a usable collection. Its refresh logic treats objects absent from the synchronized sets as candidates for local deactivation; under the target, the omission scenarios regress while the control with an embedded legacy collection passes.",
+              "citations": [
+                "event-1",
+                "event-3",
+                "event-2"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Events 1 and 3 show the unguarded collection iteration and removal of observed IDs from a local reconciliation map. Event-2 shows failures in omission scenarios and a passing embedded-collection control. The collection assumption is a bounded source/execution inference."
+            },
+            {
+              "index": 2,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer likely needs to distinguish a missing legacy-source collection from affirmative evidence that the collection is empty: the target regresses both preservation cases and the confirmed-removal case, although the curated contract requires preservation on omission and deactivation only after evidence.",
+              "citations": [
+                "event-2",
+                "event-5",
+                "event-6",
+                "event-7"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-5 supplies the declared evidence-before-deactivation rule. Fixture pages 6 and 7 differentiate omitted, present and confirmed-empty evidence; event-2 records both preservation and confirmed-removal failures. Missing and affirmatively empty collections are not equated."
+            },
+            {
+              "index": 3,
+              "kind": "HYPOTHESIS",
+              "statement": "The historical upstream-reference behavior should not be treated as a validated remedy: it passes the modern and empty omission scenarios but still regresses both legacy-source scenarios in the completed case.",
+              "citations": [
+                "event-2"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-2 records the historical reference passing the modern and empty scenarios but failing both legacy scenarios. Execution alone supports the statement that it is not a complete observed repair; the investigator does not claim to have inspected the reference implementation."
+            },
+            {
+              "index": 4,
+              "kind": "LIMITATION",
+              "statement": "This is authored synthetic fixture coverage, so it does not establish behavior across live Stripe responses, pagination, other payment-source types, or consumer integration paths outside the five curated scenarios.",
+              "citations": [
+                "event-6",
+                "event-7"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Events 6 and 7 expose the complete authored fixture set, and the registered case declares synthetic coverage. No live Stripe, general pagination, additional types or broader integration behavior was measured. The limitation is supported."
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "agentId": "agent-f4a4c016-0718-41be-927d-8769707869f0",
+          "contextId": "investigation-1055ef51-925c-4c1f-b17e-63fc05d45f40",
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "summary": {
+            "text": "Completed curated execution shows a target regression when the customer response omits sources: modern, empty, and legacy omission cases fail, while the control with a present legacy collection passes. The consumer likely relies on the collection’s availability during refresh/reconciliation. The historical reference reduces omission failures but still fails legacy retention/removal cases, so it is not a validated repair.",
+            "evidenceEvents": [
+              "event-1",
+              "event-2",
+              "event-3",
+              "event-4",
+              "event-5",
+              "event-6",
+              "event-7"
+            ],
+            "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+            "rationale": "Event-2 records the four target regressions, the passing present-collection control and the two remaining historical-reference failures. Baseline pages 1 and 3 support the collection assumption. The summary does not credit the historical reference as a complete repair."
+          },
+          "findings": [
+            {
+              "index": 1,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer’s refresh behavior appears to assume that a customer source collection is available before reconciliation/deactivation: the target failed all four omission-related scenarios, while the stated contract requires no deactivation without evidence and permits deactivation when a legacy method is confirmed absent.",
+              "citations": [
+                "event-2",
+                "event-4"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-2 records all four omission-related failures and event-4 declares the preservation/confirmed-removal contract. The statement identifies a likely collection-availability assumption and makes no unqualified compatibility claim."
+            },
+            {
+              "index": 2,
+              "kind": "HYPOTHESIS",
+              "statement": "The baseline implementation derives its deactivation set by removing objects found in both the PaymentMethod list and Customer.sources from the local map, then deactivating remaining entries. Given the completed target failures, an omitted sources collection likely interrupts that reconciliation path rather than constituting evidence that locally known methods were removed.",
+              "citations": [
+                "event-1",
+                "event-3",
+                "event-2"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Baseline pages 1 and 3 show syncPaymentMethods removing seen PaymentMethod/source IDs from existingPaymentMethodByStripeId and then deactivating remaining records. The unguarded getSources() iteration precedes final reconciliation. Event-2 records the matching target failures; interruption is explicitly a hypothesis, not proof of every production failure mode."
+            },
+            {
+              "index": 3,
+              "kind": "HYPOTHESIS",
+              "statement": "The historical upstream reference is not validated as a complete compatibility outcome: it passed the modern/empty omission scenarios but still regressed both legacy-method scenarios, so it should not be treated as a validated repair.",
+              "citations": [
+                "event-2",
+                "event-6"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-2 records the historical-reference modern/empty passes and legacy retention/removal failures. The initial reference page in event-6 is not credited as a complete source review. The stated incomplete behavioral result is supported independently by execution."
+            },
+            {
+              "index": 4,
+              "kind": "LIMITATION",
+              "statement": "Evidence is limited to this curated synthetic execution. It establishes scenario outcomes, not behavior across live Stripe responses, pagination, other payment-method types, or production integration conditions.",
+              "citations": [
+                "event-2"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-2 serves only the registered five synthetic observations. No live-provider or unmodeled pagination/type/integration evidence appears. The limitation preserves that scope."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caseKind": "SUBSCRIPTION_PERIODS",
+      "evaluationId": "evaluation-6bf39751-1f36-48cf-bf62-a0c5c9562725",
+      "trials": [
+        {
+          "trial": 1,
+          "agentId": "agent-6f982b4a-a5a6-4eb6-a77c-4b44a8626b73",
+          "contextId": "subscription-investigation-c15959db-dd3c-48bc-af6f-d853878a107f",
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "summary": {
+            "text": "Baseline source access and COMPLETED recorded execution were obtained. The target fails the four date-resolution scenarios and passes all four deferral scenarios. The strongest supported inference is a subscription-level period-field assumption where the case’s target model requires retaining the configured item’s identity. This is synthetic migration evidence only and does not validate any repair or production rollout.",
+            "evidenceEvents": [
+              "event-1",
+              "event-2",
+              "event-3",
+              "event-4",
+              "event-5",
+              "event-6",
+              "event-7",
+              "event-8"
+            ],
+            "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+            "rationale": "Event-1 provides the complete baseline source; event-2 reads completed retained baseline/target observations with eight baseline passes, four target date failures and four target deferral passes. Expectations in event-3 and field placement/policy in events 4-8 support the item-field inference. No candidate observations are served."
+          },
+          "findings": [
+            {
+              "index": 1,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer assumes `current_period_end` is available on the subscription object after it has identified the configured item. This is a likely cause of the target failures in all four otherwise resolvable scenarios, while the baseline passes them.",
+              "citations": [
+                "event-1",
+                "event-2",
+                "event-3"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-1 selects the configured item but reads subscription.get(\"current_period_end\"). Event-2 records the four resolved-date target failures, while event-3 declares those dates. This is a bounded field-location hypothesis, not a confirmed production root cause."
+            },
+            {
+              "index": 2,
+              "kind": "HYPOTHESIS",
+              "statement": "The intended consumer semantics are bound-item-specific rather than subscription-wide: target fixtures place potentially different period ends on items, and the declared expectations vary with the configured `si_core` item rather than list position or another item's date.",
+              "citations": [
+                "event-3",
+                "event-4",
+                "event-5",
+                "event-6",
+                "event-7"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-3 declares bound-item expected dates; the complete fixture pages 4-6 show differing item periods and orderings. Event-7 explicitly makes exact item-ID selection application policy. The claim concerns this policy and these projections, not a universal provider entitlement rule."
+            },
+            {
+              "index": 3,
+              "kind": "HYPOTHESIS",
+              "statement": "The existing safeguards for absent binding, absent selected item, incomplete item lists, and duplicate matching IDs appear preserved by the migration scenario: those target assertions pass, so the observed incompatibility is concentrated in resolving a valid period date rather than membership/completeness deferral.",
+              "citations": [
+                "event-1",
+                "event-2",
+                "event-5",
+                "event-6"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-1 has guards for absent binding, incomplete lists, absent matches and duplicate matches. Event-2 records all four corresponding target checks passing; events 5 and 6 include those fixture cases. The statement limits preservation to observed target assertions."
+            },
+            {
+              "index": 4,
+              "kind": "LIMITATION",
+              "statement": "Evidence is an authored synthetic, retained execution and documentation-backed projection, not captured provider responses, a live upgrade, or candidate-source execution; it cannot establish full production compatibility or validate a repair.",
+              "citations": [
+                "event-7",
+                "event-8"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "The registered mode is retained-only and event-2 serves baseline/target observations without prior candidate source or outcomes. Events 7 and 8 call the fixtures authored projections, not captured/live responses. The statement is supported as a limit on evidence visible to this investigator; it does not describe the underlying verifier as incapable of source execution."
+            },
+            {
+              "index": 5,
+              "kind": "LIMITATION",
+              "statement": "The case excludes cancellation, trials, dunning, webhook verification, pagination retrieval, invoice calculations, and access/authorization semantics; a resolved renewal date should not be generalized to those behaviors.",
+              "citations": [
+                "event-7"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-7 lists cancellation, trials, dunning, webhook verification and page retrieval as outside scope and separates renewal from access/payment/authorization. No invoice calculation evidence is exposed. The claim correctly declines to generalize renewal selection to those behaviors."
+            }
+          ]
+        },
+        {
+          "trial": 2,
+          "agentId": "agent-cdf576f5-3c0c-4598-a3de-a9f94400ee5d",
+          "contextId": "subscription-investigation-ef5882ec-719d-4aec-8bac-7c4e22ae570b",
+          "verdict": "UNSUPPORTED",
+          "acceptanceDisposition": "BLOCKED_FROM_ACCEPTANCE",
+          "summary": {
+            "text": "Baseline source access and completed retained execution were obtained. The recorded target fails the four scenarios that require a renewal date and passes all four refusal/deferral scenarios. The evidence supports investigating a subscription-level-to-bound-item period-field assumption, while remaining limited to synthetic fixtures and authored controls; no repair has been validated.",
+            "evidenceEvents": [
+              "event-1",
+              "event-2",
+              "event-3",
+              "event-4",
+              "event-5",
+              "event-6",
+              "event-7"
+            ],
+            "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+            "rationale": "Events 1-5 support the complete source, retained outcome pattern and authored period projections. The summary is read as describing authored sample inputs, not an exclusive executor implementation: its central statements concern synthetic baseline/target outcomes and the absence of candidate verification in this investigator."
+          },
+          "findings": [
+            {
+              "index": 1,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer’s compatibility assumption is that the renewal end is always present as subscription.current_period_end. This is consistent with all four target scenarios that require a resolved date failing, while the target fixtures place distinct period ends on the bound item; the observed failures do not by themselves establish a production root cause.",
+              "citations": [
+                "event-1",
+                "event-2",
+                "event-3",
+                "event-4",
+                "event-5"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-1 reads the period from the subscription after item selection. Event-2 records four target date failures, and events 3-5 expose expected dates and item fields. The hypothesis explicitly declines to infer a production root cause from these failures."
+            },
+            {
+              "index": 2,
+              "kind": "HYPOTHESIS",
+              "statement": "The intended consumer meaning is bound-item-specific rather than subscription-wide: it identifies one configured item by exact ID, requires a complete list and a unique match, and must remain insensitive to item ordering and to other items’ earlier or later periods. The retained execution shows the baseline passes these scenarios and the target fails only the resolved-date scenarios, consistent with a field-location incompatibility.",
+              "citations": [
+                "event-1",
+                "event-2",
+                "event-3",
+                "event-4",
+                "event-5",
+                "event-6"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-1 enforces exact configured ID, completeness and a unique match. Events 3-5 show expected bound-item dates despite differing addon periods/order; event-6 declares the policy. Missing fixture tail content is not needed to support these read scenarios and source guards."
+            },
+            {
+              "index": 3,
+              "kind": "HYPOTHESIS",
+              "statement": "The existing fail-closed behavior for absent binding, absent selected item, incomplete items, and duplicate identity appears to be preserved across the recorded target scenarios: each corresponding assertion passed. A passed deferral result should not be interpreted as a resolved renewal date.",
+              "citations": [
+                "event-1",
+                "event-2",
+                "event-3"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Events 1 and 3 define the four deferral guards and outcomes; event-2 records each passing. The statement correctly separates a passed DEFERRED check from a resolved renewal date, within the declared scenarios."
+            },
+            {
+              "index": 4,
+              "kind": "LIMITATION",
+              "statement": "Evidence is authored synthetic projection and retained recorded execution, not captured live Stripe responses or a verified production upgrade. It also does not cover cancellation, trials, dunning, authorization, webhook verification, pagination retrieval beyond the supplied flag, or invoice calculations.",
+              "citations": [
+                "event-4",
+                "event-5",
+                "event-6",
+                "event-7"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Events 4 and 5 are authored synthetic projections. Events 6 and 7 explicitly limit provenance and exclude the listed broader billing/access behaviors. The investigator receives retained baseline/target evidence only, not a live-provider observation or verified candidate result."
+            },
+            {
+              "index": 5,
+              "kind": "LIMITATION",
+              "statement": "The runner executes reviewed compiled controls only and does not load or compile candidate source; therefore this investigation neither validates a repair nor certifies the broader API migration.",
+              "citations": [
+                "event-7"
+              ],
+              "verdict": "UNSUPPORTED",
+              "rationale": "The cited event-7 reproduces an old README statement about Run-SubscriptionPeriodCase and its authored-control runner. That is not a capability description of the protected verifier which produced the registered evidence. The original verification spec binds supplied source and a candidate manifest under subscription-period-v1; its completed baseline job and RepairWorkerMain.runSubscription show source compilation. The claim conflates the historical runner with the current evidence pipeline. Its cautious no-repair-validation conclusion remains true, but the executor premise is rejected and the whole trial is excluded from acceptance credit."
+            }
+          ]
+        },
+        {
+          "trial": 3,
+          "agentId": "agent-4a4d44c3-1060-4806-b3d7-804a1f2bb262",
+          "contextId": "subscription-investigation-82831ee5-49eb-4251-a6f2-057e3c559278",
+          "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+          "acceptanceDisposition": "ELIGIBLE_FOR_ACCEPTANCE",
+          "summary": {
+            "text": "Baseline access and completed recorded execution were obtained. The baseline passes all eight scenarios; the target fails the four resolvable period scenarios and passes the four deferral checks. The likely migration issue is reliance on the removed subscription-level period rather than the configured item's period; this remains a synthetic-case inference, not a repair validation.",
+            "evidenceEvents": [
+              "event-1",
+              "event-2",
+              "event-3",
+              "event-4",
+              "event-5",
+              "event-6",
+              "event-7"
+            ],
+            "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+            "rationale": "Event-1 contains the full source and event-2 records eight baseline passes, four date-resolution target failures and four deferral passes. Events 3-7 provide expectations and documentation-backed field relocation/policy. The removed-field statement is a synthetic-case inference, not independent live verification or repair validation."
+          },
+          "findings": [
+            {
+              "index": 1,
+              "kind": "HYPOTHESIS",
+              "statement": "The consumer appears to assume a subscription-level `current_period_end`. That is consistent with the target failures in all four otherwise resolvable scenarios, while the supplied target projections place distinct period ends on identified subscription items.",
+              "citations": [
+                "event-1",
+                "event-2",
+                "event-3",
+                "event-4",
+                "event-5"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-1 selects the bound item but reads the subscription-level period. Event-2 reports all four resolved-date target failures; read fixture pages 4 and 6 show item-level dates. The statement is explicitly a likely source assumption consistent with these records."
+            },
+            {
+              "index": 2,
+              "kind": "HYPOTHESIS",
+              "statement": "The intended consumer assumption is identity-based selection: use the configured item ID rather than item order or a minimum/maximum date. The target failures include both addon-first orderings and reordered items; the declared expected dates track `si_core`, and the baseline source already rejects missing, incomplete, absent, or duplicate bindings.",
+              "citations": [
+                "event-1",
+                "event-2",
+                "event-3",
+                "event-4",
+                "event-5",
+                "event-6"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "Event-1 implements exact ID matching and missing/incomplete/duplicate guards. Event-3 declares the expected si_core dates; fixture pages 4 and 6 show both addon-first orderings and reordered items. Full tail fixture access is not claimed, and the selection rule is supported by the complete source and policy page."
+            },
+            {
+              "index": 3,
+              "kind": "LIMITATION",
+              "statement": "Evidence is an authored synthetic, retained-only case rather than captured provider responses or a live upgrade. The recorded execution establishes failures for this scenario set, but not compatibility across the consumer's broader API transition or a validated repair.",
+              "citations": [
+                "event-4",
+                "event-5",
+                "event-7"
+              ],
+              "verdict": "SUPPORTED_WITHIN_RECORDED_SCOPE",
+              "rationale": "The session declares retained-only mode; events 5 and 7 state authored projections rather than captured/live responses. Event-2 serves no candidate observations. The limitation correctly excludes broad transition compatibility and repair validation from this investigator evidence."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

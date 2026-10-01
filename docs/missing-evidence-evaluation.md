@@ -135,4 +135,6 @@ Completed resume preserved the result bytes and registered zero additional model
 calls. No case-worker containers remained. These are repeated known-case decision
 measurements; by themselves they do not establish supported explanations, satisfy
 the semantic acceptance criterion or estimate general model accuracy. The separate
-review supplies bounded semantic judgments. Milestone 3 remains open.
+review supplies bounded semantic judgments. The later
+[combined acceptance report](milestone-3-results.md) completes the declared
+two-case exercise with an explicit exclusion for one sufficient-evidence investigation.

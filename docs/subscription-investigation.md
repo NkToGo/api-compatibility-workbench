@@ -58,5 +58,6 @@ The handoff captures and binds findings, context and events to the original
 execution, and rechecks their identities before dispatch and new verification.
 An abstained or failed investigation cannot enter this path. Generation can still
 run directly from retained evidence as a separately selected workflow.
-Two-case semantic and abstention acceptance measurements remain pending; this
-integration does not close Milestone 3.
+The integration alone does not establish acceptance. The later
+[two-case report](milestone-3-results.md) adds repeated repair measurements and
+bound semantic review, excluding one unsupported explanation from acceptance credit.

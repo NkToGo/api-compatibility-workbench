@@ -75,6 +75,11 @@ compiles subscription consumer source with host-owned assertions. Supplied sourc
 pairs can now be registered for durable three-way verification, cancellation and
 interruption recovery.
 
+A host can now register [isolated consumer tasks](docs/consumer-tasks.md), each
+with separate captured inputs, investigator history, broker/execution records and
+expiring task permission. Tasks reuse the two existing case adapters; scheduling
+and coordination remain planned.
+
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
@@ -152,6 +157,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Host-side model credential broker](docs/model-credential-broker.md)
 - [Registered investigation tools](docs/investigation-tools.md)
 - [Bounded consumer investigator](docs/consumer-investigator.md)
+- [Isolated consumer tasks and admission permissions](docs/consumer-tasks.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)

@@ -132,7 +132,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
 
 ## Milestone 4 — Coordinate multiple investigations
 
-1. Isolate each consumer task's environment, context and permissions.
+1. **Implemented for the two curated cases:** [isolated consumer tasks](consumer-tasks.md)
+   with sealed input snapshots, separate agent/broker/execution stores, exact-model
+   admission grants, expiry/revocation and interruption recovery. Subscription
+   tasks remain retained-only; customer tasks reuse the constrained container.
+   This is a trusted-host boundary, not multi-user or host-process isolation.
 2. Run bounded parallel adaptive investigations.
 3. Add coordinator follow-up and explicit contradiction handling.
 4. Compare the team with deterministic, single-agent and independent-worker

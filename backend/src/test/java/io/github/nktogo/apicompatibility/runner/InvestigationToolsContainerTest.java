@@ -9,6 +9,30 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 @EnabledIfSystemProperty(named = "workbench.container.image", matches = "sha256:[0-9a-f]{64}")
 class InvestigationToolsContainerTest {
+    @Test void consumerTasksRetainIndependentContainerAttemptsAndCannotReadSiblingMappings() throws Exception {
+        Path state = Path.of(System.getProperty("workbench.repository"), "backend/target/investigation-test-runs", UUID.randomUUID().toString());
+        var tasks = new ConsumerTasks(state); Path source = InvestigationToolsTest.caseRoot();
+        String first = tasks.registerCustomer(source, source.resolve("target/dependencies"), System.getProperty("workbench.container.image"), "gpt-test");
+        String second = tasks.registerCustomer(source, source.resolve("target/dependencies"), System.getProperty("workbench.container.image"), "gpt-test");
+        JsonObject arguments = CaseInputs.JSON.toJsonTree(Map.of("requestId", "same-request")).getAsJsonObject();
+        var initial = tasks.invoke(first, "run_case", arguments);
+        assertTrue(initial.get("ok").getAsBoolean(), initial::toString);
+        assertEquals("COMPLETED", initial.getAsJsonObject("value").get("status").getAsString());
+        assertEquals("INVALID_REQUEST", tasks.invoke(second, "read_run", arguments).get("error").getAsString());
+        var other = tasks.invoke(second, "run_case", arguments);
+        assertTrue(other.get("ok").getAsBoolean(), other::toString);
+        assertEquals("COMPLETED", other.getAsJsonObject("value").get("status").getAsString());
+        assertNotEquals(initial.getAsJsonObject("value").get("runId"), other.getAsJsonObject("value").get("runId"));
+        assertEquals(initial, new ConsumerTasks(state).invoke(first, "run_case", arguments));
+        for (String id : List.of(first, second)) {
+            assertEquals(1, new EvidenceStore(state.resolve("tasks/" + id + "/state/evidence")).list().size());
+            assertFalse(Files.exists(state.resolve("tasks/" + id + "/state/model-calls")));
+        }
+        tasks.revoke(first);
+        assertEquals("TASK_REVOKED", tasks.invoke(first, "read_run", arguments).get("error").getAsString());
+        assertEquals(other, tasks.invoke(second, "read_run", arguments));
+    }
+
     @Test void registeredToolsExecuteTheCaseAndReuseVerifiedEvidence() throws Exception {
         Path state = Path.of(System.getProperty("workbench.repository"), "backend/target/investigation-test-runs", UUID.randomUUID().toString());
         var tools = new InvestigationTools(state);

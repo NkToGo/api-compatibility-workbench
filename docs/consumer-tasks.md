@@ -114,8 +114,8 @@ and completed-record changes. POSIX CI also tests symbolic-link redirection.
 Real container tests execute independent task attempts, reject a sibling mapping,
 verify separate retained evidence and demonstrate revocation without affecting
 the other task. A Windows command-line check also exercised registration of both
-case types, revoked-task admission and junction redirection rejection without
-registering a model call. These checks use synthetic data; registration, revocation
+case types, short-name path aliases, revoked-task admission and junction
+redirection rejection without registering a model call. These checks use synthetic data; registration, revocation
 and the automated tests need no OpenAI credential.
 
 This establishes the task boundary for subsequent bounded parallel scheduling.

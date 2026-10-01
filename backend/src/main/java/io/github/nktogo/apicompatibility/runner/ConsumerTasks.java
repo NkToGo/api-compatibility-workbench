@@ -253,7 +253,8 @@ public final class ConsumerTasks {
     }
     private static void directory(Path path) {
         CaseInputs.require(Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS) && !Files.isSymbolicLink(path), "Missing or linked task directory");
-        try { CaseInputs.require(path.toRealPath().equals(path.toAbsolutePath().normalize()), "Redirected task directory"); }
+        // Both forms canonicalize Windows short names; only the followed form resolves junctions.
+        try { CaseInputs.require(path.toRealPath().equals(path.toRealPath(LinkOption.NOFOLLOW_LINKS)), "Redirected task directory"); }
         catch (IOException e) { throw new IllegalArgumentException("Unavailable task directory"); }
     }
     private static JsonObject json(Object value) { return CaseInputs.JSON.toJsonTree(value).getAsJsonObject(); }

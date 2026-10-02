@@ -4,7 +4,8 @@ The host can register each curated consumer investigation as a separate task.
 Every task has its own input snapshot, investigator history, model-call broker
 records, execution journal and evidence store. Registration is deterministic and
 does not call OpenAI or start a worker. Each task runs at most one bounded
-investigator; parallel scheduling and coordinator delegation are not implemented.
+investigator. A [bounded parallel scheduler](parallel-investigations.md) can claim
+fresh tasks; coordinator delegation remains planned.
 
 ## Register, run and resume
 
@@ -84,7 +85,8 @@ revocation, deadline and captured artifact hashes. Registered model requests
 must use the bound case description, investigation protocol and at most 2,048
 output tokens. The existing investigator enforces 12 decisions and bounded input
 and retry limits. Per-request model grants and per-attempt execution grants remain
-separate inside the task store. No shared coordinator budget exists yet.
+separate inside the task store. Batch-assigned tasks additionally share the
+scheduler's fixed call budget and admission checks.
 
 `TASK_REVOKED`, `TASK_EXPIRED`, `TASK_AUTHORIZATION_DENIED` and
 `TASK_INPUT_IDENTITY_MISMATCH` distinguish task-level stops from child model/tool
@@ -118,7 +120,7 @@ case types, short-name path aliases, revoked-task admission and junction
 redirection rejection without registering a model call. These checks use synthetic data; registration, revocation
 and the automated tests need no OpenAI credential.
 
-This establishes the task boundary for subsequent bounded parallel scheduling.
+This supplies the task boundary used by bounded parallel scheduling.
 It does not establish semantic finding quality, repair quality, coordination
 benefit or migration compatibility. The earlier bounded
 [Milestone 3 acceptance](milestone-3-results.md) remains a historical measurement;

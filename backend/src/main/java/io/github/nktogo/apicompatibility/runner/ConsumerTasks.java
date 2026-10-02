@@ -94,7 +94,10 @@ public final class ConsumerTasks {
     /** A host entry point; neither task registration nor task selection is exposed as a model tool. */
     public JsonObject invoke(String id, String tool, JsonObject arguments) throws IOException {
         Path task = task(id); JsonObject spec = spec(task);
-        try { return scopedTools(task, spec).invoke(spec.get("contextId").getAsString(), tool, arguments); }
+        try (var lease = LocalFileLease.tryAcquire(task.resolve("owner.lock"))) {
+            if (lease == null) return json(Map.of("ok", false, "error", "TASK_ACTIVE"));
+            return scopedTools(task, spec).invoke(spec.get("contextId").getAsString(), tool, arguments);
+        }
         catch (AccessEnded e) { return json(Map.of("formatVersion", 1, "ok", false, "error", e.status)); }
     }
 
@@ -103,6 +106,9 @@ public final class ConsumerTasks {
         try (var lease = LocalFileLease.tryAcquire(task.resolve("owner.lock"))) {
             if (lease == null) return json(Map.of("taskId", id, "status", "ACTIVE"));
             var spec = spec(task);
+            // An unrelated host entry point must not finalize or consume a batch-owned task.
+            try { requireOwner(task); }
+            catch (AccessEnded e) { return json(Map.of("taskId", id, "status", e.status)); }
             if (Files.exists(task.resolve("result.json"), LinkOption.NOFOLLOW_LINKS)) return retained(task, spec);
             try {
                 requireAccess(task, spec);
@@ -164,6 +170,7 @@ public final class ConsumerTasks {
     }
 
     private void requireAccess(Path task, JsonObject spec) {
+        requireOwner(task);
         if (Files.exists(task.resolve("revoked"), LinkOption.NOFOLLOW_LINKS)) throw new AccessEnded("TASK_REVOKED");
         if (!clock.instant().isBefore(Instant.parse(spec.get("expiresAt").getAsString()))) throw new AccessEnded("TASK_EXPIRED");
         try {
@@ -177,6 +184,31 @@ public final class ConsumerTasks {
         } catch (IOException | RuntimeException e) { throw new AccessEnded("TASK_AUTHORIZATION_DENIED"); }
         try { verifyArtifacts(task, spec); }
         catch (IOException | RuntimeException e) { throw new AccessEnded("TASK_INPUT_IDENTITY_MISMATCH"); }
+    }
+
+    private void requireOwner(Path task) {
+        if (!Files.exists(task.resolve("parallel-owner.json"), LinkOption.NOFOLLOW_LINKS)) return;
+        try {
+            var owner = CaseInputs.object(bytes(task, "parallel-owner.json"));
+            CaseInputs.require(owner.get("taskId").getAsString().equals(task.getFileName().toString())
+                    && owner.get("batchId").getAsString().equals(backends.batchId()), "Task belongs to a batch");
+        } catch (IOException | RuntimeException e) { throw new AccessEnded("TASK_ASSIGNED_TO_BATCH"); }
+    }
+
+    // Used only by the trusted host scheduler while holding every selected task's lease.
+    JsonObject claimable(String id) throws IOException {
+        Path task = task(id); var spec = spec(task); requireAccess(task, spec);
+        CaseInputs.require(!Files.exists(task.resolve("parallel-owner.json"), LinkOption.NOFOLLOW_LINKS)
+                && !Files.exists(task.resolve("agent.json"), LinkOption.NOFOLLOW_LINKS)
+                && !Files.exists(task.resolve("result.json"), LinkOption.NOFOLLOW_LINKS), "Task already used or assigned");
+        String requests = spec.get("executionMode").getAsString().equals("retained-only")
+                ? "subscription-investigations/" : "investigations/";
+        Path directory = task.resolve("state/" + requests + spec.get("contextId").getAsString() + "/requests");
+        if (Files.exists(directory)) try (var paths = Files.list(directory)) {
+            CaseInputs.require(paths.findAny().isEmpty(), "Task already has tool requests");
+        }
+        return json(Map.of("taskSha256", CaseInputs.hash(bytes(task, "task.json")),
+                "grantSha256", CaseInputs.hash(bytes(task, "grant.json"))));
     }
 
     private JsonObject spec(Path task) throws IOException {
@@ -227,7 +259,7 @@ public final class ConsumerTasks {
         }
         return result;
     }
-    private Path task(String id) { valid(id, "task"); Path task = root.resolve(id); directory(root); directory(task); return task; }
+    Path task(String id) { valid(id, "task"); Path task = root.resolve(id); directory(root); directory(task); return task; }
     private static void valid(String id, String prefix) { CaseInputs.require(id != null && id.matches(prefix + "-" + UUID_PATTERN), "Invalid task reference"); }
     private static void validateModel(String model) { new ModelCallBroker.Request(model, "validate", 2048, "investigation-v2"); }
     private static Map<String, String> inventory(Path state, String relative) throws IOException {
@@ -240,7 +272,7 @@ public final class ConsumerTasks {
         }
         return result;
     }
-    private static byte[] bytes(Path base, String relative) throws IOException {
+    static byte[] bytes(Path base, String relative) throws IOException {
         CaseInputs.require(relative.matches("[a-zA-Z0-9_./-]+") && !relative.startsWith("/")
                 && Arrays.stream(relative.split("/", -1)).noneMatch(s -> s.isEmpty() || s.equals(".") || s.equals("..")), "Invalid task artifact path");
         Path path = base.resolve(relative).normalize();
@@ -251,7 +283,7 @@ public final class ConsumerTasks {
             byte[] data = input.readNBytes(1048577); CaseInputs.require(data.length <= 1048576, "Task artifact too large"); return data;
         }
     }
-    private static void directory(Path path) {
+    static void directory(Path path) {
         CaseInputs.require(Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS) && !Files.isSymbolicLink(path), "Missing or linked task directory");
         // Both forms canonicalize Windows short names; only the followed form resolves junctions.
         try { CaseInputs.require(path.toRealPath().equals(path.toRealPath(LinkOption.NOFOLLOW_LINKS)), "Redirected task directory"); }
@@ -264,6 +296,7 @@ public final class ConsumerTasks {
         AccessEnded(String status) { this.status = status; }
     }
     interface Backends {
+        default String batchId() { return null; }
         default ConsumerInvestigator.Models models(Path state) throws IOException { return ConsumerInvestigator.modelBackend(state); }
         default ConsumerInvestigator.Tools tools(Path state) throws IOException { return ConsumerInvestigator.toolBackend(state); }
     }

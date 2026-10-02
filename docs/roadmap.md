@@ -137,7 +137,10 @@ provider families and automatic repair-feedback loops remain outside its scope.
    admission grants, expiry/revocation and interruption recovery. Subscription
    tasks remain retained-only; customer tasks reuse the constrained container.
    This is a trusted-host boundary, not multi-user or host-process isolation.
-2. Run bounded parallel adaptive investigations.
+2. **Implemented on one trusted host:** [bounded parallel adaptive investigations](parallel-investigations.md)
+   with fixed membership, at most two concurrent investigators, shared durable call
+   reservations, root admission/revocation and no-replay child recovery. Aggregate
+   completion is an orchestration outcome, not a semantic or compatibility verdict.
 3. Add coordinator follow-up and explicit contradiction handling.
 4. Compare the team with deterministic, single-agent and independent-worker
    configurations, then route workloads according to observed benefit.

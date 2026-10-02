@@ -77,8 +77,10 @@ interruption recovery.
 
 A host can now register [isolated consumer tasks](docs/consumer-tasks.md), each
 with separate captured inputs, investigator history, broker/execution records and
-expiring task permission. Tasks reuse the two existing case adapters; scheduling
-and coordination remain planned.
+expiring task permission. A [bounded parallel scheduler](docs/parallel-investigations.md)
+now runs fresh tasks with fixed membership, shared call reservations and retained
+child outcomes. Tasks reuse the two existing case adapters; coordinator follow-up
+and measurement of coordination benefit remain planned.
 
 There is no hosted web application or general migration runner yet. Multi-agent coordination,
 provider adapters, distributed workflows and repair publication are
@@ -158,6 +160,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Registered investigation tools](docs/investigation-tools.md)
 - [Bounded consumer investigator](docs/consumer-investigator.md)
 - [Isolated consumer tasks and admission permissions](docs/consumer-tasks.md)
+- [Bounded parallel investigations and shared call accounting](docs/parallel-investigations.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)

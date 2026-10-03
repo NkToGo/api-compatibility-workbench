@@ -211,6 +211,15 @@ public final class ParallelInvestigations {
         catch (FileAlreadyExistsException ignored) { /* Permanent admission stop. */ }
     }
 
+    /** Read validated historical outcomes without admitting unfinished investigation work. */
+    public JsonObject readCompleted(String id) throws IOException {
+        Path batch = batch(id);
+        try (var lease = LocalFileLease.tryAcquire(batch.resolve("owner.lock"))) {
+            CaseInputs.require(lease != null, "Batch is active");
+            return retained(batch, spec(batch));
+        }
+    }
+
     private JsonObject retained(Path batch, JsonObject spec) throws IOException {
         var result = record(batch, "result.json");
         CaseInputs.require(result.get("batchSha256").getAsString().equals(hash(batch, "batch.json"))
@@ -230,7 +239,7 @@ public final class ParallelInvestigations {
         if (child.has("taskResultSha256")) {
             var tasks = new ConsumerTasks(state, clock, scoped(batch, spec, task));
             CaseInputs.require(child.get("taskResultSha256").getAsString().equals(hash(tasks.task(task), "result.json")), "Changed retained task outcome");
-            CaseInputs.require(tasks.run(task).get("status").equals(child.get("status")), "Changed retained task status");
+            CaseInputs.require(tasks.readResult(task).get("status").equals(child.get("status")), "Changed retained task status");
         }
         return child;
     }

@@ -6,6 +6,7 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.*;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.*;
@@ -295,5 +296,20 @@ class ModelCallBrokerTest {
             var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "case", 2048, "investigation-v1"), Duration.ofMinutes(1));
             assertEquals("INVALID_RESPONSE", broker.execute(id)); server.removeContext("/v1/responses");
         }
+    }
+    @Test void coordinationProtocolUsesItsOwnSchemaAndRejectsInvestigationFunctionResponses() throws Exception {
+        var request = new ModelCallBroker.Request("gpt-test", "captured handoff", 2048, "coordination-v1"); var body = CaseInputs.object(request.body());
+        assertEquals("coordination_decision", body.getAsJsonObject("tool_choice").get("name").getAsString());
+        assertEquals(CoordinationDecision.INSTRUCTIONS, body.get("instructions").getAsString());
+        var v2 = CaseInputs.object(new ModelCallBroker.Request("gpt-test", "captured handoff", 2048, "coordination-v2").body());
+        assertEquals(CoordinationDecision.OBSERVED_REFERENCE_INSTRUCTIONS, v2.get("instructions").getAsString());
+        assertEquals(body.get("tools"), v2.get("tools")); assertEquals(body.get("tool_choice"), v2.get("tool_choice"));
+        assertFalse(body.get("parallel_tool_calls").getAsBoolean());
+        for (String function : List.of("investigation_decision", "coordination_decision")) {
+            reply(200, "{\"status\":\"completed\",\"output\":[{\"type\":\"function_call\",\"name\":\"" + function + "\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+            var broker = broker(); String id = broker.register(request, Duration.ofMinutes(1));
+            assertEquals(function.equals("coordination_decision") ? "COMPLETED" : "INVALID_RESPONSE", broker.execute(id)); server.removeContext("/v1/responses");
+        }
+        assertNoSecret();
     }
 }

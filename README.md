@@ -79,11 +79,13 @@ A host can now register [isolated consumer tasks](docs/consumer-tasks.md), each
 with separate captured inputs, investigator history, broker/execution records and
 expiring task permission. A [bounded parallel scheduler](docs/parallel-investigations.md)
 now runs fresh tasks with fixed membership, shared call reservations and retained
-child outcomes. Tasks reuse the two existing case adapters; coordinator follow-up
-and measurement of coordination benefit remain planned.
+child outcomes. Tasks reuse the two existing case adapters. A bounded
+[coordinator review](docs/coordinator-review.md) can now inspect captured completed
+investigations, record unresolved possible conflicts and propose inert follow-up
+questions. Scoped follow-up dispatch and measurement of coordination benefit remain planned.
 
-There is no hosted web application or general migration runner yet. Multi-agent coordination,
-provider adapters, distributed workflows and repair publication are
+There is no hosted web application or general migration runner yet. Scoped follow-up dispatch,
+broader provider adapters, distributed workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
 
@@ -161,6 +163,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Bounded consumer investigator](docs/consumer-investigator.md)
 - [Isolated consumer tasks and admission permissions](docs/consumer-tasks.md)
 - [Bounded parallel investigations and shared call accounting](docs/parallel-investigations.md)
+- [Coordinator evidence review and inert follow-up proposals](docs/coordinator-review.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)

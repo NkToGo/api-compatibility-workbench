@@ -141,7 +141,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
    with fixed membership, at most two concurrent investigators, shared durable call
    reservations, root admission/revocation and no-replay child recovery. Aggregate
    completion is an orchestration outcome, not a semantic or compatibility verdict.
-3. Add coordinator follow-up and explicit contradiction handling.
+3. Add coordinator follow-up and explicit contradiction handling:
+   - **3a implemented on one trusted host:** [adaptive coordinator review](coordinator-review.md)
+     of captured completed investigations, cited inert follow-up proposals and
+     unresolved possible-conflict records. The coordinator cannot grant execution
+     access, dispatch work or turn model agreement into a compatibility verdict.
+   - **3b planned:** dispatch scoped follow-up investigations with independently
+     checked permissions/budgets, then reconcile responses while preserving earlier
+     claims, uncertain comparability and unresolved conflicts.
 4. Compare the team with deterministic, single-agent and independent-worker
    configurations, then route workloads according to observed benefit.
 

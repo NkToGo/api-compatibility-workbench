@@ -129,6 +129,14 @@ public final class ConsumerTasks {
         }
     }
 
+    JsonObject readResult(String id) throws IOException {
+        Path task = task(id);
+        try (var lease = LocalFileLease.tryAcquire(task.resolve("owner.lock"))) {
+            CaseInputs.require(lease != null, "Task is active");
+            requireOwner(task); return retained(task, spec(task));
+        }
+    }
+
     public void revoke(String id) throws IOException {
         Path task = task(id); spec(task);
         try { Files.write(task.resolve("revoked"), new byte[0], StandardOpenOption.CREATE_NEW); }

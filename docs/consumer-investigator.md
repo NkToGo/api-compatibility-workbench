@@ -2,8 +2,9 @@
 
 The local Java investigator uses a model to choose input reads, request the fixed
 case execution and produce cited hypotheses or abstain. It cannot edit code or
-publish repairs. It is one investigator; coordinated consumer investigations are
-not implemented yet.
+publish repairs. This command runs one investigator. Separate [parallel tasks](parallel-investigations.md)
+and a [coordinator review](coordinator-review.md) now cover bounded team scheduling
+and advisory review; coordinator follow-up dispatch remains planned.
 
 ## Run
 

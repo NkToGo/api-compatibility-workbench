@@ -29,7 +29,7 @@ public final class ModelCallBroker {
     public record Request(String model, String input, int maxOutputTokens, String protocol) {
         public Request(String model, String input, int maxOutputTokens) { this(model, input, maxOutputTokens, null); }
         public Request {
-            CaseInputs.require(protocol == null || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol), "Unsupported model protocol");
+            CaseInputs.require(protocol == null || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1", "coordination-v1", "coordination-v2").contains(protocol), "Unsupported model protocol");
             CaseInputs.require(model != null && model.matches("gpt-[a-zA-Z0-9.\\-]{1,80}"), "Invalid model identity");
             CaseInputs.require(input != null && !input.isBlank() && input.getBytes(StandardCharsets.UTF_8).length <= (protocol == null ? 16000 : 64000), "Invalid model input size");
             CaseInputs.require(maxOutputTokens >= 16 && maxOutputTokens <= 4096, "Invalid output budget");
@@ -38,12 +38,13 @@ public final class ModelCallBroker {
             var body = new TreeMap<String, Object>(Map.of("model", model, "input", input, "max_output_tokens", maxOutputTokens,
                     "store", false, "background", false));
             if (protocol != null) {
-                boolean repair = Set.of("repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol); String function = repair ? "repair_proposal" : "investigation_decision";
-                body.put("instructions", protocol.equals("subscription-repair-v1") ? SubscriptionCandidates.INSTRUCTIONS : protocol.equals("repair-v2")
+                boolean repair = Set.of("repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol), coordination = Set.of("coordination-v1", "coordination-v2").contains(protocol);
+                String function = coordination ? "coordination_decision" : repair ? "repair_proposal" : "investigation_decision";
+                body.put("instructions", protocol.equals("coordination-v2") ? CoordinationDecision.OBSERVED_REFERENCE_INSTRUCTIONS : coordination ? CoordinationDecision.INSTRUCTIONS : protocol.equals("subscription-repair-v1") ? SubscriptionCandidates.INSTRUCTIONS : protocol.equals("repair-v2")
                         ? RepairProposal.FIXTURE_INSTRUCTIONS : repair ? RepairProposal.INSTRUCTIONS : protocol.equals("investigation-v2")
                         ? InvestigationDecision.BOUNDED_INSTRUCTIONS : InvestigationDecision.INSTRUCTIONS);
-                body.put("tools", List.of(Map.of("type", "function", "name", function, "description", repair ? "Submit one unverified scoped repair proposal or abstention." : "Select exactly one next investigation action; the host executes it after this response.",
-                        "strict", true, "parameters", repair ? RepairProposal.schema() : InvestigationDecision.schema())));
+                body.put("tools", List.of(Map.of("type", "function", "name", function, "description", coordination ? "Select one evidence review or inert coordination proposal." : repair ? "Submit one unverified scoped repair proposal or abstention." : "Select exactly one next investigation action; the host executes it after this response.",
+                        "strict", true, "parameters", coordination ? CoordinationDecision.schema() : repair ? RepairProposal.schema() : InvestigationDecision.schema())));
                 body.put("tool_choice", Map.of("type", "function", "name", function));
                 body.put("parallel_tool_calls", false);
             }
@@ -166,7 +167,8 @@ public final class ModelCallBroker {
 
     private static String extract(byte[] body, Map<String, Object> metadata, String protocol) {
         boolean decision = protocol != null;
-        String function = decision && Set.of("repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol) ? "repair_proposal" : "investigation_decision";
+        String function = Set.of("coordination-v1", "coordination-v2").contains(protocol == null ? "" : protocol) ? "coordination_decision"
+                : decision && Set.of("repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol) ? "repair_proposal" : "investigation_decision";
         try {
             var response = CaseInputs.object(body);
             if (!"completed".equals(response.get("status").getAsString())) return "INCOMPLETE";

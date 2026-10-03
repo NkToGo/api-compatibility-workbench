@@ -4,7 +4,9 @@ The trusted host can schedule two to four fresh [consumer tasks](consumer-tasks.
 with one or two concurrent investigators and a fixed shared model-call budget.
 Each investigator adaptively selects its own reads and fixed test requests. The
 scheduler is deterministic: it does not interpret findings, reconcile differences,
-create agents dynamically or generate repairs. Coordinator follow-up remains planned.
+create agents dynamically or generate repairs. A separate [coordinator review](coordinator-review.md)
+now reads captured completed-batch evidence and records inert proposals and possible
+conflicts; scoped follow-up dispatch remains planned.
 
 ## Run a batch
 

@@ -5,7 +5,8 @@ The trusted host can select one or two recorded questions from a completed
 [consumer tasks](consumer-tasks.md). The coordinator's proposal does not grant
 permission or dispatch anything. Registration is a separate host action that
 seals the selected questions, input identities, child membership and call budget.
-Responses are retained independently; reconciliation remains pending.
+Responses are retained independently. A separate [reconciliation review](follow-up-reconciliation.md)
+can assess them without modifying this round's history.
 
 ## Register and run
 
@@ -129,9 +130,9 @@ foreign grants, expiry/revocation, active-call recovery, publication recovery,
 racing budgets, actual concurrent dispatch, ambiguous provider usage, interrupted
 registration and altered aggregate/broker history. These use no credentials.
 
-These checks establish bounded dispatch and retention. Semantic question coverage,
-response reconciliation and controlled measurement of coordination benefit remain
-later Milestone 4 work.
+These checks establish bounded dispatch and retention. The separate reconciliation
+component records question-coverage advice; semantic acceptance and controlled
+measurement of coordination benefit remain distinct checks.
 
 ### Recorded follow-up round, 2026-10-03
 

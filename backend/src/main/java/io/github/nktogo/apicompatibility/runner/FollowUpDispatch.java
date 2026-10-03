@@ -121,6 +121,13 @@ public final class FollowUpDispatch {
         try { Files.write(job.resolve("revoked"), new byte[0], StandardOpenOption.CREATE_NEW); } catch (FileAlreadyExistsException ignored) {}
         scheduler(job).revoke(spec.get("batchId").getAsString());
     }
+    /** Validate captured historical outcomes without admitting unfinished child work. */
+    public JsonObject readCompleted(String id) throws IOException {
+        Path job = job(id);
+        try (var lease = LocalFileLease.tryAcquire(job.resolve("owner.lock"))) {
+            CaseInputs.require(lease != null, "Follow-up round is active"); return retained(job, spec(job));
+        }
+    }
     private void admit(Path job, JsonObject spec) throws IOException {
         if (Thread.currentThread().isInterrupted()) throw new IOException("Follow-up controller interrupted; resume the same registration");
         if (Files.exists(job.resolve("revoked"), LinkOption.NOFOLLOW_LINKS)) throw new Stop("FOLLOW_UP_REVOKED");

@@ -312,4 +312,17 @@ class ModelCallBrokerTest {
         }
         assertNoSecret();
     }
+    @Test void reconciliationProtocolRejectsOtherFunctionsAndNeverRetainsReasoningItems() throws Exception {
+        var request = new ModelCallBroker.Request("gpt-test", "captured follow-up", 2048, "reconciliation-v1"); var body = CaseInputs.object(request.body());
+        assertEquals("reconciliation_decision", body.getAsJsonObject("tool_choice").get("name").getAsString());
+        assertEquals(ReconciliationDecision.schema(), body.getAsJsonArray("tools").get(0).getAsJsonObject().get("parameters"));
+        assertFalse(body.get("parallel_tool_calls").getAsBoolean());
+        for (String function : List.of("coordination_decision", "reconciliation_decision")) {
+            reply(200, "{\"status\":\"completed\",\"output\":[{\"type\":\"reasoning\",\"summary\":[{\"text\":\"do-not-retain-reasoning\"}]},{\"type\":\"function_call\",\"name\":\"" + function + "\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+            var broker = broker(); String id = broker.register(request, Duration.ofMinutes(1));
+            assertEquals(function.equals("reconciliation_decision") ? "COMPLETED" : "INVALID_RESPONSE", broker.execute(id));
+            assertFalse(Files.readString(root.resolve(id).resolve("result.json")).contains("do-not-retain-reasoning")); server.removeContext("/v1/responses");
+        }
+        assertNoSecret();
+    }
 }

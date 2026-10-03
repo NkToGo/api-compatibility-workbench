@@ -5,7 +5,8 @@ read captured evidence, record possible conflicts and propose follow-up question
 The host executes these local review actions. Proposals are inert: this component
 cannot register an investigator, run a case, generate a repair or grant permission.
 A separate host-authorized [follow-up dispatcher](follow-up-dispatch.md) can execute
-selected questions. Response reconciliation remains planned.
+selected questions. A separate [reconciliation protocol](follow-up-reconciliation.md)
+can assess the fresh responses and preserve the original review history.
 
 ## Register and run
 
@@ -142,9 +143,9 @@ uncertain registration, ambiguous usage, budget stops and changed final history.
 Publication recovery must leave broker registration/dispatch counts unchanged.
 
 These checks establish runtime boundaries. They do not establish semantic review
-quality or a benefit from coordination. Follow-up execution is validated separately;
-response reconciliation and controlled comparison with deterministic, single-agent
-and independent-worker configurations remain later Milestone 4 work.
+quality or a benefit from coordination. Follow-up execution and reconciliation are
+validated separately. Controlled comparison with deterministic, single-agent and
+independent-worker configurations remains later Milestone 4 work.
 
 ### Recorded two-case reviews, 2026-10-03
 

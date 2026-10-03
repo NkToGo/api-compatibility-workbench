@@ -62,6 +62,18 @@ public final class CoordinationReview {
         DurableExecution.publish(review.resolve("review.json"), spec);
         DurableExecution.publish(review.resolve("grant.json"), grant(review, spec)); return id;
     }
+    /** New read-only round; earlier review and follow-up records remain unchanged. */
+    public String registerReconciliation(String followUpId, String model) throws IOException {
+        new ModelCallBroker.Request(model, "validate", 2048, "reconciliation-v1");
+        new FollowUpDispatch(state).readCompleted(followUpId);
+        Path review = Files.createDirectory(root.resolve("review-" + UUID.randomUUID())); Files.createDirectory(review.resolve("inputs"));
+        var artifacts = new TreeMap<String, String>(); ReconciliationEvidence.capture(state, followUpId, review, artifacts);
+        Instant issued = clock.instant(); String id = review.getFileName().toString();
+        var spec = json(Map.of("formatVersion", 1, "reviewId", id, "model", model, "protocol", "reconciliation-v1", "maxDecisions", 12,
+                "issuedAt", issued.toString(), "expiresAt", issued.plus(Duration.ofMinutes(20)).toString(), "artifacts", artifacts));
+        DurableExecution.publish(review.resolve("review.json"), spec);
+        DurableExecution.publish(review.resolve("grant.json"), grant(review, spec)); return id;
+    }
     private static void capture(Path review, Map<String, String> artifacts, String relative, byte[] bytes) throws IOException {
         CaseInputs.require(bytes.length <= 1048576, "Oversized captured review input"); Path path = review.resolve("inputs/" + relative);
         Files.createDirectories(path.getParent()); Files.write(path, bytes, StandardOpenOption.CREATE_NEW);
@@ -99,7 +111,7 @@ public final class CoordinationReview {
                     else {
                         if (Files.exists(review.resolve(reservationPath), LinkOption.NOFOLLOW_LINKS)) return finish(review, spec, "CALL_REGISTRATION_UNCERTAIN", null);
                         var payload = json(Map.of("handoff", handoff, "events", history, "decisionsRemaining", 13 - turn));
-                        if (spec.get("protocol").getAsString().equals("coordination-v2")) payload.add("fullyReadReferences", CaseInputs.JSON.toJsonTree(new TreeSet<>(seen(history))));
+                        if (!spec.get("protocol").getAsString().equals("coordination-v1")) payload.add("fullyReadReferences", CaseInputs.JSON.toJsonTree(new TreeSet<>(seen(history))));
                         String input = CaseInputs.JSON.toJson(payload);
                         if (input.getBytes(StandardCharsets.UTF_8).length > 64000) return finish(review, spec, "CONTEXT_BUDGET_EXHAUSTED", null);
                         var request = new ModelCallBroker.Request(spec.get("model").getAsString(), input, 2048, spec.get("protocol").getAsString());
@@ -112,22 +124,21 @@ public final class CoordinationReview {
                     if (status.equals("ACTIVE")) return json(Map.of("reviewId", id, "status", "ACTIVE"));
                     if (!status.equals("COMPLETED")) return finish(review, spec, "MODEL_" + status, null);
                     JsonObject decision;
-                    try { decision = CoordinationDecision.parse(response.get("outputText").getAsString()); }
+                    try { decision = parse(spec, response.get("outputText").getAsString()); }
                     catch (RuntimeException e) { return finish(review, spec, "INVALID_MODEL_DECISION", null); }
                     if (decision.get("action").getAsString().equals("finish")) {
                         if (!seen(history).containsAll(CoordinationDecision.references(decision, "citations", 1, 6)))
                             return finish(review, spec, "UNSUPPORTED_REVIEW", null);
-                        return finish(review, spec, count(history, "conflictId") > 0 ? "UNRESOLVED_CONFLICTS"
-                                : count(history, "proposalId") > 0 ? "FOLLOW_UP_PROPOSED" : "REVIEW_RECORDED", decision);
+                        return finish(review, spec, status(spec, handoff, history), decision);
                     }
                     String eventPath = "event-" + turn + ".json";
                     JsonObject event;
                     if (Files.exists(review.resolve(eventPath), LinkOption.NOFOLLOW_LINKS)) {
                         event = read(review, eventPath);
                         CaseInputs.require(event.equals(json(Map.of("eventId", "review-" + turn, "modelCallId", call, "decision", decision,
-                                "result", act(review, handoff, decision, history, turn)))), "Changed review event");
+                                "result", act(review, spec, handoff, decision, history, turn)))), "Changed review event");
                     } else {
-                        var result = act(review, handoff, decision, history, turn); admit(review, spec);
+                        var result = act(review, spec, handoff, decision, history, turn); admit(review, spec);
                         event = json(Map.of("eventId", "review-" + turn, "modelCallId", call, "decision", decision, "result", result));
                         DurableExecution.publish(review.resolve(eventPath), event);
                     }
@@ -137,7 +148,7 @@ public final class CoordinationReview {
             } catch (Stop e) { return finish(review, spec, e.status, null); }
         }
     }
-    private static JsonObject act(Path review, JsonObject handoff, JsonObject d, JsonArray history, int turn) throws IOException {
+    private static JsonObject act(Path review, JsonObject spec, JsonObject handoff, JsonObject d, JsonArray history, int turn) throws IOException {
         var refs = handoff.getAsJsonObject("references"); String action = d.get("action").getAsString(); var seen = seen(history);
         if (action.equals("read_reference")) {
             String id = d.get("referenceId").getAsString(); if (!refs.has(id)) return error("UNKNOWN_REFERENCE");
@@ -146,6 +157,7 @@ public final class CoordinationReview {
             int end = Math.min(text.length(), offset + d.get("maxCharacters").getAsInt());
             return json(Map.of("ok", true, "value", Map.of("referenceId", id, "content", text.substring(offset, end), "offset", offset, "nextOffset", end, "complete", end == text.length())));
         }
+        if (reconciliation(spec)) return ReconciliationEvidence.act(review, handoff, d, seen, history, turn);
         if (action.equals("propose_follow_up")) {
             String task = d.get("taskId").getAsString(); var citations = CoordinationDecision.references(d, "citations", 1, 6);
             if (!handoff.getAsJsonObject("tasks").has(task) || !seen.containsAll(citations)
@@ -229,7 +241,7 @@ public final class CoordinationReview {
                 && request.model().equals(spec.get("model").getAsString()) && request.protocol().equals(spec.get("protocol").getAsString())
                 && request.maxOutputTokens() == 2048 && payload.get("handoff").equals(read(review, "inputs/handoff.json"))
                 && payload.get("events").equals(previous) && payload.get("decisionsRemaining").getAsInt() == 13 - turn, "Changed review request");
-        if (request.protocol().equals("coordination-v2")) CaseInputs.require(payload.get("fullyReadReferences").equals(CaseInputs.JSON.toJsonTree(new TreeSet<>(seen(previous)))), "Changed observed reference list");
+        if (!request.protocol().equals("coordination-v1")) CaseInputs.require(payload.get("fullyReadReferences").equals(CaseInputs.JSON.toJsonTree(new TreeSet<>(seen(previous)))), "Changed observed reference list");
     }
     private JsonObject finish(Path review, JsonObject spec, String status, JsonObject decision) throws IOException {
         var completion = json(Map.of("status", status, "finishedAt", clock.instant().toString()));
@@ -255,7 +267,7 @@ public final class CoordinationReview {
             lastDecision = null;
             if (response.get("status").getAsString().equals("COMPLETED")) {
                 completed++; input += response.get("inputTokens").getAsLong(); output += response.get("outputTokens").getAsLong();
-                try { lastDecision = CoordinationDecision.parse(response.get("outputText").getAsString()); }
+                try { lastDecision = parse(spec, response.get("outputText").getAsString()); }
                 catch (RuntimeException e) { lastDecision = null; }
             }
             else if (!response.has("remoteOutcome") || !response.get("remoteOutcome").getAsString().equals("NOT_DISPATCHED")) unresolved++;
@@ -263,7 +275,7 @@ public final class CoordinationReview {
                 CaseInputs.require(lastDecision != null && !lastDecision.get("action").getAsString().equals("finish"), "Invalid recorded review decision");
                 var observation = read(review, event);
                 CaseInputs.require(observation.equals(json(Map.of("eventId", "review-" + turn, "modelCallId", call, "decision", lastDecision,
-                        "result", act(review, handoff, lastDecision, history, turn)))), "Changed recorded review action");
+                        "result", act(review, spec, handoff, lastDecision, history, turn)))), "Changed recorded review action");
                 records.put(event, hash(review, event)); history.add(observation);
             }
         }
@@ -272,15 +284,22 @@ public final class CoordinationReview {
             var decision = completion.getAsJsonObject("review");
             CaseInputs.require(decision.equals(lastDecision) && decision.get("action").getAsString().equals("finish")
                     && seen(history).containsAll(CoordinationDecision.references(decision, "citations", 1, 6)), "Changed final review decision");
-            CaseInputs.require(status.equals(count(history, "conflictId") > 0 ? "UNRESOLVED_CONFLICTS"
-                    : count(history, "proposalId") > 0 ? "FOLLOW_UP_PROPOSED" : "REVIEW_RECORDED"), "Invalid advisory review status");
-        } else CaseInputs.require(!Set.of("UNRESOLVED_CONFLICTS", "FOLLOW_UP_PROPOSED", "REVIEW_RECORDED").contains(status), "Missing final review decision");
+            CaseInputs.require(status.equals(status(spec, handoff, history)), "Invalid advisory review status");
+        } else CaseInputs.require(!Set.of("UNRESOLVED_CONFLICTS", "FOLLOW_UP_PROPOSED", "REVIEW_RECORDED", "RECONCILIATION_RECORDED",
+                "RECONCILIATION_WITH_UNRESOLVED_CONFLICTS", "RECONCILIATION_INCOMPLETE").contains(status), "Missing final review decision");
         var result = json(Map.of("reviewId", spec.get("reviewId").getAsString(), "reviewSha256", hash(review, "review.json"), "status", status,
                 "authority", "coordinator-advice-not-execution-evidence", "events", history, "recordSha256", records, "finishedAt", completion.get("finishedAt").getAsString(),
                 "usage", Map.of("reservedSlots", reserved, "registeredCalls", registered, "completedResponses", completed,
                         "inputTokens", input, "outputTokens", output, "unresolvedUsageSlots", unresolved)));
         if (completion.has("review")) result.add("review", completion.get("review"));
+        if (reconciliation(spec)) result.add("reconciliation", ReconciliationEvidence.ledger(handoff, history));
         return result;
+    }
+    private static boolean reconciliation(JsonObject spec) { return spec.get("protocol").getAsString().equals("reconciliation-v1"); }
+    private static JsonObject parse(JsonObject spec, String output) { return reconciliation(spec) ? ReconciliationDecision.parse(output) : CoordinationDecision.parse(output); }
+    private static String status(JsonObject spec, JsonObject handoff, JsonArray history) {
+        return reconciliation(spec) ? ReconciliationEvidence.status(handoff, history) : count(history, "conflictId") > 0 ? "UNRESOLVED_CONFLICTS"
+                : count(history, "proposalId") > 0 ? "FOLLOW_UP_PROPOSED" : "REVIEW_RECORDED";
     }
     private static JsonObject retained(Path review, JsonObject spec) throws IOException {
         var result = read(review, "result.json"); verifyInputs(review, spec);
@@ -288,12 +307,12 @@ public final class CoordinationReview {
         return result;
     }
     private static void verifyInputs(Path review, JsonObject spec) throws IOException {
-        var artifacts = spec.getAsJsonObject("artifacts"); CaseInputs.require(artifacts.size() >= 3 && artifacts.size() <= 120, "Invalid review inventory");
+        var artifacts = spec.getAsJsonObject("artifacts"); CaseInputs.require(artifacts.size() >= 3 && artifacts.size() <= (reconciliation(spec) ? 220 : 120), "Invalid review inventory");
         for (var entry : artifacts.entrySet()) CaseInputs.require(entry.getValue().getAsString().equals(hash(review, entry.getKey())), "Changed review input");
     }
     private static JsonObject grant(Path review, JsonObject spec) throws IOException {
         return json(Map.of("reviewId", spec.get("reviewId").getAsString(), "reviewSha256", hash(review, "review.json"),
-                "permission", "read-captured-evidence-and-propose-only", "model", spec.get("model").getAsString(), "expiresAt", spec.get("expiresAt").getAsString()));
+                "permission", reconciliation(spec) ? "read-captured-follow-up-evidence-and-reconcile-only" : "read-captured-evidence-and-propose-only", "model", spec.get("model").getAsString(), "expiresAt", spec.get("expiresAt").getAsString()));
     }
     private Path review(String id) {
         CaseInputs.require(id != null && id.matches("review-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid review reference");
@@ -301,7 +320,7 @@ public final class CoordinationReview {
     }
     private static JsonObject spec(Path review) throws IOException {
         var spec = read(review, "review.json"); CaseInputs.require(spec.get("formatVersion").getAsInt() == 1
-                && spec.get("reviewId").getAsString().equals(review.getFileName().toString()) && Set.of("coordination-v1", "coordination-v2").contains(spec.get("protocol").getAsString())
+                && spec.get("reviewId").getAsString().equals(review.getFileName().toString()) && Set.of("coordination-v1", "coordination-v2", "reconciliation-v1").contains(spec.get("protocol").getAsString())
                 && spec.get("maxDecisions").getAsInt() == 12 && Duration.between(Instant.parse(spec.get("issuedAt").getAsString()),
                 Instant.parse(spec.get("expiresAt").getAsString())).equals(Duration.ofMinutes(20)), "Invalid review spec"); return spec;
     }
@@ -314,15 +333,18 @@ public final class CoordinationReview {
         private static final long serialVersionUID = 1L; final String status; Stop(String status) { this.status = status; }
     }
     public static void main(String[] args) throws IOException {
-        CaseInputs.require(args.length == 3 || args.length == 4, "Usage: CoordinationReview register STATE BATCH MODEL | run/revoke STATE REVIEW");
+        CaseInputs.require(args.length == 3 || args.length == 4, "Usage: CoordinationReview register STATE BATCH MODEL | reconcile STATE FOLLOW_UP MODEL | run/revoke STATE REVIEW");
         var reviews = new CoordinationReview(Path.of(args[1]));
         if (args[0].equals("register") && args.length == 4) System.out.println(reviews.register(args[2], args[3]));
+        else if (args[0].equals("reconcile") && args.length == 4) System.out.println(reviews.registerReconciliation(args[2], args[3]));
         else if (args[0].equals("revoke") && args.length == 3) { reviews.revoke(args[2]); System.out.println("Review revoked: " + args[2]); }
         else if (args[0].equals("run") && args.length == 3) {
             var result = reviews.run(args[2]); System.out.println("Review: " + args[2]); System.out.println("Status: " + result.get("status").getAsString());
-            if (result.has("events")) System.out.println("Follow-up proposals: " + count(result.getAsJsonArray("events"), "proposalId")
+            if (result.has("reconciliation")) System.out.println("Response assessments: " + count(result.getAsJsonArray("events"), "proposalId")
+                    + "; unresolved possible conflicts: " + result.getAsJsonObject("reconciliation").getAsJsonObject("conflicts").size() + "; usage: " + result.get("usage"));
+            else if (result.has("events")) System.out.println("Follow-up proposals: " + count(result.getAsJsonArray("events"), "proposalId")
                     + "; unresolved possible conflicts: " + count(result.getAsJsonArray("events"), "conflictId") + "; usage: " + result.get("usage"));
-            if (!Set.of("REVIEW_RECORDED", "FOLLOW_UP_PROPOSED", "UNRESOLVED_CONFLICTS").contains(result.get("status").getAsString())) throw new IOException("Review did not finish; inspect its retained records");
+            if (!Set.of("REVIEW_RECORDED", "FOLLOW_UP_PROPOSED", "UNRESOLVED_CONFLICTS", "RECONCILIATION_RECORDED", "RECONCILIATION_WITH_UNRESOLVED_CONFLICTS").contains(result.get("status").getAsString())) throw new IOException("Review did not finish; inspect its retained records");
         } else throw new IllegalArgumentException("Invalid review action");
     }
 }

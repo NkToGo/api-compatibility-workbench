@@ -84,9 +84,12 @@ child outcomes. Tasks reuse the two existing case adapters. A bounded
 investigations, record unresolved possible conflicts and propose inert follow-up
 questions. A separate host-authorized [follow-up dispatcher](docs/follow-up-dispatch.md)
 can run selected questions in fresh bounded tasks, retaining response lineage and
-usage. Response reconciliation and measurement of coordination benefit remain planned.
+usage. A separate read-only [reconciliation review](docs/follow-up-reconciliation.md)
+can assess question coverage and link fresh claims to earlier claims while preserving
+unresolved conflicts. These assessments remain advisory; measurement of coordination
+benefit remains planned.
 
-There is no hosted web application or general migration runner yet. Response reconciliation,
+There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
@@ -167,6 +170,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Bounded parallel investigations and shared call accounting](docs/parallel-investigations.md)
 - [Coordinator evidence review and inert follow-up proposals](docs/coordinator-review.md)
 - [Host-authorized follow-up dispatch and retained responses](docs/follow-up-dispatch.md)
+- [Read-only follow-up reconciliation and preserved claim/conflict history](docs/follow-up-reconciliation.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)

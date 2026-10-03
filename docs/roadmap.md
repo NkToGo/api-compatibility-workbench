@@ -150,8 +150,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      in fresh tasks with independent permissions, a shared bounded call budget,
      controlled child ownership and retained proposal/response lineage. Recorded
      child outcomes do not resolve earlier claims or conflicts.
-   - **3b2 planned:** reconcile responses while preserving earlier claims, uncertain
-     comparability and unresolved conflicts; review semantic question coverage.
+   - **3b2 implemented on one trusted host:** [read-only follow-up reconciliation](follow-up-reconciliation.md)
+     with cited question-coverage advice, original/fresh claim links and preserved
+     uncertain comparability and unresolved conflicts. Semantic acceptance remains
+     separate from valid citations and model agreement. A recorded live review
+     completed in eight calls; its answer-completeness wording was blocked by
+     a separate semantic spot review. This does not measure coordination benefit.
 4. Compare the team with deterministic, single-agent and independent-worker
    configurations, then route workloads according to observed benefit.
 

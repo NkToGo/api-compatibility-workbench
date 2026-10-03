@@ -58,6 +58,13 @@ class FollowUpDispatchTest {
         return p.getAsJsonObject("handoff").getAsJsonObject("references").entrySet().stream().filter(e -> e.getValue().getAsJsonObject().get("kind").getAsString().equals("CLAIM"))
                 .map(Map.Entry::getKey).toList().get(index);
     }
+    /** Reuse real synthetic registration/history for the subsequent read-only reconciliation tests. */
+    static List<String> reconciliationFixtures(Path state) throws Exception {
+        var fixture = new FollowUpDispatchTest(); fixture.root = state; String review = fixture.review(false, false);
+        String complete = fixture.dispatch().register(review, List.of("follow-up-2"), 0); fixture.dispatch().run(complete);
+        String stopped = fixture.dispatch().register(review, List.of("follow-up-4"), 1); fixture.dispatch().run(stopped);
+        return List.of(complete, stopped);
+    }
     private JsonObject spec(String id) throws IOException { return read(job(id).resolve("follow-up.json")); }
     private Path batch(String id) throws IOException { return job(id).resolve("child-state/parallel-investigations/" + spec(id).get("batchId").getAsString()); }
     private String child(String id) throws IOException { return spec(id).getAsJsonObject("selections").getAsJsonObject("follow-up-2").get("taskId").getAsString(); }

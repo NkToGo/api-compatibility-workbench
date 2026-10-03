@@ -158,6 +158,15 @@ provider families and automatic repair-feedback loops remain outside its scope.
      a separate semantic spot review. This does not measure coordination benefit.
 4. Compare the team with deterministic, single-agent and independent-worker
    configurations, then route workloads according to observed benefit.
+   - **4a implemented:** [frozen comparison contract and offline evaluator](coordination-comparison.md)
+     with all planned paired slots, separate semantic review, inclusive usage,
+     immutable reports and unresolved missing/ambiguous records. No fresh campaign
+     has run and no routing conclusion is established.
+   - **4b planned:** fresh arm adapters with shared inputs and end-to-end budgets.
+     Implement shared input/budget registration first (4b1), deterministic diagnostics
+     next (4b2), one multi-case agent (4b3), then independent/team adapters (4b4).
+   - **4c planned:** fixed paired measurement and bound semantic acceptance review.
+   - **4d planned:** select a scoped routing rule from the observed comparison.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

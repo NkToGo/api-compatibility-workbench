@@ -46,7 +46,10 @@ investigation.
 The handoff binds advisory findings to the exact retained source and execution;
 protected verification still owns behavioral conclusions.
 Repeated subscription repair trials retain behavioral and operational outcomes.
-Coordinated agents and the repository-to-PR workflow are not implemented yet.
+Bounded task coordination, follow-up dispatch and advisory reconciliation are
+implemented for the curated cases. Their benefit over simpler configurations has
+not been measured; the [comparison contract](coordination-comparison.md) separates
+reviewed quality from execution and usage. The repository-to-PR workflow remains planned.
 Agent assertions cannot become test results merely because they conform to a schema.
 
 ## Current and planned system boundaries

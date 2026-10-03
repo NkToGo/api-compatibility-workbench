@@ -87,7 +87,9 @@ can run selected questions in fresh bounded tasks, retaining response lineage an
 usage. A separate read-only [reconciliation review](docs/follow-up-reconciliation.md)
 can assess question coverage and link fresh claims to earlier claims while preserving
 unresolved conflicts. These assessments remain advisory; measurement of coordination
-benefit remains planned.
+benefit remains planned. An [offline comparison evaluator](docs/coordination-comparison.md)
+now retains declared trial denominators, separate reviewed quality, resource use and
+paired outcomes. Fresh configuration adapters and actual measurement remain planned.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are
@@ -171,6 +173,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Coordinator evidence review and inert follow-up proposals](docs/coordinator-review.md)
 - [Host-authorized follow-up dispatch and retained responses](docs/follow-up-dispatch.md)
 - [Read-only follow-up reconciliation and preserved claim/conflict history](docs/follow-up-reconciliation.md)
+- [Coordination comparison contract and offline reports](docs/coordination-comparison.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)

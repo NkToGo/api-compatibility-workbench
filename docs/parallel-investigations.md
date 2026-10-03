@@ -6,7 +6,10 @@ Each investigator adaptively selects its own reads and fixed test requests. The
 scheduler is deterministic: it does not interpret findings, reconcile differences,
 create agents dynamically or generate repairs. A separate [coordinator review](coordinator-review.md)
 now reads captured completed-batch evidence and records inert proposals and possible
-conflicts; scoped follow-up dispatch remains planned.
+conflicts. A separate [follow-up dispatcher](follow-up-dispatch.md) owns a special
+one-to-two-task batch in a controlled child store. Its outer grant and input checks
+also apply, and standalone child run/tool entry points cannot bypass that owner.
+The normal batch command and its two-to-four-task limits are unchanged.
 
 ## Run a batch
 

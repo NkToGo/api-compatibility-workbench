@@ -4,7 +4,8 @@ A bounded coordinator can review a completed [parallel investigation](parallel-i
 read captured evidence, record possible conflicts and propose follow-up questions.
 The host executes these local review actions. Proposals are inert: this component
 cannot register an investigator, run a case, generate a repair or grant permission.
-Follow-up dispatch and reconciliation are separate planned capabilities.
+A separate host-authorized [follow-up dispatcher](follow-up-dispatch.md) can execute
+selected questions. Response reconciliation remains planned.
 
 ## Register and run
 
@@ -141,9 +142,9 @@ uncertain registration, ambiguous usage, budget stops and changed final history.
 Publication recovery must leave broker registration/dispatch counts unchanged.
 
 These checks establish runtime boundaries. They do not establish semantic review
-quality or a benefit from coordination. Scoped follow-up dispatch and controlled
-comparison with deterministic, single-agent and independent-worker configurations
-remain later Milestone 4 work.
+quality or a benefit from coordination. Follow-up execution is validated separately;
+response reconciliation and controlled comparison with deterministic, single-agent
+and independent-worker configurations remain later Milestone 4 work.
 
 ### Recorded two-case reviews, 2026-10-03
 

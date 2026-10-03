@@ -5,7 +5,8 @@ Every task has its own input snapshot, investigator history, model-call broker
 records, execution journal and evidence store. Registration is deterministic and
 does not call OpenAI or start a worker. Each task runs at most one bounded
 investigator. A [bounded parallel scheduler](parallel-investigations.md) can claim
-fresh tasks; coordinator delegation remains planned.
+fresh tasks. A separate [follow-up dispatcher](follow-up-dispatch.md) can create
+focused tasks for host-selected coordinator proposals with fresh permissions.
 
 ## Register, run and resume
 

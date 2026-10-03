@@ -211,6 +211,13 @@ public final class CoordinationReview {
         Path review = review(id); spec(review);
         try { Files.write(review.resolve("revoked"), new byte[0], StandardOpenOption.CREATE_NEW); } catch (FileAlreadyExistsException ignored) {}
     }
+    /** Pure historical read; selecting a proposal does not resume its coordinator. */
+    public JsonObject readCompleted(String id) throws IOException {
+        Path review = review(id);
+        try (var lease = LocalFileLease.tryAcquire(review.resolve("owner.lock"))) {
+            CaseInputs.require(lease != null, "Review is active"); return retained(review, spec(review));
+        }
+    }
     private static void validateCall(Path review, JsonObject spec, int turn, String id) throws IOException {
         CaseInputs.require(id.matches("model-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid review call");
         var mapping = read(review, "call-" + turn + ".json"); var reservation = read(review, "reservation-" + turn + ".json");

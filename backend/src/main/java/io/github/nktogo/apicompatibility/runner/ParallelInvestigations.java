@@ -22,7 +22,15 @@ public final class ParallelInvestigations {
 
     /** Select fresh host-registered tasks. Membership and budgets cannot be expanded after registration. */
     public String register(List<String> ids, int parallelism, int maxCalls) throws IOException {
-        CaseInputs.require(ids.size() >= 2 && ids.size() <= 4 && new HashSet<>(ids).size() == ids.size()
+        return register(ids, parallelism, maxCalls, false);
+    }
+    String registerFollowUps(List<String> ids, int maxCalls) throws IOException {
+        CaseInputs.require(delegates.controllerId() != null, "Follow-ups require an owning controller");
+        return register(ids, Math.min(2, ids.size()), maxCalls, true);
+    }
+    private String register(List<String> ids, int parallelism, int maxCalls, boolean owned) throws IOException {
+        ConsumerTasks.controller(state, delegates.controllerId());
+        CaseInputs.require(ids.size() >= (owned ? 1 : 2) && ids.size() <= (owned ? 2 : 4) && new HashSet<>(ids).size() == ids.size()
                 && parallelism >= 1 && parallelism <= 2 && maxCalls >= 1 && maxCalls <= ids.size() * 12, "Invalid parallel budget");
         var tasks = new ConsumerTasks(state, clock, delegates); var leases = new ArrayList<LocalFileLease>();
         try {
@@ -31,12 +39,17 @@ public final class ParallelInvestigations {
                 CaseInputs.require(lease != null, "Selected task is active"); leases.add(lease);
             }
             var entries = new LinkedHashMap<String, JsonObject>();
-            for (String id : ids) entries.put(id, tasks.claimable(id));
+            for (String id : ids) {
+                if (owned) CaseInputs.require(record(tasks.task(id), "task.json").getAsJsonObject("case").getAsJsonObject("value")
+                        .getAsJsonObject("followUp").get("controllerId").getAsString().equals(delegates.controllerId()), "Foreign follow-up task");
+                entries.put(id, tasks.claimable(id));
+            }
             String id = "batch-" + UUID.randomUUID(); Path batch = Files.createDirectory(root.resolve(id));
             Files.createDirectory(batch.resolve("calls")); Files.createDirectory(batch.resolve("children"));
             Instant issued = clock.instant();
-            var spec = json(Map.of("formatVersion", 1, "batchId", id, "tasks", entries, "parallelism", parallelism,
+            var spec = json(Map.of("formatVersion", owned ? 2 : 1, "batchId", id, "tasks", entries, "parallelism", parallelism,
                     "maxCalls", maxCalls, "issuedAt", issued.toString(), "expiresAt", issued.plus(Duration.ofMinutes(20)).toString()));
+            if (owned) spec.addProperty("controllerId", delegates.controllerId());
             DurableExecution.publish(batch.resolve("batch.json"), spec);
             String hash = hash(batch, "batch.json");
             for (String task : ids) DurableExecution.publish(tasks.task(task).resolve("parallel-owner.json"),
@@ -54,6 +67,8 @@ public final class ParallelInvestigations {
             if (lease == null) return json(Map.of("batchId", id, "status", "ACTIVE"));
             var spec = spec(batch);
             if (Files.exists(batch.resolve("result.json"), LinkOption.NOFOLLOW_LINKS)) return retained(batch, spec);
+            try { ConsumerTasks.controller(state, delegates.controllerId()); }
+            catch (IOException | RuntimeException e) { return json(Map.of("batchId", id, "status", "BATCH_CONTROLLED_STATE_DENIED")); }
             var pool = Executors.newFixedThreadPool(spec.get("parallelism").getAsInt());
             var futures = new ArrayList<Future<JsonObject>>();
             try {
@@ -110,6 +125,7 @@ public final class ParallelInvestigations {
     private ConsumerTasks.Backends scoped(Path batch, JsonObject spec, String task) {
         return new ConsumerTasks.Backends() {
             public String batchId() { return spec.get("batchId").getAsString(); }
+            public String controllerId() { return delegates.controllerId(); }
             public ConsumerInvestigator.Tools tools(Path taskState) throws IOException {
                 var delegate = delegates.tools(taskState);
                 return (context, tool, arguments) -> {
@@ -190,6 +206,7 @@ public final class ParallelInvestigations {
         if (Files.exists(batch.resolve("revoked"), LinkOption.NOFOLLOW_LINKS)) throw new Stop("BATCH_REVOKED");
         if (!clock.instant().isBefore(Instant.parse(spec.get("expiresAt").getAsString()))) throw new Stop("BATCH_EXPIRED");
         try {
+            ConsumerTasks.controller(state, delegates.controllerId());
             var grant = record(batch, "grant.json");
             CaseInputs.require(spec.equals(spec(batch)) && !clock.instant().isBefore(Instant.parse(spec.get("issuedAt").getAsString()))
                     && grant.equals(json(Map.of("formatVersion", 1, "batchId", spec.get("batchId").getAsString(),
@@ -285,8 +302,10 @@ public final class ParallelInvestigations {
     }
     private static JsonObject spec(Path batch) throws IOException {
         var spec = record(batch, "batch.json"); var tasks = spec.getAsJsonObject("tasks");
-        CaseInputs.require(spec.get("formatVersion").getAsInt() == 1 && spec.get("batchId").getAsString().equals(batch.getFileName().toString())
-                && tasks.size() >= 2 && tasks.size() <= 4 && tasks.keySet().stream().allMatch(t -> t.matches("task-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"))
+        boolean owned = spec.get("formatVersion").getAsInt() == 2;
+        if (owned) CaseInputs.require(spec.get("controllerId").equals(record(batch.getParent().getParent(), "controller.json").get("controllerId")), "Changed batch controller");
+        CaseInputs.require((owned || spec.get("formatVersion").getAsInt() == 1) && spec.get("batchId").getAsString().equals(batch.getFileName().toString())
+                && tasks.size() >= (owned ? 1 : 2) && tasks.size() <= (owned ? 2 : 4) && tasks.keySet().stream().allMatch(t -> t.matches("task-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"))
                 && spec.get("parallelism").getAsInt() >= 1 && spec.get("parallelism").getAsInt() <= 2
                 && spec.get("maxCalls").getAsInt() >= 1 && spec.get("maxCalls").getAsInt() <= tasks.size() * 12
                 && Duration.between(Instant.parse(spec.get("issuedAt").getAsString()), Instant.parse(spec.get("expiresAt").getAsString())).equals(Duration.ofMinutes(20)), "Invalid parallel batch");

@@ -77,8 +77,40 @@ public final class ConsumerTasks {
         Files.createDirectory(task.resolve("state")); return task;
     }
     private String seal(Path task, String context, String model, String mode, Map<String, String> artifacts) throws IOException {
+        return seal(task, context, model, mode, artifacts, null);
+    }
+    /** Fresh input-only copy for a host-selected question; no previous permission or call is imported. */
+    String registerFollowUp(Path sourceState, String sourceId, String expectedSha256, JsonObject focus) throws IOException {
+        controller(root.getParent(), backends.controllerId());
+        CaseInputs.require(backends.controllerId() != null && focus.get("controllerId").getAsString().equals(backends.controllerId()), "Invalid follow-up owner");
+        var sources = new ConsumerTasks(sourceState); Path source = sources.task(sourceId);
+        try (var lease = LocalFileLease.tryAcquire(source.resolve("owner.lock"))) {
+            CaseInputs.require(lease != null, "Source task is active"); var original = sources.spec(source);
+            CaseInputs.require(CaseInputs.hash(bytes(source, "task.json")).equals(expectedSha256)
+                    && !original.getAsJsonObject("case").getAsJsonObject("value").has("followUp"), "Changed or recursive source task");
+            verifyArtifacts(source, original);
+            var captured = new TreeMap<String, byte[]>();
+            for (String name : original.getAsJsonObject("artifacts").keySet()) captured.put(name, bytes(source, "state/" + name));
+            CaseInputs.require(captured.values().stream().mapToLong(b -> b.length).sum() <= 16 * 1024 * 1024, "Follow-up input copy too large");
+            Path task = newTask(); Path state = task.resolve("state");
+            for (var entry : captured.entrySet()) {
+                Path path = state.resolve(entry.getKey()); Files.createDirectories(path.getParent()); Files.write(path, entry.getValue(), StandardOpenOption.CREATE_NEW);
+            }
+            String context = original.get("contextId").getAsString(); String mode = original.get("executionMode").getAsString();
+            String directory = mode.equals("retained-only") ? "subscription-investigations/" : "investigations/";
+            Files.createDirectories(state.resolve(directory + context + "/requests"));
+            var description = ConsumerInvestigator.toolBackend(state).invoke(context, "describe_case", new JsonObject());
+            CaseInputs.require(description.equals(original.get("case")), "Changed captured case description");
+            verifyArtifacts(source, original);
+            CaseInputs.require(CaseInputs.hash(bytes(source, "task.json")).equals(expectedSha256), "Source changed during copy");
+            var artifacts = new TreeMap<String, String>(); captured.forEach((name, value) -> artifacts.put(name, CaseInputs.hash(value)));
+            return seal(task, context, original.get("model").getAsString(), mode, artifacts, focus);
+        }
+    }
+    private String seal(Path task, String context, String model, String mode, Map<String, String> artifacts, JsonObject focus) throws IOException {
         var description = ConsumerInvestigator.toolBackend(task.resolve("state")).invoke(context, "describe_case", new JsonObject());
         CaseInputs.require(description.get("ok").getAsBoolean(), "Invalid task context");
+        if (focus != null) description.getAsJsonObject("value").add("followUp", focus.deepCopy());
         String id = task.getFileName().toString(); Instant issued = clock.instant();
         var spec = new TreeMap<String, Object>(Map.of("formatVersion", 1, "taskId", id, "contextId", context,
                 "model", model, "executionMode", mode, "case", description, "artifacts", artifacts,
@@ -150,6 +182,8 @@ public final class ConsumerTasks {
             if (!context.equals(spec.get("contextId").getAsString()) || !TOOLS.contains(tool))
                 return json(Map.of("formatVersion", 1, "ok", false, "error", "INVALID_REQUEST"));
             var response = delegate.invoke(context, tool, arguments);
+            if (tool.equals("describe_case") && response.get("ok").getAsBoolean() && spec.getAsJsonObject("case").getAsJsonObject("value").has("followUp"))
+                response.getAsJsonObject("value").add("followUp", spec.getAsJsonObject("case").getAsJsonObject("value").get("followUp").deepCopy());
             requireAccess(task, spec); return response;
         };
     }
@@ -178,6 +212,8 @@ public final class ConsumerTasks {
     }
 
     private void requireAccess(Path task, JsonObject spec) {
+        try { controller(root.getParent(), backends.controllerId()); }
+        catch (IOException | RuntimeException e) { throw new AccessEnded("TASK_CONTROLLED_STATE_DENIED"); }
         requireOwner(task);
         if (Files.exists(task.resolve("revoked"), LinkOption.NOFOLLOW_LINKS)) throw new AccessEnded("TASK_REVOKED");
         if (!clock.instant().isBefore(Instant.parse(spec.get("expiresAt").getAsString()))) throw new AccessEnded("TASK_EXPIRED");
@@ -305,8 +341,17 @@ public final class ConsumerTasks {
     }
     interface Backends {
         default String batchId() { return null; }
+        default String controllerId() { return null; }
         default ConsumerInvestigator.Models models(Path state) throws IOException { return ConsumerInvestigator.modelBackend(state); }
         default ConsumerInvestigator.Tools tools(Path state) throws IOException { return ConsumerInvestigator.toolBackend(state); }
+    }
+
+    static void controller(Path state, String expected) throws IOException {
+        if (!Files.exists(state.resolve("controller.json"), LinkOption.NOFOLLOW_LINKS)) {
+            CaseInputs.require(expected == null, "Missing controller binding"); return;
+        }
+        var binding = CaseInputs.object(bytes(state, "controller.json"));
+        CaseInputs.require(binding.get("formatVersion").getAsInt() == 1 && binding.get("controllerId").getAsString().equals(expected), "State belongs to a controller");
     }
 
     public static void main(String[] args) throws IOException {

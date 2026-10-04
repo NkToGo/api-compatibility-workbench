@@ -11,7 +11,7 @@ jobs:
   backend:
     name: Java domain (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:

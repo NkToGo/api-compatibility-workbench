@@ -89,7 +89,7 @@ final class BundleInvestigationDecision {
         }
         return decision;
     }
-    private static JsonElement element(JsonReader reader, int depth) throws IOException {
+    static JsonElement element(JsonReader reader, int depth) throws IOException {
         CaseInputs.require(depth <= 12, "Excessive bundle JSON depth");
         switch (reader.peek()) {
             case BEGIN_OBJECT -> { var result = new JsonObject(); reader.beginObject(); while (reader.hasNext()) {

@@ -85,6 +85,33 @@ class ModelCallBrokerTest {
         assertEquals(2, calls.get()); assertNoSecret();
     }
 
+    @Test void capturedTeamTransportUsesItsOwnStrictFunctionAndRetainsNoReasoning() throws Exception {
+        server.createContext("/v1/responses", exchange -> {
+            calls.incrementAndGet(); var request = CaseInputs.object(exchange.getRequestBody().readAllBytes());
+            assertEquals(CapturedTeamDecision.FUNCTION, request.getAsJsonObject("tool_choice").get("name").getAsString());
+            assertEquals(CapturedTeamDecision.INSTRUCTIONS, request.get("instructions").getAsString());
+            var tool = request.getAsJsonArray("tools").get(0).getAsJsonObject(); assertTrue(tool.get("strict").getAsBoolean());
+            assertEquals(CapturedTeamDecision.schema(), tool.get("parameters")); assertFalse(request.get("parallel_tool_calls").getAsBoolean());
+            assertFalse(request.get("store").getAsBoolean()); assertFalse(request.get("background").getAsBoolean());
+            var arguments = java.util.Map.of("decision", java.util.Map.of("action", "finish", "summary", "Bounded fixture review", "citations", List.of("worker-1"), "followUps", List.of(), "conflicts", List.of()));
+            String response = CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 20, "output_tokens", 30), "output", List.of(
+                    java.util.Map.of("type", "reasoning", "summary", List.of(java.util.Map.of("text", "do-not-retain-reasoning"))),
+                    java.util.Map.of("type", "function_call", "name", CapturedTeamDecision.FUNCTION, "arguments", CaseInputs.JSON.toJson(arguments)))));
+            byte[] bytes = response.getBytes(StandardCharsets.UTF_8); exchange.sendResponseHeaders(200, bytes.length);
+            try (var output = exchange.getResponseBody()) { output.write(bytes); }
+        });
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "captured review", 2048, CapturedTeamDecision.PROTOCOL), Duration.ofMinutes(1));
+        assertEquals("COMPLETED", broker.execute(id)); assertEquals("finish", CapturedTeamDecision.parse(broker.outcome(id).get("outputText").getAsString()).get("action").getAsString());
+        assertFalse(broker.outcome(id).toString().contains("do-not-retain-reasoning")); assertEquals("COMPLETED", broker.execute(id)); assertEquals(1, calls.get()); assertNoSecret();
+    }
+
+    @Test void capturedTeamTransportCannotAcceptAWorkerFunctionAsItsOwnDecision() throws Exception {
+        reply(200, CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 20, "output_tokens", 30), "output", List.of(
+                java.util.Map.of("type", "function_call", "name", CaseInvestigationDecision.FUNCTION, "arguments", "{\"decision\":{\"action\":\"finish\"}}")))));
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "captured review", 2048, CapturedTeamDecision.PROTOCOL), Duration.ofMinutes(1));
+        assertEquals("INVALID_RESPONSE", broker.execute(id)); assertEquals("INVALID_RESPONSE", broker.execute(id)); assertFalse(broker.outcome(id).has("outputText")); assertEquals(1, calls.get()); assertNoSecret();
+    }
+
     @Test void dispatchIsScopedAndFinalizationDoesNotRepeatTheCallOrRetainSecrets() throws Exception {
         server.createContext("/v1/responses", exchange -> {
             calls.incrementAndGet();

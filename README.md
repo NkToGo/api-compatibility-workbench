@@ -99,8 +99,12 @@ both captured cases in one adaptive context under the same runtime budget, with
 cited final dossiers and no automatic quality acceptance. An
 [independent-worker adapter](docs/coordination-independent-workers.md) now runs
 separate case contexts concurrently in fair rounds, sharing the same call pool
-and preserving partial dossiers without model aggregation. The coordinated-team
-comparison adapter and actual paired measurement remain planned.
+and preserving partial dossiers without model aggregation. The
+[captured-team review boundary](docs/coordination-team-review.md) now validates
+case-bound inert follow-up questions and unresolved conflicts while retaining
+original claims. Its cumulative budget allocation keeps every team stage within
+one declared ceiling. Durable team execution, comparison export and actual paired
+measurement remain planned.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

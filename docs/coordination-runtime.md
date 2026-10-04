@@ -6,7 +6,10 @@ boundary for the planned deterministic, single-agent, independent-worker and
 coordinated-team adapters. The [deterministic adapter](coordination-diagnostics.md)
 and [single-agent adapter](coordination-single-agent.md) now use this boundary,
 along with [independent case workers](coordination-independent-workers.md).
-The coordinated-team adapter and fresh measurement campaign remain planned.
+The [captured-team review boundary](coordination-team-review.md) provides its
+strict coordinator protocol and host guards; explicit participant registration is
+still required for that protocol. Durable team execution and the fresh measurement
+campaign remain planned.
 This runtime alone establishes no coordination benefit.
 
 ## Capture the same available evidence

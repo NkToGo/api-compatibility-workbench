@@ -35,8 +35,9 @@ input registration and whole-trial budget enforcement. The
 [deterministic diagnostics adapter](coordination-diagnostics.md) and
 [single-agent adapter](coordination-single-agent.md) and
 [independent-worker adapter](coordination-independent-workers.md) now use that
-boundary and export unreviewed records. The coordinated-team adapter remains
-later work.
+boundary and export unreviewed records. The [captured-team review boundary](coordination-team-review.md)
+now defines coordinator decisions, host-selected inert questions and cumulative
+stage allocation. Durable coordinated-team execution and export remain later work.
 
 ## First campaign design
 
@@ -207,8 +208,10 @@ This was a synthetic empty-record check, not a configuration measurement.
 2. **4b1 implemented:** [common captured input registration and end-to-end budget/trace accounting](coordination-runtime.md).
 3. **4b2 implemented:** [deterministic diagnostics](coordination-diagnostics.md)
    over the common captured evidence, with no model calls and retained unreviewed dossiers.
-4. **4b3 planned:** one adaptive agent operating across the case bundle.
-5. **4b4 planned:** independent-worker and coordinated-team adapters using the shared boundary.
+4. **4b3 implemented:** [one adaptive agent](coordination-single-agent.md) operating across the case bundle.
+5. **4b4a implemented:** [independent case workers](coordination-independent-workers.md).
+   **4b4b1 implemented:** [team review contracts and stage-allocation arithmetic](coordination-team-review.md).
+   **4b4b2/4b4b3 planned:** durable team stages and complete comparison export.
 6. **4c planned:** execute the fixed paired campaign, bind complete semantic reviews,
    report all planned trials and compare observed quality, latency and resource use.
 7. **4d planned:** choose a scoped routing rule only if the evidence supports it;

@@ -86,6 +86,22 @@ class CoordinationRuntimeTest {
         var fixture = fixture(2, 1200000, Arm.COORDINATED_TEAM); var d = fixture.definition(); var smaller = new Definition(d.experimentId(), d.origin(), d.model(), d.rubricIdentity(), d.implementations(), d.workloads(), d.repetitions(), new Limits(2, 1200000, 5, 2048));
         String small = runtime.register(fixture.bundle(), smaller, fixture.slot(), fixture.policy()); assertThrows(IllegalArgumentException.class, () -> runtime.call(small, "worker", "a", request("😀😀"))); assertEquals(0, brokers.registered.get());
     }
+    @Test void capturedTeamReviewNeedsExplicitParticipantScopeAndSharesTheExistingPool() throws Exception {
+        var fixture = fixture(2, 1200000, Arm.COORDINATED_TEAM); var p = fixture.policy();
+        var policy = new CoordinationRuntime.Policy(p.parallelCalls(), p.maxReads(), p.adapterIdentity(), p.promptIdentity(), p.toolPolicyIdentity(), p.contextPolicyIdentity(), p.finalSelection(), List.of(
+                new CoordinationRuntime.Participant("worker", Set.of(CaseInputs.CASE_ID), Set.of("investigation-v2")),
+                new CoordinationRuntime.Participant("root", Set.of(CaseInputs.CASE_ID, SubscriptionPeriodCase.CASE_ID), Set.of(CapturedTeamDecision.PROTOCOL))));
+        var d = fixture.definition(); var implementations = new EnumMap<Arm, ContentDigest>(d.implementations()); implementations.put(Arm.COORDINATED_TEAM, CoordinationRuntime.implementationIdentity(policy));
+        var definition = new Definition(d.experimentId(), d.origin(), d.model(), d.rubricIdentity(), implementations, d.workloads(), d.repetitions(), d.limits());
+        var runtime = runtime(); String id = runtime.register(fixture.bundle(), definition, fixture.slot(), policy);
+        var review = new ModelCallBroker.Request("gpt-test", "captured review", 2048, CapturedTeamDecision.PROTOCOL);
+        assertThrows(IllegalArgumentException.class, () -> runtime.call(id, "worker", "review", review)); assertEquals(0, brokers.registered.get());
+        assertEquals("COMPLETED", runtime.call(id, "worker", "investigate", request("captured worker")).get("status").getAsString());
+        brokers.remote = "UNKNOWN"; assertEquals("STOPPED", runtime.call(id, "root", "review", review).get("status").getAsString());
+        assertEquals("CALL_BUDGET_EXHAUSTED", assertThrows(CoordinationRuntime.Stop.class, () -> runtime.call(id, "root", "extra-review", review)).getMessage());
+        assertEquals(2, runtime.snapshot(id).getAsJsonObject("usage").get("reservedCalls").getAsInt()); assertEquals(2, brokers.dispatched.get());
+        assertEquals(1, runtime.snapshot(id).getAsJsonObject("usage").get("unresolvedUsageSlots").getAsInt());
+    }
     @Test void deterministicArmHasNoModelPermissionButCanReadTheSameEvidence() throws Exception {
         var runtime = runtime(); String id = fixture(1, 1200000, Arm.DETERMINISTIC).register(runtime);
         assertEquals("untrusted-data", runtime.read(id, "root", "read-1", CaseInputs.CASE_ID, "baseline-source").get("contentTrust").getAsString());

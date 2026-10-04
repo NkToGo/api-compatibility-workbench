@@ -163,8 +163,10 @@ provider families and automatic repair-feedback loops remain outside its scope.
      immutable reports and unresolved missing/ambiguous records. No fresh campaign
      has run and no routing conclusion is established.
    - **4b planned:** fresh arm adapters with shared inputs and end-to-end budgets.
-     Implement shared input/budget registration first (4b1), deterministic diagnostics
-     next (4b2), one multi-case agent (4b3), then independent/team adapters (4b4).
+     **4b1 implemented on one trusted host:** [common captured inputs and trial runtime](coordination-runtime.md)
+     with policy-bound registration, whole-trial deadlines, shared durable call
+     reservations and trace accounting. Runtime adapters remain planned: deterministic
+     diagnostics (4b2), one multi-case agent (4b3), then independent/team adapters (4b4).
    - **4c planned:** fixed paired measurement and bound semantic acceptance review.
    - **4d planned:** select a scoped routing rule from the observed comparison.
 

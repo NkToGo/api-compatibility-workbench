@@ -122,6 +122,29 @@ class ModelCallBrokerTest {
         }
     }
 
+    @Test void parentTrialAdmissionDeniesBeforeCredentialReadAndCanStopInFlightTransport() throws Exception {
+        var allowed = new java.util.concurrent.atomic.AtomicBoolean(false);
+        var transport = new ModelHttpTransport(URI.create("http://127.0.0.1:" + server.getAddress().getPort() + "/v1/responses"), Duration.ofSeconds(5));
+        var broker = new ModelCallBroker(root, () -> { credentialReads.incrementAndGet(); return KEY; }, transport, Clock.systemUTC(), allowed::get);
+        String denied = register(broker); assertEquals("AUTHORIZATION_DENIED", broker.execute(denied)); assertEquals(0, credentialReads.get());
+        var received = new CountDownLatch(1); var release = new CountDownLatch(1);
+        server.createContext("/v1/responses", exchange -> {
+            calls.incrementAndGet(); received.countDown();
+            try { release.await(5, TimeUnit.SECONDS); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            exchange.close();
+        });
+        allowed.set(true); String id = register(broker);
+        try (var executor = Executors.newSingleThreadExecutor()) {
+            var result = executor.submit(() -> broker.execute(id));
+            try {
+                assertTrue(received.await(5, TimeUnit.SECONDS)); allowed.set(false);
+                assertEquals("ACCESS_ENDED", result.get(5, TimeUnit.SECONDS));
+                assertEquals("UNKNOWN", broker.outcome(id).get("remoteOutcome").getAsString()); assertEquals(1, calls.get());
+                allowed.set(true); assertEquals("ACCESS_ENDED", broker.execute(id)); assertEquals(1, calls.get()); assertNoSecret();
+            } finally { release.countDown(); }
+        }
+    }
+
     @Test void oversizedMalformedIncompleteAndSecretEchoResponsesCannotBecomeSuccess() throws Exception {
         for (String response : new String[] {"x".repeat(262145), "not-json", "{\"status\":\"incomplete\"}", RESPONSE.replace("ready", KEY), RESPONSE.replace("ready", KEY.replace("f", "\\u0066"))}) {
             reply(200, response); var broker = broker(); String id = register(broker);

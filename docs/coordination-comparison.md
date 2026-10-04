@@ -30,7 +30,9 @@ The [local report command](#local-command) registers a retained plan and writes
 separate, immutable report directories. Historical reads recompute the assessment
 and reject changed plans, records or derived verdicts. This component makes no
 OpenAI, provider or Docker call, reads no credential and creates no execution grant.
-Fresh measurement adapters and end-to-end budget enforcement remain later work.
+The [shared input/trial runtime](coordination-runtime.md) now provides captured
+input registration and whole-trial budget enforcement. Fresh measurement adapters
+must use that boundary; they remain later work.
 
 ## First campaign design
 
@@ -198,7 +200,7 @@ A repeated read preserved the summary and all five retained file hashes.
 This was a synthetic empty-record check, not a configuration measurement.
 
 1. **4a implemented:** frozen comparison contract, offline evaluator and retained reports.
-2. **4b1 planned:** common captured input registration and end-to-end budget/trace accounting.
+2. **4b1 implemented:** [common captured input registration and end-to-end budget/trace accounting](coordination-runtime.md).
 3. **4b2 planned:** deterministic diagnostics with no model calls.
 4. **4b3 planned:** one adaptive agent operating across the case bundle.
 5. **4b4 planned:** independent-worker and coordinated-team adapters using the shared boundary.

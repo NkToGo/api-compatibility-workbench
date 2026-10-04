@@ -9,6 +9,7 @@ import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 /** Trusted host-only broker. Model output is advisory and never execution evidence. */
 public final class ModelCallBroker {
@@ -16,14 +17,18 @@ public final class ModelCallBroker {
     private final Supplier<String> credential;
     private final ModelHttpTransport transport;
     private final Clock clock;
+    private final BooleanSupplier parentPermitted;
 
     public ModelCallBroker(Path root) throws IOException {
         this(root, () -> System.getenv("OPENAI_API_KEY"), new ModelHttpTransport(), Clock.systemUTC());
     }
     ModelCallBroker(Path root, Supplier<String> credential, ModelHttpTransport transport, Clock clock) throws IOException {
+        this(root, credential, transport, clock, () -> true);
+    }
+    ModelCallBroker(Path root, Supplier<String> credential, ModelHttpTransport transport, Clock clock, BooleanSupplier parentPermitted) throws IOException {
         this.root = root.toAbsolutePath().normalize(); Files.createDirectories(this.root);
         CaseInputs.require(Files.isDirectory(this.root, LinkOption.NOFOLLOW_LINKS), "Invalid broker directory");
-        this.credential = credential; this.transport = transport; this.clock = clock;
+        this.credential = credential; this.transport = transport; this.clock = clock; this.parentPermitted = Objects.requireNonNull(parentPermitted);
     }
 
     public record Request(String model, String input, int maxOutputTokens, String protocol) {
@@ -153,6 +158,7 @@ public final class ModelCallBroker {
 
     private boolean permitted(Path directory, String id, byte[] body) {
         try {
+            if (!parentPermitted.getAsBoolean()) return false;
             if (exists(directory, "revoked")) return false;
             var grant = read(directory.resolve("grant.json"));
             Instant issued = Instant.parse(grant.get("issuedAt").getAsString());

@@ -16,7 +16,7 @@ import static io.github.nktogo.apicompatibility.evaluation.CoordinationExperimen
 /** Trusted-host boundary for future comparison adapters, not an agent or semantic evaluator. */
 public final class CoordinationRuntime {
     private static final String UUID = "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}";
-    private static final Set<String> PROTOCOLS = Set.of("investigation-v2", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL);
+    private static final Set<String> PROTOCOLS = Set.of("investigation-v2", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, "customer-captured-v1", "subscription-captured-v1");
     private final Path root;
     private final CoordinationInputs inputs;
     private final Clock clock;
@@ -136,6 +136,16 @@ public final class CoordinationRuntime {
         Path run = directory(id); spec(run);
         try { Files.write(run.resolve("revoked"), new byte[0], StandardOpenOption.CREATE_NEW); } catch (FileAlreadyExistsException ignored) {}
         // The parent callback also stops in-flight transport; no permission is renewed here.
+    }
+    /** Read-only accounting for one stable operation, including an unmapped reservation. */
+    boolean reserved(String id, String participantId, String operationId) throws IOException {
+        identifier(operationId); Path run = directory(id); var spec = spec(run); participant(spec, participantId);
+        try (var lease = LocalFileLease.acquire(run.resolve("budget.lock"))) {
+            Objects.requireNonNull(lease); String path = "calls/" + key(participantId, operationId) + ".json";
+            if (!exists(run, path)) return false;
+            var value = record(run, path); CaseInputs.require(value.get("participant").getAsString().equals(participantId)
+                    && value.get("operationId").getAsString().equals(operationId) && value.get("specSha256").getAsString().equals(hash(run, "spec.json")), "Changed operation reservation"); return true;
+        }
     }
     public JsonObject snapshot(String id) throws IOException {
         Path run = directory(id);

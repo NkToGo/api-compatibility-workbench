@@ -38,17 +38,23 @@ final class BundleInvestigationDecision {
         result.addAll(Set.of("description", "execution")); return Collections.unmodifiableSet(result);
     }
     static JsonObject schema() {
-        var aliases = new TreeSet<>(aliases(CaseInputs.CASE_ID)); aliases.addAll(aliases(SubscriptionPeriodCase.CASE_ID));
+        return schema(List.of(CaseInputs.CASE_ID, SubscriptionPeriodCase.CASE_ID));
+    }
+    static JsonObject schema(List<String> caseIds) {
+        var aliases = new TreeSet<String>(); caseIds.forEach(id -> aliases.addAll(aliases(id)));
         var citations = Map.of("type", "array", "maxItems", 12, "items", string(30));
         var finding = object(Map.of("kind", enumeration("OBSERVATION", "HYPOTHESIS", "LIMITATION"), "statement", string(1000), "citations", citations));
-        var dossier = object(Map.of("caseId", enumeration(CaseInputs.CASE_ID, SubscriptionPeriodCase.CASE_ID), "response", enumeration("ANSWERED", "ABSTAINED"),
+        var dossier = object(Map.of("caseId", enumeration(caseIds.toArray(String[]::new)), "response", enumeration("ANSWERED", "ABSTAINED"),
                 "summary", string(1000), "summaryCitations", citations, "findings", Map.of("type", "array", "maxItems", 6, "items", finding)));
-        var read = object(Map.of("action", enumeration("read_evidence"), "caseId", enumeration(CaseInputs.CASE_ID, SubscriptionPeriodCase.CASE_ID),
+        var read = object(Map.of("action", enumeration("read_evidence"), "caseId", enumeration(caseIds.toArray(String[]::new)),
                 "inputId", enumeration(aliases.toArray(String[]::new)), "offset", integer(0, 1048576), "maxCharacters", integer(1, 4000)));
-        var finish = object(Map.of("action", enumeration("finish"), "cases", Map.of("type", "array", "minItems", 2, "maxItems", 2, "items", dossier)));
+        var finish = object(Map.of("action", enumeration("finish"), "cases", Map.of("type", "array", "minItems", caseIds.size(), "maxItems", caseIds.size(), "items", dossier)));
         return CaseInputs.JSON.toJsonTree(object(Map.of("decision", Map.of("anyOf", List.of(read, finish))))).getAsJsonObject();
     }
     static JsonObject parse(String raw) {
+        return parse(raw, Set.of(CaseInputs.CASE_ID, SubscriptionPeriodCase.CASE_ID));
+    }
+    static JsonObject parse(String raw, Set<String> caseIds) {
         CaseInputs.require(raw != null && raw.length() <= 32768, "Invalid bundle decision size");
         JsonObject envelope;
         try (var reader = new JsonReader(new StringReader(raw))) {
@@ -59,15 +65,16 @@ final class BundleInvestigationDecision {
         switch (text(decision, "action", 30)) {
             case "read_evidence" -> {
                 keys(decision, "action", "caseId", "inputId", "offset", "maxCharacters");
+                CaseInputs.require(caseIds.contains(text(decision, "caseId", 100)), "Case outside decision scope");
                 CaseInputs.require(aliases(text(decision, "caseId", 100)).contains(text(decision, "inputId", 60)), "Unavailable bundle input");
                 number(decision, "offset", 0, 1048576); number(decision, "maxCharacters", 1, 4000);
             }
             case "finish" -> {
-                keys(decision, "action", "cases"); var cases = decision.getAsJsonArray("cases"); CaseInputs.require(cases.size() == 2, "Both dossiers required");
+                keys(decision, "action", "cases"); var cases = decision.getAsJsonArray("cases"); CaseInputs.require(cases.size() == caseIds.size(), "All scoped dossiers required");
                 var seen = new HashSet<String>();
                 for (var item : cases) {
                     var dossier = item.getAsJsonObject(); keys(dossier, "caseId", "response", "summary", "summaryCitations", "findings");
-                    String caseId = text(dossier, "caseId", 100); aliases(caseId); CaseInputs.require(seen.add(caseId), "Duplicate case dossier");
+                    String caseId = text(dossier, "caseId", 100); aliases(caseId); CaseInputs.require(caseIds.contains(caseId) && seen.add(caseId), "Duplicate or out-of-scope case dossier");
                     CaseInputs.require(Set.of("ANSWERED", "ABSTAINED").contains(text(dossier, "response", 20)), "Invalid dossier response");
                     text(dossier, "summary", 1000); citations(dossier.getAsJsonArray("summaryCitations"));
                     var findings = dossier.getAsJsonArray("findings"); CaseInputs.require(findings.size() <= 6, "Too many bundle findings");

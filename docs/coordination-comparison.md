@@ -33,8 +33,10 @@ OpenAI, provider or Docker call, reads no credential and creates no execution gr
 The [shared input/trial runtime](coordination-runtime.md) now provides captured
 input registration and whole-trial budget enforcement. The
 [deterministic diagnostics adapter](coordination-diagnostics.md) and
-[single-agent adapter](coordination-single-agent.md) now use that boundary and export
-unreviewed records. Independent/team adapters remain later work.
+[single-agent adapter](coordination-single-agent.md) and
+[independent-worker adapter](coordination-independent-workers.md) now use that
+boundary and export unreviewed records. The coordinated-team adapter remains
+later work.
 
 ## First campaign design
 

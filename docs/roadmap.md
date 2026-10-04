@@ -173,7 +173,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4b3 implemented:** [one multi-case adaptive agent](coordination-single-agent.md)
      through the shared runtime, with bounded page disclosure, a full-budget loop,
      same-case citations, retained no-replay recovery and unreviewed final dossiers.
-     Independent/team adapters (4b4) remain planned.
+     **4b4a implemented:** [independent case workers](coordination-independent-workers.md)
+     with concurrent fair rounds, isolated case contexts, a shared full-budget
+     pool, sealed no-replay recovery and deterministic partial-output aggregation.
+     **4b4b planned:** coordinated-team comparison adapter, including bounded
+     coordinator, fresh follow-up and reconciliation stages under the same pool.
    - **4c planned:** fixed paired measurement and bound semantic acceptance review.
    - **4d planned:** select a scoped routing rule from the observed comparison.
 

@@ -96,8 +96,11 @@ now derives recorded scenario and synthetic projection diagnostics through that
 runtime, with zero model calls and separately pending quality review. A
 [single-agent comparison adapter](docs/coordination-single-agent.md) now investigates
 both captured cases in one adaptive context under the same runtime budget, with
-cited final dossiers and no automatic quality acceptance. Independent/team comparison
-adapters and actual paired measurement remain planned.
+cited final dossiers and no automatic quality acceptance. An
+[independent-worker adapter](docs/coordination-independent-workers.md) now runs
+separate case contexts concurrently in fair rounds, sharing the same call pool
+and preserving partial dossiers without model aggregation. The coordinated-team
+comparison adapter and actual paired measurement remain planned.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

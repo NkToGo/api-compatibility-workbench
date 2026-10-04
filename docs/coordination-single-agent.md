@@ -4,8 +4,9 @@ One adaptive context investigates both captured curated cases through the
 [shared trial runtime](coordination-runtime.md). It chooses evidence reads and
 returns one complete two-case dossier. This is the `SINGLE_AGENT` arm of the
 [comparison protocol](coordination-comparison.md), not two sequential isolated
-investigator sessions. Independent/team adapters, paired measurement and semantic
-acceptance review remain separate work.
+investigator sessions. An [independent-worker adapter](coordination-independent-workers.md)
+now supplies separate concurrent case contexts. The coordinated-team adapter,
+paired measurement and semantic acceptance review remain separate work.
 
 ## Context, tools and output
 

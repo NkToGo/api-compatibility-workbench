@@ -93,8 +93,11 @@ paired outcomes. A [shared trial runtime](docs/coordination-runtime.md) now capt
 common evidence and provides policy-bound registration, whole-trial deadlines and
 inclusive call/trace accounting. A [deterministic comparison adapter](docs/coordination-diagnostics.md)
 now derives recorded scenario and synthetic projection diagnostics through that
-runtime, with zero model calls and separately pending quality review. Adaptive
-comparison adapters and actual paired measurement remain planned.
+runtime, with zero model calls and separately pending quality review. A
+[single-agent comparison adapter](docs/coordination-single-agent.md) now investigates
+both captured cases in one adaptive context under the same runtime budget, with
+cited final dossiers and no automatic quality acceptance. Independent/team comparison
+adapters and actual paired measurement remain planned.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

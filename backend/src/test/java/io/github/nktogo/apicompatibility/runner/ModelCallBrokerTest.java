@@ -45,6 +45,24 @@ class ModelCallBrokerTest {
         });
     }
 
+    @Test void bundleDecisionTransportExtractsOnlyTheExpectedFunctionAndIgnoresReasoning() throws Exception {
+        server.createContext("/v1/responses", exchange -> {
+            calls.incrementAndGet(); var request = CaseInputs.object(exchange.getRequestBody().readAllBytes());
+            assertEquals(BundleInvestigationDecision.FUNCTION, request.getAsJsonObject("tool_choice").get("name").getAsString());
+            assertEquals(BundleInvestigationDecision.INSTRUCTIONS, request.get("instructions").getAsString());
+            var decision = java.util.Map.of("decision", java.util.Map.of("action", "read_evidence", "caseId", CaseInputs.CASE_ID, "inputId", "description", "offset", 0, "maxCharacters", 4000));
+            String response = CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 20, "output_tokens", 30), "output", List.of(
+                    java.util.Map.of("type", "reasoning", "summary", List.of(java.util.Map.of("text", "do-not-retain-reasoning"))),
+                    java.util.Map.of("type", "function_call", "name", BundleInvestigationDecision.FUNCTION, "arguments", CaseInputs.JSON.toJson(decision)))));
+            byte[] bytes = response.getBytes(StandardCharsets.UTF_8); exchange.sendResponseHeaders(200, bytes.length);
+            try (var output = exchange.getResponseBody()) { output.write(bytes); }
+        });
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "both cases", 2048, BundleInvestigationDecision.PROTOCOL), Duration.ofMinutes(1));
+        assertEquals("COMPLETED", broker.execute(id)); var outcome = broker.outcome(id);
+        assertEquals("read_evidence", BundleInvestigationDecision.parse(outcome.get("outputText").getAsString()).get("action").getAsString());
+        assertFalse(outcome.toString().contains("do-not-retain-reasoning")); assertEquals(1, calls.get());
+    }
+
     @Test void dispatchIsScopedAndFinalizationDoesNotRepeatTheCallOrRetainSecrets() throws Exception {
         server.createContext("/v1/responses", exchange -> {
             calls.incrementAndGet();

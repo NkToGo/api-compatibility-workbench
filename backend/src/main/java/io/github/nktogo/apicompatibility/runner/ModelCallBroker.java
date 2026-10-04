@@ -34,7 +34,7 @@ public final class ModelCallBroker {
     public record Request(String model, String input, int maxOutputTokens, String protocol) {
         public Request(String model, String input, int maxOutputTokens) { this(model, input, maxOutputTokens, null); }
         public Request {
-            CaseInputs.require(protocol == null || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1", "coordination-v1", "coordination-v2", "reconciliation-v1").contains(protocol), "Unsupported model protocol");
+            CaseInputs.require(protocol == null || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1", "coordination-v1", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL).contains(protocol), "Unsupported model protocol");
             CaseInputs.require(model != null && model.matches("gpt-[a-zA-Z0-9.\\-]{1,80}"), "Invalid model identity");
             CaseInputs.require(input != null && !input.isBlank() && input.getBytes(StandardCharsets.UTF_8).length <= (protocol == null ? 16000 : 64000), "Invalid model input size");
             CaseInputs.require(maxOutputTokens >= 16 && maxOutputTokens <= 4096, "Invalid output budget");
@@ -53,6 +53,12 @@ public final class ModelCallBroker {
                         "strict", true, "parameters", reconciliation ? ReconciliationDecision.schema() : coordination ? CoordinationDecision.schema() : repair ? RepairProposal.schema() : InvestigationDecision.schema())));
                 body.put("tool_choice", Map.of("type", "function", "name", function));
                 body.put("parallel_tool_calls", false);
+                if (protocol.equals(BundleInvestigationDecision.PROTOCOL)) {
+                    body.put("instructions", BundleInvestigationDecision.INSTRUCTIONS);
+                    body.put("tools", List.of(Map.of("type", "function", "name", BundleInvestigationDecision.FUNCTION,
+                            "description", "Select one captured page read or the complete two-case dossier.", "strict", true, "parameters", BundleInvestigationDecision.schema())));
+                    body.put("tool_choice", Map.of("type", "function", "name", BundleInvestigationDecision.FUNCTION));
+                }
             }
             return CaseInputs.JSON.toJson(canonical(CaseInputs.JSON.toJsonTree(body))).getBytes(StandardCharsets.UTF_8);
         }
@@ -174,7 +180,7 @@ public final class ModelCallBroker {
 
     private static String extract(byte[] body, Map<String, Object> metadata, String protocol) {
         boolean decision = protocol != null;
-        String function = "reconciliation-v1".equals(protocol) ? "reconciliation_decision" : Set.of("coordination-v1", "coordination-v2").contains(protocol == null ? "" : protocol) ? "coordination_decision"
+        String function = BundleInvestigationDecision.PROTOCOL.equals(protocol) ? BundleInvestigationDecision.FUNCTION : "reconciliation-v1".equals(protocol) ? "reconciliation_decision" : Set.of("coordination-v1", "coordination-v2").contains(protocol == null ? "" : protocol) ? "coordination_decision"
                 : decision && Set.of("repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol) ? "repair_proposal" : "investigation_decision";
         try {
             var response = CaseInputs.object(body);

@@ -170,8 +170,10 @@ provider families and automatic repair-feedback loops remain outside its scope.
      through the shared runtime, with recorded outcomes, synthetic projection
      checks, retained partial/unresolved results and no model calls. Source
      control-flow analysis and semantic acceptance are not established by these rules.
-     Adaptive adapters remain planned: one multi-case agent (4b3), then
-     independent/team adapters (4b4).
+     **4b3 implemented:** [one multi-case adaptive agent](coordination-single-agent.md)
+     through the shared runtime, with bounded page disclosure, a full-budget loop,
+     same-case citations, retained no-replay recovery and unreviewed final dossiers.
+     Independent/team adapters (4b4) remain planned.
    - **4c planned:** fixed paired measurement and bound semantic acceptance review.
    - **4d planned:** select a scoped routing rule from the observed comparison.
 

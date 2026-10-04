@@ -32,8 +32,9 @@ and reject changed plans, records or derived verdicts. This component makes no
 OpenAI, provider or Docker call, reads no credential and creates no execution grant.
 The [shared input/trial runtime](coordination-runtime.md) now provides captured
 input registration and whole-trial budget enforcement. The
-[deterministic diagnostics adapter](coordination-diagnostics.md) now uses that
-boundary and exports unreviewed records. Adaptive adapters remain later work.
+[deterministic diagnostics adapter](coordination-diagnostics.md) and
+[single-agent adapter](coordination-single-agent.md) now use that boundary and export
+unreviewed records. Independent/team adapters remain later work.
 
 ## First campaign design
 

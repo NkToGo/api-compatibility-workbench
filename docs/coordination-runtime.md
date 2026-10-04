@@ -4,8 +4,9 @@ The trusted host can capture one input-only bundle for the two curated cases and
 register individually bounded comparison trials against it. This is the common
 boundary for the planned deterministic, single-agent, independent-worker and
 coordinated-team adapters. The [deterministic adapter](coordination-diagnostics.md)
-now uses this boundary; adaptive adapters and the fresh measurement campaign remain
-planned. This runtime alone establishes no coordination benefit.
+and [single-agent adapter](coordination-single-agent.md) now use this boundary;
+independent/team adapters and the fresh measurement campaign remain planned.
+This runtime alone establishes no coordination benefit.
 
 ## Capture the same available evidence
 
@@ -77,8 +78,9 @@ stable operation ID and exact request. Model, protocol, UTF-8 input bytes and
 requested output tokens are checked before broker registration. The common call
 ceiling is a trial-wide reservation count, including coordinator and follow-up
 participants; it is not the existing investigator's 12-decision loop. This runtime
-can admit all 60 reservations when that is the declared ceiling. Future algorithms
-still need loops/context management capable of using that budget.
+can admit all 60 reservations when that is the declared ceiling. The single-agent
+adapter has a full-budget loop and bounded context disclosure; subsequent adapters
+must also be capable of using the declared budget.
 
 The host reserves durably before broker registration and binds the broker mapping
 to the request/reservation hashes. An exact retry reuses the same mapping and

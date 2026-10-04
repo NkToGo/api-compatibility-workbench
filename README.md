@@ -91,8 +91,10 @@ benefit remains planned. An [offline comparison evaluator](docs/coordination-com
 now retains declared trial denominators, separate reviewed quality, resource use and
 paired outcomes. A [shared trial runtime](docs/coordination-runtime.md) now captures
 common evidence and provides policy-bound registration, whole-trial deadlines and
-inclusive call/trace accounting. Fresh configuration adapters and actual measurement
-remain planned.
+inclusive call/trace accounting. A [deterministic comparison adapter](docs/coordination-diagnostics.md)
+now derives recorded scenario and synthetic projection diagnostics through that
+runtime, with zero model calls and separately pending quality review. Adaptive
+comparison adapters and actual paired measurement remain planned.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

@@ -3,8 +3,9 @@
 The trusted host can capture one input-only bundle for the two curated cases and
 register individually bounded comparison trials against it. This is the common
 boundary for the planned deterministic, single-agent, independent-worker and
-coordinated-team adapters. Those adapters and the fresh measurement campaign
-remain unimplemented; this runtime alone establishes no coordination benefit.
+coordinated-team adapters. The [deterministic adapter](coordination-diagnostics.md)
+now uses this boundary; adaptive adapters and the fresh measurement campaign remain
+planned. This runtime alone establishes no coordination benefit.
 
 ## Capture the same available evidence
 
@@ -118,8 +119,9 @@ Unmapped registration is not guessed into a mapping. It retains the chosen opera
 and publishes a result with a completion receipt. Unknown usage remains unresolved.
 Repeat finalization preserves the original result. `retained` verifies the receipt,
 input binding and retained trace artifacts; changed evidence is rejected.
-No new participant work is admitted after completion. Semantic review and conversion
-to reviewed comparison outcomes remain separate adapter/campaign work.
+No new participant work is admitted after completion. The deterministic adapter
+exports an unreviewed comparison record bound to its dossier and this trace.
+Semantic acceptance remains separate campaign work.
 
 All participants run within one trusted host account. These checks do not isolate
 malicious host processes or authenticate against an operator rewriting the entire

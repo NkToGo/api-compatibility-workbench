@@ -31,8 +31,9 @@ separate, immutable report directories. Historical reads recompute the assessmen
 and reject changed plans, records or derived verdicts. This component makes no
 OpenAI, provider or Docker call, reads no credential and creates no execution grant.
 The [shared input/trial runtime](coordination-runtime.md) now provides captured
-input registration and whole-trial budget enforcement. Fresh measurement adapters
-must use that boundary; they remain later work.
+input registration and whole-trial budget enforcement. The
+[deterministic diagnostics adapter](coordination-diagnostics.md) now uses that
+boundary and exports unreviewed records. Adaptive adapters remain later work.
 
 ## First campaign design
 
@@ -201,7 +202,8 @@ This was a synthetic empty-record check, not a configuration measurement.
 
 1. **4a implemented:** frozen comparison contract, offline evaluator and retained reports.
 2. **4b1 implemented:** [common captured input registration and end-to-end budget/trace accounting](coordination-runtime.md).
-3. **4b2 planned:** deterministic diagnostics with no model calls.
+3. **4b2 implemented:** [deterministic diagnostics](coordination-diagnostics.md)
+   over the common captured evidence, with no model calls and retained unreviewed dossiers.
 4. **4b3 planned:** one adaptive agent operating across the case bundle.
 5. **4b4 planned:** independent-worker and coordinated-team adapters using the shared boundary.
 6. **4c planned:** execute the fixed paired campaign, bind complete semantic reviews,

@@ -3,9 +3,10 @@
 The coordinated comparison arm needs a review boundary that uses the same captured
 inputs and whole-trial budget as the other arms. `CapturedTeamDecision`,
 `CapturedTeamReview` and `CoordinationTeamBudget` implement that boundary's decision
-format, host guards and allocation arithmetic. The durable team runner, fresh
-follow-up execution, reconciliation and comparison export are not implemented yet.
-There is no team run command or completed team trial from this component.
+format, host guards and allocation arithmetic. The [durable runner](coordination-team-runner.md)
+now uses them for original investigations and coordinator review. Fresh follow-up
+execution, reconciliation and comparison export are not implemented yet. These
+pure components make no calls or completed team trial on their own.
 
 The older [coordinator](coordinator-review.md), [follow-up dispatcher](follow-up-dispatch.md)
 and [reconciliation](follow-up-reconciliation.md) remain separate product commands.
@@ -71,7 +72,7 @@ The selected questions are inert data at delegation depth one. They cannot add
 tools, change the model, renew deadlines, grant permission or create recursive
 work. The future runner must separately admit their fresh workers through the
 already registered case scopes and common runtime. No such dispatch happens in
-this component.
+this component or the current runner.
 
 A possible conflict must link two distinct existing original claims; duplicate
 pairs are refused, including reversed pairs. Different cases receive
@@ -105,10 +106,10 @@ Counts are reservations, including uncertain or known-not-dispatched slots,
 not just successful responses. Cumulative overruns and counts from a later stage
 are rejected. The arithmetic neither starts nor renews a clock or grant.
 
-This component does not enforce stage transitions around actual dispatch. The
-durable runner must derive counts from its sealed operations and the shared
-runtime, retain stage transitions, handle interruption and enforce these limits
-before each new reservation. The whole-trial deadline and per-request bounds
+This pure component does not enforce stage transitions around actual dispatch.
+The durable runner derives original/review counts from sealed operations and the
+shared runtime, retains the original-report barrier, handles interruption and
+enforces their cumulative limits before each new reservation. The whole-trial deadline and per-request bounds
 continue to belong to that runtime. All prompt, context, allocation, selection,
 reconciliation and final-output rules must be frozen in the final arm identity
 before the paired campaign begins.
@@ -123,7 +124,7 @@ trimming, strict transport extraction, explicit participant permission and share
 call accounting. They make no paid API or new consumer execution call.
 
 These checks establish host-guard behavior, not question usefulness, explanation
-quality or coordination benefit. Review remains `NOT_PERFORMED`. The next steps
-are durable original-worker/review execution, followed by fresh investigations,
-reconciliation and unreviewed comparison export. The fixed paired campaign and
+quality or coordination benefit. Review remains `NOT_PERFORMED`. Original-worker
+and review execution now exist in the durable runner. The next step is fresh
+investigations, reconciliation and unreviewed comparison export. The fixed paired campaign and
 its separate semantic acceptance reviews remain unrun.

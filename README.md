@@ -103,8 +103,11 @@ and preserving partial dossiers without model aggregation. The
 [captured-team review boundary](docs/coordination-team-review.md) now validates
 case-bound inert follow-up questions and unresolved conflicts while retaining
 original claims. Its cumulative budget allocation keeps every team stage within
-one declared ceiling. Durable team execution, comparison export and actual paired
-measurement remain planned.
+one declared ceiling. A [durable team runner](docs/coordination-team-runner.md)
+now executes the original investigations and coordinator review under that same
+pool and deadline, with sealed recovery and a retained partial-stage report.
+Fresh follow-ups, reconciliation, comparison export and actual paired measurement
+remain planned.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are
@@ -190,6 +193,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Read-only follow-up reconciliation and preserved claim/conflict history](docs/follow-up-reconciliation.md)
 - [Coordination comparison contract and offline reports](docs/coordination-comparison.md)
 - [Shared captured inputs and comparison trial runtime](docs/coordination-runtime.md)
+- [Durable captured-team investigations and review](docs/coordination-team-runner.md)
 - [Scoped repair candidates](docs/repair-candidates.md)
 - [Repair evaluation rules and historical baseline](docs/repair-evaluation.md)
 - [Protected candidate execution and recovery](docs/protected-repair-execution.md)

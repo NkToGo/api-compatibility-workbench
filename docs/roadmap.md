@@ -180,8 +180,10 @@ provider families and automatic repair-feedback loops remain outside its scope.
      same pool. **4b4b1 implemented:** [captured-team review boundary](coordination-team-review.md)
      with case-bound inert question selection, retained original claims, unresolved
      conflicts and cumulative stage-allocation arithmetic.
-     **4b4b2 planned:** durable original-worker and coordinator-review execution
-     through the shared runtime, including interruption and budget enforcement.
+     **4b4b2 implemented:** [durable original-worker and coordinator-review execution](coordination-team-runner.md)
+     through the shared runtime, including sealed stage transitions, cumulative
+     budget enforcement and no-replay recovery. The retained result is a prefix;
+     fresh work, reconciliation and a complete team trial remain pending.
      **4b4b3 planned:** fresh scoped follow-ups, reconciliation and unreviewed
      comparison export; freeze the complete arm policy before measurement.
    - **4c planned:** fixed paired measurement and bound semantic acceptance review.

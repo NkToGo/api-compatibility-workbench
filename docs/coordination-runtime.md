@@ -8,8 +8,9 @@ and [single-agent adapter](coordination-single-agent.md) now use this boundary,
 along with [independent case workers](coordination-independent-workers.md).
 The [captured-team review boundary](coordination-team-review.md) provides its
 strict coordinator protocol and host guards; explicit participant registration is
-still required for that protocol. Durable team execution and the fresh measurement
-campaign remain planned.
+still required for that protocol. The [durable team runner](coordination-team-runner.md)
+executes original investigations and coordinator review only; fresh follow-ups,
+reconciliation, complete team export and the measurement campaign remain planned.
 This runtime alone establishes no coordination benefit.
 
 ## Capture the same available evidence

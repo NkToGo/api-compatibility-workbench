@@ -24,7 +24,8 @@ not initialize SDK classes or execute the consumer. The JAR digest is checked
 before and after inspection. API signatures establish method availability; the
 selected bytecode shows how the SDK uses its collection URL and request options.
 Neither establishes live provider behavior or repair correctness. Inspection
-is bounded and stops if the expected method is unavailable.
+allows at most 30 seconds per subprocess, bounds captured output and stops if the
+expected method is unavailable or inspection does not complete successfully.
 
 Fixture content is labeled authored synthetic data with its captured input hash;
 it is not a live provider observation. Separate list responses can establish the

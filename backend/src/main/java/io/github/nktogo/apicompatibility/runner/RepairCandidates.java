@@ -164,10 +164,10 @@ public final class RepairCandidates {
         try {
             var inspected = BoundedCommand.run(List.of(Path.of(System.getProperty("java.home"), "bin", "javap").toString(),
                     "-public", "-classpath", jar.toAbsolutePath().toString(), "com.stripe.model.Customer",
-                    "com.stripe.model.PaymentSourceCollection", "com.stripe.model.StripeCollection"), Duration.ofSeconds(10), 32000);
+                    "com.stripe.model.PaymentSourceCollection", "com.stripe.model.StripeCollection"), Duration.ofSeconds(30), 32000);
             CaseInputs.require(inspected.status() == BoundedCommand.Status.EXITED && inspected.exitCode() == 0, "SDK inspection failed");
             var bytecode = BoundedCommand.run(List.of(Path.of(System.getProperty("java.home"), "bin", "javap").toString(),
-                    "-c", "-public", "-classpath", jar.toAbsolutePath().toString(), "com.stripe.model.PaymentSourceCollection"), Duration.ofSeconds(10), 64000);
+                    "-c", "-public", "-classpath", jar.toAbsolutePath().toString(), "com.stripe.model.PaymentSourceCollection"), Duration.ofSeconds(30), 64000);
             CaseInputs.require(bytecode.status() == BoundedCommand.Status.EXITED && bytecode.exitCode() == 0, "SDK implementation inspection failed");
             String implementation = new String(bytecode.stdout(), StandardCharsets.UTF_8);
             String method = "  public com.stripe.model.PaymentSourceCollection list(java.util.Map<java.lang.String, java.lang.Object>, com.stripe.net.RequestOptions)";

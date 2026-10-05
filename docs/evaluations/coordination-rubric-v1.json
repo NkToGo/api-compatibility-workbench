@@ -1,0 +1,38 @@
+{
+  "formatVersion": 1,
+  "rubricId": "coordination-known-cases-v1",
+  "scope": "Three paired repetitions of two known synthetic migration cases; descriptive comparison, not held-out accuracy or general superiority.",
+  "reviewMethod": "Separate model-assisted claim-level inspection against captured evidence, with reviewer provenance recorded in each completed review; no independent human adjudication is implied.",
+  "cases": [
+    {
+      "caseId": "stripe-customer-sources-2020-08-27",
+      "expectedResponse": "ANSWER",
+      "criteria": [
+        { "id": "observed-regressions", "requirement": "Accurately report the declared scenario outcomes and passing control. Do not turn them into general migration certification or confirmed failure causation." },
+        { "id": "absence-preconditions", "requirement": "Distinguish omission, observed presence and established absence. Omission alone cannot authorize deletion; complete source retrieval can separately establish absence when the embedded field is omitted." },
+        { "id": "null-guard-limit", "requirement": "Explain why the historical null guard alone does not protect a known legacy method from the later deletion loop, retaining the observed reference failures." }
+      ]
+    },
+    {
+      "caseId": "stripe-subscription-periods-2025-07-30",
+      "expectedResponse": "ANSWER",
+      "criteria": [
+        { "id": "observed-regressions", "requirement": "Accurately describe baseline and target evidence across the eight declared scenarios. A passing deferral check does not establish a renewal date." },
+        { "id": "bound-item-selection", "requirement": "Explain configured-item selection, why first-item and minimum/maximum substitutions are insufficient, and the required membership and completeness checks." },
+        { "id": "policy-and-deferral-scope", "requirement": "Attribute selection and deferral rules to this application policy. Do not invent universal Stripe entitlement rules or interpret a date as paid-through access." }
+      ]
+    }
+  ],
+  "claimAudit": {
+    "scope": "Review the complete final case dossier and earlier claims it endorses, following original/fresh claim lineage. Retain unresolved conflicts and rejected material claims.",
+    "judgments": ["SUPPORTED_WITHIN_RECORDED_SCOPE", "UNSUPPORTED", "UNRESOLVED"],
+    "binding": "Bind each judgment to exact case input and output bytes, captured evidence references and the material claim being judged. Schema validity, observed reads, citations or agent agreement are not semantic acceptance."
+  },
+  "acceptance": {
+    "criteria": "Every declared criterion must be SATISFIED.",
+    "claims": "Complete claim audit, no material unsupported claim and no unresolved material claim.",
+    "disposition": "The exact answer or abstention disposition must match the declared task. Missing output remains NOT_PROVIDED.",
+    "primaryUnit": "A completed, fully reviewed accepted two-case bundle; preserve useful partial case outcomes separately.",
+    "resources": "A limit violation preserves supported findings but excludes a trial from fair paired comparison. Unknown usage remains unresolved."
+  }
+}

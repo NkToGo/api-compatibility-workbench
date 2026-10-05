@@ -188,7 +188,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      comparison export](coordination-team-comparison.md), with original/fresh lineage,
      unresolved conflicts and a complete implementation policy. No paired campaign
      or semantic acceptance is established by adapter completion.
-   - **4c planned:** fixed paired measurement and bound semantic acceptance review.
+   - **4c in progress:** fixed paired measurement and bound semantic acceptance review.
+     **4c1 implemented:** [frozen campaign registration](coordination-campaign.md)
+     with four compiled policies, the exact rubric/input snapshots, common limits,
+     all twelve ordered slots, sealed metadata and explicit interruption recovery.
+     **4c2 planned:** execute the twelve fresh trials with retained mappings and
+     inclusive accounting. **4c3 planned:** bind complete claim-level semantic
+     reviews and report the paired outcomes. Registration establishes no measured
+     quality or coordination benefit.
    - **4d planned:** select a scoped routing rule from the observed comparison.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

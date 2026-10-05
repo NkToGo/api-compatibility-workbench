@@ -214,8 +214,11 @@ This was a synthetic empty-record check, not a configuration measurement.
    **4b4b1 implemented:** [team review contracts and stage-allocation arithmetic](coordination-team-review.md).
    **4b4b2 implemented:** [durable original/review prefix](coordination-team-runner.md).
    **4b4b3 implemented:** [scoped fresh work, reconciliation and complete unreviewed export](coordination-team-comparison.md).
-6. **4c planned:** execute the fixed paired campaign, bind complete semantic reviews,
-   report all planned trials and compare observed quality, latency and resource use.
+6. **4c1 implemented:** [freeze the actual campaign registration](coordination-campaign.md),
+   including all four compiled policies, rubric bytes and twelve ordered trial slots.
+   **4c2 planned:** execute the fixed fresh trials and retain all outcomes.
+   **4c3 planned:** bind complete semantic reviews and report quality, latency and
+   inclusive resource use for all planned trials.
 7. **4d planned:** choose a scoped routing rule only if the evidence supports it;
    otherwise preserve the simpler configuration and the explicit uncertainty.
 

@@ -39,6 +39,9 @@ jobs:
       - name: Verify on Linux
         if: runner.os == 'Linux'
         run: sh ./mvnw -B -ntp -f backend/pom.xml clean verify
+      - name: Verify frozen campaign registration
+        shell: pwsh
+        run: ./scripts/Test-CoordinationCampaign.ps1
       - name: Build immutable case worker
         if: runner.os == 'Linux'
         shell: pwsh

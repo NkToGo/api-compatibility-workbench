@@ -106,8 +106,10 @@ original claims. Its cumulative budget allocation keeps every team stage within
 one declared ceiling. A [durable team runner](docs/coordination-team-runner.md)
 now executes the original investigations and coordinator review under that same
 pool and deadline, with sealed recovery and a retained partial-stage report.
-Fresh follow-ups, reconciliation, comparison export and actual paired measurement
-remain planned.
+The [complete captured-team adapter](docs/coordination-team-comparison.md) adds fresh
+case-scoped follow-ups and reconciliation under the same pool and deadline, retaining
+earlier claims and exporting unreviewed final dossiers with inclusive accounting.
+Actual paired measurement and semantic acceptance remain planned.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

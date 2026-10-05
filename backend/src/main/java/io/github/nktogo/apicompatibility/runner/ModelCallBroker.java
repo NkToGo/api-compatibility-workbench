@@ -34,7 +34,7 @@ public final class ModelCallBroker {
     public record Request(String model, String input, int maxOutputTokens, String protocol) {
         public Request(String model, String input, int maxOutputTokens) { this(model, input, maxOutputTokens, null); }
         public Request {
-            CaseInputs.require(protocol == null || CaseInvestigationDecision.accepts(protocol) || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1", "coordination-v1", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, CapturedTeamDecision.PROTOCOL).contains(protocol), "Unsupported model protocol");
+            CaseInputs.require(protocol == null || CaseInvestigationDecision.accepts(protocol) || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1", "coordination-v1", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL).contains(protocol), "Unsupported model protocol");
             CaseInputs.require(model != null && model.matches("gpt-[a-zA-Z0-9.\\-]{1,80}"), "Invalid model identity");
             CaseInputs.require(input != null && !input.isBlank() && input.getBytes(StandardCharsets.UTF_8).length <= (protocol == null ? 16000 : 64000), "Invalid model input size");
             CaseInputs.require(maxOutputTokens >= 16 && maxOutputTokens <= 4096, "Invalid output budget");
@@ -70,6 +70,12 @@ public final class ModelCallBroker {
                     body.put("tools", List.of(Map.of("type", "function", "name", CapturedTeamDecision.FUNCTION,
                             "description", "Select one captured page read or a cited review with inert follow-up questions.", "strict", true, "parameters", CapturedTeamDecision.schema())));
                     body.put("tool_choice", Map.of("type", "function", "name", CapturedTeamDecision.FUNCTION));
+                }
+                if (protocol.equals(CapturedReconciliationDecision.PROTOCOL)) {
+                    body.put("instructions", CapturedReconciliationDecision.INSTRUCTIONS);
+                    body.put("tools", List.of(Map.of("type", "function", "name", CapturedReconciliationDecision.FUNCTION,
+                            "description", "Read one captured page or return the complete reconciled two-case dossier.", "strict", true, "parameters", CapturedReconciliationDecision.schema())));
+                    body.put("tool_choice", Map.of("type", "function", "name", CapturedReconciliationDecision.FUNCTION));
                 }
             }
             return CaseInputs.JSON.toJson(canonical(CaseInputs.JSON.toJsonTree(body))).getBytes(StandardCharsets.UTF_8);
@@ -192,7 +198,7 @@ public final class ModelCallBroker {
 
     private static String extract(byte[] body, Map<String, Object> metadata, String protocol) {
         boolean decision = protocol != null;
-        String function = CapturedTeamDecision.PROTOCOL.equals(protocol) ? CapturedTeamDecision.FUNCTION : CaseInvestigationDecision.accepts(protocol) ? CaseInvestigationDecision.FUNCTION : BundleInvestigationDecision.PROTOCOL.equals(protocol) ? BundleInvestigationDecision.FUNCTION : "reconciliation-v1".equals(protocol) ? "reconciliation_decision" : Set.of("coordination-v1", "coordination-v2").contains(protocol == null ? "" : protocol) ? "coordination_decision"
+        String function = CapturedReconciliationDecision.PROTOCOL.equals(protocol) ? CapturedReconciliationDecision.FUNCTION : CapturedTeamDecision.PROTOCOL.equals(protocol) ? CapturedTeamDecision.FUNCTION : CaseInvestigationDecision.accepts(protocol) ? CaseInvestigationDecision.FUNCTION : BundleInvestigationDecision.PROTOCOL.equals(protocol) ? BundleInvestigationDecision.FUNCTION : "reconciliation-v1".equals(protocol) ? "reconciliation_decision" : Set.of("coordination-v1", "coordination-v2").contains(protocol == null ? "" : protocol) ? "coordination_decision"
                 : decision && Set.of("repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol) ? "repair_proposal" : "investigation_decision";
         try {
             var response = CaseInputs.object(body);

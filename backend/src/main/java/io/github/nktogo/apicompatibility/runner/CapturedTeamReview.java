@@ -26,6 +26,11 @@ final class CapturedTeamReview {
         @Override public JsonObject finishDecision() { return finishDecision == null ? null : finishDecision.deepCopy(); }
         @Override public List<JsonObject> pages() { return pages.stream().map(JsonObject::deepCopy).toList(); }
     }
+    static WorkerResult retainedWorker(JsonObject value) {
+        var worker = new WorkerResult(JSON.fromJson(value.get("task"), CaseTask.class), WorkerStatus.valueOf(value.get("status").getAsString()), value.get("stopReason").getAsString(),
+                value.get("finishDecision").isJsonNull() ? null : value.getAsJsonObject("finishDecision"), value.getAsJsonArray("pages").asList().stream().map(JsonElement::getAsJsonObject).toList());
+        CaseInputs.require(value.equals(JSON.toJsonTree(worker)), "Changed worker record shape"); return worker;
+    }
     private final List<WorkerResult> originals;
     private final JsonArray workers = new JsonArray(), claims = new JsonArray();
     private final Map<String, JsonObject> references = new TreeMap<>();
@@ -98,7 +103,7 @@ final class CapturedTeamReview {
     private static void requireReferences(Set<String> ids, Map<String, JsonObject> eligible, String caseId) {
         for (String id : ids) CaseInputs.require(eligible.containsKey(id) && (caseId == null || eligible.get(id).get("caseId").getAsString().equals(caseId)), "Unseen or foreign review reference");
     }
-    private static void validatePages(List<JsonObject> pages, Set<String> cases) {
+    static void validatePages(List<JsonObject> pages, Set<String> cases) {
         CaseInputs.require(pages.size() <= 500, "Too many retained review pages"); var ids = new HashSet<String>(); var artifacts = new HashMap<String, String>();
         for (var p : pages) {
             CaseInputs.require(p.keySet().equals(Set.of("pageId", "caseId", "inputId", "artifactSha256", "pageSha256", "offset", "nextOffset", "totalCharacters", "content", "contentTrust")), "Invalid captured page shape");
@@ -116,7 +121,7 @@ final class CapturedTeamReview {
             CaseInputs.require(previous == null || previous.equals(identity), "Inconsistent captured page artifact");
         }
     }
-    private static JsonArray metadata(List<JsonObject> pages) { var result = new JsonArray(); pages.forEach(p -> { var copy = p.deepCopy(); copy.remove("content"); result.add(copy); }); return result; }
+    static JsonArray metadata(List<JsonObject> pages) { var result = new JsonArray(); pages.forEach(p -> { var copy = p.deepCopy(); copy.remove("content"); result.add(copy); }); return result; }
     private static String hash(JsonObject object) { return CaseInputs.hash(encoded(object).getBytes(StandardCharsets.UTF_8)); }
     private static String encoded(JsonObject object) { return JSON.toJson(canonical(object)); }
     private static JsonObject json(Object value) { return JSON.toJsonTree(value).getAsJsonObject(); }

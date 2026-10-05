@@ -17,7 +17,8 @@ public final class CoordinationTeamRunner {
     private static final String COORDINATOR = "coordinator";
     private final Path state, root;
     private final CoordinationRuntime runtime;
-    private record Spec(int formatVersion, String runId, String bundleId, Definition definition, Slot slot,
+    private final CoordinationRuntime.Policy executionPolicy;
+    record Spec(int formatVersion, String runId, String bundleId, Definition definition, Slot slot,
                         CoordinationRuntime.Policy policy, String runtimeSpecSha256) {}
     private static final class Worker {
         final CaseTask task;
@@ -31,7 +32,11 @@ public final class CoordinationTeamRunner {
     }
     public CoordinationTeamRunner(Path state) throws IOException { this(state, new CoordinationRuntime(state)); }
     CoordinationTeamRunner(Path state, CoordinationRuntime runtime) throws IOException {
+        this(state, runtime, null);
+    }
+    CoordinationTeamRunner(Path state, CoordinationRuntime runtime, CoordinationRuntime.Policy executionPolicy) throws IOException {
         this.state = state.toAbsolutePath().normalize(); this.runtime = runtime;
+        this.executionPolicy = executionPolicy;
         root = this.state.resolve("coordination-team-runs"); Files.createDirectories(root); ConsumerTasks.directory(root);
     }
     public static CoordinationRuntime.Policy policy() throws IOException {
@@ -50,7 +55,7 @@ public final class CoordinationTeamRunner {
     public String register(String bundle, Definition definition, Slot slot) throws IOException {
         CaseInputs.require(slot.arm() == Arm.COORDINATED_TEAM, "Team runner requires the coordinated arm");
         CoordinationTeamBudget.forCeiling(definition.limits().modelCalls());
-        var policy = policy(); String id = runtime.register(bundle, definition, slot, policy); Path run = Files.createDirectory(root.resolve(id));
+        var policy = executionPolicy == null ? policy() : executionPolicy; String id = runtime.register(bundle, definition, slot, policy); Path run = Files.createDirectory(root.resolve(id));
         publish(run, "spec.json", new Spec(1, id, bundle, definition, slot, policy, hash(parent(id), "spec.json")));
         publish(run, "registration.json", Map.of("specSha256", hash(run, "spec.json"))); return id;
     }
@@ -66,7 +71,7 @@ public final class CoordinationTeamRunner {
                 }
                 return retained(id);
             }
-            CaseInputs.require(spec.policy().equals(policy()), "Changed team implementation; use a new run");
+            CaseInputs.require(spec.policy().equals(executionPolicy == null ? policy() : executionPolicy), "Changed team implementation; use a new run");
             var allocation = CoordinationTeamBudget.forCeiling(spec.definition().limits().modelCalls());
             var workers = workload(spec).cases().stream().sorted(Comparator.comparing(CaseTask::caseId)).map(Worker::new).toList();
             int originalCalls = originals(run, spec, allocation, workers);
@@ -147,6 +152,12 @@ public final class CoordinationTeamRunner {
     }
     private JsonObject action(Path run, Spec spec, String participant, int turn, String stepFile, java.util.function.Supplier<ModelCallBroker.Request> request,
                               List<JsonObject> pages, CapturedTeamReview review) throws IOException {
+        return action(run, spec, participant, turn, stepFile, request,
+                raw -> participant.equals(COORDINATOR) ? CapturedTeamDecision.parse(raw) : CaseInvestigationDecision.parse(raw, participant),
+                decision -> validateDecision(participant, decision, pages, review));
+    }
+    JsonObject action(Path run, Spec spec, String participant, int turn, String stepFile, java.util.function.Supplier<ModelCallBroker.Request> request,
+                      java.util.function.Function<String, JsonObject> decoder, java.util.function.Consumer<JsonObject> validator) throws IOException {
         String prefix = turn + "-" + participant, eventFile = "event-" + prefix + ".json", seal = "event-" + prefix + "-receipt.json";
         if (exists(run, seal)) {
             var event = record(run, eventFile); CaseInputs.require(record(run, seal).equals(eventReceipt(run, prefix, stepFile)), "Changed retained team event");
@@ -154,7 +165,7 @@ public final class CoordinationTeamRunner {
                     && event.get("callReserved").getAsBoolean() == runtime.reserved(spec.runId(), participant, "decision-" + turn), "Changed retained team operation");
             if (exists(run, "request-" + prefix + ".json")) retain(run, "request-" + prefix + ".json", request.get());
             if (event.has("page")) verifyPage(spec, participant, turn, event.getAsJsonObject("decision"), event.getAsJsonObject("page"));
-            if (event.has("decision")) validateDecision(participant, event.getAsJsonObject("decision"), pages, review);
+            if (event.has("decision")) validator.accept(decoder.apply(JSON.toJson(Map.of("decision", event.getAsJsonObject("decision")))));
             return event;
         }
         JsonObject event;
@@ -165,13 +176,12 @@ public final class CoordinationTeamRunner {
             if (!status.equals("COMPLETED")) event = stopped("MODEL_" + status);
             else {
                 JsonObject decision = null;
-                try { decision = participant.equals(COORDINATOR) ? CapturedTeamDecision.parse(response.get("outputText").getAsString())
-                        : CaseInvestigationDecision.parse(response.get("outputText").getAsString(), participant); }
+                try { decision = decoder.apply(response.get("outputText").getAsString()); }
                 catch (RuntimeException ignored) { /* Untrusted decisions cannot change the runtime. */ }
                 if (decision == null) event = stopped("INVALID_MODEL_DECISION");
                 else {
                     try {
-                        validateDecision(participant, decision, pages, review);
+                        validator.accept(decision);
                         if (decision.get("action").getAsString().equals("read_evidence")) {
                             String caseId = decision.get("caseId").getAsString(), alias = decision.get("inputId").getAsString();
                             var read = runtime.read(spec.runId(), participant, "read-" + turn, caseId, alias);
@@ -265,19 +275,19 @@ public final class CoordinationTeamRunner {
     }
     private Path parent(String id) { return state.resolve("coordination-trials/" + id); }
     private Path directory(String id) { CaseInputs.require(id != null && id.matches("trial-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid team run reference"); ConsumerTasks.directory(root); Path run = root.resolve(id); ConsumerTasks.directory(run); return run; }
-    private static boolean active(JsonObject event) { return event.has("status") && event.get("status").getAsString().equals("ACTIVE"); }
-    private static boolean exists(Path run, String name) { return Files.exists(run.resolve(name), LinkOption.NOFOLLOW_LINKS); }
-    private static String hash(Path run, String name) throws IOException { return CaseInputs.hash(ConsumerTasks.bytes(run, name)); }
-    private static JsonObject record(Path run, String name) throws IOException { return CaseInputs.object(ConsumerTasks.bytes(run, name)); }
-    private static JsonObject json(Object value) { return JSON.toJsonTree(value).getAsJsonObject(); }
-    private static ContentDigest digest(String value) { return new ContentDigest(CaseInputs.hash(value.getBytes(StandardCharsets.UTF_8))); }
-    private static String encoded(JsonElement value) { return JSON.toJson(canonical(value)); }
+    static boolean active(JsonObject event) { return event.has("status") && event.get("status").getAsString().equals("ACTIVE"); }
+    static boolean exists(Path run, String name) { return Files.exists(run.resolve(name), LinkOption.NOFOLLOW_LINKS); }
+    static String hash(Path run, String name) throws IOException { return CaseInputs.hash(ConsumerTasks.bytes(run, name)); }
+    static JsonObject record(Path run, String name) throws IOException { return CaseInputs.object(ConsumerTasks.bytes(run, name)); }
+    static JsonObject json(Object value) { return JSON.toJsonTree(value).getAsJsonObject(); }
+    static ContentDigest digest(String value) { return new ContentDigest(CaseInputs.hash(value.getBytes(StandardCharsets.UTF_8))); }
+    static String encoded(JsonElement value) { return JSON.toJson(canonical(value)); }
     private static JsonElement canonical(JsonElement value) {
         if (value.isJsonObject()) { var sorted = new JsonObject(); value.getAsJsonObject().keySet().stream().sorted().forEach(k -> sorted.add(k, canonical(value.getAsJsonObject().get(k)))); return sorted; }
         if (value.isJsonArray()) { var array = new JsonArray(); value.getAsJsonArray().forEach(v -> array.add(canonical(v))); return array; } return value;
     }
-    private static void retain(Path run, String name, Object value) throws IOException { if (exists(run, name)) CaseInputs.require(record(run, name).equals(json(value)), "Changed resumed team action"); else publish(run, name, value); }
-    private static void publish(Path run, String name, Object value) throws IOException {
+    static void retain(Path run, String name, Object value) throws IOException { if (exists(run, name)) CaseInputs.require(record(run, name).equals(json(value)), "Changed resumed team action"); else publish(run, name, value); }
+    static void publish(Path run, String name, Object value) throws IOException {
         byte[] bytes = (JSON.toJson(value) + "\n").getBytes(StandardCharsets.UTF_8); Path pending = run.resolve(name + ".pending");
         CaseInputs.require(!exists(run, name) && !exists(run, name + ".pending") && bytes.length <= 1048576, "Existing, incomplete or oversized team artifact");
         try (var channel = FileChannel.open(pending, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE, LinkOption.NOFOLLOW_LINKS)) {

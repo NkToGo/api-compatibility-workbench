@@ -37,7 +37,8 @@ input registration and whole-trial budget enforcement. The
 [independent-worker adapter](coordination-independent-workers.md) now use that
 boundary and export unreviewed records. The [captured-team review boundary](coordination-team-review.md)
 now defines coordinator decisions, host-selected inert questions and cumulative
-stage allocation. Durable coordinated-team execution and export remain later work.
+stage allocation. The [complete captured-team adapter](coordination-team-comparison.md)
+now executes the durable stages and exports unreviewed records under that boundary.
 
 ## First campaign design
 
@@ -211,7 +212,8 @@ This was a synthetic empty-record check, not a configuration measurement.
 4. **4b3 implemented:** [one adaptive agent](coordination-single-agent.md) operating across the case bundle.
 5. **4b4a implemented:** [independent case workers](coordination-independent-workers.md).
    **4b4b1 implemented:** [team review contracts and stage-allocation arithmetic](coordination-team-review.md).
-   **4b4b2/4b4b3 planned:** durable team stages and complete comparison export.
+   **4b4b2 implemented:** [durable original/review prefix](coordination-team-runner.md).
+   **4b4b3 implemented:** [scoped fresh work, reconciliation and complete unreviewed export](coordination-team-comparison.md).
 6. **4c planned:** execute the fixed paired campaign, bind complete semantic reviews,
    report all planned trials and compare observed quality, latency and resource use.
 7. **4d planned:** choose a scoped routing rule only if the evidence supports it;

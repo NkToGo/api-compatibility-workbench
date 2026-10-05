@@ -162,7 +162,7 @@ provider families and automatic repair-feedback loops remain outside its scope.
      with all planned paired slots, separate semantic review, inclusive usage,
      immutable reports and unresolved missing/ambiguous records. No fresh campaign
      has run and no routing conclusion is established.
-   - **4b partially implemented:** arm adapters with shared inputs and end-to-end budgets.
+   - **4b implemented on one trusted host:** arm adapters with shared inputs and end-to-end budgets.
      **4b1 implemented on one trusted host:** [common captured inputs and trial runtime](coordination-runtime.md)
      with policy-bound registration, whole-trial deadlines, shared durable call
      reservations and trace accounting.
@@ -176,16 +176,18 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4b4a implemented:** [independent case workers](coordination-independent-workers.md)
      with concurrent fair rounds, isolated case contexts, a shared full-budget
      pool, sealed no-replay recovery and deterministic partial-output aggregation.
-     **4b4b partially implemented:** coordinated-team comparison adapter under the
+     **4b4b implemented:** coordinated-team comparison adapter under the
      same pool. **4b4b1 implemented:** [captured-team review boundary](coordination-team-review.md)
      with case-bound inert question selection, retained original claims, unresolved
      conflicts and cumulative stage-allocation arithmetic.
      **4b4b2 implemented:** [durable original-worker and coordinator-review execution](coordination-team-runner.md)
      through the shared runtime, including sealed stage transitions, cumulative
      budget enforcement and no-replay recovery. The retained result is a prefix;
-     fresh work, reconciliation and a complete team trial remain pending.
-     **4b4b3 planned:** fresh scoped follow-ups, reconciliation and unreviewed
-     comparison export; freeze the complete arm policy before measurement.
+     its pending stages remain visible in historical prefix reports.
+     **4b4b3 implemented:** [fresh scoped follow-ups, reconciliation and unreviewed
+     comparison export](coordination-team-comparison.md), with original/fresh lineage,
+     unresolved conflicts and a complete implementation policy. No paired campaign
+     or semantic acceptance is established by adapter completion.
    - **4c planned:** fixed paired measurement and bound semantic acceptance review.
    - **4d planned:** select a scoped routing rule from the observed comparison.
 

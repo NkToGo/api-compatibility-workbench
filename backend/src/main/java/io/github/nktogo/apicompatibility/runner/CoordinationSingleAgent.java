@@ -137,7 +137,7 @@ public final class CoordinationSingleAgent {
         for (var id : citations) if (!pages.containsKey(id.getAsString()) || !caseId.equals(pages.get(id.getAsString()).get("caseId").getAsString())) return false;
         return true;
     }
-    private static boolean complete(List<JsonObject> pages, String caseId, String alias) {
+    static boolean complete(List<JsonObject> pages, String caseId, String alias) {
         var selected = pages.stream().filter(p -> caseId.equals(p.get("caseId").getAsString()) && alias.equals(p.get("inputId").getAsString()))
                 .sorted(Comparator.comparingInt(p -> p.get("offset").getAsInt())).toList();
         if (selected.isEmpty()) return false; int end = 0, total = selected.get(0).get("totalCharacters").getAsInt();

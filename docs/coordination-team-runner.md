@@ -7,6 +7,11 @@ It uses the Java caller-owned broker, existing case protocols and
 follow-ups, reconcile their answers or export a completed `CoordinationTrial`.
 Its report explicitly leaves those stages and the whole comparison `PENDING`.
 
+The [complete team adapter](coordination-team-comparison.md) reuses this sealed
+prefix inside a newly registered full-policy trial and adds the remaining stages
+in a separate directory. It does not extend old prefix checks into full trials or
+rewrite their partial reports. This page describes the standalone prefix command.
+
 ## Run a bounded stage check
 
 After the normal preparation and build, use an existing captured two-case bundle:

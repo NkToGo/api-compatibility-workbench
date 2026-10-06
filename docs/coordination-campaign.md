@@ -105,8 +105,8 @@ negative integrity/denominator/budget controls, orphan comparison recovery,
 ambiguous recovery and linked-state rejection when the host permits link creation.
 The check creates no trial grant and makes no paid API call. Both CI platforms run it.
 
-Step 4c1 implements registration. Step 4c2 will execute the twelve fresh trials with
-durable slot mappings and inclusive accounting; step 4c3 will bind complete semantic
+Step 4c1 implements registration. The [step 4c2 controller](coordination-campaign-execution.md)
+executes fresh slots with durable mappings and inclusive accounting; step 4c3 will bind complete semantic
 reviews and retain the paired report. Execution and review records belong outside
 the immutable registration directory. Earlier operational checks cannot substitute
 for these trials. Step 4d routing remains contingent on the measured evidence.

@@ -42,7 +42,7 @@ now executes the durable stages and exports unreviewed records under that bounda
 
 ## First campaign design
 
-The initial campaign will investigate the two known curated cases together, using
+The initial campaign investigates the two known curated cases together, using
 three paired repetitions. Each repetition has one two-case bundle for each arm:
 **12 planned bundle trials, covering 24 case outputs**. These are known-case
 measurements, not held-out accuracy estimates. The earlier milestone trials and
@@ -55,7 +55,7 @@ operational demonstrations cannot be retroactively presented as these fresh tria
 | `INDEPENDENT_WORKERS` | Separate adaptive case workers run concurrently, with deterministic aggregation and no exchange of findings or root-agent interpretation. |
 | `COORDINATED_TEAM` | Separate case workers plus bounded coordinator review, host-selected fresh follow-ups and reconciliation when needed. Every stage consumes the same bundle budget; proposals cannot grant execution permissions. |
 
-The proposed common AI ceiling is **60 model-call reservations per bundle**, at
+The registered common AI ceiling is **60 model-call reservations per bundle**, at
 most 64,000 input bytes and 2,048 output tokens per request, and a 20-minute whole
 bundle wall-time limit. This is a complete comparison-run ceiling, separate from
 existing per-session admission deadlines. Coordinator and follow-up calls are
@@ -216,7 +216,8 @@ This was a synthetic empty-record check, not a configuration measurement.
    **4b4b3 implemented:** [scoped fresh work, reconciliation and complete unreviewed export](coordination-team-comparison.md).
 6. **4c1 implemented:** [freeze the actual campaign registration](coordination-campaign.md),
    including all four compiled policies, rubric bytes and twelve ordered trial slots.
-   **4c2 planned:** execute the fixed fresh trials and retain all outcomes.
+   **4c2 implemented:** [execute the fixed fresh slots](coordination-campaign-execution.md)
+   with durable mappings, inclusive accounting and unreviewed outcome retention.
    **4c3 planned:** bind complete semantic reviews and report quality, latency and
    inclusive resource use for all planned trials.
 7. **4d planned:** choose a scoped routing rule only if the evidence supports it;

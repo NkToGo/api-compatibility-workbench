@@ -42,6 +42,9 @@ jobs:
       - name: Verify frozen campaign registration
         shell: pwsh
         run: ./scripts/Test-CoordinationCampaign.ps1
+      - name: Verify ordered campaign execution
+        shell: pwsh
+        run: ./scripts/Test-CoordinationCampaignExecution.ps1
       - name: Build immutable case worker
         if: runner.os == 'Linux'
         shell: pwsh

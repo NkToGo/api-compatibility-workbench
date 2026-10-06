@@ -9,8 +9,10 @@ along with [independent case workers](coordination-independent-workers.md).
 The [captured-team review boundary](coordination-team-review.md) provides its
 strict coordinator protocol and host guards; explicit participant registration is
 still required for that protocol. The [durable team runner](coordination-team-runner.md)
-executes original investigations and coordinator review only; fresh follow-ups,
-reconciliation, complete team export and the measurement campaign remain planned.
+executes original investigations and coordinator review. The
+[complete team adapter](coordination-team-comparison.md) adds fresh follow-ups,
+reconciliation and unreviewed export. The [campaign controller](coordination-campaign-execution.md)
+orders fresh trials and retains measurements; semantic acceptance remains separate.
 This runtime alone establishes no coordination benefit.
 
 ## Capture the same available evidence
@@ -74,7 +76,8 @@ records registration time, input receipt and exact definition/policy. A separate
 hash-bound host grant admits that specification. `start` publishes the whole-bundle
 start and deadline once. It runs before the first model or input-read operation;
 later stages and restarts cannot renew its clock. Common preparation/capture occurs
-before this measured interval. Campaign-wide ordering remains later work.
+before this measured interval. The separate campaign controller now enforces
+campaign-wide ordering.
 
 ## One budget across every stage
 

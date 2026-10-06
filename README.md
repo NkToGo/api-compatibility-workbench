@@ -109,11 +109,15 @@ pool and deadline, with sealed recovery and a retained partial-stage report.
 The [complete captured-team adapter](docs/coordination-team-comparison.md) adds fresh
 case-scoped follow-ups and reconciliation under the same pool and deadline, retaining
 earlier claims and exporting unreviewed final dossiers with inclusive accounting.
-Actual paired measurement and semantic acceptance remain planned.
+Paired semantic acceptance and a routing decision remain planned.
 A [frozen campaign registration](docs/coordination-campaign.md) now binds the four
 compiled policies, captured inputs, rubric, shared limits and all twelve ordered
 trial slots before measurement. It registers comparison metadata without dispatching
 participants or establishing finding quality.
+An [ordered campaign controller](docs/coordination-campaign-execution.md) now maps
+each fixed slot to one recoverable trial, validates inclusive participant accounting
+and seals all operational records without choosing retries or renewing deadlines.
+Claim-level semantic acceptance remains separate.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

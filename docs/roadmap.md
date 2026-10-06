@@ -160,8 +160,8 @@ provider families and automatic repair-feedback loops remain outside its scope.
    configurations, then route workloads according to observed benefit.
    - **4a implemented:** [frozen comparison contract and offline evaluator](coordination-comparison.md)
      with all planned paired slots, separate semantic review, inclusive usage,
-     immutable reports and unresolved missing/ambiguous records. No fresh campaign
-     has run and no routing conclusion is established.
+     immutable reports and unresolved missing/ambiguous records. Registration and
+     evaluator implementation establish no routing conclusion.
    - **4b implemented on one trusted host:** arm adapters with shared inputs and end-to-end budgets.
      **4b1 implemented on one trusted host:** [common captured inputs and trial runtime](coordination-runtime.md)
      with policy-bound registration, whole-trial deadlines, shared durable call
@@ -192,8 +192,9 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4c1 implemented:** [frozen campaign registration](coordination-campaign.md)
      with four compiled policies, the exact rubric/input snapshots, common limits,
      all twelve ordered slots, sealed metadata and explicit interruption recovery.
-     **4c2 planned:** execute the twelve fresh trials with retained mappings and
-     inclusive accounting. **4c3 planned:** bind complete claim-level semantic
+     **4c2 implemented:** [ordered fresh-trial execution](coordination-campaign-execution.md)
+     with retained mappings, no-replay recovery, inclusive participant accounting
+     and sealed unreviewed records. **4c3 planned:** bind complete claim-level semantic
      reviews and report the paired outcomes. Registration establishes no measured
      quality or coordination benefit.
    - **4d planned:** select a scoped routing rule from the observed comparison.

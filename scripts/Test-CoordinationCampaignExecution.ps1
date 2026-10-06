@@ -4,7 +4,8 @@ param()
 $ErrorActionPreference='Stop'
 $taskRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $taskTestRoot=Join-Path $taskRoot ('backend/target/campaign-execution-tests/'+[guid]::NewGuid().ToString('N'))
-$taskState=Join-Path $taskTestRoot 'state'; [void][IO.Directory]::CreateDirectory($taskState)
+$taskState=Join-Path $taskTestRoot '.workbench'; [void][IO.Directory]::CreateDirectory($taskState)
+if ($IsWindows) { [IO.File]::SetAttributes($taskState,([IO.File]::GetAttributes($taskState) -bor [IO.FileAttributes]::Hidden)) }
 function Test-Write([string]$Path,$Value) { [IO.File]::WriteAllText($Path,(ConvertTo-Json -InputObject $Value -Depth 80).Replace("`r`n","`n"),[Text.UTF8Encoding]::new($false)) }
 function Test-Hash([string]$Path) { return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
 function Test-Fixture {
@@ -115,7 +116,7 @@ try {
     $originalDriver=$ceDriver; $changedDriver=Join-Path $taskTestRoot 'changed-driver.ps1'; [IO.File]::WriteAllText($changedDriver,([IO.File]::ReadAllText($originalDriver)+' ')); $ceDriver=$changedDriver
     try { Test-Reject 'changed driver bytes refuse unfinished dispatch' {Test-Run} 'driver changed'; Test-Pass 'changed driver creates no extra registration' ($taskRegistrations -eq $registrations) } finally { $ceDriver=$originalDriver }
     $extra=Join-Path $ceExecution 'slots/02-mapping.json.pending'; [IO.File]::WriteAllText($extra,'incomplete publication'); Test-Reject 'pending publication blocks admission' {Test-Run} 'incomplete slot'; Remove-Item -LiteralPath $extra
-    $extra=Join-Path $ceExecution '.hidden'; [IO.File]::WriteAllText($extra,'unexpected'); Test-Reject 'hidden execution artifact rejected' {Test-Run} 'Unexpected or incomplete'; Remove-Item -LiteralPath $extra
+    $extra=Join-Path $ceExecution '.hidden'; [IO.File]::WriteAllText($extra,'unexpected'); Test-Reject 'hidden execution artifact rejected' {Test-Run} 'Unexpected or incomplete'; Remove-Item -LiteralPath $extra -Force
     $extra=Join-Path $ceExecution 'slots/03-intent.json'; [IO.File]::Copy((Join-Path $ceExecution 'slots/01-intent.json'),$extra); $Action='read'; Test-Reject 'future slot cannot bypass an unfinished predecessor' {Test-Run} 'later slot'; Remove-Item -LiteralPath $extra
     $lease=[IO.File]::Open((Join-Path $ceExecution 'owner.lock'),[IO.FileMode]::Open,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
     try { Test-Reject 'concurrent controller owner refused' {Test-Run} } finally { $lease.Dispose() }

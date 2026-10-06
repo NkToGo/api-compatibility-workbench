@@ -4,9 +4,10 @@ param()
 $ErrorActionPreference='Stop'
 $taskRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $taskTestRoot=Join-Path $taskRoot ('backend/target/coordination-campaign-tests/'+[guid]::NewGuid().ToString('N'))
-$taskState=Join-Path $taskTestRoot 'state'
+$taskState=Join-Path $taskTestRoot '.workbench'
 $taskCommand=Join-Path $PSScriptRoot 'Coordination-Campaign.ps1'
 [void][IO.Directory]::CreateDirectory($taskState)
+if ($IsWindows) { [IO.File]::SetAttributes($taskState,([IO.File]::GetAttributes($taskState) -bor [IO.FileAttributes]::Hidden)) }
 function Hash([string]$Path) { return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
 function Write-Json([string]$Path,$Value) { [IO.File]::WriteAllText($Path,(ConvertTo-Json -InputObject $Value -Depth 60).Replace("`r`n","`n"),[Text.UTF8Encoding]::new($false)) }
 function Fixture {

@@ -21,12 +21,12 @@ $taskArtifacts = @('plan.json','rubric.json','order.json','inputs-manifest.json'
 function Require([bool]$Condition,[string]$Message) { if (-not $Condition) { throw $Message } }
 function Safe-Path([string]$Path) {
     for ($cursor=[IO.Path]::GetFullPath($Path); $cursor; $cursor=[IO.Path]::GetDirectoryName($cursor)) {
-        if (Test-Path -LiteralPath $cursor) { Require (-not ((Get-Item -LiteralPath $cursor).Attributes -band [IO.FileAttributes]::ReparsePoint)) 'Linked campaign paths are unsupported.' }
+        if (Test-Path -LiteralPath $cursor) { Require (-not ((Get-Item -LiteralPath $cursor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) 'Linked campaign paths are unsupported.' }
     }
 }
 function Bytes([string]$Path) {
     Safe-Path $Path
-    $item=Get-Item -LiteralPath $Path
+    $item=Get-Item -LiteralPath $Path -Force
     Require (-not $item.PSIsContainer -and $item.Length -le 1048576) 'Missing or oversized campaign artifact.'
     return ,[IO.File]::ReadAllBytes($item.FullName)
 }

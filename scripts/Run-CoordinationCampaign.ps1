@@ -20,11 +20,11 @@ $ceAdapters=[ordered]@{
 function CE-Require([bool]$Condition,[string]$Message) { if (-not $Condition) { throw $Message } }
 function CE-Safe([string]$Path) {
     for ($cursor=[IO.Path]::GetFullPath($Path);$cursor;$cursor=[IO.Path]::GetDirectoryName($cursor)) {
-        if (Test-Path -LiteralPath $cursor) { CE-Require (-not ((Get-Item -LiteralPath $cursor).Attributes -band [IO.FileAttributes]::ReparsePoint)) 'Linked campaign execution paths are unsupported.' }
+        if (Test-Path -LiteralPath $cursor) { CE-Require (-not ((Get-Item -LiteralPath $cursor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) 'Linked campaign execution paths are unsupported.' }
     }
 }
 function CE-Bytes([string]$Path) {
-    CE-Safe $Path; $item=Get-Item -LiteralPath $Path
+    CE-Safe $Path; $item=Get-Item -LiteralPath $Path -Force
     CE-Require (-not $item.PSIsContainer -and $item.Length -le 8388608) 'Missing or oversized execution artifact.'
     return ,[IO.File]::ReadAllBytes($Path)
 }

@@ -38,6 +38,8 @@ State defaults to ignored `.workbench/`, with `-StateDirectory` available. Execu
 metadata lives under `coordination-campaign-executions/campaign-UUID/`, outside the
 immutable registration. Preserve the registration, captured inputs, comparison
 definition, execution metadata, runtime trials and arm stores together.
+Hidden state directories are supported on Windows and Linux. Metadata inspection
+includes hidden entries; unexpected files and linked paths remain rejected.
 
 ## Durable ordering and recovery
 

@@ -194,9 +194,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      all twelve ordered slots, sealed metadata and explicit interruption recovery.
      **4c2 implemented:** [ordered fresh-trial execution](coordination-campaign-execution.md)
      with retained mappings, no-replay recovery, inclusive participant accounting
-     and sealed unreviewed records. **4c3 planned:** bind complete claim-level semantic
-     reviews and report the paired outcomes. Registration establishes no measured
-     quality or coordination benefit.
+     and sealed unreviewed records. **4c3a implemented:** [sealed review-input inventories](coordination-review-packets.md)
+     for every final dossier and all original/fresh team lineage, preserving conflicts
+     and uncited claims. **4c3b planned:** complete and validate bound claim-level
+     semantic reviews. **4c3c planned:** report the paired outcomes. Review inventories
+     establish no measured quality or coordination benefit.
    - **4d planned:** select a scoped routing rule from the observed comparison.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

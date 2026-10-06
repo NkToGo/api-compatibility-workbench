@@ -117,7 +117,10 @@ participants or establishing finding quality.
 An [ordered campaign controller](docs/coordination-campaign-execution.md) now maps
 each fixed slot to one recoverable trial, validates inclusive participant accounting
 and seals all operational records without choosing retries or renewing deadlines.
-Claim-level semantic acceptance remains separate.
+Separate [sealed review-input inventories](docs/coordination-review-packets.md)
+now bind every final dossier, original/fresh team claim and captured evidence,
+keeping uncited claims and conflicts available. Claim-level semantic acceptance
+remains separate.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

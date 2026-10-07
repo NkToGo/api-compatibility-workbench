@@ -196,9 +196,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      with retained mappings, no-replay recovery, inclusive participant accounting
      and sealed unreviewed records. **4c3a implemented:** [sealed review-input inventories](coordination-review-packets.md)
      for every final dossier and all original/fresh team lineage, preserving conflicts
-     and uncited claims. **4c3b planned:** complete and validate bound claim-level
-     semantic reviews. **4c3c planned:** report the paired outcomes. Review inventories
-     establish no measured quality or coordination benefit.
+     and uncited claims. **4c3b implemented:** [bound claim-level semantic reviews](coordination-semantic-review.md)
+     of all 24 outputs under the unchanged rubric, preserving unsupported earlier
+     claims, unresolved assertions and incomplete criteria. **4c3c planned:** report
+     the paired outcomes and preserve unresolved claim gates in exported metadata.
+     Review inventories alone establish no quality or coordination benefit.
    - **4d planned:** select a scoped routing rule from the observed comparison.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

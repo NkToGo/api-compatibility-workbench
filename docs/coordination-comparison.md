@@ -189,8 +189,10 @@ The command does not follow trace/review digest references to retrieve or verify
 their contents. `SUPPLIED_RECORDS` is a declared origin, not verified live execution.
 The [campaign controller](coordination-campaign-execution.md) now exports sealed
 unreviewed operational records. [Review-input inventories](coordination-review-packets.md)
-bind the actual dossiers, all team lineage and source evidence. Completed claim-level
-judgments and their binding into the paired report remain pending.
+bind the actual dossiers, all team lineage and source evidence. A separate
+[semantic review](coordination-semantic-review.md) now records bound claim and criterion
+judgments for the frozen campaign. Binding those judgments into the paired report
+remains pending, including explicit gates for unresolved material claims.
 
 ## Validation scope and remaining steps
 
@@ -221,7 +223,7 @@ This was a synthetic empty-record check, not a configuration measurement.
    **4c2 implemented:** [execute the fixed fresh slots](coordination-campaign-execution.md)
    with durable mappings, inclusive accounting and unreviewed outcome retention.
    **4c3a implemented:** [sealed review-input inventories](coordination-review-packets.md).
-   **4c3b planned:** complete and validate bound semantic reviews.
+   **4c3b implemented:** [complete and validate bound semantic reviews](coordination-semantic-review.md).
    **4c3c planned:** report quality, latency and inclusive resource use for all planned trials.
 7. **4d planned:** choose a scoped routing rule only if the evidence supports it;
    otherwise preserve the simpler configuration and the explicit uncertainty.

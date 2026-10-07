@@ -119,8 +119,10 @@ each fixed slot to one recoverable trial, validates inclusive participant accoun
 and seals all operational records without choosing retries or renewing deadlines.
 Separate [sealed review-input inventories](docs/coordination-review-packets.md)
 now bind every final dossier, original/fresh team claim and captured evidence,
-keeping uncited claims and conflicts available. Claim-level semantic acceptance
-remains separate.
+keeping uncited claims and conflicts available. A separate
+[claim-level semantic review](docs/coordination-semantic-review.md) now judges the
+frozen campaign against its unchanged rubric, preserving incomplete criteria and
+unsupported or unresolved assertions. The paired quality/resource report remains pending.
 
 There is no hosted web application or general migration runner yet. Coordination measurement,
 broader provider adapters, distributed workflows and repair publication are

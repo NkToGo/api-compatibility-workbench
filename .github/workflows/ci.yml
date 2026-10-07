@@ -48,6 +48,9 @@ jobs:
       - name: Verify coordination review input binding
         shell: pwsh
         run: ./scripts/Test-CoordinationReviewPacket.ps1
+      - name: Verify coordination semantic review binding and gates
+        shell: pwsh
+        run: ./scripts/Test-CoordinationSemanticReview.ps1
       - name: Build immutable case worker
         if: runner.os == 'Linux'
         shell: pwsh

@@ -102,3 +102,6 @@ validation. It checks complete denominators, diagnostic scope, original/fresh an
 uncited lineage, conflicts, immutable replay, byte changes, missing seals and
 pending-write recovery, linked/escaped paths and size limits. CI runs it on Windows
 and Linux. These controls verify the review boundary; they do not grade answers.
+
+The subsequent [semantic review](coordination-semantic-review.md) records claim
+and criterion judgments separately, without changing this packet or its sources.

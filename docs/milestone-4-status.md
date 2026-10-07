@@ -28,7 +28,8 @@ Before closing the milestone or promoting automatic team routing:
 1. Define a separately identified migration workload with an actual shared
    consumer assumption and declared joint acceptance criteria. Select it for a
    real maintainer need; do not construct the grading criteria to favor a team.
-2. Establish independently held expected behavior and complete diagnostics, then
+2. Establish independently held expected behavior and complete baseline test
+   evidence, then
    freeze case rights/provenance, source/configuration/evidence identities, review
    method, final selection, simpler baselines, budgets and ordered trial slots.
    Any new model, prompt or implementation is a new condition, not a repair of
@@ -44,3 +45,28 @@ The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider
 support, live repository inventory, publication authorization and external product
 use still require their separately planned implementation and validation.
+
+## Selected acceptance workload
+
+The [invoice subscription identity contract](../cases/stripe-invoice-subscription-2025-03-31/README.md)
+defines two planned Java/Maven consumers: a webhook path and a reconciliation job
+that share a paid-renewal ledger. It pins the historical Acacia-to-Basil association
+change, exact SDK/source references and source rights. Its business oracle covers
+mixed versions, standalone invoices, multiple subscriptions, duplicates, conflicts
+and blocked states before candidate implementation.
+
+The provider change and upstream association use are documented facts. The
+two-consumer topology, synthetic fixtures and ledger policy are authored; there is
+no extracted production deployment or external business-owner approval. The oracle
+is held independently from candidate code, not externally adjudicated.
+
+Step 4e1 establishes a versioned selection/rights/oracle contract only. Fixture,
+consumer, protected-harness/runtime and campaign identities remain pending.
+Complete baseline test evidence means a verified independent oracle and observed
+executions, not a pre-written accepted deterministic answer. Step 4e2a implements
+the fixture and pure oracle/ledger boundary next; consumer execution follows as a
+separate step. The four arms and joint review must share the same aggregate evidence
+and whole-bundle limits. Team communication is not an acceptance requirement.
+
+No new participant run, measured result, routing promotion or Milestone 4 acceptance
+is established by workload selection.

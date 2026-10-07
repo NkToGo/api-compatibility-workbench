@@ -55,6 +55,13 @@ prefers initial diagnostics with mandatory review when supplied conditions match
 Useful-coordination acceptance remains open; the repository-to-PR workflow remains planned.
 Agent assertions cannot become test results merely because they conform to a schema.
 
+A separately identified [invoice identity workload](../cases/stripe-invoice-subscription-2025-03-31/README.md)
+defines a shared paid-renewal policy for planned webhook and reconciliation consumers.
+Its schema change is grounded in provider and Java sample sources; the topology
+and business oracle are authored. This is a contract, not an executable case or a
+measured team advantage. Joint effects and supported conclusions must be compared
+against all simpler arms before useful-coordination acceptance can be claimed.
+
 ## Current and planned system boundaries
 
 The current host controller owns local registration, scoped execution permissions,

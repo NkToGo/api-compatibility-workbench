@@ -1,0 +1,20 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "contractRevision": "paid-renewal-v1",
+  "status": "CONTRACT_ONLY",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "172559694f4cf50a9ae78d7ca3e47b4e388db2aed70d788ba2843939c2178b19"
+    },
+    {
+      "path": "business-oracle.md",
+      "sha256": "1717390d5b9ca1e4902aaa93303c902f9f3462a9fb87463cace31aea41dff515"
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "2e1be9cd1df971a025993af262dd5328c6b8532276291e87fe225d76bb2416c6"
+    }
+  ]
+}

@@ -205,10 +205,18 @@ provider families and automatic repair-feedback loops remain outside its scope.
    - **4d implemented:** [scoped diagnostics-first routing](coordination-routing.md)
      for matching supplied conditions, with mandatory review, out-of-scope rejection,
      preserved uncertainty and no automatic adaptive escalation or execution grant.
-   - **4e planned:** define and freeze a separately identified acceptance workload
-     with a real shared consumer assumption and independent expected behavior.
-     Preserve simpler baselines and unchanged historical evidence; do not select
-     workloads or grading criteria to guarantee a coordination winner.
+   - **4e in progress:** separately identified acceptance work, preserving simpler
+     baselines and unchanged historical evidence. **4e1 defined:**
+     [invoice subscription identity across webhook/reconciliation consumers](../cases/stripe-invoice-subscription-2025-03-31/README.md),
+     with primary-source provenance, rights and an authored business oracle held
+     independently from future candidate implementations. No executable new case
+     or coordination benefit exists yet. **4e2a planned next:** synthetic fixtures
+     and protected pure oracle/ledger checks. **4e2b planned:** versioned Java
+     consumers and baseline/target execution. **4e3 planned:** joint captured
+     evidence, comparison adapters and quality review, split into reviewable changes.
+     **4e4 planned:** separately freeze/execute ordered paired trials and complete
+     bound semantic review/reporting. Do not select workloads or criteria to
+     guarantee a team winner; do not promote routing without reviewed benefit.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

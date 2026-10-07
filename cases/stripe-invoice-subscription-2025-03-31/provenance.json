@@ -1,0 +1,218 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "reviewedOn": "2026-10-07",
+  "status": "CONTRACT_ONLY",
+  "workloadOrigin": "authored-reference-topology",
+  "fixtureOrigin": "planned-authored-synthetic",
+  "authoredMaterialLicense": "Apache-2.0 (repository LICENSE)",
+  "rightsBoundary": "Only original contract text and source metadata are distributed. Public availability is not a general redistribution grant. Upstream code and binaries require their actual licenses; provider documentation is referenced and paraphrased, not copied. No customer data or live account action is included.",
+  "referenceBoundary": "The Stripe sample documents association use. Neither its 20.48.0/31.2.0 revisions nor its provisioning comments are this case baseline, target or production services.",
+  "sdkPins": [
+    {
+      "version": "28.4.0",
+      "apiVersion": "2025-02-24.acacia",
+      "commit": "1cf6c5b2e64027f0a9847b512b97a0f990913f54",
+      "annotatedTagObject": "4543f04c332f2be251fcf1b19cf217b3e61f12b2",
+      "tag": "v28.4.0"
+    },
+    {
+      "version": "29.0.0",
+      "apiVersion": "2025-03-31.basil",
+      "commit": "5dab4c6fa3466646ab0da613673042dff0d291d4",
+      "annotatedTagObject": "5ff919d0676b052a66730d9f45ac0a3e866f67d3",
+      "tag": "v29.0.0"
+    }
+  ],
+  "sources": [
+    {
+      "id": "provider-parent-change",
+      "kind": "provider-documentation",
+      "url": "https://docs.stripe.com/changelog/basil/2025-03-31/adds-new-parent-field-to-invoicing-objects.md",
+      "sha256": "c7f9b9d1b0d4184d8c6384dfb3bd1f2b2c5d33e1fd26fe752ba7036087005051",
+      "license": "No redistribution permission assumed",
+      "redistributed": false,
+      "purpose": "Historical invoice association change; no business policy or execution proof."
+    },
+    {
+      "id": "webhook-delivery",
+      "kind": "provider-documentation",
+      "url": "https://docs.stripe.com/webhooks.md",
+      "sha256": "a14d199b5d307b09120d94573557c67970f2160238bb5f532a1a5132c5abb9ad",
+      "license": "No redistribution permission assumed",
+      "redistributed": false,
+      "purpose": "Duplicates, unordered delivery, immutable event representation and signature boundary."
+    },
+    {
+      "id": "webhook-upgrade",
+      "kind": "provider-documentation",
+      "url": "https://docs.stripe.com/webhooks/versioning.md",
+      "sha256": "18b0785aec8ca952a75c0265df37123f7add473dbb1b644ec538f825ca939e9f",
+      "license": "No redistribution permission assumed",
+      "redistributed": false,
+      "purpose": "Webhook endpoint versions and static SDK rollout; not an account configuration receipt."
+    },
+    {
+      "id": "subscription-access",
+      "kind": "provider-documentation",
+      "url": "https://docs.stripe.com/billing/subscriptions/webhooks.md",
+      "sha256": "6976e1fcfc50f270c3741c3c0b5361f4b07cbfee1a1345a26925cfe832fa97bf",
+      "license": "No redistribution permission assumed",
+      "redistributed": false,
+      "purpose": "Motivates paid-invoice and active-subscription checks; the selected ledger policy is authored."
+    },
+    {
+      "id": "sample-old-consumer",
+      "kind": "upstream-reference-only",
+      "url": "https://raw.githubusercontent.com/stripe-samples/subscription-use-cases/eeb773742e7bec3b8f6dd278abefb612e6e55a0a/fixed-price-subscriptions/server/java/src/main/java/com/stripe/sample/Server.java",
+      "sha256": "91f2cf2b36baf01a2c3ed461061006d8e2b8049118fa111922a1f7cfa97afc46",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Invoice association use, lines 387-406; no extracted consumer or joint topology claim.",
+      "revision": "eeb773742e7bec3b8f6dd278abefb612e6e55a0a"
+    },
+    {
+      "id": "sample-old-pom",
+      "kind": "upstream-build-reference-only",
+      "url": "https://raw.githubusercontent.com/stripe-samples/subscription-use-cases/eeb773742e7bec3b8f6dd278abefb612e6e55a0a/fixed-price-subscriptions/server/java/pom.xml",
+      "sha256": "af69f632c54d632a8b87cc7eead89d95144529c75cc996c5f316a086cc3f4f17",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Pins sample SDK 20.48.0; this is not the case SDK.",
+      "revision": "eeb773742e7bec3b8f6dd278abefb612e6e55a0a"
+    },
+    {
+      "id": "sample-reference-consumer",
+      "kind": "upstream-reference-only",
+      "url": "https://raw.githubusercontent.com/stripe-samples/subscription-use-cases/fb6e9d4a01bcbaea17eb3ad686e0e97e79f1def2/fixed-price-subscriptions/server/java/src/main/java/com/stripe/sample/Server.java",
+      "sha256": "e635793870b5b011939548948c65f89ced2035552f333812830af44685dda39a",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Invoice association use, lines 400-419; no extracted consumer or joint topology claim.",
+      "revision": "fb6e9d4a01bcbaea17eb3ad686e0e97e79f1def2"
+    },
+    {
+      "id": "sample-reference-pom",
+      "kind": "upstream-build-reference-only",
+      "url": "https://raw.githubusercontent.com/stripe-samples/subscription-use-cases/fb6e9d4a01bcbaea17eb3ad686e0e97e79f1def2/fixed-price-subscriptions/server/java/pom.xml",
+      "sha256": "6fdb359e44c2efc1288e75c261ad78023f2cfe319ce523f3472f723834c8564c",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Pins sample SDK 31.2.0; this is not the case SDK.",
+      "revision": "fb6e9d4a01bcbaea17eb3ad686e0e97e79f1def2"
+    },
+    {
+      "id": "sample-license",
+      "kind": "license",
+      "url": "https://raw.githubusercontent.com/stripe-samples/subscription-use-cases/fb6e9d4a01bcbaea17eb3ad686e0e97e79f1def2/LICENSE",
+      "sha256": "2f809d8e6b204659175cbd4ade8439e273ae921556c4b5c2f39c265a67a726b2",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Copyright 2020 Stripe, Inc.; same license bytes verified at both sample revisions. Future copied portions must retain this notice and license.",
+      "revision": "fb6e9d4a01bcbaea17eb3ad686e0e97e79f1def2"
+    },
+    {
+      "id": "28.4.0-ApiVersion.java",
+      "kind": "sdk-source-reference",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/1cf6c5b2e64027f0a9847b512b97a0f990913f54/src/main/java/com/stripe/ApiVersion.java",
+      "sha256": "cfbe989dbb7a94710ef2e821362987efe8b96742c387b0411f17a097fdff7ab3",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Generated API version identity.",
+      "revision": "1cf6c5b2e64027f0a9847b512b97a0f990913f54"
+    },
+    {
+      "id": "28.4.0-Invoice.java",
+      "kind": "sdk-source-reference",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/1cf6c5b2e64027f0a9847b512b97a0f990913f54/src/main/java/com/stripe/model/Invoice.java",
+      "sha256": "b4161adfd5eae14e08fab50c149bd3e38455241ebc4392fd24f8d17a98fcb560",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Invoice association fields and expandable identity accessors.",
+      "revision": "1cf6c5b2e64027f0a9847b512b97a0f990913f54"
+    },
+    {
+      "id": "28.4.0-EventDataObjectDeserializer.java",
+      "kind": "sdk-source-reference",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/1cf6c5b2e64027f0a9847b512b97a0f990913f54/src/main/java/com/stripe/model/EventDataObjectDeserializer.java",
+      "sha256": "4db0aae35f97bf35762d055d9da0b149ed0921a9070372da73246821a29c5d9c",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Safe object access blocks incompatible release trains; unsafe access is not compatibility proof.",
+      "revision": "1cf6c5b2e64027f0a9847b512b97a0f990913f54"
+    },
+    {
+      "id": "29.0.0-ApiVersion.java",
+      "kind": "sdk-source-reference",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/5dab4c6fa3466646ab0da613673042dff0d291d4/src/main/java/com/stripe/ApiVersion.java",
+      "sha256": "ea457ee682fddc75d389b39edd261e3a9a77a25ccdfa2340456e35e326ee7a6b",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Generated API version identity.",
+      "revision": "5dab4c6fa3466646ab0da613673042dff0d291d4"
+    },
+    {
+      "id": "29.0.0-Invoice.java",
+      "kind": "sdk-source-reference",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/5dab4c6fa3466646ab0da613673042dff0d291d4/src/main/java/com/stripe/model/Invoice.java",
+      "sha256": "4cdcdeae51d9fc0aafa39ccb3da2c40da954bcdcbee850be13cb7b4832342700",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Invoice association fields and expandable identity accessors.",
+      "revision": "5dab4c6fa3466646ab0da613673042dff0d291d4"
+    },
+    {
+      "id": "29.0.0-EventDataObjectDeserializer.java",
+      "kind": "sdk-source-reference",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/5dab4c6fa3466646ab0da613673042dff0d291d4/src/main/java/com/stripe/model/EventDataObjectDeserializer.java",
+      "sha256": "4db0aae35f97bf35762d055d9da0b149ed0921a9070372da73246821a29c5d9c",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Safe object access blocks incompatible release trains; unsafe access is not compatibility proof.",
+      "revision": "5dab4c6fa3466646ab0da613673042dff0d291d4"
+    },
+    {
+      "id": "sdk-license",
+      "kind": "license",
+      "url": "https://raw.githubusercontent.com/stripe/stripe-java/5dab4c6fa3466646ab0da613673042dff0d291d4/LICENSE",
+      "sha256": "60b67f69eb24e3ccc8cd93ceca47856b597e1f815a29f2a83d8f3b3270d817ee",
+      "license": "MIT",
+      "redistributed": false,
+      "purpose": "Same license bytes verified at both SDK revisions. Future copied portions must retain the Stripe copyright and MIT permission notice.",
+      "revision": "5dab4c6fa3466646ab0da613673042dff0d291d4"
+    }
+  ],
+  "plannedExecutionArtifacts": [
+    {
+      "coordinate": "com.stripe:stripe-java:28.4.0:jar",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/28.4.0/stripe-java-28.4.0.jar",
+      "sha256": "ebb50a10d79193e6c8d6654165b7f8ade6c98c6e700941adcb5b5eaeac2972a8",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:28.4.0:pom",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/28.4.0/stripe-java-28.4.0.pom",
+      "sha256": "0eac0968b1583a121a187b5324e9ada4bed9e92a69c8ef464824b8f150dd41d5",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:29.0.0:jar",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/29.0.0/stripe-java-29.0.0.jar",
+      "sha256": "ca9d241359567b175c97e428deb4db9aba15fd12e6589d4f05ca9444af07aae0",
+      "redistributed": false
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:29.0.0:pom",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/29.0.0/stripe-java-29.0.0.pom",
+      "sha256": "d133195e6e93bb087e3a8e55fc5bb5857ffd4203f7255c4a819ca054ebbdaf29",
+      "redistributed": false
+    }
+  ],
+  "remainingPins": [
+    "Consumer source and build dependency closure",
+    "All synthetic fixture bytes and initial state",
+    "Protected harness and runtime/image identities",
+    "Per-consumer version and non-secret configuration",
+    "Disclosure/review policies, arm implementations and ordered campaign"
+  ]
+}

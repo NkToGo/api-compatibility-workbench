@@ -132,6 +132,11 @@ Changed conditions have no automatic route. The command is read-only and grants
 no execution or migration approval. [Milestone 4 acceptance](docs/milestone-4-status.md)
 remains open because useful coordination has not been established by this comparison.
 
+A separate [invoice subscription identity workload](cases/stripe-invoice-subscription-2025-03-31/README.md)
+now defines source rights, primary-source provenance and an authored joint business
+oracle for webhook and reconciliation consumers. It is contract only: new consumer
+execution, joint comparison and coordination benefit remain unimplemented/unmeasured.
+
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is

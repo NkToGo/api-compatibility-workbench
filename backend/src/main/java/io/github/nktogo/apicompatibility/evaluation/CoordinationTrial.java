@@ -28,10 +28,17 @@ public record CoordinationTrial(Slot slot, String runId, ContentDigest definitio
         }
     }
     public record Review(ContentDigest outputIdentity, ContentDigest reviewIdentity, boolean claimAuditComplete,
-                         int materialUnsupportedClaims, Map<String, Judgment> judgments) {
+                         int materialUnsupportedClaims, Integer materialUnresolvedClaims, Map<String, Judgment> judgments) {
+        /** Legacy metadata did not record unresolved claims; absence is not a declared zero. */
+        public Review(ContentDigest outputIdentity, ContentDigest reviewIdentity, boolean claimAuditComplete,
+                      int materialUnsupportedClaims, Map<String, Judgment> judgments) {
+            this(outputIdentity, reviewIdentity, claimAuditComplete, materialUnsupportedClaims, null, judgments);
+        }
         public Review {
             Objects.requireNonNull(outputIdentity); Objects.requireNonNull(reviewIdentity);
             require(materialUnsupportedClaims >= 0 && materialUnsupportedClaims <= 100000, "Invalid claim review count");
+            require(materialUnresolvedClaims == null || materialUnresolvedClaims >= 0 && materialUnresolvedClaims <= 100000,
+                    "Invalid unresolved claim review count");
             var values = new TreeMap<String, Judgment>(judgments); values.keySet().forEach(CoordinationExperiment::id);
             require(values.size() <= 32 && !values.containsValue(null), "Invalid criterion review"); judgments = Collections.unmodifiableMap(values);
         }

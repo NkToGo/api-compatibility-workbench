@@ -51,6 +51,9 @@ jobs:
       - name: Verify coordination semantic review binding and gates
         shell: pwsh
         run: ./scripts/Test-CoordinationSemanticReview.ps1
+      - name: Verify bound reviewed-record export and recovery
+        shell: pwsh
+        run: ./scripts/Test-CoordinationReviewedRecords.ps1
       - name: Build immutable case worker
         if: runner.os == 'Linux'
         shell: pwsh

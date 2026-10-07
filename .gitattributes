@@ -7,5 +7,7 @@
 *.properties text eol=lf
 *.ps1 text eol=lf
 cases/** text eol=lf
+backend/src/test/resources/coordination-v1-reviewed/*.json text eol=lf
+docs/evaluations/*.json text eol=lf
 mvnw text eol=lf
 mvnw.cmd text eol=crlf

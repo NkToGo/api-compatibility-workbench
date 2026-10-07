@@ -15,7 +15,7 @@ class CoordinationComparisonTest {
     private static CaseOutput answer(CaseTask task) {
         var judgments = new TreeMap<String, Judgment>(); task.criteria().forEach(c -> judgments.put(c, Judgment.SATISFIED));
         return new CaseOutput(task.caseId(), task.inputIdentity(), task.expectedResponse() == ExpectedResponse.ANSWER ? Response.ANSWERED : Response.ABSTAINED,
-                digest('a'), new Review(digest('a'), digest('b'), true, 0, judgments));
+                digest('a'), new Review(digest('a'), digest('b'), true, 0, 0, judgments));
     }
     private static CoordinationTrial trial(Definition plan, int repetition, Arm arm) {
         return new CoordinationTrial(new Slot(plan.workloads().getFirst().workloadId(), repetition, arm), "run-" + arm.ordinal() + "-" + repetition,
@@ -31,7 +31,7 @@ class CoordinationComparisonTest {
     private static CoordinationComparison.Assessment changed(CoordinationTrial trial) { var records = all(PLAN); records.set(3, trial); return CoordinationComparison.evaluate(PLAN, records); }
     private static CoordinationComparison.Row changedRow(CoordinationTrial trial) { return changed(trial).rows().get(3); }
     private static CaseOutput reviewed(CaseOutput c, boolean audit, int unsupported, Map<String, Judgment> judgments) {
-        return new CaseOutput(c.caseId(), c.inputIdentity(), c.response(), c.outputIdentity(), new Review(c.outputIdentity(), digest('b'), audit, unsupported, judgments));
+        return new CaseOutput(c.caseId(), c.inputIdentity(), c.response(), c.outputIdentity(), new Review(c.outputIdentity(), digest('b'), audit, unsupported, 0, judgments));
     }
     @Test void emptyMeasurementRetainsAllPlannedSlotsWithoutAWinningArm() {
         var assessment = CoordinationComparison.evaluate(PLAN, List.of());
@@ -59,12 +59,35 @@ class CoordinationComparisonTest {
     }
     @Test void pendingAuditMissingCriteriaAndUnresolvedJudgmentsCannotEarnFullCredit() {
         var t = trial(PLAN, 1, Arm.COORDINATED_TEAM); var c = t.cases().getFirst(); var judgments = new TreeMap<>(c.review().judgments());
-        for (Review review : List.of(new Review(c.outputIdentity(), digest('b'), false, 0, judgments),
-                new Review(c.outputIdentity(), digest('b'), true, 0, Map.of()),
-                new Review(c.outputIdentity(), digest('b'), true, 0, Map.of(PLAN.workloads().getFirst().cases().getFirst().criteria().getFirst(), Judgment.UNRESOLVED)))) {
+        for (Review review : List.of(new Review(c.outputIdentity(), digest('b'), false, 0, 0, judgments),
+                new Review(c.outputIdentity(), digest('b'), true, 0, 0, Map.of()),
+                new Review(c.outputIdentity(), digest('b'), true, 0, 0, Map.of(PLAN.workloads().getFirst().cases().getFirst().criteria().getFirst(), Judgment.UNRESOLVED)))) {
             var cases = new ArrayList<>(t.cases()); cases.set(0, new CaseOutput(c.caseId(), c.inputIdentity(), c.response(), c.outputIdentity(), review));
             var row = changedRow(replace(t, cases, t.status(), t.usage(), 100)); assertFalse(row.comparable()); assertFalse(row.acceptedBundle()); assertEquals(1, row.acceptedCases());
         }
+    }
+    @Test void unresolvedMaterialClaimBlocksAcceptanceAndPairingButPreservesKnownCasesUsageAndCriteria() {
+        var t = trial(PLAN, 1, Arm.COORDINATED_TEAM); var c = t.cases().getFirst(); var cases = new ArrayList<>(t.cases());
+        cases.set(0, new CaseOutput(c.caseId(), c.inputIdentity(), c.response(), c.outputIdentity(),
+                new Review(c.outputIdentity(), digest('b'), true, 0, 1, c.review().judgments())));
+        var assessment = changed(replace(t, cases, t.status(), t.usage(), 100)); var row = assessment.rows().get(3);
+        assertFalse(row.comparable()); assertFalse(row.acceptedBundle()); assertEquals(1, row.acceptedCases());
+        var uncertain = row.cases().getFirst(); assertFalse(uncertain.qualityResolved()); assertEquals(3, uncertain.satisfiedCriteria());
+        assertEquals(0, uncertain.materialUnsupportedClaims()); assertEquals(1, uncertain.materialUnresolvedClaims());
+        assertTrue(uncertain.issues().contains("MATERIAL_UNRESOLVED_CLAIM"));
+        assertEquals(3000, assessment.metrics().get(Arm.COORDINATED_TEAM).reportedInputTokensForUnambiguousSlots());
+        assertTrue(assessment.pairs().stream().filter(p -> p.right() == Arm.COORDINATED_TEAM).allMatch(p -> p.unestablishedBlocks() == 1 && p.comparableBlocks() == 2));
+        assertEquals("NOT_ESTABLISHED", assessment.routingDecision());
+    }
+    @Test void absentLegacyResolutionCountCannotBeInterpretedAsZeroByCurrentEvaluator() {
+        var t = trial(PLAN, 1, Arm.COORDINATED_TEAM); var c = t.cases().getFirst(); var cases = new ArrayList<>(t.cases());
+        cases.set(0, new CaseOutput(c.caseId(), c.inputIdentity(), c.response(), c.outputIdentity(),
+                new Review(c.outputIdentity(), digest('b'), true, 0, c.review().judgments())));
+        var row = changedRow(replace(t, cases, t.status(), t.usage(), 100));
+        assertFalse(row.comparable()); assertFalse(row.acceptedBundle()); assertNull(row.cases().getFirst().materialUnresolvedClaims());
+        assertTrue(row.cases().getFirst().issues().contains("MATERIAL_CLAIM_RESOLUTION_NOT_RECORDED"));
+        assertThrows(IllegalArgumentException.class, () -> new Review(c.outputIdentity(), digest('b'), true, 0, -1, c.review().judgments()));
+        assertThrows(IllegalArgumentException.class, () -> new Review(c.outputIdentity(), digest('b'), true, 0, 100001, c.review().judgments()));
     }
     @Test void changedDefinitionImplementationModelInputsAndReviewedOutputAreNotComparable() {
         var t = trial(PLAN, 1, Arm.COORDINATED_TEAM); var c = t.cases().getFirst();

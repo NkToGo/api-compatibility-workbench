@@ -1,0 +1,34 @@
+{
+  "formatVersion": 1,
+  "role": "known-case-paired-report-binding",
+  "comparisonId": "comparison-17e67ac0-5c1e-463b-a51e-9454200b6862",
+  "reportId": "report-7983cc37-e309-4ec9-80d8-ded8c7018c0b",
+  "resultSha256": "d0fa2885b6756c48bbfe51010ad3ccb301e795c89e31e5cde0ea3c884ed4e258",
+  "assessedRecordsSha256": "46adff2cc83d4f5b64afa36086b2a87bdaaff14ec36bcfbe65b4bf7eb72b7bb0",
+  "reportReceiptSha256": "6414b12f31532c1c9f4697193ca5203845613da6cfa10715231995dda460ee42",
+  "exportReceiptSha256": "303a1cf87e91ae3b2ed4af6493c02a51aaa6a23089d928735db0f252a5e2714a",
+  "exportBinding": {
+    "formatVersion": 1,
+    "role": "bound-reviewed-comparison-records",
+    "campaignId": "campaign-8d49ba41-7cf4-4181-ad4b-fb20dd6c1915",
+    "comparisonId": "comparison-17e67ac0-5c1e-463b-a51e-9454200b6862",
+    "packetId": "reviewpacket-fe2793c0-8aad-4377-b5d9-f1f15e77e441",
+    "packetSha256": "df0dc3fa4860a4589c2ffee4d65937bc782e48d419c5e7c4dbc411bbab655c28",
+    "reviewId": "semanticreview-540d2802-3401-4b9d-80cf-0252b88a58fc",
+    "reviewSha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381",
+    "originalRecordsSha256": "078519e5037e0674300cafcbba7a57e7b86d86f6d94f8cee761e249652d7c06b",
+    "recordsSha256": "8a6d50d3546f6e65894b35efbe650d439d1f4cfa660040a2ad21b63a73604aff",
+    "recordFormatVersion": 2,
+    "caseOutputs": 24,
+    "reviewer": {
+      "newProviderCalls": 0,
+      "label": "Codex semantic inspection with offline structured-fact recomputation",
+      "reviewedOn": "2026-10-07",
+      "calibratedReviewerAccuracy": false,
+      "independentHumanAdjudication": false,
+      "method": "model-assisted-claim-level-inspection"
+    },
+    "scope": "Identity-bound supplied judgments; not authenticated semantic truth, routing or execution authorization."
+  },
+  "serializationScope": "The evaluator retains typed JSON records with the same values; its records hash may differ from the input export bytes."
+}

@@ -106,7 +106,7 @@ illustrates why answer-completeness advice can require an explicit review block.
 
 A case earns reviewed acceptance only when its exact output/input bindings match,
 all declared criteria are `SATISFIED`, the claim audit is complete, no material
-unsupported claim remains, and its answer/abstention disposition matches the task.
+unsupported or unresolved claim remains, and its answer/abstention disposition matches the task.
 `NOT_SATISFIED` is a known negative judgment; `UNRESOLVED`, missing criteria or an
 unfinished audit leave quality unestablished. An explicit `NOT_PROVIDED` entry
 records a known absent answer; omitting a required case from an otherwise completed
@@ -162,7 +162,8 @@ This registers a `SYNTHETIC_EXAMPLE` plan with placeholder digests and writes an
 and provides no quality result. The printed report path is local JSON.
 
 For supplied metadata, prepare a `plan.json` envelope with `formatVersion: 1` and
-`definition`, and a `records.json` envelope with `formatVersion: 1` and `trials`:
+`definition`. Unreviewed adapter records use `formatVersion: 1`; new reviewed
+`records.json` envelopes use `formatVersion: 2` and `trials`:
 
 ```powershell
 $comparison = ./scripts/Compare-Coordination.ps1 -Action register -PlanPath plan.json
@@ -174,6 +175,26 @@ The example's retained `plan.json` and `records.json` show the envelope structur
 the Java records define trial fields. Required nullable fields must be explicit.
 Unknown or missing fields, invalid enums/identifiers and negative/impossible call
 inventories are rejected. This is a local record format, not a public product API.
+
+Version 2 reviews require an explicit `materialUnresolvedClaims` count alongside
+`materialUnsupportedClaims`. A complete audit can legitimately leave a claim
+unresolved. A positive unresolved count preserves the criteria, supported partial
+cases and usage, but leaves that case's quality and its paired block unestablished.
+It is not converted to an unsupported claim, an unfinished audit or a known loss.
+Absent resolution counts are unknown in the current in-process evaluator.
+
+Retained version 1 reports still read under their original version 1 contract,
+with their exact bytes and earlier conclusions unchanged. Such historical reviewed
+metadata did not record unresolved-claim counts and does not establish the version 2
+gate. New assessments refuse reviewed version 1 records; version 1 unreviewed exports
+remain supported. A synthetic fixture produced by the earlier implementation checks
+this historical-read behavior, including its original positive acceptance judgment.
+
+The [bound reviewed-record export](coordination-results.md#export-and-read) validates
+the sealed campaign and complete review before creating version 2 records. The
+generic comparison command itself still accepts supplied metadata; it does not
+read or authenticate the referenced review artifact. Use the bound export when
+reporting the retained campaign, not manually constructed review counts.
 
 State defaults to ignored `.workbench/coordination-comparisons/`. Registration
 retains `plan.json` and its digest/registration metadata under `comparison-UUID`.
@@ -224,8 +245,10 @@ This was a synthetic empty-record check, not a configuration measurement.
    with durable mappings, inclusive accounting and unreviewed outcome retention.
    **4c3a implemented:** [sealed review-input inventories](coordination-review-packets.md).
    **4c3b implemented:** [complete and validate bound semantic reviews](coordination-semantic-review.md).
-   **4c3c planned:** report quality, latency and inclusive resource use for all planned trials.
+   **4c3c implemented:** [paired outcomes, latency and inclusive resource report](coordination-results.md)
+   with bound version 2 review metadata and preserved unresolved claim gates.
 7. **4d planned:** choose a scoped routing rule only if the evidence supports it;
    otherwise preserve the simpler configuration and the explicit uncertainty.
 
-No measurement or routing conclusion is established by this implementation step.
+The recorded known-case campaign is described in the results report. The evaluator
+does not establish general reliability or select a routing rule.

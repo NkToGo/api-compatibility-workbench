@@ -64,8 +64,9 @@ limitation, not a claim that the cause was established.
 | Coordinated team | Outcomes satisfied; absence and null-guard explanations incomplete | Outcomes and policy scope satisfied; full selection/shortcut explanation missing | 0 |
 
 No complete two-case bundle meets the frozen acceptance requirements. These are
-descriptive judgments on this packet; the paired resource/latency report and scoped
-routing decision are subsequent work. They do not establish general superiority,
+descriptive judgments on this packet; the [paired resource/latency report](coordination-results.md)
+retains them separately from operational measurements. A scoped routing decision
+remains subsequent work. They do not establish general superiority,
 held-out accuracy or production readiness.
 
 The common customer omission is substantive: retaining the two reference failures

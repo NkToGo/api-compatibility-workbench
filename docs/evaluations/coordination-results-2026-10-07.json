@@ -1,0 +1,1663 @@
+{
+  "assessment": {
+    "definition": {
+      "experimentId": "coordination-campaign-8d49ba41-7cf4-4181-ad4b-fb20dd6c1915",
+      "origin": "SUPPLIED_RECORDS",
+      "model": "gpt-5.6-terra",
+      "rubricIdentity": {
+        "sha256": "7f8f80022f30f5953616832d47ea845004196e5878313f22b57c4c2c58a4c9bb"
+      },
+      "implementations": {
+        "DETERMINISTIC": {
+          "sha256": "c8feacd2806429b10126f04bb16a5deea464ffb06c48349072a7a400b940cef9"
+        },
+        "SINGLE_AGENT": {
+          "sha256": "58041ece47bf9a0c82551d77c311d2a11076f95840fec61b4bad71066a402fa0"
+        },
+        "INDEPENDENT_WORKERS": {
+          "sha256": "c4e46f50ecebd41154d8c56d7582427ba5c4de95c456e43a59cd820d4ec0cbf1"
+        },
+        "COORDINATED_TEAM": {
+          "sha256": "83fbdcaf46c0e21fd601e71b1c0a5fdbf95f3b289755a6159c15a98bfa11e39d"
+        }
+      },
+      "workloads": [
+        {
+          "workloadId": "two-case",
+          "cases": [
+            {
+              "caseId": "stripe-customer-sources-2020-08-27",
+              "inputIdentity": {
+                "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+              },
+              "expectedResponse": "ANSWER",
+              "criteria": [
+                "observed-regressions",
+                "absence-preconditions",
+                "null-guard-limit"
+              ]
+            },
+            {
+              "caseId": "stripe-subscription-periods-2025-07-30",
+              "inputIdentity": {
+                "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+              },
+              "expectedResponse": "ANSWER",
+              "criteria": [
+                "observed-regressions",
+                "bound-item-selection",
+                "policy-and-deferral-scope"
+              ]
+            }
+          ]
+        }
+      ],
+      "repetitions": 3,
+      "limits": {
+        "modelCalls": 60,
+        "elapsedMillis": 1200000,
+        "inputBytesPerCall": 64000,
+        "outputTokensPerCall": 2048
+      }
+    },
+    "conclusion": "UNRESOLVED",
+    "authority": "supplied-comparison-records-not-authenticated",
+    "routingDecision": "NOT_ESTABLISHED",
+    "rows": [
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 1,
+          "arm": "DETERMINISTIC"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 1,
+              "arm": "DETERMINISTIC"
+            },
+            "runId": "trial-3584cdfb-ee90-46ef-a909-27803843f656",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "c8feacd2806429b10126f04bb16a5deea464ffb06c48349072a7a400b940cef9"
+            },
+            "model": null,
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "66e67e07296743c02fcb7d6fb7ad53e0c4bd909195df16759b0c6818558629b6"
+            },
+            "usage": {
+              "reservedCalls": 0,
+              "registeredCalls": 0,
+              "completedResponses": 0,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 0,
+              "outputTokens": 0,
+              "toolCalls": 14,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 4168,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "4179058935620e3d92ea97df7bec8edffcc1bafc03e404c477df0ad445ee736d"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "4179058935620e3d92ea97df7bec8edffcc1bafc03e404c477df0ad445ee736d"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "406220a386353b9e0f28f6e06bf2ec7f2cd320f574b37cb9ce8f5ffad32aa396"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "406220a386353b9e0f28f6e06bf2ec7f2cd320f574b37cb9ce8f5ffad32aa396"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": true,
+            "satisfiedCriteria": 3,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 1,
+          "arm": "SINGLE_AGENT"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 1,
+              "arm": "SINGLE_AGENT"
+            },
+            "runId": "trial-051eac09-b44d-4d7e-a1aa-c5802ed133f4",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "58041ece47bf9a0c82551d77c311d2a11076f95840fec61b4bad71066a402fa0"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "fbb51f1412a656d48b0d8802d9403bd9d0909018cd23cc92b2d8ffbcba151768"
+            },
+            "usage": {
+              "reservedCalls": 15,
+              "registeredCalls": 15,
+              "completedResponses": 15,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 90592,
+              "outputTokens": 2066,
+              "toolCalls": 14,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 51737,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "8c79ddc2346e94c42fa39bd8204de8c074f047435315592558463f501f05449a"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "8c79ddc2346e94c42fa39bd8204de8c074f047435315592558463f501f05449a"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "8894a106e0bbbda73820595de6db59381d6bb16645c348a22d404d633f66ff09"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "8894a106e0bbbda73820595de6db59381d6bb16645c348a22d404d633f66ff09"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "NOT_SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 1,
+          "arm": "INDEPENDENT_WORKERS"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 1,
+              "arm": "INDEPENDENT_WORKERS"
+            },
+            "runId": "trial-8f8d6baa-6b1d-42c8-9487-9830059aaabd",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "c4e46f50ecebd41154d8c56d7582427ba5c4de95c456e43a59cd820d4ec0cbf1"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "0478d87117648fc19fcc9ceeace7b3ac4b6b042fe57c4909af5279471972dbea"
+            },
+            "usage": {
+              "reservedCalls": 12,
+              "registeredCalls": 12,
+              "completedResponses": 12,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 38739,
+              "outputTokens": 1548,
+              "toolCalls": 10,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 23791,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "9d9e23132df72c5e2808650e3aa16e113e0d2bda4b22ee3b646c783b6cb64afb"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "9d9e23132df72c5e2808650e3aa16e113e0d2bda4b22ee3b646c783b6cb64afb"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "4f9d3f23b17717c55c64c0451ada8052cd17cb72d6af56d47f82cd29087af7e3"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "4f9d3f23b17717c55c64c0451ada8052cd17cb72d6af56d47f82cd29087af7e3"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "NOT_SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 1,
+          "arm": "COORDINATED_TEAM"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 1,
+              "arm": "COORDINATED_TEAM"
+            },
+            "runId": "trial-760d095e-fab1-4b10-b0a8-1c3d369576da",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "83fbdcaf46c0e21fd601e71b1c0a5fdbf95f3b289755a6159c15a98bfa11e39d"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "039a96348914e98c5710ca493798a82738af2cc300254dc52ee60729b68eee8e"
+            },
+            "usage": {
+              "reservedCalls": 17,
+              "registeredCalls": 17,
+              "completedResponses": 17,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 62964,
+              "outputTokens": 2716,
+              "toolCalls": 13,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 60263,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "041f9f90bb2b98b90f028b86247f296240001acb0714cd498c0090456fa7ad30"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "041f9f90bb2b98b90f028b86247f296240001acb0714cd498c0090456fa7ad30"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "f478404eaddd84dd9b5caa627bfb74fe2521d2c060ebf9f426b6552241f96137"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "f478404eaddd84dd9b5caa627bfb74fe2521d2c060ebf9f426b6552241f96137"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 2,
+          "arm": "DETERMINISTIC"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 2,
+              "arm": "DETERMINISTIC"
+            },
+            "runId": "trial-a593657d-1f82-4845-ba45-8b6ad5e37f7c",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "c8feacd2806429b10126f04bb16a5deea464ffb06c48349072a7a400b940cef9"
+            },
+            "model": null,
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "31393584917956d94f5b2c7c6ead3f5bf70fa38fe0cdbe45387d307e381e18d9"
+            },
+            "usage": {
+              "reservedCalls": 0,
+              "registeredCalls": 0,
+              "completedResponses": 0,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 0,
+              "outputTokens": 0,
+              "toolCalls": 14,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 4168,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "f260145a318a3c0c026a109f4c02eb447977956d61ec57411d5838b943107419"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "f260145a318a3c0c026a109f4c02eb447977956d61ec57411d5838b943107419"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "52daf237b6c5756fd42628cc6e4bf80cd74cb561476b66db59a2b6a770d49f11"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "52daf237b6c5756fd42628cc6e4bf80cd74cb561476b66db59a2b6a770d49f11"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": true,
+            "satisfiedCriteria": 3,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 2,
+          "arm": "SINGLE_AGENT"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 2,
+              "arm": "SINGLE_AGENT"
+            },
+            "runId": "trial-ce25c823-c251-4f11-aec6-69b7a4e179a5",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "58041ece47bf9a0c82551d77c311d2a11076f95840fec61b4bad71066a402fa0"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "fbcc49a11fa1ab6b283115eddeec2bf461a918a43a50afb9a346c1512674f102"
+            },
+            "usage": {
+              "reservedCalls": 7,
+              "registeredCalls": 7,
+              "completedResponses": 7,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 27615,
+              "outputTokens": 1143,
+              "toolCalls": 6,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 23660,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "7d99ce3bcc888e9c42665aa1489743292a55f04b16deee104082aa8158f997e7"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "7d99ce3bcc888e9c42665aa1489743292a55f04b16deee104082aa8158f997e7"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "75f666074d172231b03d5242bfcf68750ce43445accb66cd6309aa5dfdf230d0"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "75f666074d172231b03d5242bfcf68750ce43445accb66cd6309aa5dfdf230d0"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 2,
+          "arm": "INDEPENDENT_WORKERS"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 2,
+              "arm": "INDEPENDENT_WORKERS"
+            },
+            "runId": "trial-2ba93c9a-5826-48c2-bfa6-7f384db229ed",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "c4e46f50ecebd41154d8c56d7582427ba5c4de95c456e43a59cd820d4ec0cbf1"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "bab4d09ca4c9b76d1b17c334d3cba6ec3804e37291470b79200331835d75e637"
+            },
+            "usage": {
+              "reservedCalls": 10,
+              "registeredCalls": 10,
+              "completedResponses": 10,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 29123,
+              "outputTokens": 1340,
+              "toolCalls": 8,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 25992,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "a96f6dac87bc9443c22948f8d1db7cf53939752091bd940864207ec944a2930e"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "a96f6dac87bc9443c22948f8d1db7cf53939752091bd940864207ec944a2930e"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "152fabc625497bd0056950678e299536d2f7f43e8b80734c5a57d30cd38c9dc6"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "152fabc625497bd0056950678e299536d2f7f43e8b80734c5a57d30cd38c9dc6"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 2,
+          "arm": "COORDINATED_TEAM"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 2,
+              "arm": "COORDINATED_TEAM"
+            },
+            "runId": "trial-f7f1551f-a453-44c7-a446-765bfbfc29ba",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "83fbdcaf46c0e21fd601e71b1c0a5fdbf95f3b289755a6159c15a98bfa11e39d"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "ac4c6e9ee3dc79f88237cb3b118f8da4acfc334e2e3ef8306c1fd04569ab8785"
+            },
+            "usage": {
+              "reservedCalls": 19,
+              "registeredCalls": 19,
+              "completedResponses": 19,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 78676,
+              "outputTokens": 2956,
+              "toolCalls": 15,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 62262,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "b40a155bf8ab83d95b7a6753e6f26c2687978e8722017676aca70d585869799e"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "b40a155bf8ab83d95b7a6753e6f26c2687978e8722017676aca70d585869799e"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "a7c31a0a3b93aa0e444c2bf6c1e964a0e5fa24a259abd10208482a12119a0c88"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "a7c31a0a3b93aa0e444c2bf6c1e964a0e5fa24a259abd10208482a12119a0c88"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 3,
+          "arm": "DETERMINISTIC"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 3,
+              "arm": "DETERMINISTIC"
+            },
+            "runId": "trial-4fda2c98-5067-486d-9fcf-209d391f8c06",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "c8feacd2806429b10126f04bb16a5deea464ffb06c48349072a7a400b940cef9"
+            },
+            "model": null,
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "21b6b4595220548179e65e05254b2a4cfc2022b2858d2afcf6dfa6ac08b1590f"
+            },
+            "usage": {
+              "reservedCalls": 0,
+              "registeredCalls": 0,
+              "completedResponses": 0,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 0,
+              "outputTokens": 0,
+              "toolCalls": 14,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 4117,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "4179058935620e3d92ea97df7bec8edffcc1bafc03e404c477df0ad445ee736d"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "4179058935620e3d92ea97df7bec8edffcc1bafc03e404c477df0ad445ee736d"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "406220a386353b9e0f28f6e06bf2ec7f2cd320f574b37cb9ce8f5ffad32aa396"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "406220a386353b9e0f28f6e06bf2ec7f2cd320f574b37cb9ce8f5ffad32aa396"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": true,
+            "satisfiedCriteria": 3,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 3,
+          "arm": "SINGLE_AGENT"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 3,
+              "arm": "SINGLE_AGENT"
+            },
+            "runId": "trial-db2ce61c-ada3-4ba8-bbf8-a632bd741110",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "58041ece47bf9a0c82551d77c311d2a11076f95840fec61b4bad71066a402fa0"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "5feceebef33e860857704889072389f33f07b2f7b9ba93f29502be3ae15b4339"
+            },
+            "usage": {
+              "reservedCalls": 12,
+              "registeredCalls": 12,
+              "completedResponses": 12,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 61740,
+              "outputTokens": 1947,
+              "toolCalls": 11,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 44347,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "269ba0ad09e895487a6fb4e04d9caacc44c6c577012c77f9ae7a0e7c0f774c6f"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "269ba0ad09e895487a6fb4e04d9caacc44c6c577012c77f9ae7a0e7c0f774c6f"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "52e473beeb2300f5f1c4ca1007b20a0b310e477f8e4cc58ef25d3cf7ac439e15"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "52e473beeb2300f5f1c4ca1007b20a0b310e477f8e4cc58ef25d3cf7ac439e15"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 3,
+          "arm": "INDEPENDENT_WORKERS"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 3,
+              "arm": "INDEPENDENT_WORKERS"
+            },
+            "runId": "trial-40f2f2d1-f055-4406-883d-60b0334bea7b",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "c4e46f50ecebd41154d8c56d7582427ba5c4de95c456e43a59cd820d4ec0cbf1"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "0c65c57f2c46e469081250620e249df056d54497c980a78e66ddc51890e1d70c"
+            },
+            "usage": {
+              "reservedCalls": 13,
+              "registeredCalls": 13,
+              "completedResponses": 13,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 45463,
+              "outputTokens": 1641,
+              "toolCalls": 11,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 29405,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "23df78a510ab749462832d4280107ec8b1b6f06cdfb3a4e7daa785bc16953f4a"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "23df78a510ab749462832d4280107ec8b1b6f06cdfb3a4e7daa785bc16953f4a"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "9304fea7b22f6a32569305bddb986e49c10bef7c8edc18ae9c3188871c2bee7c"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "9304fea7b22f6a32569305bddb986e49c10bef7c8edc18ae9c3188871c2bee7c"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 1,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": false,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": false,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 1,
+            "issues": [
+              "MATERIAL_UNRESOLVED_CLAIM"
+            ]
+          }
+        ],
+        "issues": [
+          "INCOMPLETE_QUALITY_REVIEW"
+        ]
+      },
+      {
+        "slot": {
+          "workloadId": "two-case",
+          "repetition": 3,
+          "arm": "COORDINATED_TEAM"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "two-case",
+              "repetition": 3,
+              "arm": "COORDINATED_TEAM"
+            },
+            "runId": "trial-2b00ac09-8625-4e7f-835f-e33390ed6aea",
+            "definitionIdentity": {
+              "sha256": "571214ee64ee6e114358cd2d95a1c96fab66f1d263b099571e34998f9d3d8796"
+            },
+            "implementationIdentity": {
+              "sha256": "83fbdcaf46c0e21fd601e71b1c0a5fdbf95f3b289755a6159c15a98bfa11e39d"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "f633bc7d5ad1b83eee5a3c998c5cc98fab4cfd243844729e060706d73ca65049"
+            },
+            "usage": {
+              "reservedCalls": 55,
+              "registeredCalls": 55,
+              "completedResponses": 55,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 392232,
+              "outputTokens": 8489,
+              "toolCalls": 49,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 211448,
+            "cases": [
+              {
+                "caseId": "stripe-customer-sources-2020-08-27",
+                "inputIdentity": {
+                  "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "511cad9f76f5f9f89601a3aeaade347df69238f587a7cf02e8c9736a29cbc671"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "511cad9f76f5f9f89601a3aeaade347df69238f587a7cf02e8c9736a29cbc671"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 2,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "absence-preconditions": "NOT_SATISFIED",
+                    "null-guard-limit": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              },
+              {
+                "caseId": "stripe-subscription-periods-2025-07-30",
+                "inputIdentity": {
+                  "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "a00b5d89eaaca875e609b1be453315519537703c9384282fdc18eb2dbd779cfa"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "a00b5d89eaaca875e609b1be453315519537703c9384282fdc18eb2dbd779cfa"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "materialUnresolvedClaims": 0,
+                  "judgments": {
+                    "bound-item-selection": "NOT_SATISFIED",
+                    "observed-regressions": "SATISFIED",
+                    "policy-and-deferral-scope": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 2,
+            "materialUnresolvedClaims": 0,
+            "issues": [
+              "MATERIAL_UNSUPPORTED_CLAIM"
+            ]
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "qualityResolved": true,
+            "accepted": false,
+            "satisfiedCriteria": 2,
+            "requiredCriteria": 3,
+            "materialUnsupportedClaims": 0,
+            "materialUnresolvedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      }
+    ],
+    "unexpectedRecords": [],
+    "metrics": {
+      "DETERMINISTIC": {
+        "plannedBundles": 3,
+        "comparableBundles": 3,
+        "reviewedAcceptedBundles": 0,
+        "comparableAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 3,
+        "failedBundles": 0,
+        "missingSlots": 0,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 0,
+        "reportedInputTokensForUnambiguousSlots": 0,
+        "reportedOutputTokensForUnambiguousSlots": 0,
+        "reportedReservedCallsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 12453,
+        "reportedToolCallsForUnambiguousSlots": 42,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      },
+      "SINGLE_AGENT": {
+        "plannedBundles": 3,
+        "comparableBundles": 3,
+        "reviewedAcceptedBundles": 0,
+        "comparableAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0,
+        "failedBundles": 0,
+        "missingSlots": 0,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 0,
+        "reportedInputTokensForUnambiguousSlots": 179947,
+        "reportedOutputTokensForUnambiguousSlots": 5156,
+        "reportedReservedCallsForUnambiguousSlots": 34,
+        "reportedElapsedMillisForUnambiguousSlots": 119744,
+        "reportedToolCallsForUnambiguousSlots": 31,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      },
+      "INDEPENDENT_WORKERS": {
+        "plannedBundles": 3,
+        "comparableBundles": 2,
+        "reviewedAcceptedBundles": 0,
+        "comparableAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0,
+        "failedBundles": 0,
+        "missingSlots": 0,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 0,
+        "reportedInputTokensForUnambiguousSlots": 113325,
+        "reportedOutputTokensForUnambiguousSlots": 4529,
+        "reportedReservedCallsForUnambiguousSlots": 35,
+        "reportedElapsedMillisForUnambiguousSlots": 79188,
+        "reportedToolCallsForUnambiguousSlots": 29,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      },
+      "COORDINATED_TEAM": {
+        "plannedBundles": 3,
+        "comparableBundles": 3,
+        "reviewedAcceptedBundles": 0,
+        "comparableAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0,
+        "failedBundles": 0,
+        "missingSlots": 0,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 0,
+        "reportedInputTokensForUnambiguousSlots": 533872,
+        "reportedOutputTokensForUnambiguousSlots": 14161,
+        "reportedReservedCallsForUnambiguousSlots": 91,
+        "reportedElapsedMillisForUnambiguousSlots": 333973,
+        "reportedToolCallsForUnambiguousSlots": 77,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      }
+    },
+    "pairs": [
+      {
+        "left": "DETERMINISTIC",
+        "right": "SINGLE_AGENT",
+        "comparableBlocks": 3,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 3,
+        "unestablishedBlocks": 0,
+        "leftMoreAcceptedCases": 3,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "DETERMINISTIC",
+        "right": "INDEPENDENT_WORKERS",
+        "comparableBlocks": 2,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 2,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 2,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "DETERMINISTIC",
+        "right": "COORDINATED_TEAM",
+        "comparableBlocks": 3,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 3,
+        "unestablishedBlocks": 0,
+        "leftMoreAcceptedCases": 3,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "SINGLE_AGENT",
+        "right": "INDEPENDENT_WORKERS",
+        "comparableBlocks": 2,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 2,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 2
+      },
+      {
+        "left": "SINGLE_AGENT",
+        "right": "COORDINATED_TEAM",
+        "comparableBlocks": 3,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 3,
+        "unestablishedBlocks": 0,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 3
+      },
+      {
+        "left": "INDEPENDENT_WORKERS",
+        "right": "COORDINATED_TEAM",
+        "comparableBlocks": 2,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 2,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 2
+      }
+    ],
+    "issues": [
+      "UNESTABLISHED_PAIRED_COVERAGE"
+    ]
+  },
+  "registrationSha256": "a6df7b9a8ac7f22d84c4c3f4228deb938cd22ed4e88f200c934545a25eaa489f",
+  "comparisonId": "comparison-17e67ac0-5c1e-463b-a51e-9454200b6862",
+  "recordedAt": "2026-10-07T14:07:16.083805600Z",
+  "formatVersion": 2,
+  "recordsSha256": "46adff2cc83d4f5b64afa36086b2a87bdaaff14ec36bcfbe65b4bf7eb72b7bb0",
+  "reportId": "report-7983cc37-e309-4ec9-80d8-ded8c7018c0b"
+}

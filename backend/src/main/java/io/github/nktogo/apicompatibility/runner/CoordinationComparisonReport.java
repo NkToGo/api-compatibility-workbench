@@ -18,7 +18,11 @@ public final class CoordinationComparisonReport {
         public Plan { CaseInputs.require(formatVersion == 1 && definition != null, "Invalid comparison plan"); }
     }
     public record Records(int formatVersion, List<CoordinationTrial> trials) {
-        public Records { CaseInputs.require(formatVersion == 1, "Invalid comparison records"); trials = List.copyOf(trials); }
+        public Records {
+            CaseInputs.require(formatVersion == 1 || formatVersion == 2, "Invalid comparison records"); trials = List.copyOf(trials);
+            for (var trial : trials) for (var output : trial.cases()) if (output.review() != null)
+                CaseInputs.require((formatVersion == 1) == (output.review().materialUnresolvedClaims() == null), "Review count does not match record version");
+        }
     }
     public CoordinationComparisonReport(Path state) throws IOException {
         root = state.toAbsolutePath().normalize().resolve("coordination-comparisons"); Files.createDirectories(root); ConsumerTasks.directory(root);
@@ -33,15 +37,17 @@ public final class CoordinationComparisonReport {
     }
     public String assess(String id, Path recordsFile) throws IOException { return assess(id, decode(recordsFile, Records.class)); }
     private String assess(String id, Records records) throws IOException {
+        CaseInputs.require(records.formatVersion() == 2 || records.trials().stream().flatMap(t -> t.cases().stream()).allMatch(c -> c.review() == null),
+                "New reviewed records require formatVersion 2 and an explicit unresolved claim count");
         Path directory = directory(id); var plan = decode(directory.resolve("plan.json"), Plan.class);
         var registration = CaseInputs.object(ConsumerTasks.bytes(directory, "registration.json"));
         CaseInputs.require(id.equals(registration.get("comparisonId").getAsString())
                 && CaseInputs.hash(ConsumerTasks.bytes(directory, "plan.json")).equals(registration.get("planSha256").getAsString())
                 && JSON.toJsonTree(identity(plan.definition())).equals(registration.get("definitionIdentity")), "Changed registered comparison plan");
-        var assessment = CoordinationComparison.evaluate(plan.definition(), records.trials());
+        var assessment = assessment(plan.definition(), records);
         String reportId = "report-" + UUID.randomUUID(); Path report = Files.createDirectory(directory.resolve(reportId));
-        write(report.resolve("records.json"), records);
-        write(report.resolve("result.json"), Map.of("formatVersion", 1, "comparisonId", id, "reportId", reportId, "recordedAt", Instant.now().toString(),
+        write(report.resolve("records.json"), recordsTree(records));
+        write(report.resolve("result.json"), Map.of("formatVersion", records.formatVersion(), "comparisonId", id, "reportId", reportId, "recordedAt", Instant.now().toString(),
                 "registrationSha256", CaseInputs.hash(ConsumerTasks.bytes(directory, "registration.json")),
                 "recordsSha256", CaseInputs.hash(ConsumerTasks.bytes(report, "records.json")), "assessment", assessment));
         write(report.resolve("receipt.json"), Map.of("formatVersion", 1, "resultSha256", CaseInputs.hash(ConsumerTasks.bytes(report, "result.json"))));
@@ -56,11 +62,12 @@ public final class CoordinationComparisonReport {
         var plan = decode(directory.resolve("plan.json"), Plan.class); var registration = CaseInputs.object(ConsumerTasks.bytes(directory, "registration.json"));
         var records = decode(report.resolve("records.json"), Records.class);
         CaseInputs.require(id.equals(result.get("comparisonId").getAsString()) && reportId.equals(result.get("reportId").getAsString())
+                && result.get("formatVersion").getAsInt() == records.formatVersion()
                 && CaseInputs.hash(ConsumerTasks.bytes(directory, "plan.json")).equals(registration.get("planSha256").getAsString())
                 && JSON.toJsonTree(identity(plan.definition())).equals(registration.get("definitionIdentity"))
                 && CaseInputs.hash(ConsumerTasks.bytes(directory, "registration.json")).equals(result.get("registrationSha256").getAsString())
                 && CaseInputs.hash(ConsumerTasks.bytes(report, "records.json")).equals(result.get("recordsSha256").getAsString())
-                && JSON.toJsonTree(CoordinationComparison.evaluate(plan.definition(), records.trials())).equals(result.get("assessment")), "Changed comparison report");
+                && assessment(plan.definition(), records).equals(result.get("assessment")), "Changed comparison report");
         return result;
     }
     private Path directory(String id) {
@@ -72,7 +79,22 @@ public final class CoordinationComparisonReport {
         var tree = CaseInputs.object(bytes);
         T decoded = JSON.fromJson(tree, type);
         // All fields, including nullable review identities, must be explicit; unknown fields cannot assert a verdict.
-        CaseInputs.require(tree.equals(JSON.toJsonTree(decoded)), "Unexpected or missing comparison fields"); return decoded;
+        CaseInputs.require(tree.equals(decoded instanceof Records records ? recordsTree(records) : JSON.toJsonTree(decoded)), "Unexpected or missing comparison fields"); return decoded;
+    }
+    private static JsonElement recordsTree(Records records) {
+        var tree = JSON.toJsonTree(records); if (records.formatVersion() == 1) removeV2Fields(tree); return tree;
+    }
+    private static JsonElement assessment(Definition definition, Records records) {
+        var tree = JSON.toJsonTree(records.formatVersion() == 1
+                ? CoordinationComparison.evaluateHistoricalV1(definition, records.trials()) : CoordinationComparison.evaluate(definition, records.trials()));
+        if (records.formatVersion() == 1) removeV2Fields(tree); return tree;
+    }
+    private static void removeV2Fields(JsonElement tree) {
+        if (tree.isJsonArray()) tree.getAsJsonArray().forEach(CoordinationComparisonReport::removeV2Fields);
+        else if (tree.isJsonObject()) {
+            tree.getAsJsonObject().remove("materialUnresolvedClaims");
+            tree.getAsJsonObject().entrySet().forEach(entry -> removeV2Fields(entry.getValue()));
+        }
     }
     private static void write(Path path, Object value) throws IOException {
         byte[] bytes = (JSON.toJson(value) + "\n").getBytes(StandardCharsets.UTF_8);

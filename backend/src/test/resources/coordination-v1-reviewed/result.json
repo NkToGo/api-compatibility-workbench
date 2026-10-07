@@ -1,0 +1,372 @@
+{
+  "reportId": "report-0a58dd53-43bc-4600-80e4-c818c68223e2",
+  "assessment": {
+    "definition": {
+      "experimentId": "legacy-reviewed-synthetic",
+      "origin": "SYNTHETIC_EXAMPLE",
+      "model": "gpt-5.6-terra",
+      "rubricIdentity": {
+        "sha256": "7777777777777777777777777777777777777777777777777777777777777777"
+      },
+      "implementations": {
+        "DETERMINISTIC": {
+          "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "SINGLE_AGENT": {
+          "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "INDEPENDENT_WORKERS": {
+          "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "COORDINATED_TEAM": {
+          "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+        }
+      },
+      "workloads": [
+        {
+          "workloadId": "synthetic-workload",
+          "cases": [
+            {
+              "caseId": "synthetic-case",
+              "inputIdentity": {
+                "sha256": "5555555555555555555555555555555555555555555555555555555555555555"
+              },
+              "expectedResponse": "ANSWER",
+              "criteria": [
+                "observed-regressions"
+              ]
+            }
+          ]
+        }
+      ],
+      "repetitions": 1,
+      "limits": {
+        "modelCalls": 60,
+        "elapsedMillis": 1200000,
+        "inputBytesPerCall": 64000,
+        "outputTokensPerCall": 2048
+      }
+    },
+    "conclusion": "UNRESOLVED",
+    "authority": "supplied-comparison-records-not-authenticated",
+    "routingDecision": "NOT_ESTABLISHED",
+    "rows": [
+      {
+        "slot": {
+          "workloadId": "synthetic-workload",
+          "repetition": 1,
+          "arm": "DETERMINISTIC"
+        },
+        "records": [],
+        "comparable": false,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "synthetic-case",
+            "qualityResolved": false,
+            "accepted": false,
+            "satisfiedCriteria": 0,
+            "requiredCriteria": 1,
+            "materialUnsupportedClaims": 0,
+            "issues": [
+              "UNESTABLISHED_CASE_OUTPUT"
+            ]
+          }
+        ],
+        "issues": [
+          "MISSING_TRIAL"
+        ]
+      },
+      {
+        "slot": {
+          "workloadId": "synthetic-workload",
+          "repetition": 1,
+          "arm": "SINGLE_AGENT"
+        },
+        "records": [
+          {
+            "slot": {
+              "workloadId": "synthetic-workload",
+              "repetition": 1,
+              "arm": "SINGLE_AGENT"
+            },
+            "runId": "synthetic-run",
+            "definitionIdentity": {
+              "sha256": "0f710a40bb9c8ec3136e595b35f53d4471dd9df163ed4a9b24f2f9153042a4b3"
+            },
+            "implementationIdentity": {
+              "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+            },
+            "model": "gpt-5.6-terra",
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+            },
+            "usage": {
+              "reservedCalls": 1,
+              "registeredCalls": 1,
+              "completedResponses": 1,
+              "notDispatchedSlots": 0,
+              "unresolvedUsageSlots": 0,
+              "inputTokens": 100,
+              "outputTokens": 10,
+              "toolCalls": 1,
+              "caseExecutions": 0
+            },
+            "elapsedMillis": 100,
+            "cases": [
+              {
+                "caseId": "synthetic-case",
+                "inputIdentity": {
+                  "sha256": "5555555555555555555555555555555555555555555555555555555555555555"
+                },
+                "response": "ANSWERED",
+                "outputIdentity": {
+                  "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                "review": {
+                  "outputIdentity": {
+                    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+                  },
+                  "claimAuditComplete": true,
+                  "materialUnsupportedClaims": 0,
+                  "judgments": {
+                    "observed-regressions": "SATISFIED"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "comparable": true,
+        "acceptedBundle": true,
+        "cases": [
+          {
+            "caseId": "synthetic-case",
+            "qualityResolved": true,
+            "accepted": true,
+            "satisfiedCriteria": 1,
+            "requiredCriteria": 1,
+            "materialUnsupportedClaims": 0,
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      {
+        "slot": {
+          "workloadId": "synthetic-workload",
+          "repetition": 1,
+          "arm": "INDEPENDENT_WORKERS"
+        },
+        "records": [],
+        "comparable": false,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "synthetic-case",
+            "qualityResolved": false,
+            "accepted": false,
+            "satisfiedCriteria": 0,
+            "requiredCriteria": 1,
+            "materialUnsupportedClaims": 0,
+            "issues": [
+              "UNESTABLISHED_CASE_OUTPUT"
+            ]
+          }
+        ],
+        "issues": [
+          "MISSING_TRIAL"
+        ]
+      },
+      {
+        "slot": {
+          "workloadId": "synthetic-workload",
+          "repetition": 1,
+          "arm": "COORDINATED_TEAM"
+        },
+        "records": [],
+        "comparable": false,
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "caseId": "synthetic-case",
+            "qualityResolved": false,
+            "accepted": false,
+            "satisfiedCriteria": 0,
+            "requiredCriteria": 1,
+            "materialUnsupportedClaims": 0,
+            "issues": [
+              "UNESTABLISHED_CASE_OUTPUT"
+            ]
+          }
+        ],
+        "issues": [
+          "MISSING_TRIAL"
+        ]
+      }
+    ],
+    "unexpectedRecords": [],
+    "metrics": {
+      "DETERMINISTIC": {
+        "plannedBundles": 1,
+        "comparableBundles": 0,
+        "reviewedAcceptedBundles": 0,
+        "comparableAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0,
+        "failedBundles": 0,
+        "missingSlots": 1,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 1,
+        "reportedInputTokensForUnambiguousSlots": 0,
+        "reportedOutputTokensForUnambiguousSlots": 0,
+        "reportedReservedCallsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 0,
+        "reportedToolCallsForUnambiguousSlots": 0,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      },
+      "SINGLE_AGENT": {
+        "plannedBundles": 1,
+        "comparableBundles": 1,
+        "reviewedAcceptedBundles": 1,
+        "comparableAcceptedBundles": 1,
+        "reviewedAcceptedCasesForUnambiguousSlots": 1,
+        "failedBundles": 0,
+        "missingSlots": 0,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 0,
+        "reportedInputTokensForUnambiguousSlots": 100,
+        "reportedOutputTokensForUnambiguousSlots": 10,
+        "reportedReservedCallsForUnambiguousSlots": 1,
+        "reportedElapsedMillisForUnambiguousSlots": 100,
+        "reportedToolCallsForUnambiguousSlots": 1,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      },
+      "INDEPENDENT_WORKERS": {
+        "plannedBundles": 1,
+        "comparableBundles": 0,
+        "reviewedAcceptedBundles": 0,
+        "comparableAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0,
+        "failedBundles": 0,
+        "missingSlots": 1,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 1,
+        "reportedInputTokensForUnambiguousSlots": 0,
+        "reportedOutputTokensForUnambiguousSlots": 0,
+        "reportedReservedCallsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 0,
+        "reportedToolCallsForUnambiguousSlots": 0,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      },
+      "COORDINATED_TEAM": {
+        "plannedBundles": 1,
+        "comparableBundles": 0,
+        "reviewedAcceptedBundles": 0,
+        "comparableAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0,
+        "failedBundles": 0,
+        "missingSlots": 1,
+        "ambiguousSlots": 0,
+        "incompleteUsageSlots": 1,
+        "reportedInputTokensForUnambiguousSlots": 0,
+        "reportedOutputTokensForUnambiguousSlots": 0,
+        "reportedReservedCallsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 0,
+        "reportedToolCallsForUnambiguousSlots": 0,
+        "reportedCaseExecutionsForUnambiguousSlots": 0
+      }
+    },
+    "pairs": [
+      {
+        "left": "DETERMINISTIC",
+        "right": "SINGLE_AGENT",
+        "comparableBlocks": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 0,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "DETERMINISTIC",
+        "right": "INDEPENDENT_WORKERS",
+        "comparableBlocks": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 0,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "DETERMINISTIC",
+        "right": "COORDINATED_TEAM",
+        "comparableBlocks": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 0,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "SINGLE_AGENT",
+        "right": "INDEPENDENT_WORKERS",
+        "comparableBlocks": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 0,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "SINGLE_AGENT",
+        "right": "COORDINATED_TEAM",
+        "comparableBlocks": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 0,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      },
+      {
+        "left": "INDEPENDENT_WORKERS",
+        "right": "COORDINATED_TEAM",
+        "comparableBlocks": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "bothAcceptedBundle": 0,
+        "neitherAcceptedBundle": 0,
+        "unestablishedBlocks": 1,
+        "leftMoreAcceptedCases": 0,
+        "rightMoreAcceptedCases": 0,
+        "equalAcceptedCases": 0
+      }
+    ],
+    "issues": [
+      "UNESTABLISHED_PAIRED_COVERAGE"
+    ]
+  },
+  "registrationSha256": "165b450e8a820ff55b5a04ec89862d37c6275ef07866b9f860f6ea51230c9907",
+  "comparisonId": "comparison-cc35117f-f36a-497e-a0da-82d3138aeccc",
+  "recordedAt": "2026-10-07T13:20:33.615629600Z",
+  "formatVersion": 1,
+  "recordsSha256": "f938b109923543f4849e285c59ce7f23ea20e2733dc1191f1c81554ae45139b8"
+}

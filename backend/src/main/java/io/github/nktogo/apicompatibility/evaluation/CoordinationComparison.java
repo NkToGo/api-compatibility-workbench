@@ -9,7 +9,7 @@ public final class CoordinationComparison {
     private CoordinationComparison() {}
     public enum Conclusion { RECORDS_COMPLETE, UNRESOLVED }
     public record CaseAssessment(String caseId, boolean qualityResolved, boolean accepted, int satisfiedCriteria,
-                                 int requiredCriteria, int materialUnsupportedClaims, List<String> issues) {
+                                 int requiredCriteria, int materialUnsupportedClaims, Integer materialUnresolvedClaims, List<String> issues) {
         public CaseAssessment { issues = List.copyOf(issues); }
     }
     public record Row(Slot slot, List<CoordinationTrial> records, boolean comparable, boolean acceptedBundle,
@@ -36,6 +36,15 @@ public final class CoordinationComparison {
         public boolean appliesTo(Definition current) { return definition.equals(Objects.requireNonNull(current)); }
     }
     public static Assessment evaluate(Definition definition, List<CoordinationTrial> observations) {
+        return evaluate(definition, observations, false);
+    }
+    /** Recomputes the original v1 contract only when validating retained v1 reports. */
+    public static Assessment evaluateHistoricalV1(Definition definition, List<CoordinationTrial> observations) {
+        require(observations.stream().flatMap(t -> t.cases().stream()).allMatch(c -> c.review() == null
+                || c.review().materialUnresolvedClaims() == null), "Version 2 review in historical v1 records");
+        return evaluate(definition, observations, true);
+    }
+    private static Assessment evaluate(Definition definition, List<CoordinationTrial> observations, boolean historicalV1) {
         Objects.requireNonNull(definition); observations = List.copyOf(observations);
         require(observations.size() <= 4096, "Too many comparison records");
         var expected = new LinkedHashMap<Slot, Workload>();
@@ -50,7 +59,7 @@ public final class CoordinationComparison {
             else unexpected.add(observation);
         }
         var rows = new ArrayList<Row>();
-        for (var entry : expected.entrySet()) rows.add(row(definition, entry.getKey(), entry.getValue(), grouped.getOrDefault(entry.getKey(), List.of()), runCounts, traceCounts));
+        for (var entry : expected.entrySet()) rows.add(row(definition, entry.getKey(), entry.getValue(), grouped.getOrDefault(entry.getKey(), List.of()), runCounts, traceCounts, historicalV1));
         var issues = new ArrayList<String>(); if (!unexpected.isEmpty()) issues.add("UNEXPECTED_TRIAL_RECORDS");
         if (rows.stream().anyMatch(r -> !r.comparable())) issues.add("UNESTABLISHED_PAIRED_COVERAGE");
         var metrics = new EnumMap<Arm, ArmMetrics>(Arm.class);
@@ -60,7 +69,7 @@ public final class CoordinationComparison {
         return new Assessment(definition, issues.isEmpty() ? Conclusion.RECORDS_COMPLETE : Conclusion.UNRESOLVED,
                 "supplied-comparison-records-not-authenticated", "NOT_ESTABLISHED", rows, unexpected, metrics, pairs, issues);
     }
-    private static Row row(Definition definition, Slot slot, Workload workload, List<CoordinationTrial> records, Map<String, Integer> runCounts, Map<String, Integer> traceCounts) {
+    private static Row row(Definition definition, Slot slot, Workload workload, List<CoordinationTrial> records, Map<String, Integer> runCounts, Map<String, Integer> traceCounts, boolean historicalV1) {
         var issues = new ArrayList<String>(); var cases = new ArrayList<CaseAssessment>();
         if (records.size() != 1) {
             issues.add(records.isEmpty() ? "MISSING_TRIAL" : "AMBIGUOUS_TRIAL");
@@ -90,9 +99,9 @@ public final class CoordinationComparison {
             else if (values.isEmpty() || values.getFirst().response() == Response.NOT_PROVIDED) {
                 boolean knownAbsence = record.status() == Status.FAILED || record.status() == Status.CANCELLED
                         || record.status() == Status.COMPLETED && !values.isEmpty();
-                assessment = new CaseAssessment(task.caseId(), knownAbsence && binding, false, 0, task.criteria().size(), 0, List.of("NO_ANSWER_PROVIDED"));
+                assessment = new CaseAssessment(task.caseId(), knownAbsence && binding, false, 0, task.criteria().size(), 0, null, List.of("NO_ANSWER_PROVIDED"));
                 if (!values.isEmpty() && !task.inputIdentity().equals(values.getFirst().inputIdentity())) assessment = missing(task, "CHANGED_CASE_INPUTS");
-            } else assessment = review(task, values.getFirst(), binding);
+            } else assessment = review(task, values.getFirst(), binding, historicalV1);
             cases.add(assessment);
         }
         if (cases.stream().anyMatch(c -> !c.qualityResolved())) issues.add("INCOMPLETE_QUALITY_REVIEW");
@@ -101,12 +110,16 @@ public final class CoordinationComparison {
                 && !issues.contains("UNEXPECTED_CASE_OUTPUT") && !issues.contains("REUSED_RUN_ID") && !issues.contains("REUSED_TRACE_IDENTITY");
         return new Row(slot, records, comparable, acceptedBundle, cases, issues);
     }
-    private static CaseAssessment review(CaseTask task, CaseOutput output, boolean trialBinding) {
+    private static CaseAssessment review(CaseTask task, CaseOutput output, boolean trialBinding, boolean historicalV1) {
         var issues = new ArrayList<String>(); var review = output.review();
         if (!trialBinding || !task.inputIdentity().equals(output.inputIdentity())) issues.add("CHANGED_CASE_INPUTS");
-        if (review == null) return new CaseAssessment(task.caseId(), false, false, 0, task.criteria().size(), 0, concat(issues, "REVIEW_MISSING"));
+        if (review == null) return new CaseAssessment(task.caseId(), false, false, 0, task.criteria().size(), 0, null, concat(issues, "REVIEW_MISSING"));
         if (!review.outputIdentity().equals(output.outputIdentity())) issues.add("CHANGED_REVIEWED_OUTPUT");
         if (!review.claimAuditComplete()) issues.add("CLAIM_AUDIT_PENDING");
+        if (!historicalV1) {
+            if (review.materialUnresolvedClaims() == null) issues.add("MATERIAL_CLAIM_RESOLUTION_NOT_RECORDED");
+            else if (review.materialUnresolvedClaims() > 0) issues.add("MATERIAL_UNRESOLVED_CLAIM");
+        }
         if (!review.judgments().keySet().equals(new HashSet<>(task.criteria())) || review.judgments().containsValue(Judgment.UNRESOLVED)) issues.add("CRITERION_REVIEW_INCOMPLETE");
         int satisfied = (int) task.criteria().stream().filter(c -> review.judgments().get(c) == Judgment.SATISFIED).count();
         boolean resolved = issues.isEmpty();
@@ -114,9 +127,9 @@ public final class CoordinationComparison {
         boolean accepted = resolved && satisfied == task.criteria().size() && review.materialUnsupportedClaims() == 0 && responseMatches;
         if (!responseMatches) issues.add("UNEXPECTED_RESPONSE_DISPOSITION");
         if (review.materialUnsupportedClaims() > 0) issues.add("MATERIAL_UNSUPPORTED_CLAIM");
-        return new CaseAssessment(task.caseId(), resolved, accepted, satisfied, task.criteria().size(), review.materialUnsupportedClaims(), issues);
+        return new CaseAssessment(task.caseId(), resolved, accepted, satisfied, task.criteria().size(), review.materialUnsupportedClaims(), review.materialUnresolvedClaims(), issues);
     }
-    private static CaseAssessment missing(CaseTask task, String issue) { return new CaseAssessment(task.caseId(), false, false, 0, task.criteria().size(), 0, List.of(issue)); }
+    private static CaseAssessment missing(CaseTask task, String issue) { return new CaseAssessment(task.caseId(), false, false, 0, task.criteria().size(), 0, null, List.of(issue)); }
     private static List<String> concat(List<String> values, String value) { var result = new ArrayList<>(values); result.add(value); return result; }
     private static ArmMetrics metrics(List<Row> rows) {
         int comparable = 0, accepted = 0, comparableAccepted = 0, cases = 0, failed = 0, missing = 0, ambiguous = 0, incompleteUsage = 0;

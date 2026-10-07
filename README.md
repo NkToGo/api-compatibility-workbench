@@ -86,8 +86,8 @@ questions. A separate host-authorized [follow-up dispatcher](docs/follow-up-disp
 can run selected questions in fresh bounded tasks, retaining response lineage and
 usage. A separate read-only [reconciliation review](docs/follow-up-reconciliation.md)
 can assess question coverage and link fresh claims to earlier claims while preserving
-unresolved conflicts. These assessments remain advisory; measurement of coordination
-benefit remains planned. An [offline comparison evaluator](docs/coordination-comparison.md)
+unresolved conflicts. These assessments remain advisory; the separate comparison
+protocol measures recorded outcomes. An [offline comparison evaluator](docs/coordination-comparison.md)
 now retains declared trial denominators, separate reviewed quality, resource use and
 paired outcomes. A [shared trial runtime](docs/coordination-runtime.md) now captures
 common evidence and provides policy-bound registration, whole-trial deadlines and
@@ -109,7 +109,8 @@ pool and deadline, with sealed recovery and a retained partial-stage report.
 The [complete captured-team adapter](docs/coordination-team-comparison.md) adds fresh
 case-scoped follow-ups and reconciliation under the same pool and deadline, retaining
 earlier claims and exporting unreviewed final dossiers with inclusive accounting.
-Paired semantic acceptance and a routing decision remain planned.
+Adapter completion establishes no semantic acceptance or routing decision; the
+separate campaign review below judges the recorded answers.
 A [frozen campaign registration](docs/coordination-campaign.md) now binds the four
 compiled policies, captured inputs, rubric, shared limits and all twelve ordered
 trial slots before measurement. It registers comparison metadata without dispatching
@@ -122,10 +123,12 @@ now bind every final dossier, original/fresh team claim and captured evidence,
 keeping uncited claims and conflicts available. A separate
 [claim-level semantic review](docs/coordination-semantic-review.md) now judges the
 frozen campaign against its unchanged rubric, preserving incomplete criteria and
-unsupported or unresolved assertions. The paired quality/resource report remains pending.
+unsupported or unresolved assertions. The [paired quality/resource report](docs/coordination-results.md)
+now retains all twelve trials, their costs in recorded units and unestablished
+quality blocks; it selects no routing rule.
 
-There is no hosted web application or general migration runner yet. Coordination measurement,
-broader provider adapters, distributed workflows and repair publication are
+There is no hosted web application or general migration runner yet. Broader
+provider adapters, distributed workflows and repair publication are
 planned in the [development roadmap](docs/roadmap.md). No provider transition is
 currently certified as supported.
 

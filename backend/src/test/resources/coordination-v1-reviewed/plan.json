@@ -1,0 +1,49 @@
+{
+  "formatVersion": 1,
+  "definition": {
+    "experimentId": "legacy-reviewed-synthetic",
+    "origin": "SYNTHETIC_EXAMPLE",
+    "model": "gpt-5.6-terra",
+    "rubricIdentity": {
+      "sha256": "7777777777777777777777777777777777777777777777777777777777777777"
+    },
+    "implementations": {
+      "DETERMINISTIC": {
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "SINGLE_AGENT": {
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "INDEPENDENT_WORKERS": {
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "COORDINATED_TEAM": {
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    },
+    "workloads": [
+      {
+        "workloadId": "synthetic-workload",
+        "cases": [
+          {
+            "caseId": "synthetic-case",
+            "inputIdentity": {
+              "sha256": "5555555555555555555555555555555555555555555555555555555555555555"
+            },
+            "expectedResponse": "ANSWER",
+            "criteria": [
+              "observed-regressions"
+            ]
+          }
+        ]
+      }
+    ],
+    "repetitions": 1,
+    "limits": {
+      "modelCalls": 60,
+      "elapsedMillis": 1200000,
+      "inputBytesPerCall": 64000,
+      "outputTokensPerCall": 2048
+    }
+  }
+}

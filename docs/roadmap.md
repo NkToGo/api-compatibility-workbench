@@ -202,10 +202,21 @@ provider families and automatic repair-feedback loops remain outside its scope.
      [report paired outcomes, latency and resource use](coordination-results.md)
      with bound reviewed exports and preserved unresolved claim gates.
      Review inventories alone establish no quality or coordination benefit.
-   - **4d planned:** select a scoped routing rule from the observed comparison.
+   - **4d implemented:** [scoped diagnostics-first routing](coordination-routing.md)
+     for matching supplied conditions, with mandatory review, out-of-scope rejection,
+     preserved uncertainty and no automatic adaptive escalation or execution grant.
+   - **4e planned:** define and freeze a separately identified acceptance workload
+     with a real shared consumer assumption and independent expected behavior.
+     Preserve simpler baselines and unchanged historical evidence; do not select
+     workloads or grading criteria to guarantee a coordination winner.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.
+
+**Acceptance remains open.** The [Milestone 4 status](milestone-4-status.md) records
+the gap: all comparison machinery and scoped routing are implemented, but the
+known-case campaign did not establish useful coordination. The next acceptance
+step is separately frozen work, not a replay or reinterpretation of that campaign.
 
 ## Milestone 5 — Complete the maintainer workflow
 

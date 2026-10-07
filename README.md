@@ -126,6 +126,11 @@ frozen campaign against its unchanged rubric, preserving incomplete criteria and
 unsupported or unresolved assertions. The [paired quality/resource report](docs/coordination-results.md)
 now retains all twelve trials, their costs in recorded units and unestablished
 quality blocks; it selects no routing rule.
+A separate [scoped routing command](docs/coordination-routing.md) now recommends
+diagnostics first with mandatory maintainer review for matching recorded conditions.
+Changed conditions have no automatic route. The command is read-only and grants
+no execution or migration approval. [Milestone 4 acceptance](docs/milestone-4-status.md)
+remains open because useful coordination has not been established by this comparison.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

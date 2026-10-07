@@ -1,0 +1,87 @@
+{
+  "formatVersion": 1,
+  "policyId": "coordination-known-cases-diagnostics-first-v1",
+  "recordedOn": "2026-10-07",
+  "evidence": {
+    "comparisonId": "comparison-17e67ac0-5c1e-463b-a51e-9454200b6862",
+    "reportId": "report-7983cc37-e309-4ec9-80d8-ded8c7018c0b",
+    "resultSha256": "d0fa2885b6756c48bbfe51010ad3ccb301e795c89e31e5cde0ea3c884ed4e258",
+    "bindingSha256": "0a346f19b476144ab8176e5fff3665e65aa58dcc992a1b6b7419282aa80ecd52",
+    "reviewSha256": "2ba1dbb1f783982dcf5e2faaea0f14b0450f65c3bd54ea2277073ab3aa3db381"
+  },
+  "scopeDefinition": {
+    "experimentId": "coordination-campaign-8d49ba41-7cf4-4181-ad4b-fb20dd6c1915",
+    "origin": "SUPPLIED_RECORDS",
+    "model": "gpt-5.6-terra",
+    "rubricIdentity": {
+      "sha256": "7f8f80022f30f5953616832d47ea845004196e5878313f22b57c4c2c58a4c9bb"
+    },
+    "implementations": {
+      "DETERMINISTIC": {
+        "sha256": "c8feacd2806429b10126f04bb16a5deea464ffb06c48349072a7a400b940cef9"
+      },
+      "SINGLE_AGENT": {
+        "sha256": "58041ece47bf9a0c82551d77c311d2a11076f95840fec61b4bad71066a402fa0"
+      },
+      "INDEPENDENT_WORKERS": {
+        "sha256": "c4e46f50ecebd41154d8c56d7582427ba5c4de95c456e43a59cd820d4ec0cbf1"
+      },
+      "COORDINATED_TEAM": {
+        "sha256": "83fbdcaf46c0e21fd601e71b1c0a5fdbf95f3b289755a6159c15a98bfa11e39d"
+      }
+    },
+    "workloads": [
+      {
+        "workloadId": "two-case",
+        "cases": [
+          {
+            "caseId": "stripe-customer-sources-2020-08-27",
+            "inputIdentity": {
+              "sha256": "3293c9f8e0b213bce7c5cbaf84c16e39267a879339f355107b3d5fc811b77ed5"
+            },
+            "expectedResponse": "ANSWER",
+            "criteria": [
+              "observed-regressions",
+              "absence-preconditions",
+              "null-guard-limit"
+            ]
+          },
+          {
+            "caseId": "stripe-subscription-periods-2025-07-30",
+            "inputIdentity": {
+              "sha256": "23580cb1737fd1bfc6e37cc5d3dda2bb5d6789554131621eef634d3eb2396677"
+            },
+            "expectedResponse": "ANSWER",
+            "criteria": [
+              "observed-regressions",
+              "bound-item-selection",
+              "policy-and-deferral-scope"
+            ]
+          }
+        ]
+      }
+    ],
+    "repetitions": 3,
+    "limits": {
+      "modelCalls": 60,
+      "elapsedMillis": 1200000,
+      "inputBytesPerCall": 64000,
+      "outputTokensPerCall": 2048
+    }
+  },
+  "route": "DIAGNOSTICS_FIRST_REVIEW_REQUIRED",
+  "selectedArm": "DETERMINISTIC",
+  "rationale": "No accepted whole bundle or accepted-case coordination gain was established in the recorded known-case comparison. Use the simpler diagnostics for initial evidence inspection and retain mandatory maintainer review.",
+  "semanticScope": "Model-assisted, unblinded known-case review; no independent human adjudication, calibrated accuracy or general superiority claim.",
+  "automaticAdaptiveEscalation": false,
+  "maintainerReviewRequired": true,
+  "executionAuthorized": false,
+  "compatibilityApproved": false,
+  "milestone4Acceptance": "NOT_ESTABLISHED",
+  "promotionRequirements": [
+    "Freeze a separately identified workload with a real shared consumer assumption and meaningful cross-consumer acceptance criteria before participant dispatch.",
+    "Keep simpler baselines, complete claim review, unresolved outcomes and inclusive resource/time accounting; do not select favorable retries.",
+    "Demonstrate useful coordination under declared budgets with no permission leakage or unbounded delegation before enabling automatic team routing."
+  ],
+  "authority": "Local diagnostic preference only; not an authenticated producer, execution grant, compatibility verdict, repair approval or release approval."
+}

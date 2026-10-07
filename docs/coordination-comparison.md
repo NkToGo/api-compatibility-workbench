@@ -212,8 +212,10 @@ The [campaign controller](coordination-campaign-execution.md) now exports sealed
 unreviewed operational records. [Review-input inventories](coordination-review-packets.md)
 bind the actual dossiers, all team lineage and source evidence. A separate
 [semantic review](coordination-semantic-review.md) now records bound claim and criterion
-judgments for the frozen campaign. Binding those judgments into the paired report
-remains pending, including explicit gates for unresolved material claims.
+judgments for the frozen campaign. The [bound export and paired report](coordination-results.md)
+now include those judgments with explicit unresolved material claim gates. A separate
+[scoped routing policy](coordination-routing.md) selects initial diagnostics
+without changing this evaluator's historical reports or granting dispatch access.
 
 ## Validation scope and remaining steps
 
@@ -247,8 +249,12 @@ This was a synthetic empty-record check, not a configuration measurement.
    **4c3b implemented:** [complete and validate bound semantic reviews](coordination-semantic-review.md).
    **4c3c implemented:** [paired outcomes, latency and inclusive resource report](coordination-results.md)
    with bound version 2 review metadata and preserved unresolved claim gates.
-7. **4d planned:** choose a scoped routing rule only if the evidence supports it;
-   otherwise preserve the simpler configuration and the explicit uncertainty.
+7. **4d implemented:** [diagnostics-first routing for exact supplied conditions](coordination-routing.md),
+   with mandatory review, out-of-scope rejection and preserved uncertainty. This
+   establishes no quality winner, execution grant or automatic team promotion.
+8. **4e planned:** freeze a separately identified acceptance workload with a real
+   shared consumer assumption; useful-coordination acceptance remains open in the
+   [Milestone 4 status](milestone-4-status.md).
 
 The recorded known-case campaign is described in the results report. The evaluator
 does not establish general reliability or select a routing rule.

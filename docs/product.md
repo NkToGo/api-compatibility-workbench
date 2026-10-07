@@ -47,9 +47,12 @@ The handoff binds advisory findings to the exact retained source and execution;
 protected verification still owns behavioral conclusions.
 Repeated subscription repair trials retain behavioral and operational outcomes.
 Bounded task coordination, follow-up dispatch and advisory reconciliation are
-implemented for the curated cases. Their benefit over simpler configurations has
-not been measured; the [comparison contract](coordination-comparison.md) separates
-reviewed quality from execution and usage. The repository-to-PR workflow remains planned.
+implemented for the curated cases. The [known-case comparison](coordination-results.md)
+did not establish benefit over simpler configurations under its recorded review;
+the [comparison contract](coordination-comparison.md) separates reviewed quality
+from execution and usage. A [scoped read-only routing policy](coordination-routing.md)
+prefers initial diagnostics with mandatory review when supplied conditions match.
+Useful-coordination acceptance remains open; the repository-to-PR workflow remains planned.
 Agent assertions cannot become test results merely because they conform to a schema.
 
 ## Current and planned system boundaries
@@ -64,8 +67,9 @@ These are single-host boundaries with trusted local storage, not multi-tenant co
 The planned product API will own organization access and maintainer review records.
 Selected repository access, provider actions, repair publication and distributed
 execution remain future integrations. No current result approves a deployment.
-The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) separates implemented
-evaluation machinery from the measurements still required before agent coordination.
+The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
+bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)
+keeps useful-coordination acceptance separate from implemented orchestration.
 
 The full release should include an installable application, documented operations,
 cost and execution visibility, recoverable campaigns and a public gallery of

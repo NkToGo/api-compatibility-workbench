@@ -54,6 +54,9 @@ jobs:
       - name: Verify bound reviewed-record export and recovery
         shell: pwsh
         run: ./scripts/Test-CoordinationReviewedRecords.ps1
+      - name: Verify scoped routing and evidence limits
+        shell: pwsh
+        run: ./scripts/Test-CoordinationRoute.ps1
       - name: Build immutable case worker
         if: runner.os == 'Linux'
         shell: pwsh

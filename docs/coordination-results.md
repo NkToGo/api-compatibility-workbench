@@ -12,7 +12,9 @@ input tokens than the single agent; aggregate spend does not erase that differen
 
 These observations describe two known synthetic cases under one frozen model and
 budget. They do not establish general superiority, production readiness or a routing
-policy. Step 4d will make a separate, scoped routing decision.
+policy. The separate [scoped routing command](coordination-routing.md) recommends
+initial diagnostics with mandatory review for matching conditions, preserving this
+report and its unresolved findings.
 
 The [structured version 2 result](evaluations/coordination-results-2026-10-07.json)
 retains all trial rows, case assessments, six paired outcomes and resource totals.

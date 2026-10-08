@@ -213,8 +213,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      or coordination benefit exists yet. **4e2a1 implemented:** [normalized host
      assertions and a pure renewal ledger](invoice-renewal-host-checks.md), preserving
      incorrect outputs, duplicates, both arrival orders, conflicts and incomplete
-     execution. **4e2a2 planned next:** versioned synthetic fixtures, independently
-     held expectations and integrity/coverage checks. **4e2b planned:** versioned Java
+     execution. **4e2a2 in progress:** versioned synthetic fixtures, independently
+     held expectations and integrity/coverage checks. **4e2a2a implemented:**
+     [pinned raw fixtures and separate answers for the four rollout vectors](invoice-renewal-fixtures.md),
+     with each path alone, both arrival orders and a blocking partial-coverage gate.
+     **4e2a2b planned next:** the remaining eleven scenario families, required edge
+     variants and admission/incomplete-execution controls, then full coverage checks.
+     **4e2b planned:** versioned Java
      consumers and baseline/target execution. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete

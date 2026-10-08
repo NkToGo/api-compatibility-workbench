@@ -7,9 +7,10 @@ assertion and ordered in-memory ledger boundaries. They do not parse Stripe
 payloads, compile consumers, verify webhook signatures or run a new migration case.
 
 The original contract files and their content index remain unchanged. This document
-records the implementation boundary separately. Exact versioned fixtures, fixture
-registration, consumer/harness/runtime identities and observed baseline/target
-executions remain pending. Normalized unit inputs are not that fixture registry.
+records the implementation boundary separately. A [separate fixture registration](invoice-renewal-fixtures.md)
+now covers the four rollout version vectors. Complete fixture coverage,
+consumer/harness/runtime identities and observed baseline/target executions remain
+pending. Normalized unit inputs are distinct from that raw fixture registry.
 
 ## Registered input and consumer output
 
@@ -108,11 +109,13 @@ subscriptions, preexisting/fresh conflicts, safe refusals, failed executions,
 malformed protocol, stale identities and immutable history. It also checks that
 one correct path or a matching final ledger cannot hide another path's failure.
 
-These tests establish pure host behavior. They do not establish the 15-scenario
-versioned fixture inventory, valid provider payload shapes, correct SDK parsing,
+These tests establish pure host behavior. A separate [fixture registration](invoice-renewal-fixtures.md)
+now pins authored sources and answers for the four rollout vectors; it blocks full
+case coverage until the remaining families and controls are registered. Neither
+test suite establishes the complete 15-scenario inventory, valid provider payload shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release
 approval. The original business oracle remains authoritative. The next changes
-register authored fixtures and expectations, then execute pinned Java consumers.
+complete fixture coverage, then execute pinned Java consumers.
 
 This boundary assumes one trusted host. It is not a durable or concurrent database,
 an authenticated receipt system, tenant isolation, a complete joint comparator or

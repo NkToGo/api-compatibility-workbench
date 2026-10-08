@@ -1,0 +1,18 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "coverageStage": "ROLLOUT_VECTORS_ONLY",
+  "contractIdentity": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+  "files": {
+    "event-acacia.json": "1a305642dcfa4a091b487636f8e7282338c3cadbfdfd6b5f0eafbc62333e776f",
+    "event-basil.json": "af723a0f78172c2a6783c4152e05ec63127c4e943c688fa20dd478b8836449be",
+    "invoice-acacia.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+    "invoice-basil.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+    "state-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+    "state-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+    "scenarios.json": "4062b4334fe5fadf2b577c07cb92e5c557a382abaf3daa7d4eac510a6bdc7378",
+    "expectations.json": "0aa0fccb11ab371b8633d9b20ee641a5512c88098909eb0bee54800b64acbcb5"
+  }
+}

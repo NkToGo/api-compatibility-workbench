@@ -136,8 +136,12 @@ A separate [invoice subscription identity workload](cases/stripe-invoice-subscri
 now defines source rights, primary-source provenance and an authored joint business
 oracle for webhook and reconciliation consumers. Separate [host assertions and
 ordered ledger checks](docs/invoice-renewal-host-checks.md) now preserve normalized
-outputs, duplicate/conflicting effects and incomplete executions. Versioned fixtures,
-new consumer execution, joint comparison and coordination benefit remain pending.
+outputs, duplicate/conflicting effects and incomplete executions. A [pinned fixture
+registration](docs/invoice-renewal-fixtures.md) now holds raw synthetic sources and
+separate answers for the four rollout version vectors. Its partial-coverage gate
+blocks full-case use until the remaining scenario families and controls are
+registered. New consumer execution, joint comparison and coordination benefit
+remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

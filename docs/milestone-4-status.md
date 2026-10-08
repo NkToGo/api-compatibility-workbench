@@ -64,8 +64,10 @@ Step 4e1 establishes a versioned selection/rights/oracle contract only. Fixture,
 consumer, protected-harness/runtime and campaign identities remain pending.
 Complete baseline test evidence means a verified independent oracle and observed
 executions, not a pre-written accepted deterministic answer. Step 4e2a implements
-the fixture and pure oracle/ledger boundary next; consumer execution follows as a
-separate step. The four arms and joint review must share the same aggregate evidence
+the fixture and pure oracle/ledger boundary in separate changes. Step 4e2a1 adds
+[normalized host assertions and ordered ledger checks](invoice-renewal-host-checks.md);
+the versioned fixture registry and observed consumer execution remain pending.
+The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 
 No new participant run, measured result, routing promotion or Milestone 4 acceptance

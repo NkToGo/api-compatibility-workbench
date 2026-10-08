@@ -210,8 +210,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      [invoice subscription identity across webhook/reconciliation consumers](../cases/stripe-invoice-subscription-2025-03-31/README.md),
      with primary-source provenance, rights and an authored business oracle held
      independently from future candidate implementations. No executable new case
-     or coordination benefit exists yet. **4e2a planned next:** synthetic fixtures
-     and protected pure oracle/ledger checks. **4e2b planned:** versioned Java
+     or coordination benefit exists yet. **4e2a1 implemented:** [normalized host
+     assertions and a pure renewal ledger](invoice-renewal-host-checks.md), preserving
+     incorrect outputs, duplicates, both arrival orders, conflicts and incomplete
+     execution. **4e2a2 planned next:** versioned synthetic fixtures, independently
+     held expectations and integrity/coverage checks. **4e2b planned:** versioned Java
      consumers and baseline/target execution. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete

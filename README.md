@@ -134,8 +134,10 @@ remains open because useful coordination has not been established by this compar
 
 A separate [invoice subscription identity workload](cases/stripe-invoice-subscription-2025-03-31/README.md)
 now defines source rights, primary-source provenance and an authored joint business
-oracle for webhook and reconciliation consumers. It is contract only: new consumer
-execution, joint comparison and coordination benefit remain unimplemented/unmeasured.
+oracle for webhook and reconciliation consumers. Separate [host assertions and
+ordered ledger checks](docs/invoice-renewal-host-checks.md) now preserve normalized
+outputs, duplicate/conflicting effects and incomplete executions. Versioned fixtures,
+new consumer execution, joint comparison and coordination benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

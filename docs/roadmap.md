@@ -222,9 +222,15 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4e2a2b1 implemented:** separately pinned association fixtures for expansion
      on either path, multiple subscriptions, standalone and quote origins in both
      versions, with each path alone and both whole-path arrival orders. The original
-     rollout corpus remains unchanged. **4e2a2b2 planned next:** missing and
+     rollout corpus remains unchanged. **4e2a2b2 in progress:** missing and
      contradictory association, duplicate/conflicting delivery, unavailable state,
-     unpaid invoices and old-delivery variants, split further as needed. Admission
+     unpaid invoices and old-delivery variants, split further as needed.
+     **4e2a2b2a implemented:** separately pinned missing/contradictory association
+     fixtures, including absent versus null fields, guarded parent rejection and
+     forty-four per-path/both-order sequences. Shared variant registration preserves
+     all prior association identities. **4e2a2b2b planned next:** duplicate delivery
+     and conflicting associations with preserved evidence and initial ledger values.
+     Unavailable state, unpaid invoices and old-delivery variants follow. Admission
      and incomplete-execution controls and a complete variant-coverage gate follow;
      current partial registrations still reject full-case use.
      **4e2b planned:** versioned Java

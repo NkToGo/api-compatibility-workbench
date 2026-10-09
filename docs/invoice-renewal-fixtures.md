@@ -111,14 +111,56 @@ consumer or provider parser. Host registration attaches exact identities; worker
 reads expose neither answers nor a permission grant. The subscription list is a
 case fixture input, not a new general-purpose retrieval API.
 
+## Missing and contradictory association corpus
+
+The [refusal-v1 bundle](../cases/stripe-invoice-subscription-2025-03-31/fixtures/refusal-v1/bundle.json)
+registers two more frozen families. `InvoiceRenewalRefusalFixtures` pins its
+manifest SHA-256:
+`4a0eb74bce5f89b8ec85f200bda3dc5b2d7d16fa828bcac64fc7389521173f9f`.
+Its twenty-four raw source files contain eleven invoice/event pairs and two
+versioned active-state references. These are authored absence/rejection controls,
+not captured responses or claims that malformed fields are valid provider shapes.
+
+| Family | Registered variants | Independently expected fact |
+| --- | --- | --- |
+| `missing-association` | Acacia subscription field absent or null; Basil parent absent or null, subscription details absent or null, subscription ID absent or null | `UNRESOLVED` / `MISSING_ASSOCIATION` |
+| `contradictory-parent` | Basil unknown parent discriminator; quote discriminator with subscription details; conflicting legacy and new association IDs | `UNRESOLVED` / `INVALID_ASSOCIATION` |
+
+The missing variants still declare a subscription-cycle billing reason. An absent
+or null association in that context cannot become a standalone invoice. Unknown
+and contradictory parents cannot be resolved by choosing the first field or the
+new field, or by ignoring contradictory details behind a quote discriminator.
+Both paths preserve invoice/customer and known version, return no subscription
+winner and retain the specific refusal reason. A supplied active `sub_primary`
+state cannot repair an absent or contradictory association by itself.
+
+[Scenario inputs](../cases/stripe-invoice-subscription-2025-03-31/fixtures/refusal-v1/scenarios.json)
+register eleven explicit variants and twenty-two deliveries. [Separate expected answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/refusal-v1/expectations.json)
+hold the facts and forty-four sequences: each path alone and both arrival orders.
+Every registered sequence starts empty, records `NO_EFFECT` for every receipt and
+ends empty. Correct refusal facts still require a completed, valid result exchange;
+an operational failure or missing result remains `NOT_EVALUATED`.
+These unit checks do not implement signature or adapter admission controls.
+
+The association and refusal catalogs use `InvoiceRenewalVariantFixtures` for their
+shared, package-private registration shape. Each catalog supplies compiled variant
+identities, exact versions, its own inventory and its own manifest pin. This
+sharing changes neither existing source bytes nor normalization. A retained
+twenty-four-delivery identity reference was checked before and after extraction;
+the original association input/evidence identities are unchanged. The rollout
+loader and both earlier raw corpora remain unchanged. This boundary is specific
+to these invoice inputs; it does not register arbitrary repositories or execute
+consumers. All returned bundles remain immutable and reject full-case use.
+
 ## Coverage and validation limits
 
-The two coverage stages remain **`ROLLOUT_VECTORS_ONLY`** and
-**`ASSOCIATION_VARIANTS_ONLY`**. Collectively they register eight of fifteen families;
+The three coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
+**`ASSOCIATION_VARIANTS_ONLY`** and **`ASSOCIATION_REFUSALS_ONLY`**.
+Collectively they register ten of fifteen families;
 there is no combined full-case registry yet. The original rollout bundle's
-`missingScenarioIds()` continues to describe that bundle alone. Both bundles'
-`requireFullCaseCoverage()` reject full-case use. Missing/contradictory association,
-repeated delivery, conflicts, unavailable state, unpaid invoices and old-delivery
+`missingScenarioIds()` continues to describe that bundle alone. Every bundle's
+`requireFullCaseCoverage()` rejects full-case use. Repeated delivery, conflicts,
+unavailable state, unpaid invoices and old-delivery
 variants remain. Admission and incomplete-execution controls also remain. No
 full-case execution or acceptance may treat these partial corpora as sufficient.
 
@@ -127,7 +169,10 @@ vectors, input/answer separation, immutable data and authored sequence consisten
 against the pure host ledger, plus the association shapes, reversed state lists,
 explicit nulls, separate identities and forty new authored sequences. A deliberately
 wrong first-entry/customer-only answer fails its fact assertion even when it
-appends the expected number of markers. Those sequence checks supply golden facts in unit
+appends the expected number of markers. Refusal checks cover the eleven registered
+input shapes and forty-four authored sequences. A wrong `NON_SUBSCRIPTION` answer
+fails its fact assertion despite producing the same empty ledger; a failed run or
+missing result does not become a passing refusal. Those sequence checks supply golden facts in unit
 tests; they produce no recorded consumer execution evidence. Linux CI additionally
 tests symbolic source and ancestor rejection. Pinned Java consumer execution,
 signature admission, a joint capture envelope, campaign readiness, coordination

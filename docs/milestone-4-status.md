@@ -67,7 +67,7 @@ executions, not a pre-written accepted deterministic answer. Step 4e2a implement
 the fixture and pure oracle/ledger boundary in separate changes. Step 4e2a1 adds
 [normalized host assertions and ordered ledger checks](invoice-renewal-host-checks.md);
 [separately pinned fixture corpora](invoice-renewal-fixtures.md) now register the
-four rollout families and four association families, with incomplete full-case
+four rollout families, four association families and two refusal families, with incomplete full-case
 coverage. Observed consumer execution remains pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.

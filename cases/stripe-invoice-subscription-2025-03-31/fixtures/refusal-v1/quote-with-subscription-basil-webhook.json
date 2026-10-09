@@ -1,0 +1,27 @@
+{
+  "id": "evt_quote_with_subscription_basil",
+  "object": "event",
+  "api_version": "2025-03-31.basil",
+  "created": 1743465600,
+  "livemode": false,
+  "type": "invoice.paid",
+  "data": {
+    "object": {
+      "id": "in_primary",
+      "object": "invoice",
+      "customer": "cus_case",
+      "status": "paid",
+      "paid": true,
+      "billing_reason": "quote_accept",
+      "parent": {
+        "type": "quote_details",
+        "quote_details": {
+          "quote": "qt_case"
+        },
+        "subscription_details": {
+          "subscription": "sub_primary"
+        }
+      }
+    }
+  }
+}

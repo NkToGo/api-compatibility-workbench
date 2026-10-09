@@ -1,0 +1,9 @@
+{
+  "id": "in_primary",
+  "object": "invoice",
+  "customer": "cus_case",
+  "status": "paid",
+  "paid": true,
+  "billing_reason": "subscription_cycle",
+  "parent": null
+}

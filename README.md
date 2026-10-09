@@ -142,8 +142,10 @@ separate answers for the four rollout version vectors. Its partial-coverage gate
 blocks full-case use until the remaining scenario families and controls are
 registered. A separately pinned association corpus adds expansion on either path,
 two subscriptions for one customer, standalone invoices and quote origins for both
-versions. Together the corpora cover eight of fifteen families; refusal, conflict
-and admission/execution controls remain pending. New consumer execution, joint comparison and coordination benefit
+versions. A separately pinned refusal corpus adds eight missing-association variants
+and three authored contradictory-parent controls. The three corpora cover ten of
+fifteen families; duplicate/conflict, state, unpaid and old-delivery variants and
+admission/execution controls remain pending. New consumer execution, joint comparison and coordination benefit
 remain pending.
 
 There is no hosted web application or general migration runner yet. Broader

@@ -1,0 +1,950 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "authority": "authored-application-policy",
+  "scenarios": [
+    {
+      "id": "expanded-webhook-acacia",
+      "facts": {
+        "webhook": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "expanded-reconciliation-acacia",
+      "facts": {
+        "webhook": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "two-subscriptions-acacia",
+      "facts": {
+        "webhook-primary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        },
+        "webhook-secondary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_secondary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_secondary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        },
+        "reconciliation-primary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        },
+        "reconciliation-secondary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_secondary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_secondary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook-primary",
+            "webhook-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation-primary",
+            "reconciliation-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook-primary",
+            "webhook-secondary",
+            "reconciliation-primary",
+            "reconciliation-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED",
+            "DUPLICATE",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation-primary",
+            "reconciliation-secondary",
+            "webhook-primary",
+            "webhook-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED",
+            "DUPLICATE",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "standalone-invoice-acacia",
+      "facts": {
+        "webhook": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_standalone",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_standalone",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "quote-parent-acacia",
+      "facts": {
+        "webhook": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_quote",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_quote",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "expanded-webhook-basil",
+      "facts": {
+        "webhook": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "expanded-reconciliation-basil",
+      "facts": {
+        "webhook": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "two-subscriptions-basil",
+      "facts": {
+        "webhook-primary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        },
+        "webhook-secondary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_secondary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_secondary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        },
+        "reconciliation-primary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        },
+        "reconciliation-secondary": {
+          "status": "RESOLVED",
+          "invoiceId": "in_secondary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_secondary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook-primary",
+            "webhook-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation-primary",
+            "reconciliation-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook-primary",
+            "webhook-secondary",
+            "reconciliation-primary",
+            "reconciliation-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED",
+            "DUPLICATE",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation-primary",
+            "reconciliation-secondary",
+            "webhook-primary",
+            "webhook-secondary"
+          ],
+          "outcomes": [
+            "APPENDED",
+            "APPENDED",
+            "DUPLICATE",
+            "DUPLICATE"
+          ],
+          "finalEffects": [
+            {
+              "invoiceId": "in_primary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_primary",
+              "action": "RECORD_PAID_RENEWAL"
+            },
+            {
+              "invoiceId": "in_secondary",
+              "customerId": "cus_case",
+              "subscriptionId": "sub_secondary",
+              "action": "RECORD_PAID_RENEWAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "standalone-invoice-basil",
+      "facts": {
+        "webhook": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_standalone",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_standalone",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "quote-parent-basil",
+      "facts": {
+        "webhook": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_quote",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        },
+        "reconciliation": {
+          "status": "NON_SUBSCRIPTION",
+          "invoiceId": "in_quote",
+          "customerId": "cus_case",
+          "subscriptionId": null,
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": null
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    }
+  ]
+}

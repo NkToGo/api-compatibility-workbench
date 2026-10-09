@@ -1,0 +1,25 @@
+{
+  "id": "evt_expanded_reconciliation_basil_primary",
+  "object": "event",
+  "api_version": "2025-03-31.basil",
+  "created": 1743465600,
+  "livemode": false,
+  "type": "invoice.paid",
+  "data": {
+    "object": {
+      "id": "in_primary",
+      "object": "invoice",
+      "customer": "cus_case",
+      "status": "paid",
+      "paid": true,
+      "billing_reason": "subscription_cycle",
+      "parent": {
+        "type": "subscription_details",
+        "quote_details": null,
+        "subscription_details": {
+          "subscription": "sub_primary"
+        }
+      }
+    }
+  }
+}

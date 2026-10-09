@@ -69,19 +69,65 @@ to the manifest, scenario and delivery. It does not prove execution or signature
 verification. Raw bytes remain available to a future host verification boundary;
 registration currently neither verifies webhook signatures nor dispatches work.
 
+## Separate association corpus
+
+The [association-v1 bundle](../cases/stripe-invoice-subscription-2025-03-31/fixtures/association-v1/bundle.json)
+adds four families without changing any `rollout-v1` or original contract bytes.
+`InvoiceRenewalAssociationFixtures` pins its manifest SHA-256:
+`991c268eb208ba25a1704ed7583e85d00cfa5165400f522eadd6a5f3ffff0940`.
+It uses the same bounded byte/JSON boundary and original contract chain. This
+manifest, its source files and its input/evidence identities remain distinct from
+the rollout corpus. A later full-case registry must bind both corpora explicitly.
+
+| Family | Required variants now registered | Expected behavior |
+| --- | --- | --- |
+| `expanded-association` | Expansion on the webhook path or reconciliation path, each in Acacia and Basil | Same exact subscription as the other path's string reference |
+| `two-subscriptions` | Acacia and Basil, two invoices for the same customer, reversed subscription listing order between paths | Two separate invoice/subscription bindings and two markers |
+| `standalone-invoice` | Acacia explicit-null subscription; Basil explicit-null parent; manual billing reason | `NON_SUBSCRIPTION`, no marker |
+| `quote-parent` | Acacia quote with explicit-null subscription; Basil guarded quote parent; quote billing reason | `NON_SUBSCRIPTION`, no marker |
+
+The thirty source files are synthetic scoped invoice/event and subscription-state
+representations. Quote origins use the pinned SDK's `quote_accept` billing reason,
+legacy `quote` and Basil `parent.quote_details.quote` fields; these field facts are
+covered by the existing provenance. An expanded association carries the identifier
+and object type only; separate registered active-state evidence remains required.
+Standalone and quote inputs still supply an unrelated active subscription: its
+presence must not turn a non-subscription invoice into a renewal.
+
+The two-subscription variants supply complete authored two-entry state lists with
+opposite orders, not a live paginated query or customer-wide inference. Both
+consumers must match the invoice association to the exact state and approved
+binding. Each path processes both invoice deliveries independently. A path-alone
+sequence appends two markers; either combined whole-path order appends two and
+then retains two duplicates. These two block orders are not all possible
+interleavings and do not establish concurrent database behavior.
+
+[Scenario inputs](../cases/stripe-invoice-subscription-2025-03-31/fixtures/association-v1/scenarios.json)
+name ten explicit variants and twenty-four deliveries, including configuration
+and raw source references. [Separate expected answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/association-v1/expectations.json)
+hold the semantic facts and forty ordered sequences. Expected classifications and
+bindings are authored from the frozen application policy, not obtained from a
+consumer or provider parser. Host registration attaches exact identities; worker
+reads expose neither answers nor a permission grant. The subscription list is a
+case fixture input, not a new general-purpose retrieval API.
+
 ## Coverage and validation limits
 
-Coverage is **`ROLLOUT_VECTORS_ONLY`**: four of fifteen required scenario families.
-`missingScenarioIds()` lists the other eleven. `requireFullCaseCoverage()` rejects
-this partial registration. Expansion, multiple subscriptions, explicit standalone
-and quote origins, missing/contradictory association, repeated delivery, conflicts,
-state failures, unpaid invoices and old deliveries remain to be registered with
-their required variants. Admission and incomplete-execution controls also remain.
-No full-case execution or acceptance may treat this partial corpus as sufficient.
+The two coverage stages remain **`ROLLOUT_VECTORS_ONLY`** and
+**`ASSOCIATION_VARIANTS_ONLY`**. Collectively they register eight of fifteen families;
+there is no combined full-case registry yet. The original rollout bundle's
+`missingScenarioIds()` continues to describe that bundle alone. Both bundles'
+`requireFullCaseCoverage()` reject full-case use. Missing/contradictory association,
+repeated delivery, conflicts, unavailable state, unpaid invoices and old-delivery
+variants remain. Admission and incomplete-execution controls also remain. No
+full-case execution or acceptance may treat these partial corpora as sufficient.
 
 Default Java verification checks byte integrity, the four declared version
 vectors, input/answer separation, immutable data and authored sequence consistency
-against the pure host ledger. Those sequence checks supply golden facts in unit
+against the pure host ledger, plus the association shapes, reversed state lists,
+explicit nulls, separate identities and forty new authored sequences. A deliberately
+wrong first-entry/customer-only answer fails its fact assertion even when it
+appends the expected number of markers. Those sequence checks supply golden facts in unit
 tests; they produce no recorded consumer execution evidence. Linux CI additionally
 tests symbolic source and ancestor rejection. Pinned Java consumer execution,
 signature admission, a joint capture envelope, campaign readiness, coordination

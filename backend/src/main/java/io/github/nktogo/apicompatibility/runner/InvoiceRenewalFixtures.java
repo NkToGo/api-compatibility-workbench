@@ -63,27 +63,32 @@ final class InvoiceRenewalFixtures {
     }
 
     static Bundle load(Path caseRoot) throws IOException {
+        return registration(pinnedFiles(caseRoot, "rollout-v1", BUNDLE_SHA256, "ROLLOUT_VECTORS_ONLY", FILES));
+    }
+
+    /** Shared host byte boundary. The caller supplies the compiled pin and exact flat inventory. */
+    static Map<String, byte[]> pinnedFiles(Path caseRoot, String corpus, String pin, String stage, Set<String> inventory) throws IOException {
         Path root = caseRoot.toAbsolutePath().normalize(); plainDirectories(root);
-        Path fixtureRoot = root.resolve("fixtures/rollout-v1"); plainDirectories(fixtureRoot);
+        Path fixtureRoot = root.resolve("fixtures").resolve(corpus); plainDirectories(fixtureRoot);
         byte[] manifestBytes = read(fixtureRoot.resolve("bundle.json"));
-        CaseInputs.require(BUNDLE_SHA256.equals(CaseInputs.hash(manifestBytes)), "Invoice fixture registration changed");
+        CaseInputs.require(pin.equals(CaseInputs.hash(manifestBytes)), "Invoice fixture registration changed");
         var manifest = object(manifestBytes);
         fields(manifest, "formatVersion", "caseId", "policy", "origin", "coverageStage", "contractIdentity", "files");
-        header(manifest); equal(manifest, "origin", "authored-synthetic"); equal(manifest, "coverageStage", "ROLLOUT_VECTORS_ONLY");
+        header(manifest); equal(manifest, "origin", "authored-synthetic"); equal(manifest, "coverageStage", stage);
         verifyContract(root, text(manifest, "contractIdentity"));
-        var hashes = obj(manifest, "files"); CaseInputs.require(hashes.keySet().equals(FILES), "Unexpected fixture inventory");
-        var names = new HashSet<>(FILES); names.add("bundle.json");
+        var hashes = obj(manifest, "files"); CaseInputs.require(hashes.keySet().equals(inventory), "Unexpected fixture inventory");
+        var names = new HashSet<>(inventory); names.add("bundle.json");
         try (var entries = Files.newDirectoryStream(fixtureRoot)) {
             for (Path file : entries) CaseInputs.require(names.remove(file.getFileName().toString()), "Unregistered fixture entry");
         }
         CaseInputs.require(names.isEmpty(), "Incomplete fixture inventory");
         var files = new TreeMap<String, byte[]>(); files.put("bundle.json", manifestBytes);
-        for (String name : FILES) {
+        for (String name : inventory) {
             byte[] bytes = read(fixtureRoot.resolve(name));
             CaseInputs.require(CaseInputs.hash(bytes).equals(text(hashes, name)), "Invoice fixture bytes changed");
             object(bytes); files.put(name, bytes);
         }
-        return registration(files);
+        return Collections.unmodifiableMap(files);
     }
 
     private static void verifyContract(Path root, String identity) throws IOException {
@@ -185,7 +190,7 @@ final class InvoiceRenewalFixtures {
         CaseInputs.require(deliveries.get("webhook").expected().effectiveApiVersion().endsWith(webhookLegacy ? ".acacia" : ".basil")
                 && deliveries.get("reconciliation").expected().effectiveApiVersion().endsWith(requestLegacy ? ".acacia" : ".basil"), "Invalid rollout version vector");
     }
-    private static void configuration(JsonObject value, String version, boolean webhook) {
+    static void configuration(JsonObject value, String version, boolean webhook) {
         fields(value, "sdkVersion", "requestApiVersion", "endpointApiVersion", "accountApiVersion", "adapterApiVersion");
         equal(value, "sdkVersion", version.endsWith(".acacia") ? "28.4.0" : "29.0.0"); equal(value, "requestApiVersion", version);
         CaseInputs.require(InvoiceRenewalOracle.VERSIONS.contains(text(value, "endpointApiVersion"))
@@ -193,11 +198,11 @@ final class InvoiceRenewalFixtures {
         if (webhook) equal(value, "adapterApiVersion", version);
         else CaseInputs.require(value.get("adapterApiVersion").isJsonNull(), "Unexpected request adapter");
     }
-    private static JsonObject source(Map<String, byte[]> files, String name, String kind, String version) {
+    static JsonObject source(Map<String, byte[]> files, String name, String kind, String version) {
         var value = new JsonObject(); value.addProperty("file", name); value.addProperty("sha256", CaseInputs.hash(files.get(name)));
         value.addProperty("kind", kind); value.addProperty("apiVersion", version); value.add("payload", object(files.get(name))); return value;
     }
-    private static Map<String, InvoiceRenewalLedger.Effect> effects(JsonArray values) {
+    static Map<String, InvoiceRenewalLedger.Effect> effects(JsonArray values) {
         var result = new LinkedHashMap<String, InvoiceRenewalLedger.Effect>();
         for (var value : values) {
             var effect = asObject(value); fields(effect, "invoiceId", "customerId", "subscriptionId", "action");
@@ -207,7 +212,7 @@ final class InvoiceRenewalFixtures {
         }
         return result;
     }
-    private static InvoiceRenewalLedger.Outcome outcome(String value) {
+    static InvoiceRenewalLedger.Outcome outcome(String value) {
         CaseInputs.require(Arrays.stream(InvoiceRenewalLedger.Outcome.values()).anyMatch(v -> v.name().equals(value)), "Invalid ledger outcome");
         return InvoiceRenewalLedger.Outcome.valueOf(value);
     }
@@ -267,21 +272,21 @@ final class InvoiceRenewalFixtures {
             default -> throw new IllegalArgumentException("Invalid fixture token");
         }
     }
-    private static void header(JsonObject value) { version(value); equal(value, "caseId", CASE_ID); equal(value, "policy", POLICY); }
+    static void header(JsonObject value) { version(value); equal(value, "caseId", CASE_ID); equal(value, "policy", POLICY); }
     private static void version(JsonObject value) {
         var version = value.get("formatVersion");
         CaseInputs.require(version != null && version.isJsonPrimitive() && version.getAsJsonPrimitive().isNumber()
                 && version.getAsBigDecimal().compareTo(java.math.BigDecimal.ONE) == 0, "Invalid fixture format");
     }
-    private static void fields(JsonObject value, String... keys) { CaseInputs.require(value.keySet().equals(Set.of(keys)), "Invalid fixture fields"); }
-    private static void equal(JsonObject value, String key, String expected) { CaseInputs.require(expected.equals(text(value, key)), "Invalid fixture metadata"); }
-    private static String text(JsonObject value, String key) {
+    static void fields(JsonObject value, String... keys) { CaseInputs.require(value.keySet().equals(Set.of(keys)), "Invalid fixture fields"); }
+    static void equal(JsonObject value, String key, String expected) { CaseInputs.require(expected.equals(text(value, key)), "Invalid fixture metadata"); }
+    static String text(JsonObject value, String key) {
         var field = value.get(key); CaseInputs.require(field != null && field.isJsonPrimitive() && field.getAsJsonPrimitive().isString(), "Invalid fixture string"); return field.getAsString();
     }
-    private static JsonObject asObject(JsonElement value) { CaseInputs.require(value != null && value.isJsonObject(), "Fixture object required"); return value.getAsJsonObject(); }
-    private static JsonObject obj(JsonObject value, String key) { return asObject(value.get(key)); }
-    private static JsonArray array(JsonObject value, String key) { var field = value.get(key); CaseInputs.require(field != null && field.isJsonArray(), "Fixture array required"); return field.getAsJsonArray(); }
-    private static List<String> strings(JsonArray values) {
+    static JsonObject asObject(JsonElement value) { CaseInputs.require(value != null && value.isJsonObject(), "Fixture object required"); return value.getAsJsonObject(); }
+    static JsonObject obj(JsonObject value, String key) { return asObject(value.get(key)); }
+    static JsonArray array(JsonObject value, String key) { var field = value.get(key); CaseInputs.require(field != null && field.isJsonArray(), "Fixture array required"); return field.getAsJsonArray(); }
+    static List<String> strings(JsonArray values) {
         var result = new ArrayList<String>();
         for (var value : values) { CaseInputs.require(value.isJsonPrimitive() && value.getAsJsonPrimitive().isString(), "Fixture string required"); result.add(value.getAsString()); }
         return result;

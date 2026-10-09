@@ -1,0 +1,18 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "sub_primary",
+      "object": "subscription",
+      "customer": "cus_case",
+      "status": "active"
+    },
+    {
+      "id": "sub_secondary",
+      "object": "subscription",
+      "customer": "cus_case",
+      "status": "active"
+    }
+  ],
+  "has_more": false
+}

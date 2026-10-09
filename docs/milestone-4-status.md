@@ -60,13 +60,15 @@ two-consumer topology, synthetic fixtures and ledger policy are authored; there 
 no extracted production deployment or external business-owner approval. The oracle
 is held independently from candidate code, not externally adjudicated.
 
-Step 4e1 establishes a versioned selection/rights/oracle contract only. Fixture,
-consumer, protected-harness/runtime and campaign identities remain pending.
+Step 4e1 establishes a versioned selection/rights/oracle contract only. Consumer,
+protected-harness/runtime and campaign identities remain pending.
 Complete baseline test evidence means a verified independent oracle and observed
 executions, not a pre-written accepted deterministic answer. Step 4e2a implements
 the fixture and pure oracle/ledger boundary in separate changes. Step 4e2a1 adds
 [normalized host assertions and ordered ledger checks](invoice-renewal-host-checks.md);
-the versioned fixture registry and observed consumer execution remain pending.
+[separately pinned fixture corpora](invoice-renewal-fixtures.md) now register the
+four rollout families and four association families, with incomplete full-case
+coverage. Observed consumer execution remains pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

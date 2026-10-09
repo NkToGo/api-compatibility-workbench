@@ -217,8 +217,16 @@ provider families and automatic repair-feedback loops remain outside its scope.
      held expectations and integrity/coverage checks. **4e2a2a implemented:**
      [pinned raw fixtures and separate answers for the four rollout vectors](invoice-renewal-fixtures.md),
      with each path alone, both arrival orders and a blocking partial-coverage gate.
-     **4e2a2b planned next:** the remaining eleven scenario families, required edge
+     **4e2a2b in progress:** the remaining eleven scenario families, required edge
      variants and admission/incomplete-execution controls, then full coverage checks.
+     **4e2a2b1 implemented:** separately pinned association fixtures for expansion
+     on either path, multiple subscriptions, standalone and quote origins in both
+     versions, with each path alone and both whole-path arrival orders. The original
+     rollout corpus remains unchanged. **4e2a2b2 planned next:** missing and
+     contradictory association, duplicate/conflicting delivery, unavailable state,
+     unpaid invoices and old-delivery variants, split further as needed. Admission
+     and incomplete-execution controls and a complete variant-coverage gate follow;
+     current partial registrations still reject full-case use.
      **4e2b planned:** versioned Java
      consumers and baseline/target execution. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.

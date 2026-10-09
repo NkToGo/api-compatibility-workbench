@@ -1,0 +1,15 @@
+{
+  "id": "in_quote",
+  "object": "invoice",
+  "customer": "cus_case",
+  "status": "paid",
+  "paid": true,
+  "billing_reason": "quote_accept",
+  "parent": {
+    "type": "quote_details",
+    "quote_details": {
+      "quote": "qt_case"
+    },
+    "subscription_details": null
+  }
+}

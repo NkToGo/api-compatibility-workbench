@@ -1,0 +1,9 @@
+{
+  "id": "in_standalone",
+  "object": "invoice",
+  "customer": "cus_case",
+  "status": "paid",
+  "paid": true,
+  "billing_reason": "manual",
+  "subscription": null
+}

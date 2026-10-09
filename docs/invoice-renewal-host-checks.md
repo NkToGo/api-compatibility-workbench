@@ -8,7 +8,7 @@ payloads, compile consumers, verify webhook signatures or run a new migration ca
 
 The original contract files and their content index remain unchanged. This document
 records the implementation boundary separately. A [separate fixture registration](invoice-renewal-fixtures.md)
-now covers the four rollout version vectors. Complete fixture coverage,
+now covers the four rollout version vectors and four association families. Complete fixture coverage,
 consumer/harness/runtime identities and observed baseline/target executions remain
 pending. Normalized unit inputs are distinct from that raw fixture registry.
 
@@ -110,7 +110,8 @@ malformed protocol, stale identities and immutable history. It also checks that
 one correct path or a matching final ledger cannot hide another path's failure.
 
 These tests establish pure host behavior. A separate [fixture registration](invoice-renewal-fixtures.md)
-now pins authored sources and answers for the four rollout vectors; it blocks full
+now pins authored sources and answers for the four rollout vectors and ten
+association variants; it blocks full
 case coverage until the remaining families and controls are registered. Neither
 test suite establishes the complete 15-scenario inventory, valid provider payload shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release

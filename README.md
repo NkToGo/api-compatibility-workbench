@@ -143,8 +143,10 @@ blocks full-case use until the remaining scenario families and controls are
 registered. A separately pinned association corpus adds expansion on either path,
 two subscriptions for one customer, standalone invoices and quote origins for both
 versions. A separately pinned refusal corpus adds eight missing-association variants
-and three authored contradictory-parent controls. The three corpora cover ten of
-fifteen families; duplicate/conflict, state, unpaid and old-delivery variants and
+and three authored contradictory-parent controls. A separately pinned delivery
+corpus adds repeated events/retrievals and preexisting/fresh association conflicts
+for both versions, preserving receipts and the first ledger value. The four corpora
+cover twelve of fifteen families; state, unpaid and old-delivery variants and
 admission/execution controls remain pending. New consumer execution, joint comparison and coordination benefit
 remain pending.
 

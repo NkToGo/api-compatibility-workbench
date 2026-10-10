@@ -112,7 +112,8 @@ one correct path or a matching final ledger cannot hide another path's failure.
 
 These tests establish pure host behavior. A separate [fixture registration](invoice-renewal-fixtures.md)
 now pins authored sources and answers for the four rollout vectors, ten
-association variants and eleven refusal variants; it blocks full
+association variants, eleven refusal variants and six duplicate/conflict variants;
+the last set holds preexisting ledger state and repeated arrival sequences. It blocks full
 case coverage until the remaining families and controls are registered. Neither
 test suite establishes the complete 15-scenario inventory, valid provider payload shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release

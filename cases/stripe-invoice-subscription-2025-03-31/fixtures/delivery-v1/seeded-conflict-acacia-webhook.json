@@ -1,0 +1,19 @@
+{
+  "id": "evt_seeded_conflict_acacia",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1743465600,
+  "livemode": false,
+  "type": "invoice.paid",
+  "data": {
+    "object": {
+      "id": "in_primary",
+      "object": "invoice",
+      "customer": "cus_case",
+      "status": "paid",
+      "paid": true,
+      "billing_reason": "subscription_cycle",
+      "subscription": "sub_secondary"
+    }
+  }
+}

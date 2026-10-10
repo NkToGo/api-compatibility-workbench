@@ -228,9 +228,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4e2a2b2a implemented:** separately pinned missing/contradictory association
      fixtures, including absent versus null fields, guarded parent rejection and
      forty-four per-path/both-order sequences. Shared variant registration preserves
-     all prior association identities. **4e2a2b2b planned next:** duplicate delivery
-     and conflicting associations with preserved evidence and initial ledger values.
-     Unavailable state, unpaid invoices and old-delivery variants follow. Admission
+     all prior association identities. **4e2a2b2b implemented:** separately pinned
+     duplicate delivery and preexisting/fresh association conflicts in both versions,
+     with twenty-four ordered sequences, retained receipts and preserved first ledger
+     values. Prior association and refusal identities remain unchanged.
+     **4e2a2b2c planned next:** unavailable subscription-state variants. Unpaid
+     invoices and old-delivery variants follow in reviewable changes. Admission
      and incomplete-execution controls and a complete variant-coverage gate follow;
      current partial registrations still reject full-case use.
      **4e2b planned:** versioned Java

@@ -8,14 +8,40 @@ import static io.github.nktogo.apicompatibility.runner.InvoiceRenewalFixtures.*;
 
 /** Shared registration for compiled invoice variant catalogs, never consumer execution evidence. */
 final class InvoiceRenewalVariantFixtures {
-    record Variant(String id, String family, String train) {
+    enum Layout { SINGLE, TWO_INVOICES, REPEATED, SEEDED_CONFLICT, FRESH_CONFLICT }
+    record Variant(String id, String family, String train, Layout layout) {
+        Variant(String id, String family, String train) {
+            this(id, family, train, family.equals("two-subscriptions") ? Layout.TWO_INVOICES : Layout.SINGLE);
+        }
         Variant {
             InvoiceRenewalOracle.identifier(id); InvoiceRenewalOracle.identifier(family);
             CaseInputs.require(Set.of("acacia", "basil").contains(train), "Unregistered fixture train");
+            Objects.requireNonNull(layout);
+            CaseInputs.require(switch (layout) {
+                case SINGLE -> !Set.of("two-subscriptions", "duplicate-delivery", "conflicting-association").contains(family);
+                case TWO_INVOICES -> family.equals("two-subscriptions");
+                case REPEATED -> family.equals("duplicate-delivery");
+                case SEEDED_CONFLICT, FRESH_CONFLICT -> family.equals("conflicting-association");
+            }, "Invoice variant layout/family mismatch");
         }
         String version() { return train.equals("acacia") ? "2025-02-24.acacia" : "2025-03-31.basil"; }
-        boolean multiple() { return family.equals("two-subscriptions"); }
-        List<String> path(String role) { return multiple() ? List.of(role + "-primary", role + "-secondary") : List.of(role); }
+        boolean multiple() { return layout == Layout.TWO_INVOICES; }
+        List<String> path(String role) {
+            CaseInputs.require(Set.of("webhook", "reconciliation").contains(role), "Unregistered invoice path");
+            if (layout == Layout.REPEATED) return role.equals("webhook")
+                    ? List.of("webhook", "webhook", "webhook-alternate") : List.of("reconciliation", "reconciliation");
+            return multiple() ? List.of(role + "-primary", role + "-secondary") : List.of(role);
+        }
+        String stateName(String role) {
+            boolean webhook = role.equals("webhook");
+            if (multiple()) return "state-list-" + train + (webhook ? "-forward.json" : "-reverse.json");
+            boolean secondary = layout == Layout.SEEDED_CONFLICT || (layout == Layout.FRESH_CONFLICT && !webhook);
+            return "state-" + (secondary ? "secondary-" : "primary-") + train + ".json";
+        }
+        Map<String, InvoiceRenewalLedger.Effect> initialEffects() {
+            return layout == Layout.SEEDED_CONFLICT ? Map.of("in_primary", new InvoiceRenewalLedger.Effect(
+                    "cus_case", "sub_primary", InvoiceRenewalLedger.Action.RECORD_PAID_RENEWAL)) : Map.of();
+        }
     }
     private InvoiceRenewalVariantFixtures() {}
 
@@ -68,7 +94,7 @@ final class InvoiceRenewalVariantFixtures {
             fields(row, "id", "familyId", "initialEffects", "deliveries"); equal(row, "familyId", variant.family());
             fields(answer, "id", "facts", "sequences");
             var initial = effects(array(row, "initialEffects"));
-            CaseInputs.require(initial.isEmpty(), "Unexpected invoice variant initial ledger");
+            CaseInputs.require(initial.equals(variant.initialEffects()), "Unexpected invoice variant initial ledger");
             var facts = obj(answer, "facts"); var deliveries = new LinkedHashMap<String, Delivery>();
             var expectedIds = new LinkedHashSet<>(variant.path("webhook")); expectedIds.addAll(variant.path("reconciliation"));
             for (var value : array(row, "deliveries")) {
@@ -82,8 +108,7 @@ final class InvoiceRenewalVariantFixtures {
                 var config = obj(delivery, "configuration"); configuration(config, variant.version(), webhook);
                 equal(config, "endpointApiVersion", variant.version()); equal(config, "accountApiVersion", "2025-02-24.acacia");
                 String sourceName = variant.id() + "-" + id + ".json";
-                String stateName = variant.multiple() ? "state-list-" + variant.train() + (webhook ? "-forward.json" : "-reverse.json")
-                        : "state-primary-" + variant.train() + ".json";
+                String stateName = variant.stateName(webhook ? "webhook" : "reconciliation");
                 equal(delivery, "source", sourceName); equal(delivery, "subscriptionState", stateName);
                 used.add(sourceName); used.add(stateName);
                 if (webhook) {
@@ -144,11 +169,9 @@ final class InvoiceRenewalVariantFixtures {
     private static Set<String> inventory(List<Variant> variants) {
         var result = new HashSet<>(Set.of("scenarios.json", "expectations.json"));
         for (var variant : variants) {
-            for (String role : List.of("webhook", "reconciliation")) for (String id : variant.path(role))
-                result.add(variant.id() + "-" + id + ".json");
-            result.add("state-primary-" + variant.train() + ".json");
-            if (variant.multiple()) {
-                result.add("state-list-" + variant.train() + "-forward.json"); result.add("state-list-" + variant.train() + "-reverse.json");
+            for (String role : List.of("webhook", "reconciliation")) {
+                for (String id : variant.path(role)) result.add(variant.id() + "-" + id + ".json");
+                result.add(variant.stateName(role));
             }
         }
         return Set.copyOf(result);

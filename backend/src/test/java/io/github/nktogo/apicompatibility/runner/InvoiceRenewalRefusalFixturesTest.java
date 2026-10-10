@@ -9,6 +9,20 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InvoiceRenewalRefusalFixturesTest {
+    @Test void previouslyRegisteredRefusalIdentitiesRemainUnchanged() throws Exception {
+        var reference = InvoiceRenewalFixtures.object(Files.readAllBytes(Path.of(System.getProperty("workbench.repository"),
+                "backend/src/test/resources/invoice-refusal-v1-identities.json")));
+        var bundle = InvoiceRenewalRefusalFixtures.load(root()); var keys = new HashSet<String>();
+        assertEquals(bundle.identity(), reference.get("bundleIdentity").getAsString());
+        for (var value : reference.getAsJsonArray("deliveries")) {
+            var row = value.getAsJsonObject();
+            assertTrue(keys.add(row.get("scenarioId").getAsString() + "/" + row.get("deliveryId").getAsString()));
+            var delivery = scenario(bundle, row.get("scenarioId").getAsString()).deliveries().get(row.get("deliveryId").getAsString());
+            assertEquals(row.get("inputIdentity").getAsString(), delivery.expected().inputIdentity());
+            assertEquals(row.get("evidenceIdentity").getAsString(), delivery.expected().evidenceIdentity());
+        }
+        assertEquals(22, keys.size());
+    }
     @TempDir Path temporary;
     private Path root() { return Path.of(System.getProperty("workbench.repository"), "cases", InvoiceRenewalFixtures.CASE_ID); }
     private Path copy() throws IOException {

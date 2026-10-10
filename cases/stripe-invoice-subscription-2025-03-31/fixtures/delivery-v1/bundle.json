@@ -1,0 +1,30 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "coverageStage": "DELIVERY_VARIANTS_ONLY",
+  "contractIdentity": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+  "files": {
+    "duplicate-delivery-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+    "duplicate-delivery-acacia-webhook-alternate.json": "aff3694e266b769f3d70fb785d1ce1040580c4adddddb585c2e60eef115a86cb",
+    "duplicate-delivery-acacia-webhook.json": "fb050dca1c8b489c44fec4f93c7443f523c97294adcef080e97aa2675d6868e3",
+    "duplicate-delivery-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+    "duplicate-delivery-basil-webhook-alternate.json": "7255eb774f11bdcfd9d1f2376ef0ae0e04311a25282ad65fdef9e62718f4f809",
+    "duplicate-delivery-basil-webhook.json": "9778e1e2b544c8e65d29fa71521806627736112d4de0780e53a0a6c2d95029fc",
+    "expectations.json": "ae506b2077634e9896c2a1c6123bde94805cc7daf9110a60b7e04763e84b078f",
+    "fresh-conflict-acacia-reconciliation.json": "8aaa896d83d54dce6146a57f00638ec284364e49d5c5cd29177ccce0eefd2060",
+    "fresh-conflict-acacia-webhook.json": "f9f2b61f2d758480948a79d2a433683532f4621afe0ea971327eb566cd79a459",
+    "fresh-conflict-basil-reconciliation.json": "edbc94a1ad050944abb8e7609332803222dee496529474f4590f30ef95dfedc8",
+    "fresh-conflict-basil-webhook.json": "8dded04c45708f271dc00ad6125ceb35129eccd0c64491d12161ac825efc20ea",
+    "scenarios.json": "3f035b5d6fe07624f5688b2e586cf585bdc5f72bf0daf0b14e620a0d48f2c51e",
+    "seeded-conflict-acacia-reconciliation.json": "8aaa896d83d54dce6146a57f00638ec284364e49d5c5cd29177ccce0eefd2060",
+    "seeded-conflict-acacia-webhook.json": "b3eed579d0ba213a857ef38b376228fac543b1b386c6dae70875f81c5ced0dcc",
+    "seeded-conflict-basil-reconciliation.json": "edbc94a1ad050944abb8e7609332803222dee496529474f4590f30ef95dfedc8",
+    "seeded-conflict-basil-webhook.json": "bb94642b98e1d172d4fd675afe9a562c1e28bfa78b8514f2189f05d17d9f5580",
+    "state-primary-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+    "state-primary-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+    "state-secondary-acacia.json": "3f9e7b296935d9115b92fcbbf93c0da45bfef18ff919a035d6dfa9633ffa68ed",
+    "state-secondary-basil.json": "3f9e7b296935d9115b92fcbbf93c0da45bfef18ff919a035d6dfa9633ffa68ed"
+  }
+}

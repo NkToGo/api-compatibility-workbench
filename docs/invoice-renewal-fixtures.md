@@ -152,15 +152,60 @@ loader and both earlier raw corpora remain unchanged. This boundary is specific
 to these invoice inputs; it does not register arbitrary repositories or execute
 consumers. All returned bundles remain immutable and reject full-case use.
 
+## Repeated delivery and conflict corpus
+
+The [delivery-v1 bundle](../cases/stripe-invoice-subscription-2025-03-31/fixtures/delivery-v1/bundle.json)
+registers two further frozen families. `InvoiceRenewalDeliveryFixtures` pins its
+manifest SHA-256:
+`9f8a794fd81f34ca322b9b3d867bc036080231255f716ce1bf7c0b7bc92af376`.
+Eighteen synthetic source files hold fourteen distinct invoice/event inputs and
+four versioned active-state references. Each variant uses one known API version;
+Acacia and Basil each have all three variants below. Mixed rollout version vectors
+remain in the original corpus, whose bytes and identities are unchanged.
+
+| Family and variant | Initial ledger and delivery sequence | Separately expected behavior |
+| --- | --- | --- |
+| `duplicate-delivery` | Empty ledger; the same webhook input twice, another event ID for that invoice, and the same reconciliation input twice | Each fact resolves `sub_primary`; one append, remaining receipts duplicate; retain every observation |
+| `conflicting-association`, seeded | Existing `in_primary` / `sub_primary` effect; both paths independently assert `sub_secondary` | Locally resolved facts, every receipt `CONFLICT`; no new effect and original value preserved |
+| `conflicting-association`, fresh | Empty ledger; webhook asserts `sub_primary`, reconciliation asserts `sub_secondary` for the same invoice/customer | Each path alone appends its declared value; combined order appends the first and records the second as `CONFLICT` |
+
+[Scenario inputs](../cases/stripe-invoice-subscription-2025-03-31/fixtures/delivery-v1/scenarios.json)
+hold six variants, fourteen distinct deliveries and exact initial effects.
+[Separate expected answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/delivery-v1/expectations.json)
+hold twenty-four sequences and fifty-four receipts across each path alone and both
+whole-path orders. Repeating a delivery ID means repeating the exact registered
+input, including its event/retrieval bytes and input/evidence identities. It does
+not collapse two observations into one receipt. The alternate event has distinct
+input/evidence identity while retaining the same invoice/subscription binding.
+These block orders are not every possible interleaving or a concurrent database test.
+
+Both conflicting subscriptions are separately approved and have matching active
+state. Their disagreement is a joint effect conflict, not an invalid local fact.
+Fresh combined orders deliberately retain different first values; neither order
+resolves the disagreement or permits approval under the frozen policy. Expected
+conflicts passing their local assertions must remain visible to the future joint
+readiness check. A matching final ledger cannot conceal a failed fact assertion.
+The pure ledger already retains these outcomes; registration adds exact input and
+answer bytes, not a new conflict-resolution algorithm.
+
+The shared loader uses compiled layouts for repeated paths, state selection and
+the exact seeded effect. Payloads cannot change these layouts or authorize new
+files. Initial effects and answers stay host-side; worker reads expose only bound
+inputs. Both earlier association and refusal catalogs retain their original
+normalization: forty-six retained input/evidence identity pairs were checked before
+and after the layout extension. All three earlier corpora and the original
+contract remain byte-for-byte unchanged. Each corpus keeps its own pin and
+partial-coverage gate.
+
 ## Coverage and validation limits
 
-The three coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
-**`ASSOCIATION_VARIANTS_ONLY`** and **`ASSOCIATION_REFUSALS_ONLY`**.
-Collectively they register ten of fifteen families;
+The four coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
+**`ASSOCIATION_VARIANTS_ONLY`**, **`ASSOCIATION_REFUSALS_ONLY`** and
+**`DELIVERY_VARIANTS_ONLY`**.
+Collectively they register twelve of fifteen families;
 there is no combined full-case registry yet. The original rollout bundle's
 `missingScenarioIds()` continues to describe that bundle alone. Every bundle's
-`requireFullCaseCoverage()` rejects full-case use. Repeated delivery, conflicts,
-unavailable state, unpaid invoices and old-delivery
+`requireFullCaseCoverage()` rejects full-case use. Unavailable state, unpaid invoices and old-delivery
 variants remain. Admission and incomplete-execution controls also remain. No
 full-case execution or acceptance may treat these partial corpora as sufficient.
 
@@ -172,7 +217,10 @@ wrong first-entry/customer-only answer fails its fact assertion even when it
 appends the expected number of markers. Refusal checks cover the eleven registered
 input shapes and forty-four authored sequences. A wrong `NON_SUBSCRIPTION` answer
 fails its fact assertion despite producing the same empty ledger; a failed run or
-missing result does not become a passing refusal. Those sequence checks supply golden facts in unit
+missing result does not become a passing refusal. Delivery checks retain repeated
+receipt evidence, independently valid conflicting facts and order-dependent first
+effects. Wrong facts that hide conflicts behind duplicates remain failed; missing,
+failed or unbound output cannot change a seeded effect. Those sequence checks supply golden facts in unit
 tests; they produce no recorded consumer execution evidence. Linux CI additionally
 tests symbolic source and ancestor rejection. Pinned Java consumer execution,
 signature admission, a joint capture envelope, campaign readiness, coordination

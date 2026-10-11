@@ -250,16 +250,66 @@ input/evidence identity pairs were checked before and after this extension.
 The original contract and all four earlier corpora remain byte-for-byte unchanged.
 The new corpus has its own pin, immutable inputs and blocking partial-coverage gate.
 
+## Unpaid invoice corpus
+
+The [unpaid-v1 bundle](../cases/stripe-invoice-subscription-2025-03-31/fixtures/unpaid-v1/bundle.json)
+adds the frozen `not-paid` family. `InvoiceRenewalUnpaidFixtures` pins its manifest
+SHA-256: `a48cb128e73a59365e30938e66ba19e5d8050cbca6539ed92f024f8e5b074ec1`.
+Ten authored source files hold eight invoice/event inputs and two scoped active
+subscription records. All invoices have `status=open`, `paid=false`, a subscription
+cycle origin and a known `in_primary` / `cus_case` / `sub_primary` association.
+Both Acacia and Basil register each initial-ledger condition:
+
+| Condition | Declared initial effects | Separately expected outcome |
+| --- | --- | --- |
+| `open-fresh` | Empty | `UNRESOLVED`, reason `NOT_PAID`; no new effect; empty final ledger |
+| `open-seeded` | One `in_primary` / `sub_primary` paid-renewal marker | Same refusal; no new effect; preserve the original marker |
+
+The [scenario inputs](../cases/stripe-invoice-subscription-2025-03-31/fixtures/unpaid-v1/scenarios.json)
+and [answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/unpaid-v1/expectations.json)
+remain separate. Each variant declares each path alone and both whole-path arrival
+orders: sixteen sequences and twenty-four `NO_EFFECT` receipts. Every refusal
+preserves the known customer, subscription and version. Active subscription state
+does not make an open invoice paid. Existing markers are initial host state, not
+a claim that a real invoice transitioned from paid back to open. This policy does
+not decide cancellation, dunning, entitlement revocation or payment amounts.
+
+The frozen webhook boundary remains `invoice.paid`. Its open-invoice snapshot is
+**deliberately inconsistent authored rejection data**, not a claimed Stripe event
+shape or delivery. The reconciliation input is an authored scoped open-invoice
+representation. Neither path supplies provider-observed evidence. A registered
+event type, adapter version or seeded ledger cannot substitute for checking the
+invoice's own fields. Source/event validity and dispatch remain subject to later
+admission controls; these unit tests do not establish that such an event should be
+dispatched in a deployed system.
+
+The shared loader adds a compiled `SEEDED_REFUSAL` layout restricted to `not-paid`
+with active-state evidence. It pins the initial marker without exposing it or
+expected answers to workers. All earlier source kinds, input keys and serialization
+remain unchanged. Eighty retained association/refusal/delivery/state input/evidence
+identity pairs were checked before and after this extension. The original contract
+and all five earlier corpora remain byte-for-byte unchanged. This corpus has its
+own pin and blocking partial-coverage gate.
+
+Incorrect refusal reasons, lost associations and false standalone answers fail
+even when their effects match. A false resolved answer retains its failed fact
+and actual erroneous simulated append; against the seeded ledger it can produce
+a duplicate and the correct final effect while still failing. The expected fact
+never replaces the returned one. Correct refusals cannot erase other preexisting
+effects. Failed, missing or unbound output cannot become a passing refusal or alter
+the declared initial effects.
+
 ## Coverage and validation limits
 
-The five coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
+The six coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
 **`ASSOCIATION_VARIANTS_ONLY`**, **`ASSOCIATION_REFUSALS_ONLY`**,
-**`DELIVERY_VARIANTS_ONLY`** and **`SUBSCRIPTION_STATE_VARIANTS_ONLY`**.
-Collectively they register thirteen of fifteen families;
+**`DELIVERY_VARIANTS_ONLY`**, **`SUBSCRIPTION_STATE_VARIANTS_ONLY`** and
+**`UNPAID_VARIANTS_ONLY`**.
+Collectively they register fourteen of fifteen families;
 there is no combined full-case registry yet. The original rollout bundle's
 `missingScenarioIds()` continues to describe that bundle alone. Every bundle's
-`requireFullCaseCoverage()` rejects full-case use. Unpaid invoices and old-delivery
-variants remain. Admission and incomplete-execution controls also remain. No
+`requireFullCaseCoverage()` rejects full-case use. Old-delivery variants remain.
+Admission and incomplete-execution controls also remain. No
 full-case execution or acceptance may treat these partial corpora as sufficient.
 
 Default Java verification checks byte integrity, the four declared version
@@ -275,6 +325,8 @@ receipt evidence, independently valid conflicting facts and order-dependent firs
 effects. Wrong facts that hide conflicts behind duplicates remain failed; missing,
 failed or unbound output cannot change a seeded effect. State checks retain five
 distinct conditions, known associations and specific reasons in both versions.
+Unpaid checks retain four fresh/seeded variants, `NOT_PAID` facts, existing effects
+and failed claims despite a matching final ledger.
 Those sequence checks supply golden facts in unit tests; they produce no recorded
 consumer execution evidence. Linux CI additionally
 tests symbolic source and ancestor rejection. Pinned Java consumer execution,

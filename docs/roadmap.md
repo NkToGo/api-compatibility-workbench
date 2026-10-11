@@ -237,8 +237,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      inactive state and wrong customer/subscription. Forty ordered sequences
      preserve known associations and specific reasons without inventing active
      state. All prior fixture identities remain unchanged.
-     **4e2a2b2d planned next:** unpaid invoice variants. Old-delivery variants
-     follow in reviewable changes. Admission
+     **4e2a2b2d implemented:** separately pinned open-invoice variants with fresh
+     and preexisting ledgers in both versions. Sixteen ordered sequences preserve
+     `NOT_PAID` facts, known associations and prior effects. The webhook open-invoice
+     snapshot is an authored rejection control, not an alleged provider event.
+     All prior fixture identities remain unchanged.
+     **4e2a2b2e planned next:** old-delivery variants. Admission
      and incomplete-execution controls and a complete variant-coverage gate follow;
      current partial registrations still reject full-case use.
      **4e2b planned:** versioned Java

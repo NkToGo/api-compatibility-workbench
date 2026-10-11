@@ -8,7 +8,7 @@ import static io.github.nktogo.apicompatibility.runner.InvoiceRenewalFixtures.*;
 
 /** Shared registration for compiled invoice variant catalogs, never consumer execution evidence. */
 final class InvoiceRenewalVariantFixtures {
-    enum Layout { SINGLE, TWO_INVOICES, REPEATED, SEEDED_CONFLICT, FRESH_CONFLICT }
+    enum Layout { SINGLE, TWO_INVOICES, REPEATED, SEEDED_CONFLICT, FRESH_CONFLICT, SEEDED_REFUSAL }
     enum StateEvidence { ACTIVE, ABSENT, FAILED, INACTIVE, WRONG_CUSTOMER, WRONG_SUBSCRIPTION }
     record Variant(String id, String family, String train, Layout layout, StateEvidence state) {
         Variant(String id, String family, String train) {
@@ -29,6 +29,7 @@ final class InvoiceRenewalVariantFixtures {
                 case TWO_INVOICES -> family.equals("two-subscriptions");
                 case REPEATED -> family.equals("duplicate-delivery");
                 case SEEDED_CONFLICT, FRESH_CONFLICT -> family.equals("conflicting-association");
+                case SEEDED_REFUSAL -> family.equals("not-paid");
             }, "Invoice variant layout/family mismatch");
         }
         String version() { return train.equals("acacia") ? "2025-02-24.acacia" : "2025-03-31.basil"; }
@@ -54,7 +55,7 @@ final class InvoiceRenewalVariantFixtures {
             };
         }
         Map<String, InvoiceRenewalLedger.Effect> initialEffects() {
-            return layout == Layout.SEEDED_CONFLICT ? Map.of("in_primary", new InvoiceRenewalLedger.Effect(
+            return layout == Layout.SEEDED_CONFLICT || layout == Layout.SEEDED_REFUSAL ? Map.of("in_primary", new InvoiceRenewalLedger.Effect(
                     "cus_case", "sub_primary", InvoiceRenewalLedger.Action.RECORD_PAID_RENEWAL)) : Map.of();
         }
     }

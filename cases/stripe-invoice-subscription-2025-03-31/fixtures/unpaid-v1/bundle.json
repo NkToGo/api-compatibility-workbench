@@ -1,0 +1,22 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "coverageStage": "UNPAID_VARIANTS_ONLY",
+  "contractIdentity": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+  "files": {
+    "expectations.json": "5b59b279abd431ec4babbdad92538db1c51a711925f96b59f5f8a56f191caffa",
+    "open-fresh-acacia-reconciliation.json": "edd3bded3d4ff8a2b4722e5aedfc1a076e014471c5524e3990e6b390352a0251",
+    "open-fresh-acacia-webhook.json": "22c1c94f2ba1b232ef74cbe80255da70c0eca15d35ad7fae2c27b03cf7900284",
+    "open-fresh-basil-reconciliation.json": "1ee7ea2822a5517548d22ae35f8e0319c3fbc683498776e8e03688f6b90c8e0e",
+    "open-fresh-basil-webhook.json": "6c43a3f8d65c1c825cca9cb8879343ac3cea074da18fb5a059995c0e3ef0ea72",
+    "open-seeded-acacia-reconciliation.json": "edd3bded3d4ff8a2b4722e5aedfc1a076e014471c5524e3990e6b390352a0251",
+    "open-seeded-acacia-webhook.json": "17145e1560bf1c659a40e31715fbe69bfc02bac68f29e429b9d23f22481d7c19",
+    "open-seeded-basil-reconciliation.json": "1ee7ea2822a5517548d22ae35f8e0319c3fbc683498776e8e03688f6b90c8e0e",
+    "open-seeded-basil-webhook.json": "aad053ec6d57fe7bc9efda90b2fa8821f51f7b093ecdb18a5569a4f37f94d8a7",
+    "scenarios.json": "3a4657fa84f39724e1d5ef861aad404073ccb81930488f65ace96a26432acd1b",
+    "state-primary-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+    "state-primary-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5"
+  }
+}

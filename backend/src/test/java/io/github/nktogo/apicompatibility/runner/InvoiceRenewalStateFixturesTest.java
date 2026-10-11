@@ -11,6 +11,21 @@ import static io.github.nktogo.apicompatibility.runner.InvoiceRenewalOracle.*;
 import static io.github.nktogo.apicompatibility.runner.InvoiceRenewalLedger.*;
 
 class InvoiceRenewalStateFixturesTest {
+    @Test void previouslyRegisteredStateIdentitiesRemainUnchanged() throws Exception {
+        var reference = InvoiceRenewalFixtures.object(Files.readAllBytes(Path.of(System.getProperty("workbench.repository"),
+                "backend/src/test/resources/invoice-state-v1-identities.json")));
+        var bundle = InvoiceRenewalStateFixtures.load(root()); var keys = new HashSet<String>();
+        assertEquals(bundle.identity(), reference.get("bundleIdentity").getAsString());
+        for (var value : reference.getAsJsonArray("deliveries")) {
+            var row = value.getAsJsonObject(); String scenarioId = row.get("scenarioId").getAsString();
+            String deliveryId = row.get("deliveryId").getAsString(); assertTrue(keys.add(scenarioId + "/" + deliveryId));
+            var delivery = bundle.scenarios().stream().filter(s -> s.id().equals(scenarioId)).findFirst().orElseThrow()
+                    .deliveries().get(deliveryId);
+            assertEquals(row.get("inputIdentity").getAsString(), delivery.expected().inputIdentity());
+            assertEquals(row.get("evidenceIdentity").getAsString(), delivery.expected().evidenceIdentity());
+        }
+        assertEquals(20, keys.size());
+    }
     @TempDir Path temporary;
     private Path root() { return Path.of(System.getProperty("workbench.repository"), "cases", InvoiceRenewalFixtures.CASE_ID); }
     private Path copy() throws IOException {

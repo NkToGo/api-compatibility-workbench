@@ -68,9 +68,11 @@ the fixture and pure oracle/ledger boundary in separate changes. Step 4e2a1 adds
 [normalized host assertions and ordered ledger checks](invoice-renewal-host-checks.md);
 [separately pinned fixture corpora](invoice-renewal-fixtures.md) now register the
 four rollout families, four association families, two refusal families and two
-duplicate/conflict families, plus unavailable subscription-state controls in both
-versions. Thirteen of fifteen families are registered, with incomplete full-case
-coverage. Observed consumer execution remains pending.
+duplicate/conflict families, plus unavailable subscription-state and open-invoice
+controls in both versions. Open invoices preserve prior effects with `NOT_PAID`
+facts; the webhook snapshot is an authored rejection control. Fourteen of fifteen
+families are registered, with incomplete full-case coverage. Observed consumer
+execution remains pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

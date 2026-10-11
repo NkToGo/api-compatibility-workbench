@@ -152,8 +152,14 @@ association and specific refusal reasons. A separately pinned unpaid corpus adds
 open invoices with fresh and preexisting ledgers in both versions. It retains
 `NOT_PAID` facts and existing effects; its open invoice inside an `invoice.paid`
 snapshot is an authored rejection control, not a claimed provider event. The six
-corpora cover fourteen of fifteen families; old-delivery variants and
-admission/execution controls remain pending. New consumer execution, joint
+corpora are preserved unchanged. A seventh, separately pinned old-delivery corpus
+keeps an Acacia event after a declared Basil endpoint upgrade, with Basil requests
+and state evidence. It distinguishes a declared legacy adapter from an absent
+adapter: the blocked webhook has no consumer fact or execution observation,
+while successful reconciliation remains visible. All fifteen scenario families
+are represented; combined registration and admission/execution controls remain
+pending, and every partial corpus still blocks full-case use. Adapter verification,
+new consumer execution, joint
 comparison and coordination benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader

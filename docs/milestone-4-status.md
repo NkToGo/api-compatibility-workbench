@@ -70,8 +70,13 @@ the fixture and pure oracle/ledger boundary in separate changes. Step 4e2a1 adds
 four rollout families, four association families, two refusal families and two
 duplicate/conflict families, plus unavailable subscription-state and open-invoice
 controls in both versions. Open invoices preserve prior effects with `NOT_PAID`
-facts; the webhook snapshot is an authored rejection control. Fourteen of fifteen
-families are registered, with incomplete full-case coverage. Observed consumer
+facts; the webhook snapshot is an authored rejection control. An old-delivery
+corpus retains an Acacia event with Basil requests and a declared endpoint upgrade.
+An absent legacy adapter has no consumer fact or execution observation; the other
+path's successful fact cannot conceal the block. Declared adapter coverage is not
+a verified adapter implementation. All fifteen families are represented, with
+combined registration and admission/execution controls still pending; every
+partial corpus rejects full-case use. Observed consumer
 execution remains pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.

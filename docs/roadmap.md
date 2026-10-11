@@ -242,7 +242,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      `NOT_PAID` facts, known associations and prior effects. The webhook open-invoice
      snapshot is an authored rejection control, not an alleged provider event.
      All prior fixture identities remain unchanged.
-     **4e2a2b2e planned next:** old-delivery variants. Admission
+     **4e2a2b2e implemented:** separately pinned old-delivery variants with an
+     Acacia event and declared Basil endpoint/request upgrade. Declared legacy
+     adapter coverage retains the original event version; an absent adapter blocks
+     the webhook without inventing a consumer result, preserving reconciliation
+     facts. All prior fixture identities remain unchanged. Admission
      and incomplete-execution controls and a complete variant-coverage gate follow;
      current partial registrations still reject full-case use.
      **4e2b planned:** versioned Java

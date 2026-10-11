@@ -113,7 +113,8 @@ one correct path or a matching final ledger cannot hide another path's failure.
 These tests establish pure host behavior. A separate [fixture registration](invoice-renewal-fixtures.md)
 now pins authored sources and answers for the four rollout vectors, ten
 association variants, eleven refusal variants, six duplicate/conflict variants
-and ten unavailable-state variants, plus four open-invoice variants. The delivery
+and ten unavailable-state variants, plus four open-invoice and two old-delivery
+variants. The delivery
 set holds preexisting ledger
 state and repeated arrival sequences; state controls retain the actual
 state/binding reason and known invoice association. An authored failed lookup
@@ -121,9 +122,15 @@ is an input condition; a failed consumer execution remains separately
 `NOT_EVALUATED`. Open-invoice controls retain `NOT_PAID` facts and preserve fresh
 or preexisting ledgers, without deciding cancellation, dunning or revocation.
 Matching effects cannot conceal false resolved, standalone or wrong-reason facts.
+The old-delivery registry preserves distinct event, request and state versions
+after an authored endpoint upgrade. Its missing-adapter branch has no expected
+consumer fact and rejects oracle construction. Authored sequence tests keep blocked
+positions separate from ledger receipts, retaining successful reconciliation while
+requiring review of the blocked webhook. This narrow registration boundary is not
+runtime admission, a verified legacy adapter or a migration approval.
 Registration blocks full case coverage until the remaining
 families and controls are registered. Neither
-test suite establishes the complete 15-scenario inventory, valid provider payload shapes, correct SDK parsing,
+test suite establishes complete variant/control coverage, valid provider payload shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release
 approval. The original business oracle remains authoritative. The next changes
 complete fixture coverage, then execute pinned Java consumers.

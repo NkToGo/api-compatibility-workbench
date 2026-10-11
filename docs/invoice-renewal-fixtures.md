@@ -32,7 +32,8 @@ declare the source files, initial ledger, approved bindings and each consumer's
 SDK, request, endpoint, account-default and adapter versions. In these four vectors
 each path uses the SDK matching its declared payload version. An account default
 does not overwrite an explicit request version; an endpoint declaration does not
-rewrite a snapshot. Later old-delivery controls need separate adapter admission.
+rewrite a snapshot. The separately registered old-delivery controls below declare
+legacy-adapter coverage; actual adapter verification and admission remain pending.
 These declarations are registered test configuration, not observed live settings.
 
 [Expected answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/rollout-v1/expectations.json)
@@ -299,17 +300,63 @@ never replaces the returned one. Correct refusals cannot erase other preexisting
 effects. Failed, missing or unbound output cannot become a passing refusal or alter
 the declared initial effects.
 
+## Old delivery after endpoint upgrade
+
+The [old-delivery-v1 bundle](../cases/stripe-invoice-subscription-2025-03-31/fixtures/old-delivery-v1/bundle.json)
+has a separate compiled pin in `InvoiceRenewalOldDeliveryFixtures`:
+`566d590d793fcdb09e8809cd9306732b32fd677ad805803d58f022aa2179a2cb`.
+Three authored sources describe an Acacia `invoice.paid` snapshot, a Basil invoice
+retrieval and Basil active-state evidence for the same invoice/subscription. Both
+paths declare SDK `29.0.0`, explicit Basil requests and a Basil endpoint. The event
+retains its original Acacia version and legacy association field. The subscription
+state record has its own Basil version; neither the SDK nor the endpoint rewrites
+the event. No legacy SDK is silently substituted for the declared target SDK.
+
+[Scenario inputs](../cases/stripe-invoice-subscription-2025-03-31/fixtures/old-delivery-v1/scenarios.json)
+bind an authored delivery context: creation before the endpoint upgrade, delivery
+after it. Those timestamps are registered conditions, not a runtime-clock inference
+or an authenticated provider delivery. Two variants share the same raw sources:
+
+| Variant | Webhook adapter declaration | Separate expected boundary |
+| --- | --- | --- |
+| `legacy-adapter-declared` | Acacia | Both paths have separately expected resolved facts; each path alone appends once and combined orders append once with a duplicate |
+| `legacy-adapter-absent` | None | Webhook blocked for `UNSUPPORTED_ADAPTER`, with no expected consumer fact; reconciliation still resolves and appends once |
+
+[Answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/old-delivery-v1/expectations.json)
+remain separate from inputs. Eight authored sequences cover each path alone and
+both arrival orders. Golden-fact tests produce nine ledger receipts and retain
+three blocked positions as `BLOCKED_MISSING_ADAPTER`, separately from receipts.
+The missing-adapter webhook has no oracle and no execution observation. It is not
+a completed consumer returning a passing refusal or an infrastructure failure.
+Reconciliation's successful fact/effect remains visible without satisfying the
+blocked webhook path. A matching combined ledger cannot conceal that gap.
+
+A separate loader records these different boundaries without changing the shared
+variant loader, normalized oracle/ledger, original contract or six older corpora.
+Worker inputs expose source/configuration/context identities, not the expected
+facts, blocked-answer metadata, sequence outcomes or grants. Source inventory,
+byte pins, linked-file restrictions and immutable copies reuse the existing host
+boundary. Adapter declarations remain configuration evidence only: these tests
+run neither SDK parsing nor a legacy adapter, perform no signature verification
+and grant no runtime execution permission.
+
+Incorrect effective versions remain failed facts even when they append the expected
+marker. Incorrect associations retain conflicts and the first ledger value.
+Incomplete or unbound returns cannot satisfy the old-event path or overwrite
+successful evidence. Missing sources, changed contracts, extra files and rewritten
+manifests cannot register alternative inputs under this pin.
+
 ## Coverage and validation limits
 
-The six coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
+The seven coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
 **`ASSOCIATION_VARIANTS_ONLY`**, **`ASSOCIATION_REFUSALS_ONLY`**,
 **`DELIVERY_VARIANTS_ONLY`**, **`SUBSCRIPTION_STATE_VARIANTS_ONLY`** and
-**`UNPAID_VARIANTS_ONLY`**.
-Collectively they register fourteen of fifteen families;
+**`UNPAID_VARIANTS_ONLY`** and **`OLD_DELIVERY_VARIANTS_ONLY`**.
+Collectively they represent all fifteen families;
 there is no combined full-case registry yet. The original rollout bundle's
 `missingScenarioIds()` continues to describe that bundle alone. Every bundle's
-`requireFullCaseCoverage()` rejects full-case use. Old-delivery variants remain.
-Admission and incomplete-execution controls also remain. No
+`requireFullCaseCoverage()` rejects full-case use. A complete combined registration,
+admission and incomplete-execution controls remain. No
 full-case execution or acceptance may treat these partial corpora as sufficient.
 
 Default Java verification checks byte integrity, the four declared version
@@ -326,7 +373,9 @@ effects. Wrong facts that hide conflicts behind duplicates remain failed; missin
 failed or unbound output cannot change a seeded effect. State checks retain five
 distinct conditions, known associations and specific reasons in both versions.
 Unpaid checks retain four fresh/seeded variants, `NOT_PAID` facts, existing effects
-and failed claims despite a matching final ledger.
+and failed claims despite a matching final ledger. Old-delivery checks retain the
+Acacia event version after the declared upgrade, separate Basil state evidence,
+missing-adapter blocks and successful reconciliation without fabricated observations.
 Those sequence checks supply golden facts in unit tests; they produce no recorded
 consumer execution evidence. Linux CI additionally
 tests symbolic source and ancestor rejection. Pinned Java consumer execution,

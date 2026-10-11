@@ -1,0 +1,15 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "coverageStage": "OLD_DELIVERY_VARIANTS_ONLY",
+  "contractIdentity": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+  "files": {
+    "event-acacia.json": "3147e633643c36bf053662c2642df48715a425c02392bccd24702aec3f10b1d3",
+    "expectations.json": "5edbe8048eba25317cb9ce70fdaf362142a9bdf5c9ed6d68d87599c3ff9ae1b9",
+    "invoice-basil.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+    "scenarios.json": "519360a462b9912624e7b424197b45fe3395b666f18657465f125f3ed4c38dd0",
+    "state-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5"
+  }
+}

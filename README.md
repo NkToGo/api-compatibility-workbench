@@ -145,9 +145,12 @@ two subscriptions for one customer, standalone invoices and quote origins for bo
 versions. A separately pinned refusal corpus adds eight missing-association variants
 and three authored contradictory-parent controls. A separately pinned delivery
 corpus adds repeated events/retrievals and preexisting/fresh association conflicts
-for both versions, preserving receipts and the first ledger value. The four corpora
-cover twelve of fifteen families; state, unpaid and old-delivery variants and
-admission/execution controls remain pending. New consumer execution, joint comparison and coordination benefit
+for both versions, preserving receipts and the first ledger value. A separately
+pinned state corpus adds absent/failed lookup evidence, inactive state and wrong
+customer/subscription controls for both versions, retaining the known invoice
+association and specific refusal reasons. The five corpora cover thirteen of
+fifteen families; unpaid and old-delivery variants and admission/execution controls
+remain pending. New consumer execution, joint comparison and coordination benefit
 remain pending.
 
 There is no hosted web application or general migration runner yet. Broader

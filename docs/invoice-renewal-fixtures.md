@@ -197,15 +197,68 @@ and after the layout extension. All three earlier corpora and the original
 contract remain byte-for-byte unchanged. Each corpus keeps its own pin and
 partial-coverage gate.
 
+## Unavailable subscription-state corpus
+
+The [state-v1 bundle](../cases/stripe-invoice-subscription-2025-03-31/fixtures/state-v1/bundle.json)
+adds the frozen `unavailable-state` family. `InvoiceRenewalStateFixtures` pins its
+manifest SHA-256:
+`71a4413a2a85e9380aa7f4188f2de2dbf5941e4c143793c4b49f30aa52987a48`.
+Thirty authored source files contain twenty invoice/event inputs and ten separate
+state records. Acacia and Basil each register all five conditions below. Every
+invoice is paid and explicitly associates `in_primary` / `cus_case` with
+`sub_primary`; that known association must survive the refusal.
+
+| State condition | Authored input | Separately expected fact |
+| --- | --- | --- |
+| Absent | Explicit lookup descriptor with `ABSENT` outcome and null response | `UNRESOLVED` / `STATE_UNAVAILABLE` |
+| Failed | Explicit lookup descriptor with `FAILED` outcome, null response and bounded `LOOKUP_FAILED` code | `UNRESOLVED` / `STATE_FAILED` |
+| Inactive | Matching subscription/customer with `canceled` status | `UNRESOLVED` / `STATE_NOT_ACTIVE` |
+| Wrong customer | Active `sub_primary` state names `cus_other`, not the invoice's customer | `UNRESOLVED` / `STATE_BINDING_MISMATCH` |
+| Wrong subscription | Active `sub_secondary` state names the same customer, but not the invoice's association | `UNRESOLVED` / `STATE_BINDING_MISMATCH` |
+
+The absent and failed records use the source kind `authored-state-lookup`.
+They are synthetic descriptions of lookup conditions, not Stripe Subscription
+objects, captured provider errors or live lookup receipts. Their null responses
+do not invent a successful provider response. The envelope's API version is the
+registered lookup configuration, not evidence of an observed response version.
+The other three records use the existing `subscription-retrieval` kind. These
+scoped records do not claim every omitted provider field is valid. No lookup or
+consumer is executed during registration.
+
+[Scenario inputs](../cases/stripe-invoice-subscription-2025-03-31/fixtures/state-v1/scenarios.json)
+hold ten variants and twenty deliveries, each starting with an empty ledger.
+[Separate expected answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/state-v1/expectations.json)
+hold forty sequences and sixty receipts across each path alone and both whole-path
+orders. Every expected fact preserves the known invoice/customer/subscription and
+known version with its specific reason. Every expected receipt has `NO_EFFECT`
+and every final ledger remains empty. Neither a paid invoice nor another active,
+approved subscription may substitute for matching active-state evidence.
+
+A correct completed refusal passes its local assertion. A lookup-failure input
+is distinct from a consumer infrastructure failure: a failed consumer run or
+missing return remains `NOT_EVALUATED`, never a fabricated passing refusal.
+Wrong refusal reasons, lost known associations and false standalone classifications
+fail even when the final ledger is empty. An invented resolved fact fails its
+assertion while its actual erroneous simulated effect remains visible. Supported
+refusals never erase existing effects. These checks do not establish actual
+consumer behavior or readiness for an unavailable-state condition.
+
+State selection and source kinds come from the compiled catalog; payloads cannot
+change file admission or permissions. The shared loader preserves every older
+source kind and normalization. Sixty retained association/refusal/delivery
+input/evidence identity pairs were checked before and after this extension.
+The original contract and all four earlier corpora remain byte-for-byte unchanged.
+The new corpus has its own pin, immutable inputs and blocking partial-coverage gate.
+
 ## Coverage and validation limits
 
-The four coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
-**`ASSOCIATION_VARIANTS_ONLY`**, **`ASSOCIATION_REFUSALS_ONLY`** and
-**`DELIVERY_VARIANTS_ONLY`**.
-Collectively they register twelve of fifteen families;
+The five coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
+**`ASSOCIATION_VARIANTS_ONLY`**, **`ASSOCIATION_REFUSALS_ONLY`**,
+**`DELIVERY_VARIANTS_ONLY`** and **`SUBSCRIPTION_STATE_VARIANTS_ONLY`**.
+Collectively they register thirteen of fifteen families;
 there is no combined full-case registry yet. The original rollout bundle's
 `missingScenarioIds()` continues to describe that bundle alone. Every bundle's
-`requireFullCaseCoverage()` rejects full-case use. Unavailable state, unpaid invoices and old-delivery
+`requireFullCaseCoverage()` rejects full-case use. Unpaid invoices and old-delivery
 variants remain. Admission and incomplete-execution controls also remain. No
 full-case execution or acceptance may treat these partial corpora as sufficient.
 
@@ -220,8 +273,10 @@ fails its fact assertion despite producing the same empty ledger; a failed run o
 missing result does not become a passing refusal. Delivery checks retain repeated
 receipt evidence, independently valid conflicting facts and order-dependent first
 effects. Wrong facts that hide conflicts behind duplicates remain failed; missing,
-failed or unbound output cannot change a seeded effect. Those sequence checks supply golden facts in unit
-tests; they produce no recorded consumer execution evidence. Linux CI additionally
+failed or unbound output cannot change a seeded effect. State checks retain five
+distinct conditions, known associations and specific reasons in both versions.
+Those sequence checks supply golden facts in unit tests; they produce no recorded
+consumer execution evidence. Linux CI additionally
 tests symbolic source and ancestor rejection. Pinned Java consumer execution,
 signature admission, a joint capture envelope, campaign readiness, coordination
 benefit and release readiness are not established by this registration.

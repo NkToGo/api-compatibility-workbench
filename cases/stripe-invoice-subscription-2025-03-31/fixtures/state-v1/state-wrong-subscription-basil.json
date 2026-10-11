@@ -1,0 +1,6 @@
+{
+  "id": "sub_secondary",
+  "object": "subscription",
+  "customer": "cus_case",
+  "status": "active"
+}

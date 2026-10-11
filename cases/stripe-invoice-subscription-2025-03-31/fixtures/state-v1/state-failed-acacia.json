@@ -1,0 +1,10 @@
+{
+  "formatVersion": 1,
+  "origin": "authored-synthetic",
+  "resource": "subscription",
+  "requestedCustomerId": "cus_case",
+  "requestedSubscriptionId": "sub_primary",
+  "outcome": "FAILED",
+  "response": null,
+  "failureCode": "LOOKUP_FAILED"
+}

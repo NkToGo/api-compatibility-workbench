@@ -112,9 +112,13 @@ one correct path or a matching final ledger cannot hide another path's failure.
 
 These tests establish pure host behavior. A separate [fixture registration](invoice-renewal-fixtures.md)
 now pins authored sources and answers for the four rollout vectors, ten
-association variants, eleven refusal variants and six duplicate/conflict variants;
-the last set holds preexisting ledger state and repeated arrival sequences. It blocks full
-case coverage until the remaining families and controls are registered. Neither
+association variants, eleven refusal variants, six duplicate/conflict variants
+and ten unavailable-state variants. The delivery set holds preexisting ledger
+state and repeated arrival sequences; state controls retain the actual
+state/binding reason and known invoice association. An authored failed lookup
+is an input condition; a failed consumer execution remains separately
+`NOT_EVALUATED`. Registration blocks full case coverage until the remaining
+families and controls are registered. Neither
 test suite establishes the complete 15-scenario inventory, valid provider payload shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release
 approval. The original business oracle remains authoritative. The next changes

@@ -1,0 +1,678 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "authority": "authored-application-policy",
+  "scenarios": [
+    {
+      "id": "absent-state-acacia",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_UNAVAILABLE"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_UNAVAILABLE"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "failed-state-acacia",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_FAILED"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_FAILED"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "inactive-state-acacia",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_NOT_ACTIVE"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_NOT_ACTIVE"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "wrong-customer-state-acacia",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_BINDING_MISMATCH"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_BINDING_MISMATCH"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "wrong-subscription-state-acacia",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_BINDING_MISMATCH"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "reason": "STATE_BINDING_MISMATCH"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "absent-state-basil",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_UNAVAILABLE"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_UNAVAILABLE"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "failed-state-basil",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_FAILED"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_FAILED"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "inactive-state-basil",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_NOT_ACTIVE"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_NOT_ACTIVE"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "wrong-customer-state-basil",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_BINDING_MISMATCH"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_BINDING_MISMATCH"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    },
+    {
+      "id": "wrong-subscription-state-basil",
+      "facts": {
+        "webhook": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_BINDING_MISMATCH"
+        },
+        "reconciliation": {
+          "status": "UNRESOLVED",
+          "invoiceId": "in_primary",
+          "customerId": "cus_case",
+          "subscriptionId": "sub_primary",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "reason": "STATE_BINDING_MISMATCH"
+        }
+      },
+      "sequences": [
+        {
+          "id": "webhook-alone",
+          "deliveries": [
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-alone",
+          "deliveries": [
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "webhook-first",
+          "deliveries": [
+            "webhook",
+            "reconciliation"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        },
+        {
+          "id": "reconciliation-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "outcomes": [
+            "NO_EFFECT",
+            "NO_EFFECT"
+          ],
+          "finalEffects": []
+        }
+      ]
+    }
+  ]
+}

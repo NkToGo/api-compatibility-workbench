@@ -1,0 +1,15 @@
+{
+  "id": "in_primary",
+  "object": "invoice",
+  "customer": "cus_case",
+  "status": "paid",
+  "paid": true,
+  "billing_reason": "subscription_cycle",
+  "parent": {
+    "type": "subscription_details",
+    "quote_details": null,
+    "subscription_details": {
+      "subscription": "sub_primary"
+    }
+  }
+}

@@ -232,8 +232,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      duplicate delivery and preexisting/fresh association conflicts in both versions,
      with twenty-four ordered sequences, retained receipts and preserved first ledger
      values. Prior association and refusal identities remain unchanged.
-     **4e2a2b2c planned next:** unavailable subscription-state variants. Unpaid
-     invoices and old-delivery variants follow in reviewable changes. Admission
+     **4e2a2b2c implemented:** separately pinned unavailable subscription-state
+     variants in both versions, distinguishing absent and failed lookup evidence,
+     inactive state and wrong customer/subscription. Forty ordered sequences
+     preserve known associations and specific reasons without inventing active
+     state. All prior fixture identities remain unchanged.
+     **4e2a2b2d planned next:** unpaid invoice variants. Old-delivery variants
+     follow in reviewable changes. Admission
      and incomplete-execution controls and a complete variant-coverage gate follow;
      current partial registrations still reject full-case use.
      **4e2b planned:** versioned Java

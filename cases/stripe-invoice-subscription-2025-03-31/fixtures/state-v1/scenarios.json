@@ -1,0 +1,369 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "installationId": "install_case",
+  "approvedBindings": [
+    {
+      "customerId": "cus_case",
+      "subscriptionId": "sub_primary"
+    },
+    {
+      "customerId": "cus_case",
+      "subscriptionId": "sub_secondary"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "absent-state-acacia",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "absent-state-acacia-webhook.json",
+          "subscriptionState": "state-absent-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-02-24.acacia"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "absent-state-acacia-reconciliation.json",
+          "subscriptionState": "state-absent-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "failed-state-acacia",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "failed-state-acacia-webhook.json",
+          "subscriptionState": "state-failed-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-02-24.acacia"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "failed-state-acacia-reconciliation.json",
+          "subscriptionState": "state-failed-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "inactive-state-acacia",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "inactive-state-acacia-webhook.json",
+          "subscriptionState": "state-inactive-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-02-24.acacia"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "inactive-state-acacia-reconciliation.json",
+          "subscriptionState": "state-inactive-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong-customer-state-acacia",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "wrong-customer-state-acacia-webhook.json",
+          "subscriptionState": "state-wrong-customer-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-02-24.acacia"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "wrong-customer-state-acacia-reconciliation.json",
+          "subscriptionState": "state-wrong-customer-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong-subscription-state-acacia",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "wrong-subscription-state-acacia-webhook.json",
+          "subscriptionState": "state-wrong-subscription-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-02-24.acacia"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-02-24.acacia",
+          "source": "wrong-subscription-state-acacia-reconciliation.json",
+          "subscriptionState": "state-wrong-subscription-acacia.json",
+          "configuration": {
+            "sdkVersion": "28.4.0",
+            "requestApiVersion": "2025-02-24.acacia",
+            "endpointApiVersion": "2025-02-24.acacia",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "absent-state-basil",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "absent-state-basil-webhook.json",
+          "subscriptionState": "state-absent-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-03-31.basil"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "absent-state-basil-reconciliation.json",
+          "subscriptionState": "state-absent-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "failed-state-basil",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "failed-state-basil-webhook.json",
+          "subscriptionState": "state-failed-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-03-31.basil"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "failed-state-basil-reconciliation.json",
+          "subscriptionState": "state-failed-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "inactive-state-basil",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "inactive-state-basil-webhook.json",
+          "subscriptionState": "state-inactive-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-03-31.basil"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "inactive-state-basil-reconciliation.json",
+          "subscriptionState": "state-inactive-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong-customer-state-basil",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "wrong-customer-state-basil-webhook.json",
+          "subscriptionState": "state-wrong-customer-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-03-31.basil"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "wrong-customer-state-basil-reconciliation.json",
+          "subscriptionState": "state-wrong-customer-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong-subscription-state-basil",
+      "familyId": "unavailable-state",
+      "initialEffects": [],
+      "deliveries": [
+        {
+          "id": "webhook",
+          "consumerId": "invoice-webhook",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "wrong-subscription-state-basil-webhook.json",
+          "subscriptionState": "state-wrong-subscription-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": "2025-03-31.basil"
+          }
+        },
+        {
+          "id": "reconciliation",
+          "consumerId": "invoice-reconciliation",
+          "effectiveApiVersion": "2025-03-31.basil",
+          "source": "wrong-subscription-state-basil-reconciliation.json",
+          "subscriptionState": "state-wrong-subscription-basil.json",
+          "configuration": {
+            "sdkVersion": "29.0.0",
+            "requestApiVersion": "2025-03-31.basil",
+            "endpointApiVersion": "2025-03-31.basil",
+            "accountApiVersion": "2025-02-24.acacia",
+            "adapterApiVersion": null
+          }
+        }
+      ]
+    }
+  ]
+}

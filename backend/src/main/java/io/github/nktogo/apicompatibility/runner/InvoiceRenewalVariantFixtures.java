@@ -9,14 +9,21 @@ import static io.github.nktogo.apicompatibility.runner.InvoiceRenewalFixtures.*;
 /** Shared registration for compiled invoice variant catalogs, never consumer execution evidence. */
 final class InvoiceRenewalVariantFixtures {
     enum Layout { SINGLE, TWO_INVOICES, REPEATED, SEEDED_CONFLICT, FRESH_CONFLICT }
-    record Variant(String id, String family, String train, Layout layout) {
+    enum StateEvidence { ACTIVE, ABSENT, FAILED, INACTIVE, WRONG_CUSTOMER, WRONG_SUBSCRIPTION }
+    record Variant(String id, String family, String train, Layout layout, StateEvidence state) {
         Variant(String id, String family, String train) {
             this(id, family, train, family.equals("two-subscriptions") ? Layout.TWO_INVOICES : Layout.SINGLE);
+        }
+        Variant(String id, String family, String train, Layout layout) {
+            this(id, family, train, layout, StateEvidence.ACTIVE);
         }
         Variant {
             InvoiceRenewalOracle.identifier(id); InvoiceRenewalOracle.identifier(family);
             CaseInputs.require(Set.of("acacia", "basil").contains(train), "Unregistered fixture train");
             Objects.requireNonNull(layout);
+            Objects.requireNonNull(state);
+            CaseInputs.require(state == StateEvidence.ACTIVE ? !family.equals("unavailable-state")
+                    : family.equals("unavailable-state") && layout == Layout.SINGLE, "Invoice variant state/family mismatch");
             CaseInputs.require(switch (layout) {
                 case SINGLE -> !Set.of("two-subscriptions", "duplicate-delivery", "conflicting-association").contains(family);
                 case TWO_INVOICES -> family.equals("two-subscriptions");
@@ -33,10 +40,18 @@ final class InvoiceRenewalVariantFixtures {
             return multiple() ? List.of(role + "-primary", role + "-secondary") : List.of(role);
         }
         String stateName(String role) {
+            if (state != StateEvidence.ACTIVE)
+                return "state-" + state.name().toLowerCase(Locale.ROOT).replace('_', '-') + "-" + train + ".json";
             boolean webhook = role.equals("webhook");
             if (multiple()) return "state-list-" + train + (webhook ? "-forward.json" : "-reverse.json");
             boolean secondary = layout == Layout.SEEDED_CONFLICT || (layout == Layout.FRESH_CONFLICT && !webhook);
             return "state-" + (secondary ? "secondary-" : "primary-") + train + ".json";
+        }
+        String stateKind() {
+            return switch (state) {
+                case ABSENT, FAILED -> "authored-state-lookup";
+                default -> multiple() ? "subscription-state-list" : "subscription-retrieval";
+            };
         }
         Map<String, InvoiceRenewalLedger.Effect> initialEffects() {
             return layout == Layout.SEEDED_CONFLICT ? Map.of("in_primary", new InvoiceRenewalLedger.Effect(
@@ -119,7 +134,7 @@ final class InvoiceRenewalVariantFixtures {
                 input.addProperty("effectiveApiVersion", variant.version()); input.add("configuration", config.deepCopy());
                 input.add("approvedBindings", bindings.deepCopy());
                 input.add("source", source(files, sourceName, webhook ? "event-snapshot" : "invoice-retrieval", variant.version()));
-                input.add("subscriptionState", source(files, stateName, variant.multiple() ? "subscription-state-list" : "subscription-retrieval", variant.version()));
+                input.add("subscriptionState", source(files, stateName, variant.stateKind(), variant.version()));
                 String inputIdentity = InvoiceRenewalOracle.inputIdentity(input);
                 var evidence = new JsonObject(); evidence.addProperty("bundleIdentity", pin);
                 evidence.addProperty("scenarioId", variant.id()); evidence.addProperty("deliveryId", id); evidence.addProperty("inputIdentity", inputIdentity);

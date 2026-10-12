@@ -157,10 +157,14 @@ keeps an Acacia event after a declared Basil endpoint upgrade, with Basil reques
 and state evidence. It distinguishes a declared legacy adapter from an absent
 adapter: the blocked webhook has no consumer fact or execution observation,
 while successful reconciliation remains visible. All fifteen scenario families
-are represented; combined registration and admission/execution controls remain
-pending, and every partial corpus still blocks full-case use. Adapter verification,
-new consumer execution, joint
-comparison and coordination benefit remain pending.
+are represented. A separate [admission and incomplete-execution control suite](docs/invoice-renewal-boundary.md)
+now checks source/identity/version binding and host-supplied verification states
+before oracle construction, preserving blocked inputs separately from incomplete
+consumer exchanges. Those verification states are authored test conditions;
+cryptographic signature verification and actual adapter verification remain pending.
+Combined registration remains pending, and every partial corpus still blocks
+full-case use. New consumer execution, joint comparison and coordination benefit
+remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

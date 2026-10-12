@@ -246,8 +246,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      Acacia event and declared Basil endpoint/request upgrade. Declared legacy
      adapter coverage retains the original event version; an absent adapter blocks
      the webhook without inventing a consumer result, preserving reconciliation
-     facts. All prior fixture identities remain unchanged. Admission
-     and incomplete-execution controls and a complete variant-coverage gate follow;
+     facts. All prior fixture identities remain unchanged.
+     **4e2a2b3 implemented:** [host admission and incomplete-execution controls](invoice-renewal-boundary.md)
+     with separately pinned source/version/identity and authored verification-state
+     conditions. Blocked inputs have no oracle or consumer observation; admitted
+     incomplete exchanges retain `NOT_EVALUATED` observations and no effects.
+     Protocol failures and wrong/unbound facts remain distinct, preserving successful
+     evidence from the other path. Signature/adapter verification and actual consumer
+     execution remain pending. A combined registry and complete variant/control coverage gate follow;
      current partial registrations still reject full-case use.
      **4e2b planned:** versioned Java
      consumers and baseline/target execution. **4e3 planned:** joint captured

@@ -348,15 +348,18 @@ manifests cannot register alternative inputs under this pin.
 
 ## Coverage and validation limits
 
-The seven coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
+The eight coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
 **`ASSOCIATION_VARIANTS_ONLY`**, **`ASSOCIATION_REFUSALS_ONLY`**,
-**`DELIVERY_VARIANTS_ONLY`**, **`SUBSCRIPTION_STATE_VARIANTS_ONLY`** and
-**`UNPAID_VARIANTS_ONLY`** and **`OLD_DELIVERY_VARIANTS_ONLY`**.
+**`DELIVERY_VARIANTS_ONLY`**, **`SUBSCRIPTION_STATE_VARIANTS_ONLY`**,
+**`UNPAID_VARIANTS_ONLY`**, **`OLD_DELIVERY_VARIANTS_ONLY`** and
+**`BOUNDARY_CONTROLS_ONLY`**.
 Collectively they represent all fifteen families;
 there is no combined full-case registry yet. The original rollout bundle's
 `missingScenarioIds()` continues to describe that bundle alone. Every bundle's
-`requireFullCaseCoverage()` rejects full-case use. A complete combined registration,
-admission and incomplete-execution controls remain. No
+`requireFullCaseCoverage()` rejects full-case use. Combined registration and
+complete variant/control coverage checks remain. A separate
+[boundary corpus](invoice-renewal-boundary.md) now registers admission and
+incomplete-execution conditions with authored host verification states. No
 full-case execution or acceptance may treat these partial corpora as sufficient.
 
 Default Java verification checks byte integrity, the four declared version

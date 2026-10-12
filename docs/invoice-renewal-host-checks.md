@@ -70,10 +70,14 @@ validity, identity matching and assertion outcome separately. Serialized reports
 are copies and are not accepted as typed observations by the ledger.
 
 Invalid signatures and missing source/fixture admission must be rejected **before**
-constructing or dispatching a consumer execution. These classes do not implement
-admission or signature verification; constructing an oracle is not an execution
-grant. Future integration must enforce this boundary, not invent a consumer result
-for rejected input.
+constructing or dispatching a consumer execution. These two classes do not implement
+admission or signature verification. A separate [host admission gate](invoice-renewal-boundary.md)
+now validates source, version and identity consistency and host-supplied verification
+states before constructing an oracle. Its control suite uses authored conditions;
+it does not implement the signature or adapter verifiers. Constructing an oracle
+is not an execution grant. The future controller must obtain trustworthy verifier
+records and its separate execution authorization, preserving rejected input without
+inventing a consumer result.
 
 ## Ordered ledger evidence
 
@@ -128,8 +132,10 @@ consumer fact and rejects oracle construction. Authored sequence tests keep bloc
 positions separate from ledger receipts, retaining successful reconciliation while
 requiring review of the blocked webhook. This narrow registration boundary is not
 runtime admission, a verified legacy adapter or a migration approval.
-Registration blocks full case coverage until the remaining
-families and controls are registered. Neither
+The separate boundary suite registers 34 admission/result conditions, preserving
+no observation for blocked inputs and distinct incomplete, malformed and unbound
+observations after admission. Registration blocks full case coverage until the
+combined variant/control gate is implemented. Neither
 test suite establishes complete variant/control coverage, valid provider payload shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release
 approval. The original business oracle remains authoritative. The next changes

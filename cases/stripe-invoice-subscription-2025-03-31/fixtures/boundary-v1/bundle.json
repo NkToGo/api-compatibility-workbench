@@ -1,0 +1,19 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "coverageStage": "BOUNDARY_CONTROLS_ONLY",
+  "contractIdentity": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+  "files": {
+    "controls.json": "8b40e2af5df94bff3d2c18e49063d0fa04432a38a5d45a0f4718487802393188",
+    "event-basil.json": "af723a0f78172c2a6783c4152e05ec63127c4e943c688fa20dd478b8836449be",
+    "event-missing.json": "fab28a74917ef0abce96a8044f09278846577b9006f44327a31fbc06cd369c47",
+    "event-null.json": "e2af1f8ec11cf1a31bf7cc07786f6e505c1350891afc648b7b51203cbcdc9fc9",
+    "event-unknown.json": "2140e1ceaf3abfbfaf41aca06c9d1c01c02b7d08bc028a08cdd10ec560cedd56",
+    "event-wrong-type.json": "3c700818daa9dea8c75278ba392a4436a07590e0b7c78d85e935ec4554cff392",
+    "expectations.json": "e49b6bf944eb644948eb60aa662f82dda7cd66b651215c1906e236e9bd61ef46",
+    "invoice-basil.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+    "state-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5"
+  }
+}

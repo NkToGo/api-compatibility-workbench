@@ -1,0 +1,466 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "authority": "authored-application-policy",
+  "controls": [
+    {
+      "id": "admit-webhook",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "PASSED",
+      "actualPresent": true,
+      "protocolInvalid": false,
+      "outcomeAlone": "APPENDED"
+    },
+    {
+      "id": "admit-reconciliation",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "PASSED",
+      "actualPresent": true,
+      "protocolInvalid": false,
+      "outcomeAlone": "APPENDED"
+    },
+    {
+      "id": "event-version-missing",
+      "admitted": false,
+      "issues": [
+        "MISSING_EVENT_VERSION"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "event-version-null",
+      "admitted": false,
+      "issues": [
+        "MISSING_EVENT_VERSION"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "event-version-unknown",
+      "admitted": false,
+      "issues": [
+        "UNKNOWN_EVENT_VERSION"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "event-type-rejected",
+      "admitted": false,
+      "issues": [
+        "REJECTED_EVENT_TYPE"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "request-version-missing",
+      "admitted": false,
+      "issues": [
+        "MISSING_REQUEST_VERSION"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "request-version-unknown",
+      "admitted": false,
+      "issues": [
+        "UNKNOWN_REQUEST_VERSION"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "signature-rejected",
+      "admitted": false,
+      "issues": [
+        "SIGNATURE_REJECTED"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "signature-unchecked",
+      "admitted": false,
+      "issues": [
+        "SIGNATURE_NOT_VERIFIED"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "signature-rebound",
+      "admitted": false,
+      "issues": [
+        "SIGNATURE_SOURCE_MISMATCH"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "adapter-absent",
+      "admitted": false,
+      "issues": [
+        "ADAPTER_ABSENT"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "adapter-rejected",
+      "admitted": false,
+      "issues": [
+        "ADAPTER_REJECTED"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "adapter-not-checked",
+      "admitted": false,
+      "issues": [
+        "ADAPTER_NOT_VERIFIED"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "adapter-version-mismatch",
+      "admitted": false,
+      "issues": [
+        "ADAPTER_VERSION_MISMATCH"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "source-missing",
+      "admitted": false,
+      "issues": [
+        "MISSING_SOURCE"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "source-digest-mismatch",
+      "admitted": false,
+      "issues": [
+        "SOURCE_DIGEST_MISMATCH"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "source-role-spoof",
+      "admitted": false,
+      "issues": [
+        "SOURCE_ROLE_MISMATCH"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "fixture-missing-bundle",
+      "admitted": false,
+      "issues": [
+        "INCOMPLETE_FIXTURE_IDENTITY"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "fixture-missing-input",
+      "admitted": false,
+      "issues": [
+        "INCOMPLETE_FIXTURE_IDENTITY"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "fixture-missing-evidence",
+      "admitted": false,
+      "issues": [
+        "INCOMPLETE_FIXTURE_IDENTITY"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "fixture-stale-input",
+      "admitted": false,
+      "issues": [
+        "INPUT_IDENTITY_MISMATCH"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "fixture-stale-evidence",
+      "admitted": false,
+      "issues": [
+        "EVIDENCE_IDENTITY_MISMATCH"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "claimed-consumer-spoof",
+      "admitted": false,
+      "issues": [
+        "CONSUMER_BINDING_MISMATCH"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "forged-payload-permissions",
+      "admitted": false,
+      "issues": [
+        "SIGNATURE_REJECTED"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "missing-expectation",
+      "admitted": false,
+      "issues": [
+        "MISSING_EXPECTATION"
+      ],
+      "expectedFact": null,
+      "assertion": null,
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": null
+    },
+    {
+      "id": "completed-missing-result",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "NOT_EVALUATED",
+      "actualPresent": false,
+      "protocolInvalid": false,
+      "outcomeAlone": "NO_EFFECT"
+    },
+    {
+      "id": "returned-timed-out",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "NOT_EVALUATED",
+      "actualPresent": true,
+      "protocolInvalid": false,
+      "outcomeAlone": "NO_EFFECT"
+    },
+    {
+      "id": "returned-cancelled",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "NOT_EVALUATED",
+      "actualPresent": true,
+      "protocolInvalid": false,
+      "outcomeAlone": "NO_EFFECT"
+    },
+    {
+      "id": "returned-infrastructure-error",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "NOT_EVALUATED",
+      "actualPresent": true,
+      "protocolInvalid": false,
+      "outcomeAlone": "NO_EFFECT"
+    },
+    {
+      "id": "malformed-return",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "NOT_EVALUATED",
+      "actualPresent": false,
+      "protocolInvalid": true,
+      "outcomeAlone": "NO_EFFECT"
+    },
+    {
+      "id": "trailing-return",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "NOT_EVALUATED",
+      "actualPresent": true,
+      "protocolInvalid": true,
+      "outcomeAlone": "NO_EFFECT"
+    },
+    {
+      "id": "unbound-return",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "FAILED",
+      "actualPresent": true,
+      "protocolInvalid": false,
+      "outcomeAlone": "NO_EFFECT"
+    },
+    {
+      "id": "wrong-version-return",
+      "admitted": true,
+      "issues": [],
+      "expectedFact": {
+        "status": "RESOLVED",
+        "invoiceId": "in_primary",
+        "customerId": "cus_case",
+        "subscriptionId": "sub_primary",
+        "effectiveApiVersion": "2025-03-31.basil",
+        "reason": null
+      },
+      "assertion": "FAILED",
+      "actualPresent": true,
+      "protocolInvalid": false,
+      "outcomeAlone": "APPENDED"
+    }
+  ]
+}

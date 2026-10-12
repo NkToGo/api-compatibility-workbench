@@ -75,7 +75,9 @@ corpus retains an Acacia event with Basil requests and a declared endpoint upgra
 An absent legacy adapter has no consumer fact or execution observation; the other
 path's successful fact cannot conceal the block. Declared adapter coverage is not
 a verified adapter implementation. All fifteen families are represented, with
-combined registration and admission/execution controls still pending; every
+combined registration still pending. A [separate boundary control suite](invoice-renewal-boundary.md)
+now checks pre-oracle admission and incomplete exchanges with authored host
+verification states, not cryptographic signature or actual adapter verification. Every
 partial corpus rejects full-case use. Observed consumer
 execution remains pending.
 The four arms and joint review must share the same aggregate evidence

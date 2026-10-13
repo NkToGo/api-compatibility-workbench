@@ -78,7 +78,8 @@ adds four families without changing any `rollout-v1` or original contract bytes.
 `991c268eb208ba25a1704ed7583e85d00cfa5165400f522eadd6a5f3ffff0940`.
 It uses the same bounded byte/JSON boundary and original contract chain. This
 manifest, its source files and its input/evidence identities remain distinct from
-the rollout corpus. A later full-case registry must bind both corpora explicitly.
+the rollout corpus. The [complete registry](invoice-renewal-registry.md) binds both
+corpora explicitly, preserving their original identities.
 
 | Family | Required variants now registered | Expected behavior |
 | --- | --- | --- |
@@ -353,11 +354,13 @@ The eight coverage stages remain **`ROLLOUT_VECTORS_ONLY`**,
 **`DELIVERY_VARIANTS_ONLY`**, **`SUBSCRIPTION_STATE_VARIANTS_ONLY`**,
 **`UNPAID_VARIANTS_ONLY`**, **`OLD_DELIVERY_VARIANTS_ONLY`** and
 **`BOUNDARY_CONTROLS_ONLY`**.
-Collectively they represent all fifteen families;
-there is no combined full-case registry yet. The original rollout bundle's
-`missingScenarioIds()` continues to describe that bundle alone. Every bundle's
-`requireFullCaseCoverage()` rejects full-case use. Combined registration and
-complete variant/control coverage checks remain. A separate
+Collectively they represent all fifteen families. The
+[complete registry](invoice-renewal-registry.md) now binds all 47 business variants,
+188 ordered sequences and 34 boundary controls with exact variant/order coverage.
+The original rollout bundle's `missingScenarioIds()` continues to describe that
+bundle alone. Every partial bundle's `requireFullCaseCoverage()` still rejects
+full-case use; only the complete registration passes its fixture-coverage gate.
+A separate
 [boundary corpus](invoice-renewal-boundary.md) now registers admission and
 incomplete-execution conditions with authored host verification states. No
 full-case execution or acceptance may treat these partial corpora as sufficient.

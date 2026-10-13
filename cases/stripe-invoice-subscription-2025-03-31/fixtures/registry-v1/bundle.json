@@ -1,0 +1,11 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "coverageStage": "COMPLETE_FIXTURE_REGISTRATION_ONLY",
+  "contractIdentity": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+  "files": {
+    "registry.json": "933c5bd2225a3fea091e442069c803b1cac10d9c1f95381a5307ab5a8ef9c2e5"
+  }
+}

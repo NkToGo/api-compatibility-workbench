@@ -217,7 +217,7 @@ provider families and automatic repair-feedback loops remain outside its scope.
      held expectations and integrity/coverage checks. **4e2a2a implemented:**
      [pinned raw fixtures and separate answers for the four rollout vectors](invoice-renewal-fixtures.md),
      with each path alone, both arrival orders and a blocking partial-coverage gate.
-     **4e2a2b in progress:** the remaining eleven scenario families, required edge
+     **4e2a2b implemented:** the remaining eleven scenario families, required edge
      variants and admission/incomplete-execution controls, then full coverage checks.
      **4e2a2b1 implemented:** separately pinned association fixtures for expansion
      on either path, multiple subscriptions, standalone and quote origins in both
@@ -253,8 +253,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      incomplete exchanges retain `NOT_EVALUATED` observations and no effects.
      Protocol failures and wrong/unbound facts remain distinct, preserving successful
      evidence from the other path. Signature/adapter verification and actual consumer
-     execution remain pending. A combined registry and complete variant/control coverage gate follow;
-     current partial registrations still reject full-case use.
+     execution remain pending. **4e2a2b4 implemented:** a
+     [combined registry and complete variant/control coverage gate](invoice-renewal-registry.md)
+     binds all 47 business variants, 188 ordered sequences and 34 boundary controls
+     with exact corpus/variant/delivery/order coverage, preserving constituent
+     identities and blocked paths. This closes fixture registration; every partial
+     corpus still rejects full-case use. It establishes no consumer execution,
+     authentic signature/adapter verification or campaign acceptance.
      **4e2b planned:** versioned Java
      consumers and baseline/target execution. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.

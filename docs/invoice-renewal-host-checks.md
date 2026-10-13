@@ -134,12 +134,13 @@ requiring review of the blocked webhook. This narrow registration boundary is no
 runtime admission, a verified legacy adapter or a migration approval.
 The separate boundary suite registers 34 admission/result conditions, preserving
 no observation for blocked inputs and distinct incomplete, malformed and unbound
-observations after admission. Registration blocks full case coverage until the
-combined variant/control gate is implemented. Neither
-test suite establishes complete variant/control coverage, valid provider payload shapes, correct SDK parsing,
+observations after admission. The separate [complete registry](invoice-renewal-registry.md)
+now binds all business variants, ordered sequences and boundary controls, completing
+authored fixture coverage. Neither test suite establishes valid provider payload
+shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release
 approval. The original business oracle remains authoritative. The next changes
-complete fixture coverage, then execute pinned Java consumers.
+execute pinned Java consumers under the separately planned protected boundary.
 
 This boundary assumes one trusted host. It is not a durable or concurrent database,
 an authenticated receipt system, tenant isolation, a complete joint comparator or

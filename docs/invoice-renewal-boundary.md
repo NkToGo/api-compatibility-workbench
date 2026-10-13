@@ -80,7 +80,8 @@ their actual simulated effects and failed assertions.
 These are golden protocol tests of host consistency, not executions of the new
 invoice consumers or evidence of provider compatibility. `BOUNDARY_CONTROLS_ONLY`
 and all previous partial corpora still reject `requireFullCaseCoverage()`. The
-combined registry must check every required variant and control before full-case
-use. Pinned consumer/adapter execution, real signature verification, protected
-joint capture, campaign readiness, coordination benefit and release approval remain
+combined registry now [checks every required variant and control](invoice-renewal-registry.md)
+and closes authored fixture registration. Pinned consumer/adapter execution,
+real signature verification, protected joint capture, campaign readiness,
+coordination benefit and release approval remain
 pending. The historical campaign and rubric are unchanged.

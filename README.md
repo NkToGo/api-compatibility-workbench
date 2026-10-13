@@ -162,9 +162,12 @@ now checks source/identity/version binding and host-supplied verification states
 before oracle construction, preserving blocked inputs separately from incomplete
 consumer exchanges. Those verification states are authored test conditions;
 cryptographic signature verification and actual adapter verification remain pending.
-Combined registration remains pending, and every partial corpus still blocks
-full-case use. New consumer execution, joint comparison and coordination benefit
-remain pending.
+A [complete fixture registry](docs/invoice-renewal-registry.md) now binds all
+47 business variants, 188 ordered sequences and 34 boundary controls. It checks
+exact variant/control coverage while preserving every constituent identity;
+individual partial corpora still block full-case use. This completes authored
+fixture registration. New consumer execution, joint comparison and coordination
+benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

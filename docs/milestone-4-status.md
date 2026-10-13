@@ -74,12 +74,15 @@ facts; the webhook snapshot is an authored rejection control. An old-delivery
 corpus retains an Acacia event with Basil requests and a declared endpoint upgrade.
 An absent legacy adapter has no consumer fact or execution observation; the other
 path's successful fact cannot conceal the block. Declared adapter coverage is not
-a verified adapter implementation. All fifteen families are represented, with
-combined registration still pending. A [separate boundary control suite](invoice-renewal-boundary.md)
+a verified adapter implementation. All fifteen families are represented. A
+[separate boundary control suite](invoice-renewal-boundary.md)
 now checks pre-oracle admission and incomplete exchanges with authored host
 verification states, not cryptographic signature or actual adapter verification. Every
-partial corpus rejects full-case use. Observed consumer
-execution remains pending.
+partial corpus rejects full-case use. A [complete registry](invoice-renewal-registry.md)
+now binds all 47 business variants, 188 ordered sequences and 34 boundary controls
+through a pinned complete-coverage catalog, preserving all earlier identities and
+blocked paths. Fixture registration is complete; observed consumer execution,
+real signature/adapter verification and campaign acceptance remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

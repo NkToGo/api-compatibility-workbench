@@ -1,0 +1,1905 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-synthetic",
+  "authority": "fixture-registration-only",
+  "requiredFamilies": [
+    "legacy-agreement",
+    "target-agreement",
+    "request-first",
+    "event-first",
+    "expanded-association",
+    "two-subscriptions",
+    "standalone-invoice",
+    "quote-parent",
+    "missing-association",
+    "contradictory-parent",
+    "duplicate-delivery",
+    "conflicting-association",
+    "unavailable-state",
+    "not-paid",
+    "old-delivery-after-upgrade"
+  ],
+  "corpora": [
+    {
+      "id": "rollout-v1",
+      "kind": "business",
+      "bundleIdentity": "9696c4ef9321c0dc61f41e843f29bd93082121cdba876e6085f70b984629a0d1",
+      "installationId": "install_case",
+      "variants": [
+        {
+          "id": "legacy-agreement",
+          "familyId": "legacy-agreement",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "target-agreement",
+          "familyId": "target-agreement",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "request-first",
+          "familyId": "request-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "event-first",
+          "familyId": "event-first",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "association-v1",
+      "kind": "business",
+      "bundleIdentity": "991c268eb208ba25a1704ed7583e85d00cfa5165400f522eadd6a5f3ffff0940",
+      "installationId": "install_case",
+      "variants": [
+        {
+          "id": "expanded-webhook-acacia",
+          "familyId": "expanded-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "expanded-reconciliation-acacia",
+          "familyId": "expanded-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "two-subscriptions-acacia",
+          "familyId": "two-subscriptions",
+          "deliveries": [
+            "reconciliation-primary",
+            "reconciliation-secondary",
+            "webhook-primary",
+            "webhook-secondary"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook-primary",
+                "webhook-secondary"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation-primary",
+                "reconciliation-secondary"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook-primary",
+                "webhook-secondary",
+                "reconciliation-primary",
+                "reconciliation-secondary"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation-primary",
+                "reconciliation-secondary",
+                "webhook-primary",
+                "webhook-secondary"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standalone-invoice-acacia",
+          "familyId": "standalone-invoice",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "quote-parent-acacia",
+          "familyId": "quote-parent",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "expanded-webhook-basil",
+          "familyId": "expanded-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "expanded-reconciliation-basil",
+          "familyId": "expanded-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "two-subscriptions-basil",
+          "familyId": "two-subscriptions",
+          "deliveries": [
+            "reconciliation-primary",
+            "reconciliation-secondary",
+            "webhook-primary",
+            "webhook-secondary"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook-primary",
+                "webhook-secondary"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation-primary",
+                "reconciliation-secondary"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook-primary",
+                "webhook-secondary",
+                "reconciliation-primary",
+                "reconciliation-secondary"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation-primary",
+                "reconciliation-secondary",
+                "webhook-primary",
+                "webhook-secondary"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standalone-invoice-basil",
+          "familyId": "standalone-invoice",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "quote-parent-basil",
+          "familyId": "quote-parent",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "refusal-v1",
+      "kind": "business",
+      "bundleIdentity": "4a0eb74bce5f89b8ec85f200bda3dc5b2d7d16fa828bcac64fc7389521173f9f",
+      "installationId": "install_case",
+      "variants": [
+        {
+          "id": "missing-field-acacia",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "null-association-acacia",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "missing-parent-basil",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "null-parent-basil",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "missing-details-basil",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "null-details-basil",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "missing-id-basil",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "null-id-basil",
+          "familyId": "missing-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "unknown-parent-basil",
+          "familyId": "contradictory-parent",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "quote-with-subscription-basil",
+          "familyId": "contradictory-parent",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "conflicting-fields-basil",
+          "familyId": "contradictory-parent",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delivery-v1",
+      "kind": "business",
+      "bundleIdentity": "9f8a794fd81f34ca322b9b3d867bc036080231255f716ce1bf7c0b7bc92af376",
+      "installationId": "install_case",
+      "variants": [
+        {
+          "id": "duplicate-delivery-acacia",
+          "familyId": "duplicate-delivery",
+          "deliveries": [
+            "reconciliation",
+            "webhook",
+            "webhook-alternate"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook",
+                "webhook",
+                "webhook-alternate"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "webhook",
+                "webhook-alternate",
+                "reconciliation",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "reconciliation",
+                "webhook",
+                "webhook",
+                "webhook-alternate"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "seeded-conflict-acacia",
+          "familyId": "conflicting-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fresh-conflict-acacia",
+          "familyId": "conflicting-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "duplicate-delivery-basil",
+          "familyId": "duplicate-delivery",
+          "deliveries": [
+            "reconciliation",
+            "webhook",
+            "webhook-alternate"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook",
+                "webhook",
+                "webhook-alternate"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "webhook",
+                "webhook-alternate",
+                "reconciliation",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "reconciliation",
+                "webhook",
+                "webhook",
+                "webhook-alternate"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "seeded-conflict-basil",
+          "familyId": "conflicting-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fresh-conflict-basil",
+          "familyId": "conflicting-association",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "state-v1",
+      "kind": "business",
+      "bundleIdentity": "71a4413a2a85e9380aa7f4188f2de2dbf5941e4c143793c4b49f30aa52987a48",
+      "installationId": "install_case",
+      "variants": [
+        {
+          "id": "absent-state-acacia",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "failed-state-acacia",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inactive-state-acacia",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wrong-customer-state-acacia",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wrong-subscription-state-acacia",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "absent-state-basil",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "failed-state-basil",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inactive-state-basil",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wrong-customer-state-basil",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wrong-subscription-state-basil",
+          "familyId": "unavailable-state",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unpaid-v1",
+      "kind": "business",
+      "bundleIdentity": "a48cb128e73a59365e30938e66ba19e5d8050cbca6539ed92f024f8e5b074ec1",
+      "installationId": "install_case",
+      "variants": [
+        {
+          "id": "open-fresh-acacia",
+          "familyId": "not-paid",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "open-seeded-acacia",
+          "familyId": "not-paid",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "open-fresh-basil",
+          "familyId": "not-paid",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "open-seeded-basil",
+          "familyId": "not-paid",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "old-delivery-v1",
+      "kind": "old-delivery",
+      "bundleIdentity": "566d590d793fcdb09e8809cd9306732b32fd677ad805803d58f022aa2179a2cb",
+      "installationId": "install_case",
+      "variants": [
+        {
+          "id": "legacy-adapter-declared",
+          "familyId": "old-delivery-after-upgrade",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "legacy-adapter-absent",
+          "familyId": "old-delivery-after-upgrade",
+          "deliveries": [
+            "reconciliation",
+            "webhook"
+          ],
+          "blockedDeliveries": [
+            "webhook"
+          ],
+          "sequences": [
+            {
+              "id": "webhook-alone",
+              "deliveries": [
+                "webhook"
+              ]
+            },
+            {
+              "id": "reconciliation-alone",
+              "deliveries": [
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "webhook-first",
+              "deliveries": [
+                "webhook",
+                "reconciliation"
+              ]
+            },
+            {
+              "id": "reconciliation-first",
+              "deliveries": [
+                "reconciliation",
+                "webhook"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "boundary": {
+    "id": "boundary-v1",
+    "kind": "admission-and-result-controls",
+    "bundleIdentity": "6b125b99a1fbccd13364022bd87d4471947b94d96265f7941e03489596db85eb",
+    "controls": [
+      "admit-webhook",
+      "admit-reconciliation",
+      "event-version-missing",
+      "event-version-null",
+      "event-version-unknown",
+      "event-type-rejected",
+      "request-version-missing",
+      "request-version-unknown",
+      "signature-rejected",
+      "signature-unchecked",
+      "signature-rebound",
+      "adapter-absent",
+      "adapter-rejected",
+      "adapter-not-checked",
+      "adapter-version-mismatch",
+      "source-missing",
+      "source-digest-mismatch",
+      "source-role-spoof",
+      "fixture-missing-bundle",
+      "fixture-missing-input",
+      "fixture-missing-evidence",
+      "fixture-stale-input",
+      "fixture-stale-evidence",
+      "claimed-consumer-spoof",
+      "forged-payload-permissions",
+      "missing-expectation",
+      "completed-missing-result",
+      "returned-timed-out",
+      "returned-cancelled",
+      "returned-infrastructure-error",
+      "malformed-return",
+      "trailing-return",
+      "unbound-return",
+      "wrong-version-return"
+    ],
+    "placements": [
+      "alone",
+      "healthy-first",
+      "healthy-last"
+    ]
+  }
+}

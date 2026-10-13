@@ -32,6 +32,9 @@ jobs:
       - name: Prepare pinned historical SDKs
         shell: pwsh
         run: ./scripts/Prepare-StripeCase.ps1
+      - name: Prepare pinned invoice consumer builds
+        shell: pwsh
+        run: ./scripts/Prepare-InvoiceConsumers.ps1
       - name: Verify on Windows
         if: runner.os == 'Windows'
         shell: pwsh
@@ -39,6 +42,15 @@ jobs:
       - name: Verify on Linux
         if: runner.os == 'Linux'
         run: sh ./mvnw -B -ntp -f backend/pom.xml clean verify
+      - name: Verify versioned invoice Maven projects
+        shell: pwsh
+        run: |
+          foreach ($invoiceTrain in @('acacia', 'basil')) {
+            $invoiceBuildArguments = @('-B', '-ntp', '-f', 'cases/stripe-invoice-subscription-2025-03-31/consumer-sources-v1/pom.xml', 'clean', 'package')
+            if ($invoiceTrain -eq 'basil') { $invoiceBuildArguments += @('-P', 'basil') }
+            if ($IsWindows) { & ./mvnw.cmd @invoiceBuildArguments } else { & sh ./mvnw @invoiceBuildArguments }
+            if ($LASTEXITCODE -ne 0) { throw 'Invoice Maven project build failed.' }
+          }
       - name: Verify frozen campaign registration
         shell: pwsh
         run: ./scripts/Test-CoordinationCampaign.ps1

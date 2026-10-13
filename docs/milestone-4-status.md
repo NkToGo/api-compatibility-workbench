@@ -83,6 +83,11 @@ now binds all 47 business variants, 188 ordered sequences and 34 boundary contro
 through a pinned complete-coverage catalog, preserving all earlier identities and
 blocked paths. Fixture registration is complete; observed consumer execution,
 real signature/adapter verification and campaign acceptance remain pending.
+[Pinned consumer source/build registration](invoice-consumer-builds.md) now captures
+the two Java/Maven roles and historical runtime closure. Four builds compile;
+two unchanged-source upgrades fail on the removed legacy accessor. This is actual
+build evidence, not behavioral baseline evidence or accepted repairs. Protected
+execution and the joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

@@ -84,7 +84,8 @@ or changed source bytes in every member corpus. It also rejects attempted local
 re-pinning, changed contract bytes and unregistered registry files. Existing
 oracle/ledger and boundary tests retain their independent golden expectations.
 
-Pinned Java consumers, real signature/adapter verification, protected execution,
+Pinned Java [consumer sources and compiler results](invoice-consumer-builds.md)
+are now registered separately. Real signature/adapter verification, protected execution,
 joint capture and comparison, reviewed coordination benefit and release approval
 remain separate work. No historical campaign, rubric, result or routing rule is
 changed by complete fixture registration.

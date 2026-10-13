@@ -166,8 +166,11 @@ A [complete fixture registry](docs/invoice-renewal-registry.md) now binds all
 47 business variants, 188 ordered sequences and 34 boundary controls. It checks
 exact variant/control coverage while preserving every constituent identity;
 individual partial corpora still block full-case use. This completes authored
-fixture registration. New consumer execution, joint comparison and coordination
-benefit remain pending.
+fixture registration. [Pinned invoice consumer sources and builds](docs/invoice-consumer-builds.md)
+now register both roles with historical SDK/runtime dependencies and six compiler
+combinations. Four builds compile; the two unchanged-source upgrades retain their
+missing-accessor failures. This establishes build evidence only. Protected new
+consumer execution, joint comparison and coordination benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are
@@ -184,6 +187,7 @@ Windows PowerShell:
 
 ```powershell
 ./scripts/Prepare-StripeCase.ps1
+./scripts/Prepare-InvoiceConsumers.ps1
 .\mvnw.cmd -B -ntp -f backend/pom.xml clean verify
 ```
 
@@ -191,6 +195,7 @@ Linux/macOS:
 
 ```sh
 pwsh -NoProfile -File ./scripts/Prepare-StripeCase.ps1
+pwsh -NoProfile -File ./scripts/Prepare-InvoiceConsumers.ps1
 sh ./mvnw -B -ntp -f backend/pom.xml clean verify
 ```
 

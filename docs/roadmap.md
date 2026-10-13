@@ -260,8 +260,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      identities and blocked paths. This closes fixture registration; every partial
      corpus still rejects full-case use. It establishes no consumer execution,
      authentic signature/adapter verification or campaign acceptance.
-     **4e2b planned:** versioned Java
-     consumers and baseline/target execution. **4e3 planned:** joint captured
+     **4e2b in progress:** versioned Java consumers and baseline/target execution.
+     **4e2b1 implemented:** [pinned consumer sources and SDK build matrix](invoice-consumer-builds.md)
+     with independently selected webhook/reconciliation identities and a registered
+     six-artifact runtime closure. Actual compilation retains four successful builds
+     and two unchanged-source upgrade failures. The host compiler executes no
+     consumer code and supplies no behavioral observation or worker permission.
+     Constrained execution and real signature/adapter verification remain next,
+     split into reviewable changes. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to

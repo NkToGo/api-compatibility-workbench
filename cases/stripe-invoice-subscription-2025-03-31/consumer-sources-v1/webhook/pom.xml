@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion><parent><groupId>io.github.nktogo.invoiceconsumer</groupId><artifactId>invoice-consumers</artifactId><version>1.0.0</version></parent><artifactId>webhook</artifactId>
+  <dependencies><dependency><groupId>com.google.code.gson</groupId><artifactId>gson</artifactId></dependency><dependency><groupId>com.stripe</groupId><artifactId>stripe-java</artifactId></dependency><dependency><groupId>io.github.nktogo.invoiceconsumer</groupId><artifactId>core</artifactId></dependency></dependencies>
+  <build><sourceDirectory>src/${api.train}/java</sourceDirectory></build>
+</project>

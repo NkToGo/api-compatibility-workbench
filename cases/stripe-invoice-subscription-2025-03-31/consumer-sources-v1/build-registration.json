@@ -1,0 +1,115 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-consumer-sources",
+  "stage": "SOURCE_AND_BUILD_ONLY",
+  "contractIdentity": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+  "fixtureRegistryIdentity": "ca7579e6856f50ce0264961f8511aed7c9f83af256bb934671217a99a867f9be",
+  "javaRelease": 21,
+  "files": {
+    "core/pom.xml": "7291ad59e28f8099cedf38731b87cc372c9015cd96a9a5978fbea6eb93d449f6",
+    "core/src/main/java/io/github/nktogo/invoiceconsumer/RenewalPolicy.java": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+    "pom.xml": "6485d2ad716371b415ce1ae0e77c277d5cf8f123a8c3a3a64d889ce03890a9da",
+    "reconciliation/pom.xml": "2eb797a319fbce75bc052532b7a5a4435f49886991b7736f630b439da7805c5b",
+    "reconciliation/src/acacia/java/io/github/nktogo/invoiceconsumer/InvoiceReconciliationConsumer.java": "5a6f531c14f4ab93ccabde3d6c4311e9885d2c8989144a1d51e38c67c56ec52e",
+    "reconciliation/src/basil/java/io/github/nktogo/invoiceconsumer/InvoiceReconciliationConsumer.java": "92765c66c18ce12d20dc48ab9030fb579a7df2ddef8bc28543dc2c11a010101d",
+    "webhook/pom.xml": "1ff6aaaa752a50147f4ac90251a00d5b3942147227de6dacbfa5db9da25d259c",
+    "webhook/src/acacia/java/io/github/nktogo/invoiceconsumer/InvoiceWebhookConsumer.java": "c8ec43cd9a1e3767547f90a3fe5b5b5ccb492e726b5cfcb9438ca76244a726b5",
+    "webhook/src/basil/java/io/github/nktogo/invoiceconsumer/InvoiceWebhookConsumer.java": "6b4a8b67e1faa6aa69a226f6fd3699777475d285cb939c490669a531ee821794"
+  },
+  "artifacts": [
+    {
+      "coordinate": "com.stripe:stripe-java:28.4.0:jar",
+      "file": "stripe-java-28.4.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/28.4.0/stripe-java-28.4.0.jar",
+      "sha256": "ebb50a10d79193e6c8d6654165b7f8ade6c98c6e700941adcb5b5eaeac2972a8"
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:28.4.0:pom",
+      "file": "stripe-java-28.4.0.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/28.4.0/stripe-java-28.4.0.pom",
+      "sha256": "0eac0968b1583a121a187b5324e9ada4bed9e92a69c8ef464824b8f150dd41d5"
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:29.0.0:jar",
+      "file": "stripe-java-29.0.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/29.0.0/stripe-java-29.0.0.jar",
+      "sha256": "ca9d241359567b175c97e428deb4db9aba15fd12e6589d4f05ca9444af07aae0"
+    },
+    {
+      "coordinate": "com.stripe:stripe-java:29.0.0:pom",
+      "file": "stripe-java-29.0.0.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/stripe/stripe-java/29.0.0/stripe-java-29.0.0.pom",
+      "sha256": "d133195e6e93bb087e3a8e55fc5bb5857ffd4203f7255c4a819ca054ebbdaf29"
+    },
+    {
+      "coordinate": "com.google.code.gson:gson:2.10.1:jar",
+      "file": "gson-2.10.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar",
+      "sha256": "4241c14a7727c34feea6507ec801318a3d4a90f070e4525681079fb94ee4c593"
+    },
+    {
+      "coordinate": "com.google.code.gson:gson:2.10.1:pom",
+      "file": "gson-2.10.1.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.pom",
+      "sha256": "d2b115634f5c085db4b9c9ffc2658e89e231fdbfbe2242121a1cd95d4d948dd7"
+    }
+  ],
+  "builds": [
+    {
+      "id": "webhook-baseline",
+      "consumerId": "invoice-webhook",
+      "sourceTrain": "acacia",
+      "sdkVersion": "28.4.0",
+      "apiVersion": "2025-02-24.acacia",
+      "entryClass": "io.github.nktogo.invoiceconsumer.InvoiceWebhookConsumer",
+      "expectedCompilation": "SUCCEEDED"
+    },
+    {
+      "id": "webhook-unrepaired-target",
+      "consumerId": "invoice-webhook",
+      "sourceTrain": "acacia",
+      "sdkVersion": "29.0.0",
+      "apiVersion": "2025-03-31.basil",
+      "entryClass": "io.github.nktogo.invoiceconsumer.InvoiceWebhookConsumer",
+      "expectedCompilation": "FAILED"
+    },
+    {
+      "id": "webhook-basil-source",
+      "consumerId": "invoice-webhook",
+      "sourceTrain": "basil",
+      "sdkVersion": "29.0.0",
+      "apiVersion": "2025-03-31.basil",
+      "entryClass": "io.github.nktogo.invoiceconsumer.InvoiceWebhookConsumer",
+      "expectedCompilation": "SUCCEEDED"
+    },
+    {
+      "id": "reconciliation-baseline",
+      "consumerId": "invoice-reconciliation",
+      "sourceTrain": "acacia",
+      "sdkVersion": "28.4.0",
+      "apiVersion": "2025-02-24.acacia",
+      "entryClass": "io.github.nktogo.invoiceconsumer.InvoiceReconciliationConsumer",
+      "expectedCompilation": "SUCCEEDED"
+    },
+    {
+      "id": "reconciliation-unrepaired-target",
+      "consumerId": "invoice-reconciliation",
+      "sourceTrain": "acacia",
+      "sdkVersion": "29.0.0",
+      "apiVersion": "2025-03-31.basil",
+      "entryClass": "io.github.nktogo.invoiceconsumer.InvoiceReconciliationConsumer",
+      "expectedCompilation": "FAILED"
+    },
+    {
+      "id": "reconciliation-basil-source",
+      "consumerId": "invoice-reconciliation",
+      "sourceTrain": "basil",
+      "sdkVersion": "29.0.0",
+      "apiVersion": "2025-03-31.basil",
+      "entryClass": "io.github.nktogo.invoiceconsumer.InvoiceReconciliationConsumer",
+      "expectedCompilation": "SUCCEEDED"
+    }
+  ]
+}

@@ -31,6 +31,7 @@ final class InvoiceRenewalAdmission {
         private final List<Issue> issues;
         private final JsonObject signatureEvidence;
         private final JsonObject adapterEvidence;
+        private final boolean observedWebhook;
         private Decision(String consumer, JsonObject input, Fact expected, Collection<Issue> issues) {
             this(consumer, input, expected, issues, null);
         }
@@ -38,15 +39,21 @@ final class InvoiceRenewalAdmission {
             this(consumer, input, expected, issues, signatureEvidence, null);
         }
         private Decision(String consumer, JsonObject input, Fact expected, Collection<Issue> issues, JsonObject signatureEvidence, JsonObject adapterEvidence) {
+            this(consumer, input, expected, issues, signatureEvidence, adapterEvidence, false);
+        }
+        private Decision(String consumer, JsonObject input, Fact expected, Collection<Issue> issues, JsonObject signatureEvidence, JsonObject adapterEvidence, boolean observedWebhook) {
             this.consumer = consumer; this.input = input.deepCopy(); this.expected = expected; this.issues = List.copyOf(issues);
             this.signatureEvidence = signatureEvidence == null ? null : signatureEvidence.deepCopy();
             this.adapterEvidence = adapterEvidence == null ? null : adapterEvidence.deepCopy();
+            this.observedWebhook = observedWebhook;
         }
         boolean admitted() { return issues.isEmpty(); }
         List<Issue> issues() { return issues; }
         String consumerId() { return consumer; }
         String effectiveApiVersion() { return text(input, "effectiveApiVersion"); }
         String sdkVersion() { return text(object(input, "configuration"), "sdkVersion"); }
+        JsonObject input() { return input.deepCopy(); }
+        boolean observedWebhookVerified() { return admitted() && observedWebhook; }
         JsonObject signatureEvidence() { return signatureEvidence == null ? null : signatureEvidence.deepCopy(); }
         JsonObject adapterEvidence() { return adapterEvidence == null ? null : adapterEvidence.deepCopy(); }
         InvoiceRenewalOracle oracle() {
@@ -77,7 +84,8 @@ final class InvoiceRenewalAdmission {
             if (bytes == null || !CaseInputs.hash(bytes).equals(adapter.sourceIdentity())) issues.add(Issue.ADAPTER_SOURCE_MISMATCH);
             if (!Objects.equals(adapter.mainSdk(), text(object(input, "configuration"), "sdkVersion"))) issues.add(Issue.ADAPTER_VERSION_MISMATCH);
         }
-        return new Decision("invoice-webhook", input, expected, issues, checked.signatureEvidence(), adapter == null ? null : adapter.json());
+        return new Decision("invoice-webhook", input, expected, issues, checked.signatureEvidence(), adapter == null ? null : adapter.json(),
+                issues.isEmpty() && signature != null && signature.verified() && adapter != null && adapter.verified());
     }
 
     /** Actual signature authority replaces the authored signature fields, but adapter states remain supplied controls. */

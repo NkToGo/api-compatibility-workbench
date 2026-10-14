@@ -97,10 +97,14 @@ The separate six-test `InvoiceEventAdapterContainerTest` suite now checks actual
 SDK parsing and one Basil business exchange gated by both real receipt types.
 It shares the image property; CI runs both classes and retains redacted parser
 receipts under `backend/target/invoice-adapter-tests/`.
+The separate seven-test `InvoiceVersionedSandboxContainerTest` suite now uses the
+same image property for [protected mixed-version business execution](versioned-invoice-business-execution.md).
+CI runs all three classes and retains the new receipts separately.
 
 This is observed synthetic execution for those exchanges only. It does not establish
 all 47 business variants, 188 ordered joint sequences or 34 boundary controls
-through actual consumers. The separate versioned source catalog compiles; mixed-version business dispatch, full
+through actual consumers. The separate versioned source catalog now has its own
+protected executor for the authenticated old-delivery route. Full
 business execution, joint evidence capture, comparison adapters and the separately
 frozen coordination campaign remain planned. The earlier campaign and routing
 decision are unchanged; Milestone 4 acceptance remains open.

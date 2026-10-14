@@ -285,7 +285,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      captures and compiles the Basil main consumer and Acacia companion on separate
      SDK classpaths, importing the unchanged pinned policy. Compiler facts grant no
      dispatch authority and leave the original six-build matrix intact.
-     **4e2b4b planned:** protected mixed-version business execution;
+     **4e2b4b implemented:** [protected mixed-version business execution](versioned-invoice-business-execution.md)
+     requires both observed verifier receipts, retains separate compiler facts
+     and SDK runtimes, and checks the authenticated old-delivery business fact
+     through the host oracle. Missing adapters remain pre-dispatch blocks;
+     incomplete or poisoned execution cannot become a passing observation.
      **4e2b4c planned:** full business and ordered joint coverage.
      **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.

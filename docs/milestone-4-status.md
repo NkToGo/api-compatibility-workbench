@@ -102,8 +102,12 @@ refusal, blocked missing-adapter delivery, interruption and a Basil business
 exchange gated by both observed receipt types. The frozen build matrix still
 rejects mixed-version business dispatch. A separate [versioned source catalog](versioned-invoice-business-builds.md)
 now captures and compiles the explicit main/companion business components. This
-does not change dispatch authority. Protected mixed-version execution, full
-business/joint coverage and the joint comparison remain pending.
+does not change dispatch authority. A separate [protected mixed-version executor](versioned-invoice-business-execution.md)
+now gates the registered route on both observed receipt types, compiles and runs
+the components with separate SDK closures, and checks an authenticated old
+delivery against the host oracle. Missing companions remain blocked and
+incomplete execution remains unevaluated. Full business/joint coverage and the
+joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

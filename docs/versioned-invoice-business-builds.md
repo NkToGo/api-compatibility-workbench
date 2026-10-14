@@ -35,14 +35,15 @@ cannot disguise a different runtime. Neither component calls Stripe.
 Three fixed system properties identify the companion classes, SDK and Gson:
 `workbench.invoice.legacy.classes`, `workbench.invoice.legacy.sdk` and
 `workbench.invoice.legacy.gson`. They are not read from an event or model output.
-A future protected bootstrap must set them from its verified runtime closure;
-their presence alone is not authentication or permission to execute.
+The separate [protected bootstrap](versioned-invoice-business-execution.md) sets
+them from its verified runtime closure; their presence alone is not authentication
+or permission to execute.
 
 After extraction, the main source applies the existing consumer business policy
 for invoice association, paid status, approved binding and supplied subscription
 state. The source imports that policy's exact captured bytes; it does not copy or
-change the host oracle. These are implementation intentions until separately
-observed through protected execution.
+change the host oracle. The separate executor now observes this policy on one
+authenticated old-delivery exchange; full business coverage remains pending.
 
 ## Source and compiler identities
 
@@ -88,7 +89,8 @@ redacted compiler records with the case reports.
 
 These are compiler facts only. The existing sandbox still accepts only its
 original build catalog; this registration cannot silently dispatch through it.
-Actual isolated mixed-version business execution is next, followed by full
-business and ordered joint coverage. Signature/parser receipts, business
-observations and ledger effects remain separate. The earlier campaign, review
+The separate [isolated mixed-version executor](versioned-invoice-business-execution.md)
+now requires actual verifier authority and observes the registered old-delivery
+exchange. Full business and ordered joint coverage remain next. Signature/parser
+receipts, business observations and ledger effects remain separate. The earlier campaign, review
 criteria and routing are unchanged, and Milestone 4 acceptance remains open.

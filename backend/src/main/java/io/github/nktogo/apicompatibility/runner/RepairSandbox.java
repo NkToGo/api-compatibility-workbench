@@ -119,7 +119,7 @@ final class RepairSandbox {
     static byte[] responseBytes(JsonElement response) {
         return (new GsonBuilder().serializeNulls().create().toJson(response) + "\n").getBytes(StandardCharsets.UTF_8);
     }
-    private static Set<String> entries() { return Set.of(RepairWorkerMain.class.getName(), InvoiceWorkerMain.class.getName(), InvoiceEventAdapterWorker.class.getName()); }
+    private static Set<String> entries() { return Set.of(RepairWorkerMain.class.getName(), InvoiceWorkerMain.class.getName(), InvoiceEventAdapterWorker.class.getName(), InvoiceVersionedWorkerMain.class.getName()); }
     static int startupLimit(String entry) {
         CaseInputs.require(entries().contains(entry), "Unknown worker entry");
         return entry.equals(InvoiceEventAdapterWorker.class.getName()) ? 400000 : 150000;

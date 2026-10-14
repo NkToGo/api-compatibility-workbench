@@ -185,8 +185,12 @@ admission boundary; absent adapters and incomplete checks remain blocked.
 A separate [versioned business source registration](docs/versioned-invoice-business-builds.md)
 now compiles a Basil main consumer and explicit Acacia companion on separate
 SDK classpaths, importing the unchanged consumer policy. This grants no execution
-authority. Protected mixed-version business execution, full business coverage,
-joint comparison and coordination benefit remain pending.
+authority. A separate [protected mixed-version executor](docs/versioned-invoice-business-execution.md)
+now requires both observed verifier receipts, compiles both components in the
+isolated image and checks one authenticated old delivery against the host oracle.
+Missing companions stay blocked; compiler/runtime failures and interruptions
+remain unevaluated. Full business coverage, joint comparison and coordination
+benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

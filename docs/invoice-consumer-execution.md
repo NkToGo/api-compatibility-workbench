@@ -19,7 +19,9 @@ not be used as production authentication receipts. A separate
 [host signature verifier](invoice-webhook-signatures.md) now authenticates raw bytes
 and binds its receipt to admission. A separate [observed SDK adapter](invoice-webhook-adapters.md)
 now adds actual parser receipts without replacing the main SDK. Business dispatch
-for Acacia events after a Basil main-SDK upgrade is not registered in this execution adapter yet;
+for Acacia events after a Basil main-SDK upgrade is not registered in this execution adapter yet.
+A separate [source/build registration](versioned-invoice-business-builds.md) now
+compiles the explicit main/companion components, without granting dispatch authority;
 the separately registered old-delivery corpus and its blocked paths remain intact.
 
 ## Runtime boundary
@@ -98,7 +100,7 @@ receipts under `backend/target/invoice-adapter-tests/`.
 
 This is observed synthetic execution for those exchanges only. It does not establish
 all 47 business variants, 188 ordered joint sequences or 34 boundary controls
-through actual consumers. Registering mixed-version business dispatch, full
+through actual consumers. The separate versioned source catalog compiles; mixed-version business dispatch, full
 business execution, joint evidence capture, comparison adapters and the separately
 frozen coordination campaign remain planned. The earlier campaign and routing
 decision are unchanged; Milestone 4 acceptance remains open.

@@ -104,6 +104,8 @@ exchanges. [Host signature verification](invoice-webhook-signatures.md) now adds
 actual HMAC checks without changing the pinned consumer sources or dependencies.
 A separate [SDK parsing boundary](invoice-webhook-adapters.md) now observes exact
 version-specific and explicit legacy adapters while preserving these frozen build
-identities. A registered mixed-version business consumer, full business execution
-and actual ordered joint observations remain next. Existing fixture identities, business expectations,
+identities. A separate [versioned business source registration](versioned-invoice-business-builds.md)
+now compiles a Basil main consumer and explicit Acacia companion without changing
+this catalog. Its protected execution, full business coverage and actual ordered
+joint observations remain next. Existing fixture identities, business expectations,
 campaign history, review criteria and routing remain unchanged.

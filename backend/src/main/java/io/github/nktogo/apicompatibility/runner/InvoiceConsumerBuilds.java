@@ -48,6 +48,9 @@ final class InvoiceConsumerBuilds {
             CaseInputs.require(artifacts.containsKey(name), "Unregistered invoice dependency");
             return CaseInputs.hash(artifacts.get(name));
         }
+        byte[] artifactBytes(String name) {
+            CaseInputs.require(artifacts.containsKey(name), "Unregistered invoice dependency"); return artifacts.get(name).clone();
+        }
         String sourceIdentity(String id) {
             var build = build(id); var inventory = new TreeMap<String, String>();
             for (String name : selected(build)) inventory.put(name, CaseInputs.hash(files.get(name)));
@@ -97,18 +100,33 @@ final class InvoiceConsumerBuilds {
         return new Registration(files, artifacts, builds);
     }
     static Result compile(Registration registration, String buildId, Path outputRoot) throws IOException {
-        var build = registration.build(buildId); var compiler = ToolProvider.getSystemJavaCompiler();
+        var build = registration.build(buildId); var sources = new LinkedHashMap<String, byte[]>();
+        for (String name : selected(build)) if (name.endsWith(".java")) sources.put(Path.of(name).getFileName().toString(), registration.files.get(name));
+        var libraries = new LinkedHashMap<String, byte[]>();
+        for (String name : List.of("stripe-java-" + build.sdkVersion() + ".jar", "gson-2.10.1.jar")) libraries.put(name, registration.artifacts.get(name));
+        var compiled = compileCaptured(sources, libraries, outputRoot);
+        return new Result(build.id(), registration.sourceIdentity(build.id()), registration.configurationIdentity(build.id()),
+                registration.dependenciesIdentity(), compiled.compilerIdentity(), compiled.disposition(), compiled.diagnostics());
+    }
+    record Compilation(String compilerIdentity, Disposition disposition, List<DiagnosticRecord> diagnostics) {
+        Compilation { diagnostics = List.copyOf(diagnostics); }
+    }
+    /** Trusted captured-source compiler only; no consumer loading, Maven execution or candidate interface. */
+    static Compilation compileCaptured(Map<String, byte[]> sourceBytes, Map<String, byte[]> libraryBytes, Path outputRoot) throws IOException {
+        var compiler = ToolProvider.getSystemJavaCompiler();
         CaseInputs.require(compiler != null && Runtime.version().feature() == 21, "Invoice build requires JDK 21");
         Files.createDirectories(outputRoot); plainDirectories(outputRoot);
         Path run = Files.createDirectory(outputRoot.resolve(UUID.randomUUID().toString()));
         Path sources = Files.createDirectory(run.resolve("sources")), libraries = Files.createDirectory(run.resolve("libraries")), classes = Files.createDirectory(run.resolve("classes"));
         var paths = new ArrayList<Path>();
-        for (String name : selected(build)) if (name.endsWith(".java")) {
-            Path target = sources.resolve(Path.of(name).getFileName()); Files.write(target, registration.files.get(name), StandardOpenOption.CREATE_NEW); paths.add(target);
+        for (String name : sourceBytes.keySet()) {
+            CaseInputs.require(name.matches("[A-Za-z][A-Za-z0-9]*\\.java"), "Invalid captured source basename");
+            Path target = sources.resolve(name); Files.write(target, sourceBytes.get(name), StandardOpenOption.CREATE_NEW); paths.add(target);
         }
         var classpath = new ArrayList<String>();
-        for (String name : List.of("stripe-java-" + build.sdkVersion() + ".jar", "gson-2.10.1.jar")) {
-            Path target = libraries.resolve(name); Files.write(target, registration.artifacts.get(name), StandardOpenOption.CREATE_NEW); classpath.add(target.toAbsolutePath().toString());
+        for (String name : libraryBytes.keySet()) {
+            CaseInputs.require(ARTIFACTS.contains(name) && name.endsWith(".jar"), "Invalid captured library basename");
+            Path target = libraries.resolve(name); Files.write(target, libraryBytes.get(name), StandardOpenOption.CREATE_NEW); classpath.add(target.toAbsolutePath().toString());
         }
         var diagnostics = new DiagnosticCollector<JavaFileObject>(); boolean succeeded;
         try (var manager = compiler.getStandardFileManager(diagnostics, Locale.ROOT, StandardCharsets.UTF_8)) {
@@ -122,8 +140,7 @@ final class InvoiceConsumerBuilds {
                 d.getSource() == null ? null : Path.of(d.getSource().toUri()).getFileName().toString(), d.getLineNumber(), d.getColumnNumber(), d.getKind().name())).toList();
         String compilerIdentity = CaseInputs.identity(Map.of("runtime", System.getProperty("java.runtime.version"),
                 "vendor", System.getProperty("java.vendor"), "compiler", compiler.getClass().getName(), "os", System.getProperty("os.name"), "arch", System.getProperty("os.arch")));
-        return new Result(build.id(), registration.sourceIdentity(build.id()), registration.configurationIdentity(build.id()),
-                registration.dependenciesIdentity(), compilerIdentity, succeeded ? Disposition.SUCCEEDED : Disposition.FAILED, records);
+        return new Compilation(compilerIdentity, succeeded ? Disposition.SUCCEEDED : Disposition.FAILED, records);
     }
     private static List<String> selected(Build build) {
         String role = build.consumerId().equals("invoice-webhook") ? "webhook" : "reconciliation";
@@ -137,6 +154,9 @@ final class InvoiceConsumerBuilds {
         return Set.copyOf(result);
     }
     private static void verifyInventory(Path root, Set<String> expected) throws IOException {
+        verifyInventory(root, expected, Set.of("target", "core/target", "webhook/target", "reconciliation/target"));
+    }
+    static void verifyInventory(Path root, Set<String> expected, Set<String> generatedDirectories) throws IOException {
         var allowed = new HashSet<>(expected); allowed.add("build-registration.json"); var actual = new HashSet<String>();
         var directories = new HashSet<String>(); directories.add("");
         for (String name : allowed) {
@@ -146,7 +166,7 @@ final class InvoiceConsumerBuilds {
         Files.walkFileTree(root, new SimpleFileVisitor<>() {
             @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) {
                 String name = root.relativize(directory).toString().replace('\\', '/');
-                if (Set.of("target", "core/target", "webhook/target", "reconciliation/target").contains(name)) return FileVisitResult.SKIP_SUBTREE;
+                if (generatedDirectories.contains(name)) return FileVisitResult.SKIP_SUBTREE;
                 CaseInputs.require(directories.contains(name) && !attributes.isSymbolicLink(), "Unregistered invoice source directory");
                 return FileVisitResult.CONTINUE;
             }
@@ -158,7 +178,7 @@ final class InvoiceConsumerBuilds {
         });
         CaseInputs.require(actual.equals(allowed), "Incomplete invoice source inventory");
     }
-    private static byte[] read(Path file, long limit) throws IOException {
+    static byte[] read(Path file, long limit) throws IOException {
         plainDirectories(file.toAbsolutePath().normalize().getParent());
         var attributes = Files.readAttributes(file, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
         CaseInputs.require(attributes.isRegularFile() && !attributes.isSymbolicLink() && attributes.size() <= limit, "Invalid invoice build input");

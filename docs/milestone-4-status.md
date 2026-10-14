@@ -100,8 +100,10 @@ and the explicit legacy companion, retaining the main SDK and actual primary
 refusal, with receipt binding at admission. Its controls include actual schema
 refusal, blocked missing-adapter delivery, interruption and a Basil business
 exchange gated by both observed receipt types. The frozen build matrix still
-rejects mixed-version business dispatch. That registration, full business/joint
-execution and the joint comparison remain pending.
+rejects mixed-version business dispatch. A separate [versioned source catalog](versioned-invoice-business-builds.md)
+now captures and compiles the explicit main/companion business components. This
+does not change dispatch authority. Protected mixed-version execution, full
+business/joint coverage and the joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

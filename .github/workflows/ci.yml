@@ -51,6 +51,9 @@ jobs:
             if ($IsWindows) { & ./mvnw.cmd @invoiceBuildArguments } else { & sh ./mvnw @invoiceBuildArguments }
             if ($LASTEXITCODE -ne 0) { throw 'Invoice Maven project build failed.' }
           }
+          $versionedInvoiceArguments = @('-B', '-ntp', '-f', 'cases/stripe-invoice-subscription-2025-03-31/versioned-webhook-v1/pom.xml', 'clean', 'package')
+          if ($IsWindows) { & ./mvnw.cmd @versionedInvoiceArguments } else { & sh ./mvnw @versionedInvoiceArguments }
+          if ($LASTEXITCODE -ne 0) { throw 'Versioned webhook Maven project build failed.' }
       - name: Verify frozen campaign registration
         shell: pwsh
         run: ./scripts/Test-CoordinationCampaign.ps1
@@ -102,6 +105,7 @@ jobs:
             backend/target/test-case-runs/**/report.json
             backend/target/test-case-runs/**/report.html
             backend/target/subscription-period-case-reports/
+            backend/target/versioned-invoice-build-tests/
           if-no-files-found: warn
           retention-days: 14
       - name: Build isolated invoice worker

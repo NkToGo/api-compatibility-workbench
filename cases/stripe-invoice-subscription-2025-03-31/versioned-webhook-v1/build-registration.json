@@ -1,0 +1,39 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "policy": "paid-renewal-v1",
+  "origin": "authored-consumer-sources",
+  "stage": "VERSIONED_SOURCE_AND_BUILD_ONLY",
+  "baseRegistrationIdentity": "1f74dcacd771d6a9202186fa501e29dc97426c60452887ec42835ccf49463610",
+  "buildId": "webhook-basil-with-acacia-companion",
+  "mainSdkVersion": "29.0.0",
+  "eventApiVersion": "2025-02-24.acacia",
+  "requestApiVersion": "2025-03-31.basil",
+  "endpointApiVersion": "2025-03-31.basil",
+  "adapterApiVersion": "2025-02-24.acacia",
+  "javaRelease": 21,
+  "sharedPolicy": {
+    "path": "core/src/main/java/io/github/nktogo/invoiceconsumer/RenewalPolicy.java",
+    "sha256": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886"
+  },
+  "files": {
+    "pom.xml": "c4b224cc0c08c29e8cd4d8c59ada9cba01690c86100da411b5dd9964ddc73e48",
+    "policy/pom.xml": "6413fca89e46845effb3962eaa381b4bee2110007c8d39e16a9bf0356288c520",
+    "webhook/pom.xml": "532f204411bf0fbabee1071fddaadc130d6d01858dc01555af42ee6abfcbf8a1",
+    "acacia-adapter/pom.xml": "05d80edf9bfa8a49e3315a84b63e66b8d82e81df18f9d5e4a0187075b2171742",
+    "webhook/src/main/java/io/github/nktogo/invoiceconsumer/VersionedInvoiceWebhookConsumer.java": "7a23c5b725abb82e1fdaff92d71746cecf43cd6193f9357a0a81b76f466aafcf",
+    "acacia-adapter/src/main/java/io/github/nktogo/invoiceconsumer/legacy/AcaciaInvoiceAdapter.java": "16f5862b9538cbf0f938b4c93c85dff88765a8937e2a0b1971c474731e4d870f"
+  },
+  "components": [
+    {
+      "id": "main",
+      "sdkVersion": "29.0.0",
+      "entryClass": "io.github.nktogo.invoiceconsumer.VersionedInvoiceWebhookConsumer"
+    },
+    {
+      "id": "acacia-adapter",
+      "sdkVersion": "28.4.0",
+      "entryClass": "io.github.nktogo.invoiceconsumer.legacy.AcaciaInvoiceAdapter"
+    }
+  ]
+}

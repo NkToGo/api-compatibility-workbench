@@ -106,7 +106,9 @@ This establishes observed parsing for synthetic controls only. The old-delivery
 case can acquire actual parsing/admission evidence while preserving its main
 SDK. The frozen consumer build matrix still rejects business dispatch for that
 mixed version: it contains no registered dual-runtime business consumer. Such a
-consumer must be registered explicitly; an Acacia baseline cannot silently replace
+consumer must be registered explicitly. A separate [business source registration](versioned-invoice-business-builds.md)
+now compiles its main/companion components; protected dispatch is still pending.
+An Acacia baseline cannot silently replace
 the declared Basil main SDK. Full business coverage, ordered joint execution,
 comparison capture and coordination acceptance remain pending. No migration or
 live provider delivery is certified by these receipts.

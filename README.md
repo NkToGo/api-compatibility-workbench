@@ -182,8 +182,11 @@ container exchange retains host-only signature evidence. An
 parsing with both pinned SDKs and an explicitly selected Acacia companion under
 a Basil main SDK. Actual receipts replace authored adapter flags at the new
 admission boundary; absent adapters and incomplete checks remain blocked.
-Registering mixed-version business execution, full business coverage, joint
-comparison and coordination benefit remain pending.
+A separate [versioned business source registration](docs/versioned-invoice-business-builds.md)
+now compiles a Basil main consumer and explicit Acacia companion on separate
+SDK classpaths, importing the unchanged consumer policy. This grants no execution
+authority. Protected mixed-version business execution, full business coverage,
+joint comparison and coordination benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

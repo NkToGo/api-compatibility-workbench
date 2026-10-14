@@ -14,9 +14,11 @@ Before any Docker dispatch, the adapter requires a successful host
 SDK and effective API version must match that decision. An unknown build or
 blocked input cannot create a worker or an execution observation.
 
-This step exercises authored verification states in the synthetic rollout corpus.
-It does **not** authenticate webhook signatures or verify a legacy adapter.
-Those states must not be used as production authentication receipts. Acacia events
+The original rollout exchanges exercise authored verification states, which must
+not be used as production authentication receipts. A separate
+[host signature verifier](invoice-webhook-signatures.md) now authenticates raw bytes
+and binds its receipt to admission. Actual adapter verification remains pending.
+Acacia events
 after a Basil main-SDK upgrade are not supported by this execution adapter yet;
 the separately registered old-delivery corpus and its blocked paths remain intact.
 
@@ -85,10 +87,14 @@ independent input exchanges. It also retains both unchanged-source target compil
 failures and exercises dependency/inventory rejection, protected-file/credential
 absence, forged protocol output, timeout and cancellation. Altered sources in
 negative tests are internal adversarial controls, not supported repair candidates.
+An additional actual signed synthetic webhook exchange retains its signature
+record only in the host result, in `authenticated-webhook.json`. Its adapter state
+remains authored. The suite now contains six tests; the default run skips them
+unless the immutable image property is supplied.
 
 This is observed synthetic execution for those exchanges only. It does not establish
 all 47 business variants, 188 ordered joint sequences or 34 boundary controls
-through actual consumers. Authentic signature/legacy-adapter verification, full
+through actual consumers. Actual version-specific/legacy adapter verification, full
 business execution, joint evidence capture, comparison adapters and the separately
 frozen coordination campaign remain planned. The earlier campaign and routing
 decision are unchanged; Milestone 4 acceptance remains open.

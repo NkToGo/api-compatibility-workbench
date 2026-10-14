@@ -100,6 +100,8 @@ separation, byte tampering, local re-pinning, missing/unregistered files and
 dependencies, immutable capture and unchanged prior fixture/evidence identities.
 
 Constrained execution and host-owned protocol assertions now cover eight rollout
-exchanges. The next reviewable changes add real signature/legacy-adapter verification,
+exchanges. [Host signature verification](invoice-webhook-signatures.md) now adds
+actual HMAC checks without changing the pinned consumer sources or dependencies.
+The next reviewable changes add actual version-specific/legacy adapter verification,
 full business execution and actual ordered joint observations. Existing fixture identities, business expectations,
 campaign history, review criteria and routing remain unchanged.

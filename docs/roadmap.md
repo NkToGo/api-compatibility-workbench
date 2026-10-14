@@ -270,8 +270,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      run both registered roles across the four rollout vectors, retaining eight
      actual synthetic exchanges and both unchanged-source target compiler failures.
      Authored admission states establish no cryptographic authentication. Real
-     signature/legacy-adapter verification and full business/joint execution remain
-     next, split into reviewable changes. **4e3 planned:** joint captured
+     signature/legacy-adapter verification and full business/joint execution follow
+     in separate changes. **4e2b3a implemented:** [host-owned webhook signature verification](invoice-webhook-signatures.md)
+     authenticates exact bytes, bounded delivery age and active rotating keys, with
+     scope-bound receipts at admission and host-only execution evidence. Existing
+     authored states retain their authority; no historical fixture is reclassified.
+     **4e2b3b planned:** actual version-specific/legacy adapter verification, then
+     full business and ordered joint execution. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to

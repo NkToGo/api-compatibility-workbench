@@ -161,7 +161,7 @@ are represented. A separate [admission and incomplete-execution control suite](d
 now checks source/identity/version binding and host-supplied verification states
 before oracle construction, preserving blocked inputs separately from incomplete
 consumer exchanges. Those verification states are authored test conditions;
-cryptographic signature verification and actual adapter verification remain pending.
+they do not establish cryptographic signature or actual adapter verification.
 A [complete fixture registry](docs/invoice-renewal-registry.md) now binds all
 47 business variants, 188 ordered sequences and 34 boundary controls. It checks
 exact variant/control coverage while preserving every constituent identity;
@@ -173,9 +173,13 @@ missing-accessor failures. A [protected invoice execution adapter](docs/invoice-
 now compiles and runs both roles in a separate constrained image, with host-owned
 assertions for eight exchanges across the four rollout vectors. The two unrepaired
 target builds retain compile failures without invented consumer observations.
-These checks use authored verification states; authentic signature/legacy-adapter
-verification, full business execution, joint comparison and coordination benefit
-remain pending.
+The original exchanges use authored verification states. A separate
+[host signature verifier](docs/invoice-webhook-signatures.md) now authenticates exact
+bytes, bounded delivery age and active rotating keys, with scoped receipts that
+cannot replace adapter or business checks. One additional signed synthetic
+container exchange retains host-only signature evidence. Actual version-specific/
+legacy adapter verification, full business execution, joint comparison and
+coordination benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

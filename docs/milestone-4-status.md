@@ -90,8 +90,13 @@ build evidence, not behavioral baseline evidence or accepted repairs. A
 [protected execution adapter](invoice-consumer-execution.md) now records eight
 actual synthetic consumer exchanges across the four rollout vectors, with host
 assertions and separate retained target compile failures. It uses authored admission
-states. Real signature/legacy-adapter verification, full business/joint execution
-and the joint comparison remain pending.
+states. A separate [host signature boundary](invoice-webhook-signatures.md) now
+authenticates exact raw bytes with bounded delivery age and rotating keys, binds
+receipts to host scope and preserves authentication evidence outside the worker.
+It does not reclassify authored controls or establish an actual verified adapter.
+One additional signed synthetic container exchange exercises this path. Actual
+version-specific/legacy adapter verification, full business/joint execution and
+the joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

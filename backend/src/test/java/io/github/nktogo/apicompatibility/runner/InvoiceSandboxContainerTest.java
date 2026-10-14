@@ -2,7 +2,8 @@ package io.github.nktogo.apicompatibility.runner;
 
 import com.google.gson.*;
 import java.nio.file.*;
-import java.time.Duration;
+import java.nio.charset.StandardCharsets;
+import java.time.*;
 import java.util.*;
 import java.util.function.BooleanSupplier;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,28 @@ class InvoiceSandboxContainerTest {
                     .anyMatch(v -> v.getAsJsonObject().get("code").getAsString().contains("cant.resolve")));
             assertTrue(result.get("containerRemoved").getAsBoolean());
         }
+    }
+    @Test void actualSignatureReceiptStaysOnHostWhileTheConsumerExecutes() throws Exception {
+        var registration = InvoiceConsumerBuilds.load(root()); var bundle = InvoiceRenewalFixtures.load(root());
+        var delivery = delivery("target-agreement", "webhook");
+        byte[] bytes = bundle.bytes(delivery.input().getAsJsonObject("source").get("file").getAsString());
+        String secret = "whsec_synthetic_container_control"; long timestamp = 1700000000L;
+        String header = InvoiceWebhookSignaturesTest.signed(bytes, timestamp, secret);
+        var scope = new InvoiceWebhookSignatures.Scope("install_case", "endpoint_case", "keys_v1");
+        var receipt = InvoiceWebhookSignatures.verify(scope, bytes, header,
+                List.of(new InvoiceWebhookSignatures.SigningKey("key_current", secret.getBytes(StandardCharsets.UTF_8))),
+                Clock.fixed(Instant.ofEpochSecond(timestamp), ZoneOffset.UTC));
+        // The adapter condition remains authored; this test establishes only actual HMAC and consumer execution.
+        var host = new InvoiceRenewalAdmission.HostEvidence(bundle.identity(), delivery.expected().inputIdentity(), delivery.expected().evidenceIdentity(),
+                bytes, InvoiceRenewalAdmission.Verification.NOT_CHECKED, null, InvoiceRenewalAdmission.Verification.VERIFIED, delivery.expected().effectiveApiVersion());
+        var admission = InvoiceRenewalAdmission.inspectWebhook(delivery.input(), delivery.expected(), host, scope, receipt);
+        assertTrue(admission.admitted());
+        var startup = InvoiceSandbox.startup(registration, "webhook-basil-source", admission);
+        assertEquals(Set.of("sdk", "entryClass", "sources", "dependencies"), startup.keySet());
+        var result = InvoiceSandbox.run(registration, "webhook-basil-source", admission, image(), name(), Duration.ofSeconds(30), () -> false);
+        assertEquals("PASSED", observation(result).get("assertionOutcome").getAsString());
+        assertEquals(receipt.json(), result.getAsJsonObject("signatureVerification")); assertTrue(result.get("containerRemoved").getAsBoolean());
+        assertFalse(result.toString().contains(secret)); assertFalse(result.toString().contains(header)); archive("authenticated-webhook", result);
     }
     @Test void imageDependencyMismatchAndUnregisteredSourceCannotCompileOrReturn() throws Exception {
         var mismatched = payload(); mismatched.getAsJsonObject("dependencies").addProperty("gson-2.10.1.jar", "0".repeat(64));

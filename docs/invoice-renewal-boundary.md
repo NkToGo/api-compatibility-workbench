@@ -50,7 +50,11 @@ No signing secret, real customer payload or provider-observed delivery is includ
 The future runtime must replace these controlled states with trustworthy verifier
 records tied to the actual source and implementation; payload or model claims
 cannot establish that authority. This gate does not implement HMAC verification,
-signature-age checking, secret rotation or adapter verification.
+signature-age checking, secret rotation or adapter verification. A separate
+[runtime signature verifier](invoice-webhook-signatures.md) now supplies actual
+scope-bound HMAC receipts through `inspectWebhook`; that path ignores the authored
+signature flag. It does not upgrade these stored authored conditions or establish
+actual adapter verification.
 
 [Independent answers](../cases/stripe-invoice-subscription-2025-03-31/fixtures/boundary-v1/expectations.json)
 hold admission issues, expected normalized facts, execution assertions, actual-fact
@@ -81,7 +85,8 @@ These are golden protocol tests of host consistency, not executions of the new
 invoice consumers or evidence of provider compatibility. `BOUNDARY_CONTROLS_ONLY`
 and all previous partial corpora still reject `requireFullCaseCoverage()`. The
 combined registry now [checks every required variant and control](invoice-renewal-registry.md)
-and closes authored fixture registration. Pinned consumer/adapter execution,
-real signature verification, protected joint capture, campaign readiness,
+and closes authored fixture registration. [Registered consumer execution](invoice-consumer-execution.md)
+and the separate runtime signature path now exist. Actual adapter verification,
+full business execution, protected joint capture, campaign readiness,
 coordination benefit and release approval remain
 pending. The historical campaign and rubric are unchanged.

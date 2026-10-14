@@ -10,7 +10,7 @@ final class InvoiceRenewalAdmission {
     enum Issue {
         INCOMPLETE_INPUT_SCOPE, INCOMPLETE_FIXTURE_IDENTITY, INPUT_IDENTITY_MISMATCH, EVIDENCE_IDENTITY_MISMATCH,
         CONSUMER_BINDING_MISMATCH, MISSING_SOURCE, INVALID_SOURCE, SOURCE_DIGEST_MISMATCH,
-        SOURCE_PAYLOAD_MISMATCH, SOURCE_ROLE_MISMATCH, SIGNATURE_REJECTED, SIGNATURE_NOT_VERIFIED,
+        SOURCE_PAYLOAD_MISMATCH, SOURCE_ROLE_MISMATCH, SIGNATURE_REJECTED, SIGNATURE_NOT_VERIFIED, SIGNATURE_SCOPE_MISMATCH,
         SIGNATURE_SOURCE_MISMATCH, MISSING_EVENT_VERSION, UNKNOWN_EVENT_VERSION, REJECTED_EVENT_TYPE,
         MISSING_REQUEST_VERSION, UNKNOWN_REQUEST_VERSION, VERSION_BINDING_MISMATCH,
         ADAPTER_ABSENT, ADAPTER_REJECTED, ADAPTER_NOT_VERIFIED, ADAPTER_VERSION_MISMATCH,
@@ -29,14 +29,20 @@ final class InvoiceRenewalAdmission {
         private final JsonObject input;
         private final Fact expected;
         private final List<Issue> issues;
+        private final JsonObject signatureEvidence;
         private Decision(String consumer, JsonObject input, Fact expected, Collection<Issue> issues) {
+            this(consumer, input, expected, issues, null);
+        }
+        private Decision(String consumer, JsonObject input, Fact expected, Collection<Issue> issues, JsonObject signatureEvidence) {
             this.consumer = consumer; this.input = input.deepCopy(); this.expected = expected; this.issues = List.copyOf(issues);
+            this.signatureEvidence = signatureEvidence == null ? null : signatureEvidence.deepCopy();
         }
         boolean admitted() { return issues.isEmpty(); }
         List<Issue> issues() { return issues; }
         String consumerId() { return consumer; }
         String effectiveApiVersion() { return text(input, "effectiveApiVersion"); }
         String sdkVersion() { return text(object(input, "configuration"), "sdkVersion"); }
+        JsonObject signatureEvidence() { return signatureEvidence == null ? null : signatureEvidence.deepCopy(); }
         InvoiceRenewalOracle oracle() {
             CaseInputs.require(admitted(), "Invoice input blocked before consumer execution");
             return new InvoiceRenewalOracle(consumer, input, expected);
@@ -47,6 +53,19 @@ final class InvoiceRenewalAdmission {
         }
     }
     private InvoiceRenewalAdmission() {}
+
+    /** Actual signature authority replaces the authored signature fields, but adapter states remain supplied controls. */
+    static Decision inspectWebhook(JsonObject input, Fact expected, HostEvidence host,
+                                   InvoiceWebhookSignatures.Scope scope, InvoiceWebhookSignatures.Receipt signature) {
+        Objects.requireNonNull(scope); Objects.requireNonNull(host); Objects.requireNonNull(input);
+        var actual = new HostEvidence(host.bundleIdentity(), host.inputIdentity(), host.evidenceIdentity(), host.sourceBytes(),
+                signature == null ? Verification.NOT_CHECKED : signature.verified() ? Verification.VERIFIED : Verification.REJECTED,
+                signature == null ? null : signature.sourceIdentity(), host.adapter(), host.adapterVersion());
+        var checked = inspect("invoice-webhook", input, expected, actual); var issues = new LinkedHashSet<>(checked.issues());
+        if (!scope.installationId().equals(text(input, "installationId")) || signature != null && !signature.matchesScope(scope))
+            issues.add(Issue.SIGNATURE_SCOPE_MISMATCH);
+        return new Decision("invoice-webhook", input, expected, issues, signature == null ? null : signature.json());
+    }
 
     static Decision inspect(String consumer, JsonObject input, Fact expected, HostEvidence host) {
         CaseInputs.require(Set.of("invoice-webhook", "invoice-reconciliation").contains(consumer), "Unknown host invoice consumer");

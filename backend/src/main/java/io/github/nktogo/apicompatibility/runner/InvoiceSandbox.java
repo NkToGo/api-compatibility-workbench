@@ -38,6 +38,7 @@ final class InvoiceSandbox {
         result.addProperty("configurationIdentity", registration.configurationIdentity(buildId));
         result.addProperty("dependenciesIdentity", registration.dependenciesIdentity());
         result.addProperty("harnessIdentity", harness); result.addProperty("imageId", image);
+        if (admission.signatureEvidence() != null) result.add("signatureVerification", admission.signatureEvidence());
         result.addProperty("environmentIdentity", CaseInputs.identity(Map.of("imageId", image, "policy", "invoice-container-v1",
                 "deadlineMillis", deadline.toMillis(), "arguments", RepairSandbox.command(image, "acw-00000000-0000-0000-0000-000000000000", InvoiceWorkerMain.class.getName()))));
         return result;
@@ -46,7 +47,8 @@ final class InvoiceSandbox {
     static String harnessIdentity() throws IOException {
         var inventory = new TreeMap<String, String>();
         for (Class<?> type : List.of(InvoiceSandbox.class, InvoiceWorkerMain.class, RepairSandbox.class,
-                DockerCaseExecutor.class, ContainerCaseMain.class, CaseInputs.class, InvoiceRenewalFixtures.class, InvoiceRenewalOracle.class)) {
+                DockerCaseExecutor.class, ContainerCaseMain.class, CaseInputs.class, InvoiceRenewalFixtures.class, InvoiceRenewalOracle.class,
+                InvoiceRenewalAdmission.class, InvoiceWebhookSignatures.class)) {
             captureClass(type, inventory);
         }
         try (var stream = InvoiceSandbox.class.getResourceAsStream(ADAPTER_RESOURCE)) {

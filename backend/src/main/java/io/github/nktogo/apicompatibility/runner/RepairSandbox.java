@@ -18,6 +18,11 @@ final class RepairSandbox {
         command.set(command.indexOf(ContainerCaseMain.class.getName()), RepairWorkerMain.class.getName());
         return List.copyOf(command);
     }
+    static List<String> command(String image, String name, String entry) {
+        CaseInputs.require(Set.of(RepairWorkerMain.class.getName(), InvoiceWorkerMain.class.getName()).contains(entry), "Unknown worker entry");
+        var result = new ArrayList<>(command(image, name));
+        result.set(result.indexOf(RepairWorkerMain.class.getName()), entry); return List.copyOf(result);
+    }
     static JsonObject run(String image, String name, String source, String sdk, RepairOracle oracle,
                           Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
         CaseInputs.require(source.length() <= 32000 && Set.of("17.4.0", "20.33.0").contains(sdk), "Invalid sandbox input");
@@ -30,8 +35,16 @@ final class RepairSandbox {
     }
     private static JsonObject runProtocol(String image, String name, String source, String sdk, WorkerOracle oracle,
                                          Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
+        var startup = new JsonObject(); startup.addProperty("sdk", sdk); startup.addProperty("source", source);
+        return runProtocol(image, name, startup, RepairWorkerMain.class.getName(), oracle, deadline, stopped);
+    }
+    static JsonObject runProtocol(String image, String name, JsonObject startup, String entry, WorkerOracle oracle,
+                                  Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
+        CaseInputs.require(Set.of(RepairWorkerMain.class.getName(), InvoiceWorkerMain.class.getName()).contains(entry), "Unknown worker entry");
         CaseInputs.require(deadline.toMillis() > 0 && deadline.compareTo(Duration.ofSeconds(180)) <= 0, "Invalid sandbox deadline");
-        var command = command(image, name);
+        byte[] payload = new Gson().toJson(startup).getBytes(StandardCharsets.UTF_8);
+        CaseInputs.require(payload.length > 0 && payload.length <= 150000, "Invalid worker startup size");
+        var command = command(image, name, entry);
         var status = new AtomicReference<>("COMPLETED");
         Process process = null; Thread exchange = null, diagnostics = null; boolean cleaned = false;
         int exitCode = -1;
@@ -48,7 +61,6 @@ final class RepairSandbox {
             exchange = Thread.ofPlatform().daemon().start(() -> {
                 try {
                     var output = attached.getOutputStream();
-                    byte[] payload = new Gson().toJson(Map.of("sdk", sdk, "source", source)).getBytes(StandardCharsets.UTF_8);
                     output.write(ByteBuffer.allocate(4).putInt(payload.length).array()); output.write(payload); output.flush();
                     int total = 0;
                     for (byte[] line; (line = line(attached.getInputStream())) != null;) {
@@ -56,7 +68,8 @@ final class RepairSandbox {
                         // Bound parser nesting, including braces in strings (conservative rejection is acceptable).
                         int nesting = 0;
                         for (byte c : line) { if (c == '{' || c == '[') nesting++; CaseInputs.require(nesting <= 128, "Protocol nesting limit"); }
-                        var response = oracle.request(CaseInputs.object(line));
+                        var response = oracle.request(entry.equals(InvoiceWorkerMain.class.getName())
+                                ? InvoiceRenewalFixtures.object(line) : CaseInputs.object(line));
                         byte[] reply = responseBytes(response);
                         CaseInputs.require(reply.length <= 16384, "Response budget exceeded"); output.write(reply); output.flush();
                     }

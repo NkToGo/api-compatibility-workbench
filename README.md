@@ -169,8 +169,13 @@ individual partial corpora still block full-case use. This completes authored
 fixture registration. [Pinned invoice consumer sources and builds](docs/invoice-consumer-builds.md)
 now register both roles with historical SDK/runtime dependencies and six compiler
 combinations. Four builds compile; the two unchanged-source upgrades retain their
-missing-accessor failures. This establishes build evidence only. Protected new
-consumer execution, joint comparison and coordination benefit remain pending.
+missing-accessor failures. A [protected invoice execution adapter](docs/invoice-consumer-execution.md)
+now compiles and runs both roles in a separate constrained image, with host-owned
+assertions for eight exchanges across the four rollout vectors. The two unrepaired
+target builds retain compile failures without invented consumer observations.
+These checks use authored verification states; authentic signature/legacy-adapter
+verification, full business execution, joint comparison and coordination benefit
+remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

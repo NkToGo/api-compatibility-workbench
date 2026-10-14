@@ -1,0 +1,18 @@
+import com.google.gson.*;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+/** Container transport returns only consumer facts; the host computes the assertion. */
+public final class InvoiceMain {
+    private InvoiceMain() {}
+    public static void main(String[] args) throws Exception {
+        var input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        System.out.println("{\"op\":\"read\"}"); System.out.flush();
+        String line = input.readLine(); if (line == null || line.length() > 16384) throw new IOException("Missing or oversized invoice input");
+        var exchange = JsonParser.parseString(line).getAsJsonObject();
+        var fact = REGISTERED_ENTRY.consume(exchange);
+        var message = new JsonObject(); message.addProperty("op", "return"); message.add("result", fact);
+        System.out.println(new GsonBuilder().serializeNulls().create().toJson(message)); System.out.flush();
+        if (!"{}".equals(input.readLine())) throw new IOException("Invalid invoice acknowledgement");
+    }
+}

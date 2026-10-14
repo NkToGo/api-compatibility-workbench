@@ -266,8 +266,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      six-artifact runtime closure. Actual compilation retains four successful builds
      and two unchanged-source upgrade failures. The host compiler executes no
      consumer code and supplies no behavioral observation or worker permission.
-     Constrained execution and real signature/adapter verification remain next,
-     split into reviewable changes. **4e3 planned:** joint captured
+     **4e2b2 implemented:** [constrained invoice execution and host-owned transport](invoice-consumer-execution.md)
+     run both registered roles across the four rollout vectors, retaining eight
+     actual synthetic exchanges and both unchanged-source target compiler failures.
+     Authored admission states establish no cryptographic authentication. Real
+     signature/legacy-adapter verification and full business/joint execution remain
+     next, split into reviewable changes. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to

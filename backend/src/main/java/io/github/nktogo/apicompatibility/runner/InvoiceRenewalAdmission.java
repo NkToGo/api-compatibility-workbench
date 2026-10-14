@@ -34,6 +34,9 @@ final class InvoiceRenewalAdmission {
         }
         boolean admitted() { return issues.isEmpty(); }
         List<Issue> issues() { return issues; }
+        String consumerId() { return consumer; }
+        String effectiveApiVersion() { return text(input, "effectiveApiVersion"); }
+        String sdkVersion() { return text(object(input, "configuration"), "sdkVersion"); }
         InvoiceRenewalOracle oracle() {
             CaseInputs.require(admitted(), "Invoice input blocked before consumer execution");
             return new InvoiceRenewalOracle(consumer, input, expected);

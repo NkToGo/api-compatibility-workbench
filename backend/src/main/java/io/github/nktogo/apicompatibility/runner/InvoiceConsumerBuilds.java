@@ -37,7 +37,17 @@ final class InvoiceConsumerBuilds {
         String dependenciesIdentity() { return dependenciesIdentity; }
         List<Build> builds() { return builds; }
         byte[] bytes(String name) { CaseInputs.require(files.containsKey(name), "Unregistered invoice consumer source"); return files.get(name).clone(); }
-        private Build build(String id) { return builds.stream().filter(b -> b.id().equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("Unregistered invoice consumer build")); }
+        Build build(String id) { return builds.stream().filter(b -> b.id().equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("Unregistered invoice consumer build")); }
+        Map<String, String> workerSources(String id) {
+            var result = new TreeMap<String, String>();
+            for (String name : selected(build(id))) if (name.endsWith(".java"))
+                result.put(Path.of(name).getFileName().toString(), new String(files.get(name), StandardCharsets.UTF_8));
+            return Collections.unmodifiableMap(result);
+        }
+        String artifactIdentity(String name) {
+            CaseInputs.require(artifacts.containsKey(name), "Unregistered invoice dependency");
+            return CaseInputs.hash(artifacts.get(name));
+        }
         String sourceIdentity(String id) {
             var build = build(id); var inventory = new TreeMap<String, String>();
             for (String name : selected(build)) inventory.put(name, CaseInputs.hash(files.get(name)));

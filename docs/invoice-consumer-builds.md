@@ -93,12 +93,13 @@ To package the reviewed sources with Maven on Windows:
 ```
 
 On Linux/macOS, use `sh ./mvnw` in place of `.\mvnw.cmd`. These package commands
-compile the sources; the consumer modules have no behavioral tests or runnable
-host transport yet. The backend checks all six compiler combinations, identity
+compile the sources; the consumer modules have no standalone behavioral tests.
+The separate [protected host transport](invoice-consumer-execution.md) now exercises
+registered builds against the four rollout vectors. The backend checks all six compiler combinations, identity
 separation, byte tampering, local re-pinning, missing/unregistered files and
 dependencies, immutable capture and unchanged prior fixture/evidence identities.
 
-The next reviewable changes add constrained baseline/target execution and
-host-owned protocol assertions, real signature/adapter verification, and actual
-ordered joint observations. Existing fixture identities, business expectations,
+Constrained execution and host-owned protocol assertions now cover eight rollout
+exchanges. The next reviewable changes add real signature/legacy-adapter verification,
+full business execution and actual ordered joint observations. Existing fixture identities, business expectations,
 campaign history, review criteria and routing remain unchanged.

@@ -86,8 +86,12 @@ real signature/adapter verification and campaign acceptance remain pending.
 [Pinned consumer source/build registration](invoice-consumer-builds.md) now captures
 the two Java/Maven roles and historical runtime closure. Four builds compile;
 two unchanged-source upgrades fail on the removed legacy accessor. This is actual
-build evidence, not behavioral baseline evidence or accepted repairs. Protected
-execution and the joint comparison remain pending.
+build evidence, not behavioral baseline evidence or accepted repairs. A
+[protected execution adapter](invoice-consumer-execution.md) now records eight
+actual synthetic consumer exchanges across the four rollout vectors, with host
+assertions and separate retained target compile failures. It uses authored admission
+states. Real signature/legacy-adapter verification, full business/joint execution
+and the joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

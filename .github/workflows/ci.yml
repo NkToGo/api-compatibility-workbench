@@ -114,7 +114,7 @@ jobs:
         run: |
           $invoiceImage = (Get-Content -LiteralPath backend/target/invoice-worker-image.txt -Raw).Trim()
           if ($invoiceImage -cnotmatch '^sha256:[0-9a-f]{64}$') { throw 'Missing invoice image identity.' }
-          sh ./mvnw -B -ntp -f backend/pom.xml "-Dworkbench.invoice.image=$invoiceImage" '-Dtest=InvoiceSandboxContainerTest' test
+          sh ./mvnw -B -ntp -f backend/pom.xml "-Dworkbench.invoice.image=$invoiceImage" '-Dtest=InvoiceSandboxContainerTest,InvoiceEventAdapterContainerTest' test
           if ($LASTEXITCODE -ne 0) { throw 'Protected invoice verification failed.' }
       - name: Retain isolated execution receipts
         if: always() && runner.os == 'Linux'
@@ -129,5 +129,6 @@ jobs:
             backend/target/repair-container-tests/
             backend/target/subscription-container-tests/
             backend/target/invoice-container-tests/
+            backend/target/invoice-adapter-tests/
           if-no-files-found: warn
           retention-days: 14

@@ -177,9 +177,13 @@ The original exchanges use authored verification states. A separate
 [host signature verifier](docs/invoice-webhook-signatures.md) now authenticates exact
 bytes, bounded delivery age and active rotating keys, with scoped receipts that
 cannot replace adapter or business checks. One additional signed synthetic
-container exchange retains host-only signature evidence. Actual version-specific/
-legacy adapter verification, full business execution, joint comparison and
-coordination benefit remain pending.
+container exchange retains host-only signature evidence. An
+[isolated adapter verifier](docs/invoice-webhook-adapters.md) now observes safe
+parsing with both pinned SDKs and an explicitly selected Acacia companion under
+a Basil main SDK. Actual receipts replace authored adapter flags at the new
+admission boundary; absent adapters and incomplete checks remain blocked.
+Registering mixed-version business execution, full business coverage, joint
+comparison and coordination benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

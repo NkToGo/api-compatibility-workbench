@@ -275,8 +275,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      authenticates exact bytes, bounded delivery age and active rotating keys, with
      scope-bound receipts at admission and host-only execution evidence. Existing
      authored states retain their authority; no historical fixture is reclassified.
-     **4e2b3b planned:** actual version-specific/legacy adapter verification, then
-     full business and ordered joint execution. **4e3 planned:** joint captured
+     **4e2b3b implemented:** [observed version-specific and legacy SDK parsing](invoice-webhook-adapters.md)
+     runs fixed isolated parsers after actual authentication, preserving the main
+     SDK and explicit companion selection with bound receipts. Missing adapters,
+     parser refusal and incomplete execution stay distinct. This adds no mixed-version
+     business consumer to the frozen build matrix. **4e2b4 planned:** register explicit
+     version-aware business execution and complete full business/ordered joint
+     coverage in reviewable changes. **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to

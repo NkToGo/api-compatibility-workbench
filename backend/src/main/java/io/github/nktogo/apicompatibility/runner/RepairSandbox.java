@@ -19,7 +19,7 @@ final class RepairSandbox {
         return List.copyOf(command);
     }
     static List<String> command(String image, String name, String entry) {
-        CaseInputs.require(Set.of(RepairWorkerMain.class.getName(), InvoiceWorkerMain.class.getName()).contains(entry), "Unknown worker entry");
+        CaseInputs.require(entries().contains(entry), "Unknown worker entry");
         var result = new ArrayList<>(command(image, name));
         result.set(result.indexOf(RepairWorkerMain.class.getName()), entry); return List.copyOf(result);
     }
@@ -40,10 +40,10 @@ final class RepairSandbox {
     }
     static JsonObject runProtocol(String image, String name, JsonObject startup, String entry, WorkerOracle oracle,
                                   Duration deadline, java.util.function.BooleanSupplier stopped) throws Exception {
-        CaseInputs.require(Set.of(RepairWorkerMain.class.getName(), InvoiceWorkerMain.class.getName()).contains(entry), "Unknown worker entry");
+        CaseInputs.require(entries().contains(entry), "Unknown worker entry");
         CaseInputs.require(deadline.toMillis() > 0 && deadline.compareTo(Duration.ofSeconds(180)) <= 0, "Invalid sandbox deadline");
         byte[] payload = new Gson().toJson(startup).getBytes(StandardCharsets.UTF_8);
-        CaseInputs.require(payload.length > 0 && payload.length <= 150000, "Invalid worker startup size");
+        CaseInputs.require(payload.length > 0 && payload.length <= startupLimit(entry), "Invalid worker startup size");
         var command = command(image, name, entry);
         var status = new AtomicReference<>("COMPLETED");
         Process process = null; Thread exchange = null, diagnostics = null; boolean cleaned = false;
@@ -68,8 +68,8 @@ final class RepairSandbox {
                         // Bound parser nesting, including braces in strings (conservative rejection is acceptable).
                         int nesting = 0;
                         for (byte c : line) { if (c == '{' || c == '[') nesting++; CaseInputs.require(nesting <= 128, "Protocol nesting limit"); }
-                        var response = oracle.request(entry.equals(InvoiceWorkerMain.class.getName())
-                                ? InvoiceRenewalFixtures.object(line) : CaseInputs.object(line));
+                        var response = oracle.request(entry.equals(RepairWorkerMain.class.getName())
+                                ? CaseInputs.object(line) : InvoiceRenewalFixtures.object(line));
                         byte[] reply = responseBytes(response);
                         CaseInputs.require(reply.length <= 16384, "Response budget exceeded"); output.write(reply); output.flush();
                     }
@@ -118,6 +118,11 @@ final class RepairSandbox {
     }
     static byte[] responseBytes(JsonElement response) {
         return (new GsonBuilder().serializeNulls().create().toJson(response) + "\n").getBytes(StandardCharsets.UTF_8);
+    }
+    private static Set<String> entries() { return Set.of(RepairWorkerMain.class.getName(), InvoiceWorkerMain.class.getName(), InvoiceEventAdapterWorker.class.getName()); }
+    static int startupLimit(String entry) {
+        CaseInputs.require(entries().contains(entry), "Unknown worker entry");
+        return entry.equals(InvoiceEventAdapterWorker.class.getName()) ? 400000 : 150000;
     }
     private static byte[] line(InputStream input) throws IOException {
         var bytes = new ByteArrayOutputStream();

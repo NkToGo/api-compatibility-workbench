@@ -102,6 +102,8 @@ dependencies, immutable capture and unchanged prior fixture/evidence identities.
 Constrained execution and host-owned protocol assertions now cover eight rollout
 exchanges. [Host signature verification](invoice-webhook-signatures.md) now adds
 actual HMAC checks without changing the pinned consumer sources or dependencies.
-The next reviewable changes add actual version-specific/legacy adapter verification,
-full business execution and actual ordered joint observations. Existing fixture identities, business expectations,
+A separate [SDK parsing boundary](invoice-webhook-adapters.md) now observes exact
+version-specific and explicit legacy adapters while preserving these frozen build
+identities. A registered mixed-version business consumer, full business execution
+and actual ordered joint observations remain next. Existing fixture identities, business expectations,
 campaign history, review criteria and routing remain unchanged.

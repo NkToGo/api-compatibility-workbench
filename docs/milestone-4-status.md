@@ -94,9 +94,14 @@ states. A separate [host signature boundary](invoice-webhook-signatures.md) now
 authenticates exact raw bytes with bounded delivery age and rotating keys, binds
 receipts to host scope and preserves authentication evidence outside the worker.
 It does not reclassify authored controls or establish an actual verified adapter.
-One additional signed synthetic container exchange exercises this path. Actual
-version-specific/legacy adapter verification, full business/joint execution and
-the joint comparison remain pending.
+One additional signed synthetic container exchange exercises this path. A separate
+[isolated SDK parser](invoice-webhook-adapters.md) now verifies both exact versions
+and the explicit legacy companion, retaining the main SDK and actual primary
+refusal, with receipt binding at admission. Its controls include actual schema
+refusal, blocked missing-adapter delivery, interruption and a Basil business
+exchange gated by both observed receipt types. The frozen build matrix still
+rejects mixed-version business dispatch. That registration, full business/joint
+execution and the joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

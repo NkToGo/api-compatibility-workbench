@@ -58,7 +58,7 @@ installation, endpoint, key-set version or source binding blocks oracle creation
 and worker startup. Failed and absent authentication remain separate from a
 consumer timeout or failed behavioral assertion.
 
-The existing adapter state is still a supplied **authored condition**. A valid
+On this signature-only path, adapter state remains a supplied **authored condition**. A valid
 signature cannot replace a missing, rejected or unchecked adapter. JSON validity,
 event type, explicit API version, input/expectation identities, selected build and
 business assertions remain independently checked. The old `inspect` path retains
@@ -89,7 +89,10 @@ evidence, not a reusable dispatch lease or replay-prevention mechanism. A future
 receiver must verify every new delivery, protect endpoint routing and secret
 resolution, check clock health, and apply separate permissions/idempotency rules.
 Actual version-specific/legacy adapter verification, full business/joint execution
-and campaign acceptance remain pending.
+and campaign acceptance are not established by signature checks. A separate
+[observed adapter boundary](invoice-webhook-adapters.md) now verifies SDK parsing
+and replaces the authored adapter flag through `inspectVerifiedWebhook`; full
+business/joint execution and campaign acceptance remain pending.
 
 The algorithm follows [Stripe's manual verification specification](https://docs.stripe.com/webhooks#verify-manually)
 and [raw-body requirements](https://docs.stripe.com/events/manage-webhook-endpoints).

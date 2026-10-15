@@ -33,9 +33,14 @@ final class InvoiceVersionedSandbox {
 
     static JsonObject run(Registration registration, InvoiceRenewalAdmission.Decision admission, String image, String name,
                           Duration deadline, BooleanSupplier stopped) throws Exception {
+        return runObserved(registration, admission, image, name, deadline, stopped).evidence();
+    }
+    static InvoiceConsumerExecution runObserved(Registration registration, InvoiceRenewalAdmission.Decision admission, String image, String name,
+                          Duration deadline, BooleanSupplier stopped) throws Exception {
         var payload = startup(registration, admission); String harness = harnessIdentity();
+        var protocol = new InvoiceVersionedProtocol(admission.oracle());
         var result = RepairSandbox.runProtocol(image, name, payload, InvoiceVersionedWorkerMain.class.getName(),
-                new InvoiceVersionedProtocol(admission.oracle()), deadline, stopped);
+                protocol, deadline, stopped);
         result.addProperty("formatVersion", 1); result.addProperty("buildId", BUILD_ID);
         result.addProperty("registrationIdentity", registration.identity()); result.addProperty("baseRegistrationIdentity", registration.baseIdentity());
         var sources = new TreeMap<String, String>(); var configurations = new TreeMap<String, String>(); var components = new JsonArray();
@@ -52,7 +57,7 @@ final class InvoiceVersionedSandbox {
         result.addProperty("environmentIdentity", CaseInputs.identity(Map.of("imageId", image, "policy", "versioned-invoice-container-v1",
                 "deadlineMillis", deadline.toMillis(), "arguments", RepairSandbox.command(image, "acw-00000000-0000-0000-0000-000000000000", InvoiceVersionedWorkerMain.class.getName()),
                 "consumerArguments", InvoiceVersionedWorkerMain.consumerArguments())));
-        return result;
+        return new InvoiceConsumerExecution(result, protocol.observation());
     }
 
     static String harnessIdentity() throws IOException {

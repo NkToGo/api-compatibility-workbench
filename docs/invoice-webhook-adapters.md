@@ -110,6 +110,8 @@ consumer must be registered explicitly. A separate [business source registration
 now compiles its main/companion components. Its separate [protected executor](versioned-invoice-business-execution.md)
 requires both observed receipt types before mixed-version business dispatch.
 An Acacia baseline cannot silently replace
-the declared Basil main SDK. Full business coverage, ordered joint execution,
+the declared Basil main SDK. A separate [business coverage driver](invoice-business-coverage.md)
+now applies the actual verifier path across all registered business deliveries.
+Ordered joint execution, boundary execution coverage,
 comparison capture and coordination acceptance remain pending. No migration or
 live provider delivery is certified by these receipts.

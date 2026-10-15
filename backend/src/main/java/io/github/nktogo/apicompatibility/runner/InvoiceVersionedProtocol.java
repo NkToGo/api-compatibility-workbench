@@ -10,7 +10,11 @@ final class InvoiceVersionedProtocol implements WorkerOracle {
     private final List<JsonObject> compilations = new ArrayList<>();
     private boolean invalid;
     private JsonObject sealed;
+    private InvoiceRenewalOracle.Observation observation;
     InvoiceVersionedProtocol(InvoiceRenewalOracle oracle) { this.oracle = Objects.requireNonNull(oracle); }
+    synchronized InvoiceRenewalOracle.Observation observation() {
+        CaseInputs.require(sealed != null, "Versioned invoice execution not sealed"); return observation;
+    }
     public synchronized JsonElement request(JsonObject message) {
         CaseInputs.require(sealed == null, "Versioned invoice protocol sealed");
         try {
@@ -48,7 +52,8 @@ final class InvoiceVersionedProtocol implements WorkerOracle {
         }
         String status = Set.of("COMPLETED", "TIMED_OUT", "CANCELLED").contains(transportStatus) ? transportStatus : "INFRASTRUCTURE_ERROR";
         if (status.equals("COMPLETED") && (invalid || !compiled())) status = "INFRASTRUCTURE_ERROR";
-        var result = new JsonObject(); result.add("observation", oracle.result(status));
+        observation = oracle.observation(status);
+        var result = new JsonObject(); result.add("observation", observation.json());
         var receipts = new JsonArray(); compilations.forEach(row -> receipts.add(row.deepCopy())); result.add("compilations", receipts);
         result.addProperty("transportStatus", transportStatus); result.addProperty("transportInvalid", invalid); sealed = result.deepCopy(); return result;
     }

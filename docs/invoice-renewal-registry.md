@@ -85,7 +85,9 @@ re-pinning, changed contract bytes and unregistered registry files. Existing
 oracle/ledger and boundary tests retain their independent golden expectations.
 
 Pinned Java [consumer sources and compiler results](invoice-consumer-builds.md)
-are now registered separately. Real signature/adapter verification, protected execution,
-joint capture and comparison, reviewed coordination benefit and release approval
-remain separate work. No historical campaign, rubric, result or routing rule is
+are now registered separately. A separate [business execution driver](invoice-business-coverage.md)
+uses actual signature/parser verification and protected consumers across all
+distinct business deliveries. Ordered execution, boundary coverage, joint capture
+and comparison, reviewed coordination benefit and release approval remain
+separate work. No historical campaign, rubric, result or routing rule is
 changed by complete fixture registration.

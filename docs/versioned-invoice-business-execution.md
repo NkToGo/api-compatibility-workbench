@@ -105,8 +105,9 @@ executions or accepted candidate repairs. Default tests cover protocol and
 admission rules; container tests skip without the immutable image property.
 
 These observations concern synthetic, pinned exchanges. They do not certify live
-Stripe delivery or a migration. Full 47-variant business coverage, 188 ordered
-joint sequences and 34 boundary controls through actual consumers remain the
-next execution step. Joint evidence capture, comparison adapters, quality review
+Stripe delivery or a migration. A separate [business driver](invoice-business-coverage.md)
+now runs the 47 variants and 100 distinct deliveries using actual verifier
+receipts and protected consumers. The 188 ordered joint sequences and 34 boundary
+controls remain next. Joint evidence capture, comparison adapters, quality review
 and the separately frozen coordination campaign follow. Existing campaign
 results and routing are unchanged; Milestone 4 acceptance remains open.

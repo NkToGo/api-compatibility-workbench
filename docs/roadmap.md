@@ -290,7 +290,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      and SDK runtimes, and checks the authenticated old-delivery business fact
      through the host oracle. Missing adapters remain pre-dispatch blocks;
      incomplete or poisoned execution cannot become a passing observation.
-     **4e2b4c planned:** full business and ordered joint coverage.
+     **4e2b4c in progress:** full business and ordered joint coverage.
+     **Business deliveries implemented (4e2b4c1):** the [business coverage driver](invoice-business-coverage.md)
+     executes the 100 distinct deliveries across 47 variants, with observed
+     webhook verification, protected consumers, typed host observations and
+     create-only records. The absent companion remains a separate block.
+     Ordered sequences and boundary execution controls follow as separate changes;
+     business delivery coverage alone cannot satisfy the full-case gate.
      **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete

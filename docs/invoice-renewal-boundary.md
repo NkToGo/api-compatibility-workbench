@@ -88,7 +88,8 @@ invoice consumers or evidence of provider compatibility. `BOUNDARY_CONTROLS_ONLY
 and all previous partial corpora still reject `requireFullCaseCoverage()`. The
 combined registry now [checks every required variant and control](invoice-renewal-registry.md)
 and closes authored fixture registration. [Registered consumer execution](invoice-consumer-execution.md)
-and separate runtime signature/adapter paths now exist. Registered mixed-version
-business execution, full coverage, protected joint capture, campaign readiness,
+and separate runtime signature/adapter paths now exist. The [business coverage driver](invoice-business-coverage.md)
+now runs all distinct deliveries, including registered mixed-version execution.
+Ordered and boundary execution coverage, protected joint capture, campaign readiness,
 coordination benefit and release approval remain
 pending. The historical campaign and rubric are unchanged.

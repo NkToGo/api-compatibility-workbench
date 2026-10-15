@@ -189,7 +189,10 @@ authority. A separate [protected mixed-version executor](docs/versioned-invoice-
 now requires both observed verifier receipts, compiles both components in the
 isolated image and checks one authenticated old delivery against the host oracle.
 Missing companions stay blocked; compiler/runtime failures and interruptions
-remain unevaluated. Full business coverage, joint comparison and coordination
+remain unevaluated. A [business coverage driver](docs/invoice-business-coverage.md)
+now accounts for all 47 variants and 100 distinct deliveries, retaining actual
+consumer observations and the missing-adapter block in separate records.
+Ordered sequences, boundary execution coverage, joint comparison and coordination
 benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader

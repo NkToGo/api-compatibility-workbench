@@ -101,10 +101,11 @@ The separate seven-test `InvoiceVersionedSandboxContainerTest` suite now uses th
 same image property for [protected mixed-version business execution](versioned-invoice-business-execution.md).
 CI runs all three classes and retains the new receipts separately.
 
-This is observed synthetic execution for those exchanges only. It does not establish
-all 47 business variants, 188 ordered joint sequences or 34 boundary controls
-through actual consumers. The separate versioned source catalog now has its own
-protected executor for the authenticated old-delivery route. Full
-business execution, joint evidence capture, comparison adapters and the separately
+This is observed synthetic execution for those exchanges only. A separate
+[business coverage driver](invoice-business-coverage.md) now runs all 47 variants
+and 100 distinct deliveries with actual verifier and consumer execution, retaining
+the missing-adapter block. The versioned source catalog has its own protected
+executor for the authenticated old-delivery route. The 188 ordered sequences,
+34 boundary controls, joint evidence capture, comparison adapters and the separately
 frozen coordination campaign remain planned. The earlier campaign and routing
 decision are unchanged; Milestone 4 acceptance remains open.

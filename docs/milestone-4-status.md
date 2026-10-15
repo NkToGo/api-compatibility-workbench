@@ -106,8 +106,10 @@ does not change dispatch authority. A separate [protected mixed-version executor
 now gates the registered route on both observed receipt types, compiles and runs
 the components with separate SDK closures, and checks an authenticated old
 delivery against the host oracle. Missing companions remain blocked and
-incomplete execution remains unevaluated. Full business/joint coverage and the
-joint comparison remain pending.
+incomplete execution remains unevaluated. The [business coverage driver](invoice-business-coverage.md)
+now runs all 100 distinct deliveries across 47 variants, preserving typed
+consumer observations and the absent-companion block with create-only records.
+Ordered execution, boundary coverage and joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

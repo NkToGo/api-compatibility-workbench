@@ -29,6 +29,11 @@ final class InvoiceSandbox {
     static JsonObject run(InvoiceConsumerBuilds.Registration registration, String buildId,
                           InvoiceRenewalAdmission.Decision admission, String image, String name,
                           Duration deadline, BooleanSupplier stopped) throws Exception {
+        return runObserved(registration, buildId, admission, image, name, deadline, stopped).evidence();
+    }
+    static InvoiceConsumerExecution runObserved(InvoiceConsumerBuilds.Registration registration, String buildId,
+                          InvoiceRenewalAdmission.Decision admission, String image, String name,
+                          Duration deadline, BooleanSupplier stopped) throws Exception {
         var payload = startup(registration, buildId, admission);
         String harness = harnessIdentity();
         var protocol = new Protocol(admission.oracle());
@@ -42,14 +47,14 @@ final class InvoiceSandbox {
         if (admission.adapterEvidence() != null) result.add("adapterVerification", admission.adapterEvidence());
         result.addProperty("environmentIdentity", CaseInputs.identity(Map.of("imageId", image, "policy", "invoice-container-v1",
                 "deadlineMillis", deadline.toMillis(), "arguments", RepairSandbox.command(image, "acw-00000000-0000-0000-0000-000000000000", InvoiceWorkerMain.class.getName()))));
-        return result;
+        return new InvoiceConsumerExecution(result, protocol.observation());
     }
 
     static String harnessIdentity() throws IOException {
         var inventory = new TreeMap<String, String>();
         for (Class<?> type : List.of(InvoiceSandbox.class, InvoiceWorkerMain.class, RepairSandbox.class,
                 DockerCaseExecutor.class, ContainerCaseMain.class, CaseInputs.class, InvoiceRenewalFixtures.class, InvoiceRenewalOracle.class,
-                InvoiceRenewalAdmission.class, InvoiceWebhookSignatures.class, InvoiceWebhookAdapters.class, InvoiceEventAdapterWorker.class)) {
+                InvoiceRenewalAdmission.class, InvoiceWebhookSignatures.class, InvoiceWebhookAdapters.class, InvoiceEventAdapterWorker.class, InvoiceConsumerExecution.class)) {
             captureClass(type, inventory);
         }
         try (var stream = InvoiceSandbox.class.getResourceAsStream(ADAPTER_RESOURCE)) {
@@ -58,7 +63,7 @@ final class InvoiceSandbox {
         }
         return CaseInputs.identity(inventory);
     }
-    private static void captureClass(Class<?> type, Map<String, String> inventory) throws IOException {
+    static void captureClass(Class<?> type, Map<String, String> inventory) throws IOException {
         String name = "/" + type.getName().replace('.', '/') + ".class";
         try (var stream = InvoiceSandbox.class.getResourceAsStream(name)) {
             if (stream == null) throw new IOException("Missing invoice harness class"); inventory.put(name, CaseInputs.hash(stream.readAllBytes()));
@@ -72,7 +77,11 @@ final class InvoiceSandbox {
         private JsonObject compilation;
         private boolean invalid;
         private JsonObject sealed;
+        private InvoiceRenewalOracle.Observation observation;
         Protocol(InvoiceRenewalOracle oracle) { this.oracle = Objects.requireNonNull(oracle); }
+        synchronized InvoiceRenewalOracle.Observation observation() {
+            CaseInputs.require(sealed != null, "Invoice execution not sealed"); return observation;
+        }
         public synchronized JsonElement request(JsonObject message) {
             CaseInputs.require(sealed == null, "Invoice worker protocol sealed");
             try {
@@ -105,7 +114,8 @@ final class InvoiceSandbox {
             }
             String status = Set.of("COMPLETED", "TIMED_OUT", "CANCELLED").contains(transportStatus) ? transportStatus : "INFRASTRUCTURE_ERROR";
             if (status.equals("COMPLETED") && (invalid || compilation == null || !compilation.get("disposition").getAsString().equals("SUCCEEDED"))) status = "INFRASTRUCTURE_ERROR";
-            var result = new JsonObject(); result.add("observation", oracle.result(status));
+            observation = oracle.observation(status);
+            var result = new JsonObject(); result.add("observation", observation.json());
             result.add("compilation", compilation == null ? JsonNull.INSTANCE : compilation.deepCopy());
             result.addProperty("transportStatus", transportStatus); result.addProperty("transportInvalid", invalid);
             sealed = result.deepCopy();

@@ -8,10 +8,11 @@ payloads, compile consumers, verify webhook signatures or run a new migration ca
 
 The original contract files and their content index remain unchanged. This document
 records the implementation boundary separately. A [separate fixture registration](invoice-renewal-fixtures.md)
-now covers the four rollout version vectors, four association families and two
-missing/contradictory association families. Complete fixture coverage,
-consumer/harness/runtime identities and observed baseline/target executions remain
-pending. Normalized unit inputs are distinct from that raw fixture registry.
+now feeds the complete pinned variant/control registry. The protected adapters
+and [business coverage driver](invoice-business-coverage.md) add actual consumer
+execution for the distinct business deliveries. Ordered and boundary execution
+coverage remain pending. Normalized unit inputs are distinct from the raw fixture
+registry and observed execution records.
 
 ## Registered input and consumer output
 
@@ -68,6 +69,12 @@ different terminal execution status is rejected. Observations retain expected an
 actual facts, consumer identity, controller-supplied execution status, protocol
 validity, identity matching and assertion outcome separately. Serialized reports
 are copies and are not accepted as typed observations by the ledger.
+
+The protected adapters now expose the original sealed observation through
+`InvoiceConsumerExecution`, paired with a matching copied diagnostic envelope.
+The [business coverage journal](invoice-business-coverage.md) retains that typed
+observation in process and preserves explicit nulls in its newly written fact
+records. It does not reconstruct observation authority from serialized verdicts.
 
 Invalid signatures and missing source/fixture admission must be rejected **before**
 constructing or dispatching a consumer execution. These two classes do not implement

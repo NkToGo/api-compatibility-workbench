@@ -5,6 +5,8 @@
 deliveries across seven corpora. It uses the registered consumer builds and the
 existing protected execution adapters. It does not execute the 188 arrival-order
 sequences, apply ledger effects or replace the separate 34-control boundary suite.
+A separate [ordered host-ledger runner](invoice-ordered-coverage.md) now replays
+these original typed observations with each registered initial state and order.
 
 ## Execution and scope
 
@@ -112,6 +114,8 @@ the complete business matrix, interrupt after a completed delivery, and verify
 fail-fast behavior for an unavailable image. Linux CI runs these with the other
 invoice container suites and retains `backend/target/invoice-business-tests/`.
 
-Ordered ledger behavior, all boundary placements, joint comparison capture,
-semantic review and the separately frozen campaign remain pending. Existing
+The separate ordered runner checks ledger behavior from captured observations;
+this delivery report still records zero ordered sequences. All boundary placements,
+joint comparison capture, semantic review and the separately frozen campaign
+remain pending. Existing
 campaign results and routing are unchanged; Milestone 4 acceptance remains open.

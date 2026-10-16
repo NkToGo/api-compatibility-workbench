@@ -192,8 +192,11 @@ Missing companions stay blocked; compiler/runtime failures and interruptions
 remain unevaluated. A [business coverage driver](docs/invoice-business-coverage.md)
 now accounts for all 47 variants and 100 distinct deliveries, retaining actual
 consumer observations and the missing-adapter block in separate records.
-Ordered sequences, boundary execution coverage, joint comparison and coordination
-benefit remain pending.
+A separate [ordered ledger runner](docs/invoice-ordered-coverage.md) replays those
+captured observations through all 188 registered orders, retaining 312 positions,
+initial/final effects and distinct missing-adapter blocks. Replay creates ledger
+receipts without dispatching consumers again. Boundary execution coverage, joint
+comparison and coordination benefit remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

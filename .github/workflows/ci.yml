@@ -136,5 +136,6 @@ jobs:
             backend/target/invoice-adapter-tests/
             backend/target/versioned-invoice-container-tests/
             backend/target/invoice-business-tests/
+            backend/target/invoice-ordered-tests/
           if-no-files-found: warn
           retention-days: 14

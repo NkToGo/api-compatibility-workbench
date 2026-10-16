@@ -109,7 +109,11 @@ delivery against the host oracle. Missing companions remain blocked and
 incomplete execution remains unevaluated. The [business coverage driver](invoice-business-coverage.md)
 now runs all 100 distinct deliveries across 47 variants, preserving typed
 consumer observations and the absent-companion block with create-only records.
-Ordered execution, boundary coverage and joint comparison remain pending.
+A separate [ordered ledger runner](invoice-ordered-coverage.md) now replays those
+typed observations through 188 registered orders and 312 positions, with exact
+initial states, intermediate outcomes and final effects. It retains the three
+missing-adapter positions separately and dispatches no additional consumers.
+Boundary execution coverage and joint comparison remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

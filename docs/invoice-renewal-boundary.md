@@ -90,6 +90,8 @@ combined registry now [checks every required variant and control](invoice-renewa
 and closes authored fixture registration. [Registered consumer execution](invoice-consumer-execution.md)
 and separate runtime signature/adapter paths now exist. The [business coverage driver](invoice-business-coverage.md)
 now runs all distinct deliveries, including registered mixed-version execution.
-Ordered and boundary execution coverage, protected joint capture, campaign readiness,
+A separate [ordered ledger replay](invoice-ordered-coverage.md) now checks all
+business arrival orders using captured actual observations. Boundary execution
+coverage, protected joint capture, campaign readiness,
 coordination benefit and release approval remain
 pending. The historical campaign and rubric are unchanged.

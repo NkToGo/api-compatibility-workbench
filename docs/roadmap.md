@@ -295,8 +295,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      executes the 100 distinct deliveries across 47 variants, with observed
      webhook verification, protected consumers, typed host observations and
      create-only records. The absent companion remains a separate block.
-     Ordered sequences and boundary execution controls follow as separate changes;
-     business delivery coverage alone cannot satisfy the full-case gate.
+     **Ordered host-ledger replay implemented (4e2b4c2):** the [ordered runner](invoice-ordered-coverage.md)
+     applies captured typed observations through all 188 orders and 312 positions,
+     retaining intermediate receipts, initial/final effects and missing-adapter
+     blocks. Replay does not dispatch consumers per position or promote serialized
+     verdicts into observations. Boundary execution controls follow separately;
+     business and ordered coverage still cannot satisfy the full-case gate.
      **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete

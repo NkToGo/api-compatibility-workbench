@@ -29,6 +29,40 @@ class InvoiceBusinessCoverageContainerTest {
             var execution = json.getAsJsonObject("execution"); assertTrue(execution.get("containerRemoved").getAsBoolean()); assertEquals(0, execution.get("workerExitCode").getAsInt()); assertEquals(image(), execution.get("imageId").getAsString()); assertEquals(entry.buildId(), execution.get("buildId").getAsString()); observed++;
         }
         assertEquals(51, webhooks); assertEquals(99, observed); assertFalse(run.json().get("fullCaseCoverageSatisfied").getAsBoolean());
+        verifyOrderedReplay(plan, run);
+    }
+    private static void verifyOrderedReplay(Plan businessPlan, Run business) throws Exception {
+        var plan = InvoiceOrderedCoverage.from(businessPlan);
+        Path parent = Path.of(System.getProperty("workbench.repository"), "backend/target/invoice-ordered-tests"); Files.createDirectories(parent);
+        Path output = parent.resolve("complete-" + UUID.randomUUID()); var ordered = InvoiceOrderedCoverage.evaluate(plan, business, output, () -> false);
+        assertTrue(ordered.orderedCoverageSatisfied()); assertEquals(188, ordered.sequences().size()); assertThrows(IllegalStateException.class, ordered::requireFullCaseCoverage);
+        assertEquals(InvoiceOrderedCoverage.identity(business.json()), ordered.json().get("businessEvidenceIdentity").getAsString());
+        int positions = 0, receipts = 0, blocks = 0;
+        for (int index = 0; index < ordered.sequences().size(); index++) {
+            var sequence = ordered.sequences().get(index).json(); assertTrue(sequence.get("finalEffectsMatch").getAsBoolean());
+            assertEquals(sequence, InvoiceRenewalFixtures.object(Files.readAllBytes(output.resolve(String.format(Locale.ROOT, "%03d.json", index + 1)))));
+            for (var value : sequence.getAsJsonArray("positions")) {
+                var row = value.getAsJsonObject(); positions++; assertEquals("VERIFIED", row.get("outcome").getAsString());
+                if (row.get("observation").isJsonNull()) { blocks++; assertEquals("BLOCKED_MISSING_ADAPTER", row.get("actualOutcome").getAsString()); assertTrue(row.get("ledgerReceipt").isJsonNull()); assertTrue(sequence.get("blockedPathReviewRequired").getAsBoolean()); }
+                else { receipts++; assertEquals("PASSED", row.getAsJsonObject("observation").get("assertionOutcome").getAsString()); assertEquals(row.get("expectedOutcome"), row.get("actualOutcome")); }
+            }
+        }
+        assertEquals(312, positions); assertEquals(309, receipts); assertEquals(3, blocks);
+        Path interrupted = parent.resolve("interrupted-" + UUID.randomUUID());
+        var stopped = InvoiceOrderedCoverage.evaluate(plan, business, interrupted, () -> Files.exists(interrupted.resolve("001.json")));
+        assertEquals(InvoiceOrderedCoverage.Outcome.VERIFIED, stopped.sequences().getFirst().outcome());
+        assertEquals(187, stopped.sequences().stream().filter(s -> s.outcome() == InvoiceOrderedCoverage.Outcome.NOT_ATTEMPTED).count()); assertFalse(stopped.orderedCoverageSatisfied());
+        try (var files = Files.list(interrupted)) { assertEquals(190, files.count()); }
+        int before = 0, partialIndex = 0;
+        while (plan.sequences().get(partialIndex).entries().size() < 2) { before += 1 + plan.sequences().get(partialIndex).entries().size(); partialIndex++; }
+        int cutoff = before + 3; var calls = new java.util.concurrent.atomic.AtomicInteger(); Path partial = parent.resolve("mid-sequence-" + UUID.randomUUID());
+        var interruptedPosition = InvoiceOrderedCoverage.evaluate(plan, business, partial, () -> calls.incrementAndGet() >= cutoff);
+        var partialResult = interruptedPosition.sequences().get(partialIndex); assertEquals(InvoiceOrderedCoverage.Outcome.CANCELLED, partialResult.outcome());
+        var retained = partialResult.json().getAsJsonArray("positions"); assertEquals("VERIFIED", retained.get(0).getAsJsonObject().get("outcome").getAsString());
+        assertFalse(retained.get(0).getAsJsonObject().get("ledgerReceipt").isJsonNull());
+        for (int i = 1; i < retained.size(); i++) { var row = retained.get(i).getAsJsonObject(); assertEquals("NOT_ATTEMPTED", row.get("outcome").getAsString()); assertTrue(row.get("ledgerReceipt").isJsonNull()); }
+        assertTrue(interruptedPosition.sequences().subList(0, partialIndex).stream().allMatch(s -> s.outcome() == InvoiceOrderedCoverage.Outcome.VERIFIED));
+        assertTrue(interruptedPosition.sequences().subList(partialIndex + 1, 188).stream().allMatch(s -> s.outcome() == InvoiceOrderedCoverage.Outcome.NOT_ATTEMPTED));
     }
     @Test void interruptionAfterOneCompletedDeliveryPreservesItAndMarksAllRemainingWorkUnattempted() throws Exception {
         var plan = load(InvoiceSandboxTest.root()); Path output = output("interrupted");

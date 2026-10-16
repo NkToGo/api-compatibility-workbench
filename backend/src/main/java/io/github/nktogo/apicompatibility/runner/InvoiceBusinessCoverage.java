@@ -56,6 +56,7 @@ final class InvoiceBusinessCoverage {
             this.entries = List.copyOf(entries); this.entries.forEach(Entry::buildId);
         }
         List<Entry> entries() { return entries; }
+        InvoiceRenewalRegistry.Registration fixtures() { return fixtures; }
         byte[] source(Entry entry) { CaseInputs.require(entries.contains(entry), "Unregistered business delivery"); return fixtures.bytes(entry.corpus(), entry.input.getAsJsonObject("source").get("file").getAsString()); }
         JsonObject metadata() {
             var result = new JsonObject(); result.addProperty("formatVersion", 1); result.addProperty("caseId", InvoiceRenewalFixtures.CASE_ID);
@@ -82,9 +83,11 @@ final class InvoiceBusinessCoverage {
         InvoiceRenewalOracle.Observation observation() { return execution == null ? null : execution.observation(); }
     }
     static final class Run {
+        private final Plan plan;
         private final List<DeliveryResult> deliveries;
         private final JsonObject report;
         private Run(Plan plan, List<DeliveryResult> deliveries, String image, Duration deadline, String harness) {
+            this.plan = plan;
             this.deliveries = List.copyOf(deliveries); report = plan.metadata(); report.remove("deliveries");
             report.addProperty("imageId", image); report.addProperty("deadlineMillisPerStage", deadline.toMillis());
             report.addProperty("coverageHarnessIdentity", harness);
@@ -93,6 +96,7 @@ final class InvoiceBusinessCoverage {
             report.addProperty("businessCoverageSatisfied", businessCoverageSatisfied()); report.addProperty("orderedSequencesVerified", 0); report.addProperty("boundaryControlsVerified", 0); report.addProperty("fullCaseCoverageSatisfied", false);
         }
         List<DeliveryResult> deliveries() { return deliveries; }
+        boolean belongsTo(Plan plan) { return this.plan == plan; }
         JsonObject json() { return report.deepCopy(); }
         boolean businessCoverageSatisfied() { return deliveries.size() == 100 && deliveries.stream().allMatch(d -> d.outcome == Outcome.VERIFIED || d.outcome == Outcome.EXPECTED_BLOCK); }
         void requireFullCaseCoverage() { throw new IllegalStateException("Ordered business execution and boundary controls remain pending"); }

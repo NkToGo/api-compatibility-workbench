@@ -10,8 +10,9 @@ The original contract files and their content index remain unchanged. This docum
 records the implementation boundary separately. A [separate fixture registration](invoice-renewal-fixtures.md)
 now feeds the complete pinned variant/control registry. The protected adapters
 and [business coverage driver](invoice-business-coverage.md) add actual consumer
-execution for the distinct business deliveries. Ordered and boundary execution
-coverage remain pending. Normalized unit inputs are distinct from the raw fixture
+execution for the distinct business deliveries. A separate [ordered replay](invoice-ordered-coverage.md)
+now applies those typed results through every registered business order. Boundary
+execution coverage remains pending. Normalized unit inputs are distinct from the raw fixture
 registry and observed execution records.
 
 ## Registered input and consumer output
@@ -147,7 +148,9 @@ authored fixture coverage. Neither test suite establishes valid provider payload
 shapes, correct SDK parsing,
 consumer compatibility, campaign readiness, coordination benefit or release
 approval. The original business oracle remains authoritative. The next changes
-execute pinned Java consumers under the separately planned protected boundary.
+complete boundary execution and joint capture. The protected consumers and separate
+ordered replay now provide observed business facts and host-policy receipts;
+authored golden protocol tests remain a distinct evidence source.
 
 This boundary assumes one trusted host. It is not a durable or concurrent database,
 an authenticated receipt system, tenant isolation, a complete joint comparator or

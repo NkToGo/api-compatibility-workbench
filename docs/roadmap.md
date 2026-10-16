@@ -301,6 +301,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      blocks. Replay does not dispatch consumers per position or promote serialized
      verdicts into observations. Boundary execution controls follow separately;
      business and ordered coverage still cannot satisfy the full-case gate.
+     **Runtime admission controls implemented (4e2b4c3a):** the
+     [boundary admission driver](invoice-boundary-admission-coverage.md) checks all
+     24 rejection controls and two healthy admissions using actual signature and
+     SDK parser receipts, with separately identified derived schema refusal,
+     independent runtime expectations and create-only records. The eight consumer
+     execution controls and all 102 boundary placements remain pending; this
+     admission-only stage cannot satisfy the full-case gate.
      **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete

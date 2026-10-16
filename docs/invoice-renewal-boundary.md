@@ -92,6 +92,9 @@ and separate runtime signature/adapter paths now exist. The [business coverage d
 now runs all distinct deliveries, including registered mixed-version execution.
 A separate [ordered ledger replay](invoice-ordered-coverage.md) now checks all
 business arrival orders using captured actual observations. Boundary execution
-coverage, protected joint capture, campaign readiness,
+now has a separate [runtime admission driver](invoice-boundary-admission-coverage.md)
+for all 24 rejection controls and two healthy admissions, preserving the authored
+corpus and separately identifying actual verifier conditions. The eight consumer
+execution controls and all 102 boundary placements, protected joint capture, campaign readiness,
 coordination benefit and release approval remain
 pending. The historical campaign and rubric are unchanged.

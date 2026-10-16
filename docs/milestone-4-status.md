@@ -113,7 +113,12 @@ A separate [ordered ledger runner](invoice-ordered-coverage.md) now replays thos
 typed observations through 188 registered orders and 312 positions, with exact
 initial states, intermediate outcomes and final effects. It retains the three
 missing-adapter positions separately and dispatches no additional consumers.
-Boundary execution coverage and joint comparison remain pending.
+A separate [runtime admission driver](invoice-boundary-admission-coverage.md)
+now exercises all 24 rejection controls and two healthy admissions with actual
+signature and SDK parser receipts. Historical authored conditions stay unchanged;
+the schema-refusal control binds a separately identified derived input. Eight
+consumer execution controls and all 102 boundary placements remain pending,
+alongside complete boundary execution coverage and joint comparison.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

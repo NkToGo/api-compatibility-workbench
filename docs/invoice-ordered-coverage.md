@@ -59,7 +59,9 @@ absent-adapter variant keeps `blockedPathReviewRequired` on all four of its orde
 including reconciliation alone. A healthy path cannot remove that review gap.
 
 The report always retains `fullCaseCoverageSatisfied: false` and zero verified
-boundary controls. The separate 34-control boundary workload, joint comparison,
+boundary controls. A separate [runtime admission check](invoice-boundary-admission-coverage.md)
+covers its rejection conditions; consumer execution and all 102 boundary placements
+remain pending. The complete 34-control boundary workload, joint comparison,
 semantic review and frozen campaign remain pending. A passing replay is not a
 migration decision, release approval or evidence of useful coordination.
 

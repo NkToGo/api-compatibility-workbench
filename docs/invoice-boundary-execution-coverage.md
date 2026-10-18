@@ -8,7 +8,9 @@ or incomplete consumer assertion into a compatibility pass.
 
 The separate [admission driver](invoice-boundary-admission-coverage.md) covers the
 24 rejection conditions. Neither driver satisfies combined boundary coverage:
-all 102 boundary placements and their ledger checks remain pending.
+their standalone reports leave placement coverage pending. A separate
+[boundary replay](invoice-boundary-coverage.md) now captures both original typed
+runs under one plan and checks all 102 placements and their ledger effects.
 
 ## Actual admission and fixed controlled sources
 
@@ -74,9 +76,11 @@ remainder of a healthy coverage run.
 `boundaryControlsVerified` and `boundaryPlacementsVerified` remain zero and
 `fullCaseCoverageSatisfied` stays false. No ledger is mutated by this driver.
 The stored typed observations support subsequent host-policy checks; serialized
-diagnostics cannot be imported as observation authority. Combined boundary
-coverage, joint evidence capture, campaign quality review and Milestone 4
-acceptance remain open.
+diagnostics cannot be imported as observation authority. The separate
+[boundary replay](invoice-boundary-coverage.md) now establishes combined boundary
+placement coverage while keeping failed and incomplete consumer assertions
+visible and the full-case gate unresolved. Shared full-case evidence capture,
+campaign quality review and Milestone 4 acceptance remain open.
 
 ## Running and retaining evidence
 

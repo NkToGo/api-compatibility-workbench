@@ -290,7 +290,8 @@ provider families and automatic repair-feedback loops remain outside its scope.
      and SDK runtimes, and checks the authenticated old-delivery business fact
      through the host oracle. Missing adapters remain pre-dispatch blocks;
      incomplete or poisoned execution cannot become a passing observation.
-     **4e2b4c in progress:** full business and ordered joint coverage.
+     **4e2b4c implemented:** business delivery, ordered ledger and boundary
+     coverage components. Shared full-case capture follows separately.
      **Business deliveries implemented (4e2b4c1):** the [business coverage driver](invoice-business-coverage.md)
      executes the 100 distinct deliveries across 47 variants, with observed
      webhook verification, protected consumers, typed host observations and
@@ -315,6 +316,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      retain the original consumer computation; actual interruptions, protocol
      errors and incorrect facts stay distinct from the control verdict. All 102
      boundary placements and combined boundary coverage remain pending.
+     **Ordered boundary coverage implemented (4e2b4c3c):** the
+     [boundary replay](invoice-boundary-coverage.md) binds the original typed
+     admission/execution runs and checks all 102 placements and 170 positions,
+     retaining 98 receipts, 72 blocks and actual failed/incomplete assertions.
+     Replay dispatches no additional consumers; matching final effects cannot
+     hide gaps or interruption. Shared full-case capture remains separate work.
      **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete

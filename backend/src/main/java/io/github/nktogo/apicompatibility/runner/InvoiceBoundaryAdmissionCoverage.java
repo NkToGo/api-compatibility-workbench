@@ -110,24 +110,32 @@ final class InvoiceBoundaryAdmissionCoverage {
     }
     static Plan load(Path caseRoot) throws IOException {
         var fixtures = InvoiceRenewalRegistry.load(caseRoot); fixtures.requireFullCaseCoverage();
-        return new Plan(fixtures, InvoiceConsumerBuilds.load(caseRoot));
+        return from(fixtures, InvoiceConsumerBuilds.load(caseRoot));
+    }
+    static Plan from(InvoiceRenewalRegistry.Registration fixtures, InvoiceConsumerBuilds.Registration builds) {
+        Objects.requireNonNull(fixtures).requireFullCaseCoverage(); return new Plan(fixtures, Objects.requireNonNull(builds));
     }
     static final class ControlResult {
+        private final Entry entry;
         private final Outcome outcome;
         private final Decision decision;
         private final JsonObject evidence;
-        private ControlResult(Outcome outcome, Decision decision, JsonObject evidence) {
+        private ControlResult(Entry entry, Outcome outcome, Decision decision, JsonObject evidence) {
+            this.entry = entry;
             this.outcome = outcome; this.decision = decision; this.evidence = evidence.deepCopy();
             this.evidence.addProperty("outcome", outcome.name());
         }
         Outcome outcome() { return outcome; }
+        Entry entry() { return entry; }
         Decision decision() { return decision; }
         JsonObject json() { return evidence.deepCopy(); }
     }
     static final class Run {
+        private final Plan plan;
         private final List<ControlResult> controls;
         private final JsonObject report;
         private Run(Plan plan, List<ControlResult> controls, JsonObject metadata) {
+            this.plan = plan;
             this.controls = List.copyOf(controls); report = metadata.deepCopy(); report.remove("controls");
             var counts = new JsonObject(); for (var outcome : Outcome.values()) counts.addProperty(outcome.name(), controls.stream().filter(c -> c.outcome == outcome).count());
             report.add("outcomes", counts); var rows = new JsonArray(); controls.forEach(c -> rows.add(c.json())); report.add("controls", rows);
@@ -138,6 +146,7 @@ final class InvoiceBoundaryAdmissionCoverage {
             report.addProperty("fullCaseCoverageSatisfied", false);
         }
         List<ControlResult> controls() { return controls; }
+        boolean belongsTo(Plan plan) { return this.plan == plan; }
         JsonObject json() { return report.deepCopy(); }
         boolean admissionCoverageSatisfied() { return controls.size() == 26 && controls.stream().allMatch(c -> c.outcome == Outcome.VERIFIED); }
         void requireFullCaseCoverage() { throw new IllegalStateException("Boundary consumer execution and ordered placements remain pending"); }
@@ -200,7 +209,7 @@ final class InvoiceBoundaryAdmissionCoverage {
         for (String field : List.of("signatureVerification", "adapterVerification", "admission")) if (!row.has(field)) row.add(field, JsonNull.INSTANCE);
         if (!row.has("phase")) row.addProperty("phase", "NOT_STARTED");
         row.addProperty("controlId", entry.id()); row.addProperty("businessConsumerDispatched", false); row.add("consumerObservation", JsonNull.INSTANCE);
-        return new ControlResult(outcome, decision, row);
+        return new ControlResult(entry, outcome, decision, row);
     }
     /** Independent runtime expectations; never calculate answers by calling the gate under test. */
     private static Map<String, Expectation> expectations() {

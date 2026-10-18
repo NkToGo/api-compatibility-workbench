@@ -97,6 +97,9 @@ for all 24 rejection controls and two healthy admissions, preserving the authore
 corpus and separately identifying actual verifier conditions. A separate
 [consumer execution driver](invoice-boundary-execution-coverage.md) now runs
 the eight admitted fault controls and two healthy consumers with actual transport
-facts. All 102 boundary placements, combined boundary coverage, protected joint capture, campaign readiness,
+facts. A separate [runtime boundary replay](invoice-boundary-coverage.md) now
+checks all 102 placements from the captured typed decisions and observations,
+preserving blocks, failed assertions, incomplete results and healthy other paths.
+Protected joint full-case capture, campaign readiness,
 coordination benefit and release approval remain
 pending. The historical campaign and rubric are unchanged.

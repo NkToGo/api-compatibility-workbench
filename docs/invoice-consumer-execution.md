@@ -110,7 +110,9 @@ executor for the authenticated old-delivery route. A separate
 through all 188 business orders. Boundary coverage now has separate
 [admission controls](invoice-boundary-admission-coverage.md) and
 [consumer execution controls](invoice-boundary-execution-coverage.md), preserving
-actual failed and incomplete observations. All 102 boundary placements, combined
-boundary coverage, joint evidence capture, comparison adapters and the separately
+actual failed and incomplete observations. A separate
+[boundary replay](invoice-boundary-coverage.md) now checks all 102 placements from
+the captured typed runtime results. Shared full-case evidence capture,
+comparison adapters and the separately
 frozen coordination campaign remain planned. The earlier campaign and routing
 decision are unchanged; Milestone 4 acceptance remains open.

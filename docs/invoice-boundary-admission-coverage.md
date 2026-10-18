@@ -67,12 +67,14 @@ still present.
 `boundaryControlsVerified`, `boundaryPlacementsVerified`, business-consumer
 dispatches and ledger receipts remain zero, and `fullCaseCoverageSatisfied` is
 always false. These two healthy controls establish admission, not business
-execution. Complete boundary coverage still needs all 102 placements and combined
-evidence from both stages. A separate
+execution. A separate
 [execution-control driver](invoice-boundary-execution-coverage.md) now executes
 the eight fault controls and two healthy consumers; it preserves actual failed
-and incomplete observations separately from control verdicts. All 102 placements,
-joint comparison and campaign acceptance remain open.
+and incomplete observations separately from control verdicts. The
+[boundary replay](invoice-boundary-coverage.md) now captures both runtime stages
+together and checks all 102 placements without changing this stage's standalone
+report or upgrading its serialized diagnostics into authority. Shared full-case
+capture, joint comparison and campaign acceptance remain open.
 
 ## Running and retaining evidence
 

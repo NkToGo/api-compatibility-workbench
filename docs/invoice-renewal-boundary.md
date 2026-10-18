@@ -94,7 +94,9 @@ A separate [ordered ledger replay](invoice-ordered-coverage.md) now checks all
 business arrival orders using captured actual observations. Boundary execution
 now has a separate [runtime admission driver](invoice-boundary-admission-coverage.md)
 for all 24 rejection controls and two healthy admissions, preserving the authored
-corpus and separately identifying actual verifier conditions. The eight consumer
-execution controls and all 102 boundary placements, protected joint capture, campaign readiness,
+corpus and separately identifying actual verifier conditions. A separate
+[consumer execution driver](invoice-boundary-execution-coverage.md) now runs
+the eight admitted fault controls and two healthy consumers with actual transport
+facts. All 102 boundary placements, combined boundary coverage, protected joint capture, campaign readiness,
 coordination benefit and release approval remain
 pending. The historical campaign and rubric are unchanged.

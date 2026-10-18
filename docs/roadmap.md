@@ -308,6 +308,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      independent runtime expectations and create-only records. The eight consumer
      execution controls and all 102 boundary placements remain pending; this
      admission-only stage cannot satisfy the full-case gate.
+     **Runtime execution controls implemented (4e2b4c3b):** the
+     [consumer execution driver](invoice-boundary-execution-coverage.md) runs the
+     eight admitted fault controls and two healthy consumers through actual
+     verification, compilation and protected transport. Fixed source wrappers
+     retain the original consumer computation; actual interruptions, protocol
+     errors and incorrect facts stay distinct from the control verdict. All 102
+     boundary placements and combined boundary coverage remain pending.
      **4e3 planned:** joint captured
      evidence, comparison adapters and quality review, split into reviewable changes.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete

@@ -105,7 +105,12 @@ This is observed synthetic execution for those exchanges only. A separate
 [business coverage driver](invoice-business-coverage.md) now runs all 47 variants
 and 100 distinct deliveries with actual verifier and consumer execution, retaining
 the missing-adapter block. The versioned source catalog has its own protected
-executor for the authenticated old-delivery route. The 188 ordered sequences,
-34 boundary controls, joint evidence capture, comparison adapters and the separately
+executor for the authenticated old-delivery route. A separate
+[ordered runner](invoice-ordered-coverage.md) replays the captured observations
+through all 188 business orders. Boundary coverage now has separate
+[admission controls](invoice-boundary-admission-coverage.md) and
+[consumer execution controls](invoice-boundary-execution-coverage.md), preserving
+actual failed and incomplete observations. All 102 boundary placements, combined
+boundary coverage, joint evidence capture, comparison adapters and the separately
 frozen coordination campaign remain planned. The earlier campaign and routing
 decision are unchanged; Milestone 4 acceptance remains open.

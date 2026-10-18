@@ -292,6 +292,7 @@ Keep both directories on a trusted local filesystem and preserve them together.
 - [Repeated two-case missing-evidence evaluation](docs/missing-evidence-evaluation.md)
 - [Claim-level review of missing-evidence explanations](docs/missing-evidence-review.md)
 - [Runtime invoice admission controls](docs/invoice-boundary-admission-coverage.md)
+- [Runtime invoice execution controls](docs/invoice-boundary-execution-coverage.md)
 - [Milestones and reviewable steps](docs/roadmap.md)
 - [Milestone 3 acceptance criteria and remaining work](docs/milestone-3-acceptance.md)
 - [Development workflow](CONTRIBUTING.md)

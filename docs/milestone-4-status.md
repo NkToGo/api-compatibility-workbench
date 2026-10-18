@@ -116,9 +116,12 @@ missing-adapter positions separately and dispatches no additional consumers.
 A separate [runtime admission driver](invoice-boundary-admission-coverage.md)
 now exercises all 24 rejection controls and two healthy admissions with actual
 signature and SDK parser receipts. Historical authored conditions stay unchanged;
-the schema-refusal control binds a separately identified derived input. Eight
-consumer execution controls and all 102 boundary placements remain pending,
-alongside complete boundary execution coverage and joint comparison.
+the schema-refusal control binds a separately identified derived input. A separate
+[execution-control driver](invoice-boundary-execution-coverage.md) now executes
+the eight admitted fault controls and two healthy consumers, preserving actual
+failed and incomplete observations separately from successful control verdicts.
+All 102 boundary placements remain pending, alongside combined boundary coverage
+and joint comparison.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

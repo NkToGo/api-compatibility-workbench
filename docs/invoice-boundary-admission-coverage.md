@@ -11,7 +11,9 @@ The driver captures the complete [invoice registry](invoice-renewal-registry.md)
 the unchanged `boundary-v1` corpus and the registered consumer dependencies. It
 selects the 24 pre-dispatch controls plus `admit-webhook` and
 `admit-reconciliation`. The remaining eight execution controls are explicitly
-listed as pending in every plan and report.
+listed as pending for combined coverage in every plan and report; their separate
+[execution driver](invoice-boundary-execution-coverage.md) does not change this
+driver's coverage or import authority into its records.
 
 Historical [authored conditions](invoice-renewal-boundary.md) remain unchanged.
 Their signature/adapter flags and signed-source claims are discarded by the new
@@ -65,8 +67,12 @@ still present.
 `boundaryControlsVerified`, `boundaryPlacementsVerified`, business-consumer
 dispatches and ledger receipts remain zero, and `fullCaseCoverageSatisfied` is
 always false. These two healthy controls establish admission, not business
-execution. The eight execution controls and all 102 boundary placements still
-need runtime coverage; joint comparison and campaign acceptance remain open.
+execution. Complete boundary coverage still needs all 102 placements and combined
+evidence from both stages. A separate
+[execution-control driver](invoice-boundary-execution-coverage.md) now executes
+the eight fault controls and two healthy consumers; it preserves actual failed
+and incomplete observations separately from control verdicts. All 102 placements,
+joint comparison and campaign acceptance remain open.
 
 ## Running and retaining evidence
 

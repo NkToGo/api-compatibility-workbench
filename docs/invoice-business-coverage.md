@@ -70,8 +70,10 @@ consumer may retain a reported actual fact without an accepted assertion.
 Business coverage succeeds only when all 100 deliveries are accounted for: 99
 passing consumer observations and the one expected admission block. Summary
 counts cannot conceal unexpected blocks, failed assertions or unattempted work.
-`requireFullCaseCoverage()` still rejects: ordered sequences and boundary controls
-remain separate work. Business coverage is not migration or release approval.
+`requireFullCaseCoverage()` still rejects for this standalone component. The
+[shared case capture](invoice-case-coverage.md) separately requires business,
+ordered and runtime boundary coverage under the same captured inputs and image.
+Business coverage is not migration or release approval.
 
 ## Retained records and operation
 

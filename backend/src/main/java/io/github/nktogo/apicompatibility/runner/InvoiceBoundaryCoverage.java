@@ -62,7 +62,10 @@ final class InvoiceBoundaryCoverage {
         }
     }
     static Plan load(Path caseRoot) throws IOException {
-        var fixtures = InvoiceRenewalRegistry.load(caseRoot); fixtures.requireFullCaseCoverage(); return new Plan(fixtures, InvoiceConsumerBuilds.load(caseRoot));
+        var fixtures = InvoiceRenewalRegistry.load(caseRoot); return from(fixtures, InvoiceConsumerBuilds.load(caseRoot));
+    }
+    static Plan from(InvoiceRenewalRegistry.Registration fixtures, InvoiceConsumerBuilds.Registration builds) {
+        Objects.requireNonNull(fixtures).requireFullCaseCoverage(); return new Plan(fixtures, Objects.requireNonNull(builds));
     }
     record Position(Outcome outcome, JsonObject evidence) {
         Position { evidence = evidence.deepCopy(); }
@@ -99,10 +102,14 @@ final class InvoiceBoundaryCoverage {
         JsonObject json() { return json.deepCopy(); }
     }
     static final class Run {
+        private final Plan plan;
+        private final InvoiceBoundaryAdmissionCoverage.Run admission;
+        private final InvoiceBoundaryExecutionCoverage.Run execution;
         private final List<SequenceResult> sequences;
         private final boolean stagesVerified;
         private final JsonObject report;
-        private Run(JsonObject metadata, List<SequenceResult> sequences, boolean stagesVerified) {
+        private Run(Plan plan, InvoiceBoundaryAdmissionCoverage.Run admission, InvoiceBoundaryExecutionCoverage.Run execution, JsonObject metadata, List<SequenceResult> sequences, boolean stagesVerified) {
+            this.plan = plan; this.admission = admission; this.execution = execution;
             this.sequences = List.copyOf(sequences); this.stagesVerified = stagesVerified; report = metadata.deepCopy(); report.remove("sequences");
             var counts = new JsonObject(); for (var outcome : Outcome.values()) counts.addProperty(outcome.name(), sequences.stream().filter(s -> s.outcome == outcome).count()); report.add("outcomes", counts);
             var rows = new JsonArray(); sequences.forEach(s -> rows.add(s.json())); report.add("sequences", rows);
@@ -111,6 +118,9 @@ final class InvoiceBoundaryCoverage {
             report.addProperty("boundaryCoverageSatisfied", boundaryCoverageSatisfied()); report.addProperty("fullCaseCoverageSatisfied", false);
         }
         List<SequenceResult> sequences() { return sequences; }
+        boolean belongsTo(Plan plan, InvoiceBoundaryAdmissionCoverage.Run admission, InvoiceBoundaryExecutionCoverage.Run execution) {
+            return this.plan == plan && this.admission == admission && this.execution == execution;
+        }
         JsonObject json() { return report.deepCopy(); }
         boolean boundaryCoverageSatisfied() { return stagesVerified && sequences.size() == 102 && sequences.stream().allMatch(s -> s.outcome == Outcome.VERIFIED); }
         void requireFullCaseCoverage() { throw new IllegalStateException("Joint business, ordered and boundary capture remains separate work"); }
@@ -134,7 +144,7 @@ final class InvoiceBoundaryCoverage {
             boolean notStarted = aborted || stopped.getAsBoolean(); var result = replay(sequence, admitted, executed, stopped, notStarted);
             results.add(result); InvoiceBusinessCoverage.write(output.resolve(String.format(Locale.ROOT, "%03d.json", results.size())), result.json()); aborted |= notStarted || result.outcome == Outcome.CANCELLED;
         }
-        var run = new Run(metadata, results, admission.admissionCoverageSatisfied() && execution.executionCoverageSatisfied()); InvoiceBusinessCoverage.write(output.resolve("report.json"), run.json()); return run;
+        var run = new Run(plan, admission, execution, metadata, results, admission.admissionCoverageSatisfied() && execution.executionCoverageSatisfied()); InvoiceBusinessCoverage.write(output.resolve("report.json"), run.json()); return run;
     }
     private static SequenceResult replay(Sequence sequence, Map<String, InvoiceBoundaryAdmissionCoverage.ControlResult> admitted, Map<String, InvoiceBoundaryExecutionCoverage.ControlResult> executed, BooleanSupplier stopped, boolean notStarted) {
         var ledger = new InvoiceRenewalLedger(installation(sequence.control), Map.of()); var rows = new JsonArray(); var outcomes = new ArrayList<Outcome>(); boolean cancelled = false;

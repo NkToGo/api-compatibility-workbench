@@ -124,7 +124,11 @@ A separate [boundary replay](invoice-boundary-coverage.md) now captures both
 original runtime stages and checks all 102 placements, retaining 98 ledger
 receipts, 72 blocked positions and actual failed/incomplete assertions. It checks
 host policy using captured observations, with no additional consumer dispatch.
-Shared full-case capture and joint comparison remain pending.
+A [shared full-case capture](invoice-case-coverage.md) now runs all five components
+from one captured registry, shared source/build closure and immutable image.
+Its execution-coverage gate requires every component; interruption or a stage
+failure cannot be hidden by another passing component. Joint comparison adapters,
+equal disclosure and semantic review remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

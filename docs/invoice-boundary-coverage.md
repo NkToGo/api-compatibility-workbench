@@ -133,3 +133,9 @@ incomplete evidence, interruption and create-only history. The actual container
 test captures both runtime stages once, replays all placements and tests replay
 interruption and a missing upstream stage without extra consumer dispatch.
 Linux CI retains `invoice-boundary-tests/` with its isolated execution receipts.
+
+The separate [shared case capture](invoice-case-coverage.md) constructs this
+boundary plan alongside the business/ordered plans from the same immutable
+registry and build capture. Its aggregate execution gate additionally requires
+the original typed source/replay runs and a matching image across all components.
+This standalone boundary report still cannot satisfy that aggregate gate.

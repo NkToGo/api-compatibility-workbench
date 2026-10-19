@@ -322,8 +322,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      retaining 98 receipts, 72 blocks and actual failed/incomplete assertions.
      Replay dispatches no additional consumers; matching final effects cannot
      hide gaps or interruption. Shared full-case capture remains separate work.
-     **4e3 planned:** joint captured
-     evidence, comparison adapters and quality review, split into reviewable changes.
+     **4e3 in progress:** joint captured evidence, comparison adapters and quality
+     review, split into reviewable changes. **4e3a implemented:** a
+     [shared full-case execution capture](invoice-case-coverage.md) binds all five
+     component runs to one captured registry, source/build closure and image,
+     preserving original typed replay sources and failed/incomplete evidence.
+     Full-case execution coverage requires every component and no capture stop;
+     comparison adapters, equal disclosure and semantic review remain pending.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

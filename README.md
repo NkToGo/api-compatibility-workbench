@@ -195,8 +195,10 @@ consumer observations and the missing-adapter block in separate records.
 A separate [ordered ledger runner](docs/invoice-ordered-coverage.md) replays those
 captured observations through all 188 registered orders, retaining 312 positions,
 initial/final effects and distinct missing-adapter blocks. Replay creates ledger
-receipts without dispatching consumers again. Boundary execution coverage, joint
-comparison and coordination benefit remain pending.
+receipts without dispatching consumers again. A [shared invoice-case capture](docs/invoice-case-coverage.md)
+now binds these stages and all runtime boundary controls to one captured registry,
+source/build closure and image. Complete synthetic execution coverage remains
+separate from joint comparison, semantic acceptance and coordination benefit.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

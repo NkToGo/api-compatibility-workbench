@@ -86,9 +86,12 @@ final class InvoiceOrderedCoverage {
         JsonObject json() { return json.deepCopy(); }
     }
     static final class Run {
+        private final Plan plan;
+        private final InvoiceBusinessCoverage.Run business;
         private final List<SequenceResult> sequences;
         private final JsonObject report;
-        private Run(JsonObject metadata, List<SequenceResult> sequences) {
+        private Run(Plan plan, InvoiceBusinessCoverage.Run business, JsonObject metadata, List<SequenceResult> sequences) {
+            this.plan = plan; this.business = business;
             this.sequences = List.copyOf(sequences); report = metadata.deepCopy(); report.remove("sequences");
             var outcomes = new JsonObject(); for (var value : Outcome.values()) outcomes.addProperty(value.name(), sequences.stream().filter(s -> s.outcome == value).count()); report.add("outcomes", outcomes);
             var rows = new JsonArray(); sequences.forEach(s -> rows.add(s.json())); report.add("sequences", rows);
@@ -96,6 +99,7 @@ final class InvoiceOrderedCoverage {
             report.addProperty("orderedSequencesVerified", sequences.stream().filter(s -> s.outcome == Outcome.VERIFIED).count());
         }
         List<SequenceResult> sequences() { return sequences; }
+        boolean belongsTo(Plan plan, InvoiceBusinessCoverage.Run business) { return this.plan == plan && this.business == business; }
         JsonObject json() { return report.deepCopy(); }
         boolean orderedCoverageSatisfied() { return sequences.size() == 188 && sequences.stream().allMatch(s -> s.outcome == Outcome.VERIFIED); }
         void requireFullCaseCoverage() { throw new IllegalStateException("Boundary execution controls and joint comparison remain separate work"); }
@@ -116,7 +120,7 @@ final class InvoiceOrderedCoverage {
             results.add(result); InvoiceBusinessCoverage.write(output.resolve(String.format(Locale.ROOT, "%03d.json", results.size())), result.json());
             aborted |= notStarted || result.outcome == Outcome.CANCELLED;
         }
-        var run = new Run(metadata, results); InvoiceBusinessCoverage.write(output.resolve("report.json"), run.json()); return run;
+        var run = new Run(plan, business, metadata, results); InvoiceBusinessCoverage.write(output.resolve("report.json"), run.json()); return run;
     }
     private static SequenceResult replay(Sequence sequence, Map<String, InvoiceBusinessCoverage.DeliveryResult> indexed, BooleanSupplier stopped, boolean notStarted) {
         var ledger = new InvoiceRenewalLedger(sequence.installation, sequence.initial); var rows = new JsonArray(); var outcomes = new ArrayList<Outcome>(); boolean cancelled = false;

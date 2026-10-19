@@ -27,6 +27,7 @@ final class InvoiceVersionedConsumerBuilds {
         }
         String identity() { return REGISTRATION_SHA256; }
         String baseIdentity() { return base.identity(); }
+        boolean usesBase(InvoiceConsumerBuilds.Registration base) { return this.base == base; }
         String dependenciesIdentity() { return base.dependenciesIdentity(); }
         List<Component> components() { return List.of(Component.MAIN, Component.ACACIA_ADAPTER); }
         Component component(String id) { return components().stream().filter(c -> c.id.equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("Unregistered versioned component")); }
@@ -61,7 +62,10 @@ final class InvoiceVersionedConsumerBuilds {
     }
     private InvoiceVersionedConsumerBuilds() {}
     static Registration load(Path caseRoot) throws IOException {
-        var base = InvoiceConsumerBuilds.load(caseRoot); Path root = caseRoot.resolve("versioned-webhook-v1");
+        return load(caseRoot, InvoiceConsumerBuilds.load(caseRoot));
+    }
+    static Registration load(Path caseRoot, InvoiceConsumerBuilds.Registration base) throws IOException {
+        Objects.requireNonNull(base); Path root = caseRoot.resolve("versioned-webhook-v1");
         byte[] index = InvoiceConsumerBuilds.read(root.resolve("build-registration.json"), 262144);
         CaseInputs.require(REGISTRATION_SHA256.equals(CaseInputs.hash(index)), "Versioned webhook registration changed");
         var manifest = object(index);

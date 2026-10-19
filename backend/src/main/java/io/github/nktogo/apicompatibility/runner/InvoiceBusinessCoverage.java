@@ -67,7 +67,12 @@ final class InvoiceBusinessCoverage {
     }
     static Plan load(Path caseRoot) throws IOException {
         var registry = InvoiceRenewalRegistry.load(caseRoot); registry.requireFullCaseCoverage();
-        return new Plan(registry, InvoiceConsumerBuilds.load(caseRoot), InvoiceVersionedConsumerBuilds.load(caseRoot));
+        var builds = InvoiceConsumerBuilds.load(caseRoot); return from(registry, builds, InvoiceVersionedConsumerBuilds.load(caseRoot, builds));
+    }
+    static Plan from(InvoiceRenewalRegistry.Registration registry, InvoiceConsumerBuilds.Registration builds, InvoiceVersionedConsumerBuilds.Registration versioned) {
+        Objects.requireNonNull(registry).requireFullCaseCoverage(); Objects.requireNonNull(builds);
+        CaseInputs.require(Objects.requireNonNull(versioned).usesBase(builds), "Original shared consumer build capture required");
+        return new Plan(registry, builds, versioned);
     }
     static final class DeliveryResult {
         private final Entry entry;

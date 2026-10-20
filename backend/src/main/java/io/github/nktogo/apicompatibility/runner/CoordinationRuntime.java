@@ -18,7 +18,7 @@ public final class CoordinationRuntime {
     private static final String UUID = "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}";
     private static final Set<String> PROTOCOLS = Set.of("investigation-v2", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, "customer-captured-v1", "subscription-captured-v1", CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL);
     private final Path root;
-    private final CoordinationInputs inputs;
+    private final ComparisonEvidence inputs;
     private final Clock clock;
     private final Brokers brokers;
     public record Participant(String id, Set<String> cases, Set<String> protocols) {
@@ -39,8 +39,27 @@ public final class CoordinationRuntime {
     private record Spec(int formatVersion, String runId, String registeredAt, String bundleId, String inputReceiptSha256, Definition definition, Slot slot, Policy policy) {}
     public CoordinationRuntime(Path state) throws IOException { this(state, Clock.systemUTC(), CoordinationRuntime::broker); }
     CoordinationRuntime(Path state, Clock clock, Brokers brokers) throws IOException {
-        root = state.toAbsolutePath().normalize().resolve("coordination-trials"); Files.createDirectories(root); ConsumerTasks.directory(root);
-        inputs = new CoordinationInputs(state); this.clock = clock; this.brokers = brokers;
+        this(state, clock, brokers, ComparisonEvidence.legacy(state), "coordination-trials");
+    }
+    private CoordinationRuntime(Path state, Clock clock, Brokers brokers, ComparisonEvidence inputs, String namespace) throws IOException {
+        root = state.toAbsolutePath().normalize().resolve(namespace); Files.createDirectories(root); ConsumerTasks.directory(root);
+        this.inputs = inputs; this.clock = clock; this.brokers = brokers;
+    }
+    /** Opens one exact invoice snapshot; this boundary currently authorizes evidence reads only. */
+    public static CoordinationRuntime forInvoice(Path state, Path directory, ContentDigest expected) throws IOException {
+        return forInvoice(state, directory, expected, Clock.systemUTC());
+    }
+    static CoordinationRuntime forInvoice(Path state, Path directory, ContentDigest expected, Clock clock) throws IOException {
+        return new CoordinationRuntime(state, clock, (store, permitted) -> {
+            throw new IllegalStateException("Invoice read boundary cannot create a model broker");
+        }, ComparisonEvidence.invoice(directory, expected), "invoice-comparison-trials");
+    }
+    public static Policy invoiceReadPolicy(int maxReads, List<String> participants) throws IOException {
+        return new Policy(1, maxReads, new ContentDigest(RepairVerification.harness()),
+                new ContentDigest(CaseInputs.hash("invoice-no-model-prompt-v1".getBytes(StandardCharsets.UTF_8))),
+                new ContentDigest(CaseInputs.hash(ComparisonEvidence.INVOICE_TOOLS.getBytes(StandardCharsets.UTF_8))),
+                new ContentDigest(CaseInputs.hash("invoice-captured-evidence-read-tools-only-v1".getBytes(StandardCharsets.UTF_8))),
+                "read-only-trace-no-dossier", participants.stream().map(id -> new Participant(id, Set.of(InvoiceRenewalFixtures.CASE_ID), Set.of())).toList());
     }
     /** Binds declared adapter/prompt/tool/context references and every stage scope/limit to the arm identity. */
     public static ContentDigest implementationIdentity(Policy policy) {
@@ -57,6 +76,7 @@ public final class CoordinationRuntime {
     }
     public String register(String bundleId, Definition definition, Slot slot, Policy policy) throws IOException {
         Objects.requireNonNull(definition); Objects.requireNonNull(slot); Objects.requireNonNull(policy);
+        inputs.validatePolicy(policy);
         CaseInputs.require(definition.origin() == Origin.SUPPLIED_RECORDS, "Synthetic comparison examples cannot authorize runtime work");
         var workload = definition.workloads().stream().filter(w -> w.workloadId().equals(slot.workloadId())).findFirst().orElseThrow();
         CaseInputs.require(slot.repetition() <= definition.repetitions(), "Slot outside registered comparison");
@@ -132,6 +152,35 @@ public final class CoordinationRuntime {
             admit(run, spec); return value;
         }
     }
+    public JsonObject describe(String id, String participant, String operation, String caseId) throws IOException {
+        return page(id, participant, operation, new ComparisonEvidence.PageRequest("describe", caseId, "", 0, 0));
+    }
+    public JsonObject catalog(String id, String participant, String operation, String caseId, int offset, int limit) throws IOException {
+        return page(id, participant, operation, new ComparisonEvidence.PageRequest("catalog", caseId, "", offset, limit));
+    }
+    public JsonObject readPage(String id, String participant, String operation, String caseId, String alias, int offset, int maxCharacters) throws IOException {
+        return page(id, participant, operation, new ComparisonEvidence.PageRequest("read_text", caseId, alias, offset, maxCharacters));
+    }
+    private JsonObject page(String id, String participantId, String operationId, ComparisonEvidence.PageRequest request) throws IOException {
+        identifier(operationId); start(id); Path run = directory(id); var spec = spec(run);
+        CaseInputs.require(participant(spec, participantId).cases().contains(request.caseId()), "Case outside participant scope");
+        try (var lease = LocalFileLease.acquire(run.resolve("budget.lock"))) {
+            Objects.requireNonNull(lease); admit(run, spec);
+            var value = pageValue(spec, participantId, operationId, request);
+            CaseInputs.require(CaseInputs.JSON.toJson(value).getBytes(StandardCharsets.UTF_8).length <= 65536, "Trial page record too large");
+            String path = "reads/" + key(participantId, operationId) + ".json";
+            if (exists(run, path)) CaseInputs.require(record(run, path).equals(value), "Changed retained read operation");
+            else {
+                if (readPaths(run).size() >= spec.policy().maxReads()) throw new Stop("READ_BUDGET_EXHAUSTED");
+                DurableExecution.publish(run.resolve(path), value);
+            }
+            admit(run, spec); return value;
+        }
+    }
+    private JsonObject pageValue(Spec spec, String participant, String operation, ComparisonEvidence.PageRequest request) {
+        return json(Map.of("participant", participant, "operationId", operation, "caseId", request.caseId(), "bundleIdentity", spec.bundleId(), "pageRequest", request,
+                "page", inputs.page(spec.bundleId(), request), "contentTrust", "untrusted-data"));
+    }
     public void revoke(String id) throws IOException {
         Path run = directory(id); spec(run);
         try { Files.write(run.resolve("revoked"), new byte[0], StandardOpenOption.CREATE_NEW); } catch (FileAlreadyExistsException ignored) {}
@@ -164,7 +213,7 @@ public final class CoordinationRuntime {
             try (var lease = LocalFileLease.acquire(run.resolve("budget.lock"))) {
                 Objects.requireNonNull(lease); if (exists(run, "result.json")) return retained(run);
                 // Reconcile mapped unfinished journals without dispatch. Unmapped registrations remain uncertain.
-                var broker = brokers.create(run.resolve("broker"), () -> false);
+                var broker = reservations(run).isEmpty() ? null : brokers.create(run.resolve("broker"), () -> false);
                 for (String reservation : reservations(run)) {
                     String mapping = reservation.substring(0, reservation.length() - 5) + "-mapping.json";
                     if (!exists(run, mapping)) continue;
@@ -214,9 +263,13 @@ public final class CoordinationRuntime {
         var reads = readPaths(run); CaseInputs.require(reads.size() <= spec.policy().maxReads(), "Changed read budget");
         for (String path : reads) {
             var read = record(run, path); CaseInputs.require(participant(spec, read.get("participant").getAsString()).cases().contains(read.get("caseId").getAsString())
-                    && path.equals("reads/" + key(read.get("participant").getAsString(), read.get("operationId").getAsString()) + ".json")
-                    && read.get("sha256").getAsString().equals(CaseInputs.hash(inputs.read(spec.bundleId(), read.get("caseId").getAsString(), read.get("inputId").getAsString())))
-                    && read.get("sha256").getAsString().equals(CaseInputs.hash(read.get("content").getAsString().getBytes(StandardCharsets.UTF_8))), "Changed retained read"); inventory.put(path, hash(run, path));
+                    && path.equals("reads/" + key(read.get("participant").getAsString(), read.get("operationId").getAsString()) + ".json"), "Changed retained read scope");
+            if (read.has("pageRequest")) {
+                var request = CaseInputs.JSON.fromJson(read.get("pageRequest"), ComparisonEvidence.PageRequest.class);
+                CaseInputs.require(read.equals(pageValue(spec, read.get("participant").getAsString(), read.get("operationId").getAsString(), request)), "Changed retained page");
+            } else CaseInputs.require(read.get("sha256").getAsString().equals(CaseInputs.hash(inputs.read(spec.bundleId(), read.get("caseId").getAsString(), read.get("inputId").getAsString())))
+                    && read.get("sha256").getAsString().equals(CaseInputs.hash(read.get("content").getAsString().getBytes(StandardCharsets.UTF_8))), "Changed retained read");
+            inventory.put(path, hash(run, path));
         }
         long elapsed = 0; if (exists(run, "started.json")) { inventory.put("started.json", hash(run, "started.json")); elapsed = Math.max(0, Duration.between(started(run), clock.instant()).toMillis()); }
         if (exists(run, "revoked")) inventory.put("revoked", hash(run, "revoked"));

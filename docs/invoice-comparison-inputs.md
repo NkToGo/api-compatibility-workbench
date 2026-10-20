@@ -4,8 +4,9 @@
 invoice consumer sources, synthetic inputs and observed execution facts. It is
 the input boundary for later comparison adapters. It makes no model calls,
 dispatches no consumer during disclosure and grants no execution permission.
-The existing two-case comparison runtime and historical campaign are unchanged;
-they do not yet accept this invoice bundle.
+The [invoice read boundary](invoice-comparison-runtime.md) now loads this bundle
+through a separate runtime entry point. Default two-case entry points and the
+historical campaign remain unchanged; invoice participant adapters remain pending.
 
 ## Disclosed evidence
 
@@ -76,10 +77,11 @@ artifact hash. Unknown aliases, traversal strings and invalid ranges are rejecte
 Reads access the captured map, never caller-selected filesystem paths.
 
 Every future arm must use the same bundle identity and available alias inventory.
-This API supplies no arm-specific evidence or extra execution. Future integration
-must still bind disclosure, tool/read accounting, permissions and whole-run
-budgets before any participant run. The current bundle does not register a trial,
-implement those adapters, accept semantic claims or promote a routing rule.
+This API supplies no arm-specific evidence or extra execution. The separate read
+boundary now binds disclosure, read accounting, permissions and the whole-run
+clock before participant work. Model integration must still bind protocols and
+all-stage call accounting before dispatch. The bundle itself does not register
+a trial, implement adapters, accept semantic claims or promote a routing rule.
 
 ## Commands and incomplete evidence
 

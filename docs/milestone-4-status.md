@@ -132,8 +132,12 @@ and semantic review remain pending.
 A separate [comparison-input bundle](invoice-comparison-inputs.md) now provides
 bounded, immutable disclosure of captured sources and observed facts, preserving
 incomplete evidence and excluding protected expectations/grades. All future arms
-must share that bundle and available inventory. Invoice adapter integration,
-whole-run registration and semantic review remain pending.
+must share that bundle and available inventory. A separate
+[invoice read boundary](invoice-comparison-runtime.md) now registers shared
+metadata/catalog/text reads under fixed participants, one read budget and a
+restart-stable deadline. It grants no model access or consumer execution.
+Invoice participant adapters, all-stage model accounting and semantic review
+remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

@@ -334,8 +334,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      identity, with bounded catalog/text pages and independently checked disk
      integrity. Protected expected values and grading verdicts stay outside the
      shared view; actual failures, untrusted input claims and incomplete work
-     remain available. Invoice adapter integration and semantic review follow
-     separately; no participant run or campaign is established here.
+     remain available. **4e3c implemented:** a [shared invoice read boundary](invoice-comparison-runtime.md)
+     reuses the trial runtime with an immutable opened bundle, separate namespace,
+     fixed participants, counted metadata/catalog/text pages and one persistent
+     deadline. Invoice model access and unpaged reads remain blocked. This is
+     read-tool registration, not a participant adapter run. Invoice adapters and
+     semantic review follow separately; no campaign is established here.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

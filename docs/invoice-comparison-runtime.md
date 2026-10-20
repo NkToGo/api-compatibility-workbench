@@ -6,6 +6,11 @@ input format to the existing durable scope, deadline, read accounting and trace
 machinery. It does not yet execute an invoice comparison adapter or an agent.
 The historical two-case input format, trial records and campaign remain separate.
 
+An explicitly selected [invoice investigation entry point](invoice-single-agent.md)
+now permits the bounded invoice decision protocol through the same trial ledger.
+The `forInvoice` factory described below remains read-only. Its policies grant no
+model access, and model-enabled registrations are rejected by that factory.
+
 ## Registration and shared limits
 
 `CoordinationRuntime.forInvoice(state, bundleDirectory, expectedIdentity)` validates
@@ -77,5 +82,6 @@ explicitly incomplete even when the tool check completes successfully.
 This command uses an unreviewed check definition and unrun placeholders for other
 arms; it is not a frozen campaign or a measured participant result. Operational
 completion does not establish semantic acceptance, migration compatibility,
-coordination benefit or a routing recommendation. Invoice comparison adapters
-and their quality review remain subsequent work.
+coordination benefit or a routing recommendation. The separate single-context
+adapter performs investigation; other invoice arms and quality review remain
+subsequent work.

@@ -127,8 +127,8 @@ host policy using captured observations, with no additional consumer dispatch.
 A [shared full-case capture](invoice-case-coverage.md) now runs all five components
 from one captured registry, shared source/build closure and immutable image.
 Its execution-coverage gate requires every component; interruption or a stage
-failure cannot be hidden by another passing component. Joint comparison adapters
-and semantic review remain pending.
+failure cannot be hidden by another passing component. Joint comparison and
+semantic review remain pending.
 A separate [comparison-input bundle](invoice-comparison-inputs.md) now provides
 bounded, immutable disclosure of captured sources and observed facts, preserving
 incomplete evidence and excluding protected expectations/grades. All future arms
@@ -136,8 +136,10 @@ must share that bundle and available inventory. A separate
 [invoice read boundary](invoice-comparison-runtime.md) now registers shared
 metadata/catalog/text reads under fixed participants, one read budget and a
 restart-stable deadline. It grants no model access or consumer execution.
-Invoice participant adapters, all-stage model accounting and semantic review
-remain pending.
+A separate [single-context invoice investigator](invoice-single-agent.md) now
+selects evidence pages and returns cited advice or abstention under the shared
+read/call limits. Its operational records retain no semantic review. Other arms,
+cross-stage team accounting and semantic acceptance remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

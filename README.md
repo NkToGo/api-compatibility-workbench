@@ -204,7 +204,11 @@ captured sources, synthetic inputs and observed facts through bounded paged read
 with protected expectations and grading results kept outside that view. A
 [shared invoice read boundary](docs/invoice-comparison-runtime.md) now registers
 counted metadata/catalog/text reads under fixed participant scopes and one durable
-deadline, with model access blocked. Invoice participant adapters remain pending.
+deadline, with model access blocked by the read-only entry point. A separate
+[single-context invoice investigator](docs/invoice-single-agent.md) now selects
+bounded evidence pages and returns cited advisory findings or abstention under
+the shared call/read limits. Independent workers, coordinated invoice review and
+paired quality measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

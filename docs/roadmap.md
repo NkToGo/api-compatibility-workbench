@@ -338,8 +338,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      reuses the trial runtime with an immutable opened bundle, separate namespace,
      fixed participants, counted metadata/catalog/text pages and one persistent
      deadline. Invoice model access and unpaged reads remain blocked. This is
-     read-tool registration, not a participant adapter run. Invoice adapters and
-     semantic review follow separately; no campaign is established here.
+     read-tool registration, not a participant adapter run. **4e3d implemented:**
+     a [single-context invoice investigator](invoice-single-agent.md) selects
+     bounded catalog/text reads, retains cited advisory dossiers or abstention,
+     and charges every model operation to the shared trial. Stable requests and
+     completed responses survive restart without redispatch. Read-only entry
+     points remain closed to model access. Other invoice arms and semantic review
+     follow separately; no campaign is established here.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

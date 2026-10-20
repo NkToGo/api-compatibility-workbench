@@ -45,6 +45,34 @@ class ModelCallBrokerTest {
         });
     }
 
+    @Test void invoiceTransportBindsStrictFunctionAndRetainsNoPrivateReasoning() throws Exception {
+        server.createContext("/v1/responses", exchange -> {
+            calls.incrementAndGet(); var request = CaseInputs.object(exchange.getRequestBody().readAllBytes());
+            assertEquals(InvoiceInvestigationDecision.FUNCTION, request.getAsJsonObject("tool_choice").get("name").getAsString());
+            assertFalse(request.get("parallel_tool_calls").getAsBoolean()); assertFalse(request.get("store").getAsBoolean());
+            var tool = request.getAsJsonArray("tools").get(0).getAsJsonObject(); assertTrue(tool.get("strict").getAsBoolean());
+            assertEquals(InvoiceInvestigationDecision.schema(), tool.get("parameters"));
+            String response = CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 20, "output_tokens", 30), "output", List.of(
+                    java.util.Map.of("type", "reasoning", "summary", List.of(java.util.Map.of("text", "do-not-retain-reasoning"))),
+                    java.util.Map.of("type", "function_call", "name", InvoiceInvestigationDecision.FUNCTION, "arguments", "{\"decision\":{\"action\":\"catalog\",\"offset\":0,\"limit\":40}}"))));
+            byte[] bytes = response.getBytes(StandardCharsets.UTF_8); exchange.sendResponseHeaders(200, bytes.length);
+            try (var output = exchange.getResponseBody()) { output.write(bytes); }
+        });
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "captured invoice", 2048, InvoiceInvestigationDecision.PROTOCOL), Duration.ofMinutes(1));
+        assertEquals("COMPLETED", broker.execute(id)); var outcome = broker.outcome(id);
+        assertEquals("catalog", InvoiceInvestigationDecision.parse(outcome.get("outputText").getAsString()).get("action").getAsString());
+        assertFalse(outcome.toString().contains("do-not-retain-reasoning")); assertEquals(1, calls.get());
+    }
+    @Test void invoiceTransportRejectsAHistoricalDecisionFunction() throws Exception {
+        server.createContext("/v1/responses", exchange -> {
+            exchange.getRequestBody().readAllBytes(); String response = CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "output", List.of(
+                    java.util.Map.of("type", "function_call", "name", BundleInvestigationDecision.FUNCTION, "arguments", "{}")), "usage", java.util.Map.of("input_tokens", 1, "output_tokens", 1)));
+            byte[] bytes = response.getBytes(StandardCharsets.UTF_8); exchange.sendResponseHeaders(200, bytes.length);
+            try (var output = exchange.getResponseBody()) { output.write(bytes); }
+        });
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "captured invoice", 2048, InvoiceInvestigationDecision.PROTOCOL), Duration.ofMinutes(1));
+        assertEquals("INVALID_RESPONSE", broker.execute(id)); assertFalse(broker.outcome(id).has("outputText"));
+    }
     @Test void bundleDecisionTransportExtractsOnlyTheExpectedFunctionAndIgnoresReasoning() throws Exception {
         server.createContext("/v1/responses", exchange -> {
             calls.incrementAndGet(); var request = CaseInputs.object(exchange.getRequestBody().readAllBytes());

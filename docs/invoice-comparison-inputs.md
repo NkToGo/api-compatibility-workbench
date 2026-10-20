@@ -6,7 +6,8 @@ the input boundary for later comparison adapters. It makes no model calls,
 dispatches no consumer during disclosure and grants no execution permission.
 The [invoice read boundary](invoice-comparison-runtime.md) now loads this bundle
 through a separate runtime entry point. Default two-case entry points and the
-historical campaign remain unchanged; invoice participant adapters remain pending.
+historical campaign remain unchanged. A separate [single-context invoice adapter](invoice-single-agent.md)
+now investigates through that boundary; other invoice arms remain pending.
 
 ## Disclosed evidence
 
@@ -79,8 +80,9 @@ Reads access the captured map, never caller-selected filesystem paths.
 Every future arm must use the same bundle identity and available alias inventory.
 This API supplies no arm-specific evidence or extra execution. The separate read
 boundary now binds disclosure, read accounting, permissions and the whole-run
-clock before participant work. Model integration must still bind protocols and
-all-stage call accounting before dispatch. The bundle itself does not register
+clock before participant work. The single-context adapter binds its invoice
+protocol and model reservations; other arms must still bind every stage before
+dispatch. The bundle itself does not register
 a trial, implement adapters, accept semantic claims or promote a routing rule.
 
 ## Commands and incomplete evidence

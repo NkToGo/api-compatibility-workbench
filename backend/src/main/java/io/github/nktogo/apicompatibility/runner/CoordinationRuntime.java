@@ -16,7 +16,7 @@ import static io.github.nktogo.apicompatibility.evaluation.CoordinationExperimen
 /** Trusted-host boundary for future comparison adapters, not an agent or semantic evaluator. */
 public final class CoordinationRuntime {
     private static final String UUID = "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}";
-    private static final Set<String> PROTOCOLS = Set.of("investigation-v2", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, "customer-captured-v1", "subscription-captured-v1", CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL);
+    private static final Set<String> PROTOCOLS = Set.of("investigation-v2", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, "customer-captured-v1", "subscription-captured-v1", CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL, InvoiceInvestigationDecision.PROTOCOL);
     private final Path root;
     private final ComparisonEvidence inputs;
     private final Clock clock;
@@ -53,6 +53,13 @@ public final class CoordinationRuntime {
         return new CoordinationRuntime(state, clock, (store, permitted) -> {
             throw new IllegalStateException("Invoice read boundary cannot create a model broker");
         }, ComparisonEvidence.invoice(directory, expected), "invoice-comparison-trials");
+    }
+    /** Explicit host entry point for the bounded invoice decision protocol; the read-only factory stays read-only. */
+    public static CoordinationRuntime forInvoiceInvestigation(Path state, Path directory, ContentDigest expected) throws IOException {
+        return forInvoiceInvestigation(state, directory, expected, Clock.systemUTC(), CoordinationRuntime::broker);
+    }
+    static CoordinationRuntime forInvoiceInvestigation(Path state, Path directory, ContentDigest expected, Clock clock, Brokers brokers) throws IOException {
+        return new CoordinationRuntime(state, clock, brokers, ComparisonEvidence.invoice(directory, expected, true), "invoice-comparison-trials");
     }
     public static Policy invoiceReadPolicy(int maxReads, List<String> participants) throws IOException {
         return new Policy(1, maxReads, new ContentDigest(RepairVerification.harness()),

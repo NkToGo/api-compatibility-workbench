@@ -26,6 +26,9 @@ interface ComparisonEvidence {
     }
 
     static ComparisonEvidence invoice(Path directory, ContentDigest expected) throws IOException {
+        return invoice(directory, expected, false);
+    }
+    static ComparisonEvidence invoice(Path directory, ContentDigest expected, boolean investigation) throws IOException {
         var inputs = InvoiceComparisonInputs.open(directory, expected);
         byte[] receipt = ConsumerTasks.bytes(directory, "receipt.json");
         CaseInputs.require(CaseInputs.object(receipt).equals(CaseInputs.JSON.toJsonTree(Map.of("manifestSha256", expected.sha256()))), "Changed invoice input receipt");
@@ -52,7 +55,8 @@ interface ComparisonEvidence {
             }
             public void validatePolicy(CoordinationRuntime.Policy policy) {
                 CaseInputs.require(policy.toolPolicyIdentity().equals(new ContentDigest(CaseInputs.hash(INVOICE_TOOLS.getBytes(java.nio.charset.StandardCharsets.UTF_8))))
-                        && policy.participants().stream().allMatch(p -> p.protocols().isEmpty()), "Invoice read boundary grants no model access");
+                        && policy.participants().stream().allMatch(p -> p.protocols().isEmpty() || (investigation && p.protocols().equals(java.util.Set.of(InvoiceInvestigationDecision.PROTOCOL)))),
+                        "Invoice participant protocol outside host-selected boundary");
             }
         };
     }

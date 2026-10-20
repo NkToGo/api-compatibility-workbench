@@ -138,7 +138,11 @@ metadata/catalog/text reads under fixed participants, one read budget and a
 restart-stable deadline. It grants no model access or consumer execution.
 A separate [single-context invoice investigator](invoice-single-agent.md) now
 selects evidence pages and returns cited advice or abstention under the shared
-read/call limits. Its operational records retain no semantic review. Other arms,
+read/call limits. Its operational records retain no semantic review. A separate
+[deterministic invoice baseline](invoice-diagnostics.md) now uses that same
+100-read boundary for fixed, whole-file selection and recorded-fact diagnostics.
+It preserves conflicts, incomplete/unsupported work and unread inventory, with
+zero model calls or new executions. Independent workers, the coordinated arm,
 cross-stage team accounting and semantic acceptance remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.

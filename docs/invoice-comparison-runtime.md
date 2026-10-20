@@ -3,7 +3,8 @@
 The shared `CoordinationRuntime` can now register read-only invoice trials against
 one exact [invoice input bundle](invoice-comparison-inputs.md). This connects that
 input format to the existing durable scope, deadline, read accounting and trace
-machinery. It does not yet execute an invoice comparison adapter or an agent.
+machinery. The boundary itself does not execute an adapter or an agent; separate
+[deterministic diagnostics](invoice-diagnostics.md) now use its read-only entry point.
 The historical two-case input format, trial records and campaign remain separate.
 
 An explicitly selected [invoice investigation entry point](invoice-single-agent.md)

@@ -7,7 +7,9 @@ dispatches no consumer during disclosure and grants no execution permission.
 The [invoice read boundary](invoice-comparison-runtime.md) now loads this bundle
 through a separate runtime entry point. Default two-case entry points and the
 historical campaign remain unchanged. A separate [single-context invoice adapter](invoice-single-agent.md)
-now investigates through that boundary; other invoice arms remain pending.
+now investigates through that boundary. A [deterministic invoice arm](invoice-diagnostics.md)
+derives bounded recorded-fact diagnostics from the same disclosure; independent
+workers, the coordinated arm and semantic review remain pending.
 
 ## Disclosed evidence
 

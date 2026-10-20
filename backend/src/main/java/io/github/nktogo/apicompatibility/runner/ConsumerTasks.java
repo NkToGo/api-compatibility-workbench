@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.*;
 import java.util.*;
 
@@ -320,17 +321,26 @@ public final class ConsumerTasks {
         CaseInputs.require(relative.matches("[a-zA-Z0-9_./-]+") && !relative.startsWith("/")
                 && Arrays.stream(relative.split("/", -1)).noneMatch(s -> s.isEmpty() || s.equals(".") || s.equals("..")), "Invalid task artifact path");
         Path path = base.resolve(relative).normalize();
-        Path absolute = path.toAbsolutePath();
-        for (Path parent = absolute.getParent(); parent != null; parent = parent.getParent()) directory(parent);
+        directory(path.toAbsolutePath().getParent());
         CaseInputs.require(Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS), "Missing or linked task artifact");
         try (var input = Files.newInputStream(path, LinkOption.NOFOLLOW_LINKS)) {
             byte[] data = input.readNBytes(1048577); CaseInputs.require(data.length <= 1048576, "Task artifact too large"); return data;
         }
     }
     static void directory(Path path) {
-        CaseInputs.require(Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS) && !Files.isSymbolicLink(path), "Missing or linked task directory");
-        // Both forms canonicalize Windows short names; only the followed form resolves junctions.
-        try { CaseInputs.require(path.toRealPath().equals(path.toRealPath(LinkOption.NOFOLLOW_LINKS)), "Redirected task directory"); }
+        try {
+            Path absolute = path.toAbsolutePath();
+            boolean windows = absolute.getFileSystem().equals(FileSystems.getDefault())
+                    && absolute.getFileSystem().provider().getClass().getName().equals("sun.nio.fs.WindowsFileSystemProvider");
+            for (Path current = absolute; current != null; current = windows ? current.getParent() : null) {
+                var attributes = Files.readAttributes(current, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+                CaseInputs.require(attributes.isDirectory() && !attributes.isSymbolicLink(), "Missing or linked task directory");
+                // The JDK Windows provider marks non-symbolic reparse points as other.
+                // Ordinary directories need only fresh metadata; junctions retain the canonical-path check.
+                if (!windows || attributes.isOther())
+                    CaseInputs.require(current.toRealPath().equals(current.toRealPath(LinkOption.NOFOLLOW_LINKS)), "Redirected task directory");
+            }
+        }
         catch (IOException e) { throw new IllegalArgumentException("Unavailable task directory"); }
     }
     private static JsonObject json(Object value) { return CaseInputs.JSON.toJsonTree(value).getAsJsonObject(); }

@@ -72,6 +72,23 @@ outcomes, execution authorizations, started markers and model grants are not
 available to the investigator. `run_case` and `read_run` remain retained-evidence
 aliases with zero new worker executions.
 
+## Filesystem validation
+
+Artifact reads recheck their parent directories and reject missing directories,
+symbolic links and redirected paths. On the default JDK Windows filesystem,
+fresh non-following metadata is checked for every ancestor; ordinary directories
+avoid repeated canonical-path resolution. Non-symbolic reparse points retain
+the followed/non-followed canonical-path comparison, which rejects junctions.
+The fast path is limited to the JDK's `WindowsFileSystemProvider`; other providers
+retain the canonical-path check. The [OpenJDK Windows attribute implementation](https://github.com/openjdk/jdk21u/blob/master/src/java.base/windows/classes/sun/nio/fs/WindowsFileAttributes.java)
+marks non-symbolic reparse points with `BasicFileAttributes.isOther()`.
+No directory or artifact contents are cached between reads, and the one-MiB
+artifact bound is unchanged.
+
+Keep the state on a trusted local filesystem. These checks do not make the
+separate validation and open operations atomic against a hostile local process
+replacing filesystem entries concurrently.
+
 ## Admission permission and failure handling
 
 Each `grant.json` binds one task's spec hash, context indirectly through that

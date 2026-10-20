@@ -199,6 +199,10 @@ receipts without dispatching consumers again. A [shared invoice-case capture](do
 now binds these stages and all runtime boundary controls to one captured registry,
 source/build closure and image. Complete synthetic execution coverage remains
 separate from joint comparison, semantic acceptance and coordination benefit.
+A [shared comparison-input bundle](docs/invoice-comparison-inputs.md) now discloses
+captured sources, synthetic inputs and observed facts through bounded paged reads,
+with protected expectations and grading results kept outside that view. Invoice
+comparison-adapter integration remains pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

@@ -40,6 +40,30 @@ class InvoiceCaseCoverageContainerTest {
         assertFalse(assemble(plan, run.business(), run.ordered(), run.admission(), run.execution(), partialBoundary, false).fullCaseExecutionCoverageSatisfied());
         assertFalse(assemble(plan, run.business(), run.ordered(), run.admission(), run.execution(), run.boundary(), true).fullCaseExecutionCoverageSatisfied());
         assertTrue(run.fullCaseExecutionCoverageSatisfied()); assertThrows(FileAlreadyExistsException.class, () -> run(plan, System.getProperty("workbench.invoice.image"), output, Duration.ofSeconds(30), () -> false));
+        verifyDisclosure(plan, run, partial);
+    }
+    private static void verifyDisclosure(Plan plan, Run run, Run partial) throws Exception {
+        Path directory = output("inputs-complete"); var bundle = InvoiceComparisonInputs.capture(plan, run, directory);
+        var reopened = InvoiceComparisonInputs.open(directory, bundle.identity()); assertTrue(bundle.describe().get("sourceExecutionCoverageSatisfied").getAsBoolean());
+        assertEquals(InvoiceOrderedCoverage.identity(run.json()), bundle.describe().get("sourceCaptureIdentity").getAsString());
+        var aliases = InvoiceComparisonInputsTest.aliases(bundle); assertEquals(444, aliases.size());
+        for (String alias : aliases) {
+            String content = InvoiceComparisonInputsTest.content(bundle, alias);
+            assertEquals(CaseInputs.hash(content.getBytes(java.nio.charset.StandardCharsets.UTF_8)), CaseInputs.hash(InvoiceComparisonInputsTest.content(reopened, alias).getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+            if (!alias.startsWith("source/")) InvoiceComparisonInputsTest.noGrading(com.google.gson.JsonParser.parseString(content));
+        }
+        for (var delivery : run.business().deliveries()) {
+            var record = com.google.gson.JsonParser.parseString(InvoiceComparisonInputsTest.content(bundle, "business/" + delivery.entry().key())).getAsJsonObject();
+            if (delivery.observation() == null) { assertTrue(record.get("observation").isJsonNull()); assertEquals("ADMISSION_BLOCKED", record.get("availability").getAsString()); }
+            else { assertEquals(delivery.observation().actual().json(), record.getAsJsonObject("observation").get("actual")); assertFalse(record.getAsJsonObject("observation").has("assertionOutcome")); }
+        }
+        var wrong = com.google.gson.JsonParser.parseString(InvoiceComparisonInputsTest.content(bundle, "execution/wrong-version-return")).getAsJsonObject();
+        assertEquals("2025-02-24.acacia", wrong.getAsJsonObject("observation").getAsJsonObject("actual").get("effectiveApiVersion").getAsString());
+        var forged = com.google.gson.JsonParser.parseString(InvoiceComparisonInputsTest.content(bundle, "admission/forged-payload-permissions")).getAsJsonObject();
+        assertEquals("ADMISSION_BLOCKED", forged.get("availability").getAsString()); assertFalse(forged.getAsJsonObject("admission").get("admitted").getAsBoolean());
+        var incomplete = InvoiceComparisonInputs.capture(plan, partial, output("inputs-partial"));
+        assertFalse(incomplete.describe().get("sourceExecutionCoverageSatisfied").getAsBoolean());
+        assertTrue(bundle.describe().get("sourceExecutionCoverageSatisfied").getAsBoolean());
     }
     @Test void infrastructureFailureRetainsItsObservationAndStopsAllLaterDispatch() throws Exception {
         var run = run(load(InvoiceSandboxTest.root()), "sha256:" + "0".repeat(64), output("infrastructure"), Duration.ofSeconds(30), () -> false);

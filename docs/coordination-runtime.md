@@ -15,6 +15,11 @@ reconciliation and unreviewed export. The [campaign controller](coordination-cam
 orders fresh trials and retains measurements; semantic acceptance remains separate.
 This runtime alone establishes no coordination benefit.
 
+The separate [invoice input bundle](invoice-comparison-inputs.md) provides bounded
+disclosure for the newer invoice workload. This two-case runtime does not yet
+load that format. Its invoice adapter/registration integration remains separate
+work; historical input identities, policies and campaign outcomes are unchanged.
+
 ## Capture the same available evidence
 
 After the README build, select an existing customer investigation with a completed

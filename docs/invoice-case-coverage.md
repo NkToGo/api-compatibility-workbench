@@ -117,3 +117,9 @@ and source-run substitution. Container tests execute the complete shared capture
 reuse its actual observations to test partial-replay rejection, and verify that
 an infrastructure failure stops later dispatch while retaining its observation.
 Linux CI retains `invoice-case-tests/` with the isolated execution receipts.
+
+The separate [comparison-input exporter](invoice-comparison-inputs.md) can disclose
+this original typed run and its exact plan without redispatch. Its input view
+excludes protected expected facts and grading verdicts while retaining actual
+observations, blocked admissions, effects and incomplete work. It adds no agent
+comparison or semantic acceptance to this execution-coverage gate.

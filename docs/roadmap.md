@@ -328,7 +328,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      component runs to one captured registry, source/build closure and image,
      preserving original typed replay sources and failed/incomplete evidence.
      Full-case execution coverage requires every component and no capture stop;
-     comparison adapters, equal disclosure and semantic review remain pending.
+     comparison-adapter integration and semantic review remain pending.
+     **4e3b implemented:** [shared invoice comparison inputs](invoice-comparison-inputs.md)
+     bind original typed case evidence and captured sources to one immutable
+     identity, with bounded catalog/text pages and independently checked disk
+     integrity. Protected expected values and grading verdicts stay outside the
+     shared view; actual failures, untrusted input claims and incomplete work
+     remain available. Invoice adapter integration and semantic review follow
+     separately; no participant run or campaign is established here.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

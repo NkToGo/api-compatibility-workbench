@@ -14,13 +14,20 @@ final class InvoiceCaseCoverage {
         private final InvoiceBusinessCoverage.Plan business;
         private final InvoiceOrderedCoverage.Plan ordered;
         private final InvoiceBoundaryCoverage.Plan boundary;
-        private Plan(InvoiceRenewalRegistry.Registration fixtures, InvoiceConsumerBuilds.Registration builds, InvoiceVersionedConsumerBuilds.Registration versioned) {
+        private final InvoiceConsumerBuilds.Registration builds;
+        private final InvoiceVersionedConsumerBuilds.Registration versioned;
+        private final byte[] provenance;
+        private Plan(InvoiceRenewalRegistry.Registration fixtures, InvoiceConsumerBuilds.Registration builds, InvoiceVersionedConsumerBuilds.Registration versioned, byte[] provenance) {
+            this.builds = builds; this.versioned = versioned; this.provenance = provenance.clone();
             business = InvoiceBusinessCoverage.from(fixtures, builds, versioned);
             ordered = InvoiceOrderedCoverage.from(business); boundary = InvoiceBoundaryCoverage.from(fixtures, builds);
         }
         InvoiceBusinessCoverage.Plan business() { return business; }
         InvoiceOrderedCoverage.Plan ordered() { return ordered; }
         InvoiceBoundaryCoverage.Plan boundary() { return boundary; }
+        InvoiceConsumerBuilds.Registration builds() { return builds; }
+        InvoiceVersionedConsumerBuilds.Registration versioned() { return versioned; }
+        byte[] provenance() { return provenance.clone(); }
         JsonObject metadata() {
             var json = new JsonObject(); json.addProperty("formatVersion", 1); json.addProperty("caseId", InvoiceRenewalFixtures.CASE_ID);
             json.addProperty("authority", "shared-synthetic-case-execution"); json.addProperty("coverageStage", "FULL_CASE_EXECUTION_CAPTURE");
@@ -39,7 +46,16 @@ final class InvoiceCaseCoverage {
     static Plan load(Path caseRoot) throws IOException {
         var fixtures = InvoiceRenewalRegistry.load(caseRoot); fixtures.requireFullCaseCoverage();
         var builds = InvoiceConsumerBuilds.load(caseRoot);
-        return new Plan(fixtures, builds, InvoiceVersionedConsumerBuilds.load(caseRoot, builds));
+        var contract = InvoiceConsumerBuilds.read(caseRoot.resolve("contract-integrity.json"), 262144);
+        var fixtureManifest = InvoiceRenewalFixtures.object(fixtures.bytes("rollout-v1", "bundle.json"));
+        CaseInputs.require(CaseInputs.hash(contract).equals(fixtureManifest.get("contractIdentity").getAsString()), "Captured invoice contract changed");
+        String provenanceHash = null;
+        for (var value : InvoiceRenewalFixtures.object(contract).getAsJsonArray("files")) {
+            var row = value.getAsJsonObject(); if (row.get("path").getAsString().equals("provenance.json")) provenanceHash = row.get("sha256").getAsString();
+        }
+        var provenance = InvoiceConsumerBuilds.read(caseRoot.resolve("provenance.json"), 262144);
+        CaseInputs.require(CaseInputs.hash(provenance).equals(provenanceHash), "Captured invoice provenance changed");
+        return new Plan(fixtures, builds, InvoiceVersionedConsumerBuilds.load(caseRoot, builds), provenance);
     }
     static final class Run {
         private final Plan plan;

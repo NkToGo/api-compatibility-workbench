@@ -348,8 +348,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      100-read boundary, fixed whole-file selection and disclosed recorded facts,
      retaining unsupported/incomplete evidence, conflicts and unread inventory.
      It makes zero model calls or new consumer dispatches. Operational completion
-     does not establish semantic acceptance. Independent workers, the coordinated
-     arm and joint semantic review follow separately; no campaign is established here.
+     does not establish semantic acceptance. **4e3f implemented:**
+     [independent invoice workers](invoice-independent-workers.md) investigate
+     webhook and reconciliation roles in separate contexts with common input
+     availability, fair concurrent rounds and inclusive call/read/deadline limits.
+     Verbatim aggregation preserves partial dossiers and missing worker output;
+     no manager, cross-worker message or semantic acceptance is introduced.
+     The coordinated arm and joint semantic review follow separately; no campaign
+     is established here.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

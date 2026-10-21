@@ -16,7 +16,7 @@ import static io.github.nktogo.apicompatibility.evaluation.CoordinationExperimen
 /** Trusted-host boundary for future comparison adapters, not an agent or semantic evaluator. */
 public final class CoordinationRuntime {
     private static final String UUID = "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}";
-    private static final Set<String> PROTOCOLS = Set.of("investigation-v2", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, "customer-captured-v1", "subscription-captured-v1", CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL, InvoiceInvestigationDecision.PROTOCOL);
+    private static final Set<String> PROTOCOLS = Set.of("investigation-v2", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, "customer-captured-v1", "subscription-captured-v1", CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL, InvoiceInvestigationDecision.PROTOCOL, InvoiceWorkerDecision.WEBHOOK, InvoiceWorkerDecision.RECONCILIATION);
     private final Path root;
     private final ComparisonEvidence inputs;
     private final Clock clock;

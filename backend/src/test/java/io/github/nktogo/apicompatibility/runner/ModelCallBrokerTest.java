@@ -453,6 +453,29 @@ class ModelCallBrokerTest {
         }
         assertNoSecret();
     }
+    @Test void invoiceWorkerProtocolsBindTheirOwnRoleInstructionsAndTheExistingStrictFunction() throws Exception {
+        for (String protocol : List.of(InvoiceWorkerDecision.WEBHOOK, InvoiceWorkerDecision.RECONCILIATION)) {
+            var request = new ModelCallBroker.Request("gpt-test", "captured invoice", 2048, protocol); var body = CaseInputs.object(request.body());
+            assertEquals(InvoiceWorkerDecision.instructions(protocol), body.get("instructions").getAsString());
+            assertEquals(InvoiceInvestigationDecision.FUNCTION, body.getAsJsonObject("tool_choice").get("name").getAsString());
+            assertEquals(InvoiceInvestigationDecision.schema(), body.getAsJsonArray("tools").get(0).getAsJsonObject().get("parameters"));
+            assertTrue(body.getAsJsonArray("tools").get(0).getAsJsonObject().get("strict").getAsBoolean()); assertFalse(body.get("parallel_tool_calls").getAsBoolean());
+            reply(200, "{\"status\":\"completed\",\"output\":[{\"type\":\"function_call\",\"name\":\"invoice_investigation_decision\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+            var broker = broker(); String id = broker.register(request, Duration.ofMinutes(1)); assertEquals("COMPLETED", broker.execute(id)); server.removeContext("/v1/responses");
+        }
+        assertNoSecret();
+        assertEquals(InvoiceInvestigationDecision.INSTRUCTIONS, CaseInputs.object(new ModelCallBroker.Request("gpt-test", "joint invoice", 2048, InvoiceInvestigationDecision.PROTOCOL).body()).get("instructions").getAsString());
+    }
+    @Test void invoiceWorkerProtocolRejectsOtherFunctionsAndDiscardsReasoningItems() throws Exception {
+        var request = new ModelCallBroker.Request("gpt-test", "captured invoice", 2048, InvoiceWorkerDecision.WEBHOOK);
+        for (String function : List.of("investigation_decision", InvoiceInvestigationDecision.FUNCTION)) {
+            reply(200, "{\"status\":\"completed\",\"output\":[{\"type\":\"reasoning\",\"summary\":[{\"text\":\"do-not-retain-worker-reasoning\"}]},{\"type\":\"function_call\",\"name\":\"" + function + "\",\"arguments\":\"{}\"}],\"usage\":{\"input_tokens\":10,\"output_tokens\":2}}");
+            var broker = broker(); String id = broker.register(request, Duration.ofMinutes(1));
+            assertEquals(function.equals(InvoiceInvestigationDecision.FUNCTION) ? "COMPLETED" : "INVALID_RESPONSE", broker.execute(id));
+            assertFalse(Files.readString(root.resolve(id + "/result.json")).contains("do-not-retain-worker-reasoning")); server.removeContext("/v1/responses");
+        }
+        assertNoSecret();
+    }
     @Test void reconciliationProtocolRejectsOtherFunctionsAndNeverRetainsReasoningItems() throws Exception {
         var request = new ModelCallBroker.Request("gpt-test", "captured follow-up", 2048, "reconciliation-v1"); var body = CaseInputs.object(request.body());
         assertEquals("reconciliation_decision", body.getAsJsonObject("tool_choice").get("name").getAsString());

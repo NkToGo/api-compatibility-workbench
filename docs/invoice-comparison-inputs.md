@@ -8,8 +8,10 @@ The [invoice read boundary](invoice-comparison-runtime.md) now loads this bundle
 through a separate runtime entry point. Default two-case entry points and the
 historical campaign remain unchanged. A separate [single-context invoice adapter](invoice-single-agent.md)
 now investigates through that boundary. A [deterministic invoice arm](invoice-diagnostics.md)
-derives bounded recorded-fact diagnostics from the same disclosure; independent
-workers, the coordinated arm and semantic review remain pending.
+derives bounded recorded-fact diagnostics from the same disclosure.
+[Independent invoice workers](invoice-independent-workers.md) now read the same
+available inventory in separate role contexts; the coordinated arm and semantic
+review remain pending.
 
 ## Disclosed evidence
 

@@ -209,8 +209,11 @@ deadline, with model access blocked by the read-only entry point. A separate
 bounded evidence pages and returns cited advisory findings or abstention under
 the shared call/read limits. A [deterministic invoice baseline](docs/invoice-diagnostics.md)
 uses the same read boundary for reproducibly selected recorded-fact diagnostics,
-with unread evidence and unreviewed quality explicit. Independent workers,
-coordinated invoice review and paired quality measurement remain pending.
+with unread evidence and unreviewed quality explicit. Separate
+[independent invoice workers](docs/invoice-independent-workers.md) now investigate
+the two consumer roles concurrently under one budget, preserving both dossiers
+without model aggregation. Coordinated invoice review and paired quality
+measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

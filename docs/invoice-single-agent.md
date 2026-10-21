@@ -2,14 +2,17 @@
 
 One adaptive investigator inspects both invoice consumers and their shared ledger
 through the [invoice runtime](invoice-comparison-runtime.md). It selects captured
-pages and returns a cited advisory dossier or explicit abstention. Independent
-workers, coordinated review and paired measurement remain separate work.
+pages and returns a cited advisory dossier or explicit abstention. Separate
+[independent role workers](invoice-independent-workers.md) now use the same
+disclosure and aggregate limits. Coordinated review and paired measurement
+remain separate work.
 
 ## Scope and limits
 
 The host explicitly selects `CoordinationRuntime.forInvoiceInvestigation` with
 the original bundle and its independently retained expected identity. This entry
-point permits only the invoice decision protocol. `forInvoice` stays read-only;
+point permits the joint or fixed-role invoice protocols, with each participant
+bound to its declared protocol. `forInvoice` stays read-only;
 model-enabled registrations are rejected by that factory. No fresh consumer
 execution, shell, network tool, edits, delegation or protected grades are exposed.
 

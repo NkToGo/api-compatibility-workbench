@@ -8,7 +8,9 @@ machinery. The boundary itself does not execute an adapter or an agent; separate
 The historical two-case input format, trial records and campaign remain separate.
 
 An explicitly selected [invoice investigation entry point](invoice-single-agent.md)
-now permits the bounded invoice decision protocol through the same trial ledger.
+now permits the bounded joint or [fixed-role invoice protocols](invoice-independent-workers.md)
+through the same trial ledger. A participant is bound to one declared protocol;
+model arguments cannot select a sibling's protocol.
 The `forInvoice` factory described below remains read-only. Its policies grant no
 model access, and model-enabled registrations are rejected by that factory.
 
@@ -84,5 +86,6 @@ This command uses an unreviewed check definition and unrun placeholders for othe
 arms; it is not a frozen campaign or a measured participant result. Operational
 completion does not establish semantic acceptance, migration compatibility,
 coordination benefit or a routing recommendation. The separate single-context
-adapter performs investigation; other invoice arms and quality review remain
-subsequent work.
+adapter performs investigation, and independent role workers now share the same
+input/read boundary and model ledger. The coordinated invoice arm and quality
+review remain subsequent work.

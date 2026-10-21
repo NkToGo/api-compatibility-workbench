@@ -142,8 +142,12 @@ read/call limits. Its operational records retain no semantic review. A separate
 [deterministic invoice baseline](invoice-diagnostics.md) now uses that same
 100-read boundary for fixed, whole-file selection and recorded-fact diagnostics.
 It preserves conflicts, incomplete/unsupported work and unread inventory, with
-zero model calls or new executions. Independent workers, the coordinated arm,
-cross-stage team accounting and semantic acceptance remain pending.
+zero model calls or new executions. Separate
+[independent invoice workers](invoice-independent-workers.md) now run fixed role
+contexts concurrently, sharing the same bundle and aggregate limits. Original
+worker dossiers, partial failures and conservative joint disposition remain
+visible without model aggregation. The coordinated arm, cross-stage team
+accounting and semantic acceptance remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

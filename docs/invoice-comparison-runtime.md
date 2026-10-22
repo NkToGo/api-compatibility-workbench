@@ -8,7 +8,8 @@ machinery. The boundary itself does not execute an adapter or an agent; separate
 The historical two-case input format, trial records and campaign remain separate.
 
 An explicitly selected [invoice investigation entry point](invoice-single-agent.md)
-now permits the bounded joint or [fixed-role invoice protocols](invoice-independent-workers.md)
+now permits the bounded joint, [fixed-role invoice protocols](invoice-independent-workers.md)
+or [coordinator review protocol](invoice-team-review.md)
 through the same trial ledger. A participant is bound to one declared protocol;
 model arguments cannot select a sibling's protocol.
 The `forInvoice` factory described below remains read-only. Its policies grant no

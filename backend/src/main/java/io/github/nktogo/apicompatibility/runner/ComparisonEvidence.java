@@ -56,7 +56,7 @@ interface ComparisonEvidence {
             public void validatePolicy(CoordinationRuntime.Policy policy) {
                 CaseInputs.require(policy.toolPolicyIdentity().equals(new ContentDigest(CaseInputs.hash(INVOICE_TOOLS.getBytes(java.nio.charset.StandardCharsets.UTF_8))))
                         && policy.participants().stream().allMatch(p -> p.protocols().isEmpty() || (investigation && p.protocols().size() == 1
-                        && p.protocols().stream().allMatch(protocol -> protocol.equals(InvoiceInvestigationDecision.PROTOCOL) || InvoiceWorkerDecision.accepts(protocol)))),
+                        && p.protocols().stream().allMatch(protocol -> protocol.equals(InvoiceInvestigationDecision.PROTOCOL) || InvoiceWorkerDecision.accepts(protocol) || protocol.equals(InvoiceTeamDecision.PROTOCOL)))),
                         "Invoice participant protocol outside host-selected boundary");
             }
         };

@@ -151,6 +151,25 @@ class InvoiceSingleAgentTest {
         assertThrows(IllegalArgumentException.class, () -> runtime().register(identity.sha256(), definition, new Slot("invoice-joint", 1, Arm.SINGLE_AGENT), expanded));
         assertEquals(0, runtime().snapshot(id).getAsJsonObject("usage").get("reservedCalls").getAsInt());
     }
+    @Test void invoiceReviewProtocolNeedsExplicitScopeAndUsesTheSameCallAndReadAccounting() throws Exception {
+        fixture(6); var base = InvoiceSingleAgent.checkDefinition(identity); var previous = InvoiceSingleAgent.policy();
+        var policy = new CoordinationRuntime.Policy(1, 100, previous.adapterIdentity(), previous.promptIdentity(), previous.toolPolicyIdentity(), previous.contextPolicyIdentity(), "invoice-review-boundary-test",
+                List.of(new CoordinationRuntime.Participant("coordinator", Set.of(InvoiceRenewalFixtures.CASE_ID), Set.of(InvoiceTeamDecision.PROTOCOL))));
+        var implementations = new EnumMap<>(base.implementations()); implementations.put(Arm.COORDINATED_TEAM, CoordinationRuntime.implementationIdentity(policy));
+        var definition = new Definition(base.experimentId(), base.origin(), base.model(), base.rubricIdentity(), implementations, base.workloads(), 1, base.limits());
+        var slot = new Slot("invoice-joint", 1, Arm.COORDINATED_TEAM);
+        assertThrows(IllegalArgumentException.class, () -> CoordinationRuntime.forInvoice(root, inputs, identity).register(identity.sha256(), definition, slot, policy));
+        var runtime = runtime(); String id = runtime.register(identity.sha256(), definition, slot, policy);
+        assertThrows(IllegalArgumentException.class, () -> runtime.call(id, "coordinator", "foreign", new ModelCallBroker.Request(base.model(), "{}", 2048, InvoiceInvestigationDecision.PROTOCOL)));
+        assertEquals(0, brokers.registered);
+        runtime.describe(id, "coordinator", "metadata", InvoiceRenewalFixtures.CASE_ID); runtime.readPage(id, "coordinator", "read-1", InvoiceRenewalFixtures.CASE_ID, "task", 0, 4000);
+        brokers.script = (input, turn) -> decision(Map.of("action", "finish", "summary", "Bounded review", "citations", List.of("worker-1"), "followUps", List.of(), "conflicts", List.of()));
+        var request = new ModelCallBroker.Request(base.model(), "{}", 2048, InvoiceTeamDecision.PROTOCOL);
+        var response = runtime.call(id, "coordinator", "decision-1", request); assertEquals("COMPLETED", response.get("status").getAsString());
+        assertEquals(response, runtime().call(id, "coordinator", "decision-1", request)); assertEquals(1, brokers.registered); assertEquals(1, brokers.dispatched);
+        var usage = runtime.finish(id, CoordinationTrial.Status.COMPLETED).getAsJsonObject("usage");
+        assertEquals(1, usage.get("reservedCalls").getAsInt()); assertEquals(2, usage.get("toolCalls").getAsInt()); assertEquals(0, usage.get("caseExecutions").getAsInt());
+    }
     private final class ScriptedBrokers implements CoordinationRuntime.Brokers {
         int registered, dispatched; boolean interruptAfterPersist, interruptRegistration; String remote = "RESPONSE_RECEIVED";
         BiFunction<JsonObject,Integer,String> script = (input, turn) -> finish("ABSTAINED", List.of()); final List<JsonObject> contexts = new ArrayList<>();

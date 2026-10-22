@@ -146,8 +146,11 @@ zero model calls or new executions. Separate
 [independent invoice workers](invoice-independent-workers.md) now run fixed role
 contexts concurrently, sharing the same bundle and aggregate limits. Original
 worker dossiers, partial failures and conservative joint disposition remain
-visible without model aggregation. The coordinated arm, cross-stage team
-accounting and semantic acceptance remain pending.
+visible without model aggregation. An [invoice coordinator review boundary](invoice-team-review.md)
+now preserves original role outcomes and claims, validates inert questions and
+retains unresolved possible conflicts under an explicit protocol grant. It
+reuses the existing cumulative allocation arithmetic. Durable coordinated
+execution, enforced cross-stage accounting and semantic acceptance remain pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

@@ -212,8 +212,10 @@ uses the same read boundary for reproducibly selected recorded-fact diagnostics,
 with unread evidence and unreviewed quality explicit. Separate
 [independent invoice workers](docs/invoice-independent-workers.md) now investigate
 the two consumer roles concurrently under one budget, preserving both dossiers
-without model aggregation. Coordinated invoice review and paired quality
-measurement remain pending.
+without model aggregation. An [invoice coordinator review boundary](docs/invoice-team-review.md)
+now preserves those original claims and validates inert role-bound questions and
+unresolved possible conflicts. Durable coordinated invoice execution and paired
+quality measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

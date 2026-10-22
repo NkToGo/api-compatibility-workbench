@@ -4,9 +4,10 @@
 boundary for the captured invoice case. They preserve the original webhook and
 reconciliation reports, validate references and select bounded, inert follow-up
 questions. The broker can transport the strict decision protocol through an
-explicit invoice participant grant. These components do not run a team, dispatch
-follow-ups, reconcile answers or export a completed comparison arm. Those stages
-remain separate work.
+explicit invoice participant grant. These pure components make no calls on their
+own. A separate [durable invoice runner](invoice-team-runner.md) now uses them for
+original investigations and review. Follow-up dispatch, reconciliation and
+completed comparison export remain separate work.
 
 The [independent workers](invoice-independent-workers.md),
 [single-context investigator](invoice-single-agent.md) and
@@ -109,7 +110,8 @@ For example, 11 original calls leave up to 19 for review. Four review calls then
 leave up to 39 for follow-ups and, if none run, 45 for reconciliation. The shared
 100-read ceiling and 20-minute whole-trial deadline are not renewed by a stage.
 The pure arithmetic does not itself enforce stage transitions around dispatch;
-the future runner must derive counts from sealed operations and the runtime.
+the durable runner derives original/review counts from sealed operations and the
+runtime. Future follow-up/reconciliation stages must retain that same ceiling.
 
 The explicit `forInvoiceInvestigation` entry point now accepts this review
 protocol in a participant with exactly one declared protocol. A participant
@@ -128,10 +130,10 @@ copies, explicit grants, shared call/read accounting and the unchanged stage
 arithmetic. They use synthetic local objects and loopback HTTP, with no paid
 model calls or new consumer execution.
 
-There is no standalone team-run command for these pure components. Durable stage
-execution, fresh follow-up dispatch, reconciliation, joint final dossiers and
-their interruption recovery remain unimplemented for the invoice arm. Their
-compiled policy must be fixed before a separately frozen campaign. Semantic
+There is no standalone command for these pure components. The durable runner
+provides original/review execution and recovery. Fresh follow-up dispatch,
+reconciliation and joint final dossiers remain unimplemented for the invoice
+arm. Their compiled policy must be fixed before a separately frozen campaign. Semantic
 acceptance, measured benefit and Milestone 4 acceptance remain open. The historical
 two-case campaign and its negative coordination result remain unchanged.
 

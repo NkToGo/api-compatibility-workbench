@@ -38,6 +38,14 @@ final class InvoiceTeamReview {
     private final ContentDigest inputIdentity;
     private final JsonArray workers = new JsonArray(), claims = new JsonArray();
     private final Map<String, JsonObject> references = new TreeMap<>();
+    static WorkerResult retainedWorker(JsonObject value) {
+        var worker = new WorkerResult(value.get("workerId").getAsString(), JSON.fromJson(value.get("inputIdentity"), ContentDigest.class),
+                WorkerStatus.valueOf(value.get("status").getAsString()), value.get("stopReason").getAsString(),
+                value.get("finishDecision").isJsonNull() ? null : value.getAsJsonObject("finishDecision"),
+                value.get("metadata").isJsonNull() ? null : value.getAsJsonObject("metadata"),
+                value.getAsJsonArray("pages").asList().stream().map(JsonElement::getAsJsonObject).toList());
+        CaseInputs.require(value.equals(JSON.toJsonTree(worker)), "Changed invoice worker history shape"); return worker;
+    }
     InvoiceTeamReview(List<WorkerResult> originals) {
         var sorted = originals.stream().sorted(Comparator.comparing(WorkerResult::workerId)).toList();
         CaseInputs.require(sorted.size() == 2 && sorted.stream().map(WorkerResult::workerId).toList().equals(InvoiceWorkerDecision.WORKERS), "Both invoice worker outcomes required");

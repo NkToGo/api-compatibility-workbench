@@ -214,8 +214,10 @@ with unread evidence and unreviewed quality explicit. Separate
 the two consumer roles concurrently under one budget, preserving both dossiers
 without model aggregation. An [invoice coordinator review boundary](docs/invoice-team-review.md)
 now preserves those original claims and validates inert role-bound questions and
-unresolved possible conflicts. Durable coordinated invoice execution and paired
-quality measurement remain pending.
+unresolved possible conflicts. A [durable invoice review runner](docs/invoice-team-runner.md)
+now executes original investigations and coordinator review with sealed recovery
+under the common budget. Follow-ups, reconciliation, complete invoice team export
+and paired quality measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

@@ -358,9 +358,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      preserves original role outcomes and every claim, validates bounded
      role-targeted inert questions and retains unresolved possible conflicts.
      Its strict broker protocol requires an explicit participant grant and reuses
-     the existing cumulative team-budget arithmetic. Durable coordinated execution,
-     follow-ups, reconciliation and joint semantic review follow separately; no
-     campaign is established here.
+     the existing cumulative team-budget arithmetic. **4e3g2 implemented:**
+     [durable invoice original investigations and coordinator review](invoice-team-runner.md)
+     enforce cumulative stage limits, the sealed original-outcome barrier and
+     recovery under one unchanged trial deadline. The retained report is a prefix,
+     preserving missing/uncertain work without finalizing or exporting a whole
+     team trial. Fresh follow-ups, reconciliation, complete export and joint
+     semantic review follow separately; no campaign is established here.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

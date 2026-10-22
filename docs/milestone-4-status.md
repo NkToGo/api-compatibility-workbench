@@ -149,8 +149,11 @@ worker dossiers, partial failures and conservative joint disposition remain
 visible without model aggregation. An [invoice coordinator review boundary](invoice-team-review.md)
 now preserves original role outcomes and claims, validates inert questions and
 retains unresolved possible conflicts under an explicit protocol grant. It
-reuses the existing cumulative allocation arithmetic. Durable coordinated
-execution, enforced cross-stage accounting and semantic acceptance remain pending.
+reuses the existing cumulative allocation arithmetic. A [durable invoice review
+runner](invoice-team-runner.md) now executes the original workers and coordinator
+review with sealed barriers, enforced cumulative stage accounting and no-replay
+recovery. Its retained prefix leaves follow-ups, reconciliation, full comparison
+export and semantic acceptance pending.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

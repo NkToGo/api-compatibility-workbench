@@ -1,0 +1,26 @@
+{
+  "formatVersion": 1,
+  "rubricId": "invoice-joint-evidence-v1",
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "scope": "Joint investigation of the captured synthetic webhook/reconciliation case. Existing operational trials can receive only descriptive post-hoc review. A future paired campaign must freeze these exact bytes and criterion IDs before participant execution.",
+  "expectedResponse": "ANSWERED",
+  "criteria": [
+    { "id": "versioned-association", "requirement": "Explain the old invoice subscription association and the typed Basil parent association with their guards and relevant source/build evidence. Preserve expanded references, missing association and contradictory-parent uncertainty instead of guessing an association from the customer." },
+    { "id": "independent-version-boundaries", "requirement": "Distinguish webhook event, endpoint, request and SDK versions. Explain mixed rollouts and old Acacia deliveries after a Basil upgrade; retain required legacy-adapter coverage or the observed block. Do not treat unsafe parsing or an SDK change as semantic compatibility." },
+    { "id": "application-policy-gates", "requirement": "Attribute paid-renewal eligibility, approved customer/subscription binding, active state, unpaid refusals and unavailable/failed lookup handling to the authored application policy. Preserve known invoice association separately from permission to apply a renewal effect." },
+    { "id": "joint-ledger-behavior", "requirement": "Explain how both consumers affect the same installation/invoice ledger, using concrete captured observations and order receipts. Address each path alone, both arrival orders, duplicate delivery and conflicting associations, including preservation of an existing value. State the inspected coverage; do not invent results for unread scenarios." },
+    { "id": "execution-and-causal-scope", "requirement": "Keep source/build properties, actual consumer observations, admission blocks, incomplete execution, assertion results and ordered ledger effects distinct. Explain relevant source control flow without promoting compilation, a passing control or model agreement into general correctness or confirmed causation." },
+    { "id": "evidence-and-uncertainty", "requirement": "Support material explanations with the exact captured evidence, retain failed/missing work and unresolved possible conflicts, distinguish hypotheses from observations, and disclose unread or insufficient evidence. A citation, valid schema, access floor or completed process does not establish semantic support or release approval." }
+  ],
+  "claimAudit": {
+    "scope": "Review the complete final dossier and structured sections, independent role outputs, every original/fresh team claim, coordinator questions/conflicts, reconciliation and rejected model responses. Direct citation labels are not semantic endorsement. Keep unsupported and unresolved historical assertions even when excluded from the final answer.",
+    "verdicts": ["SUPPORTED_WITHIN_RECORDED_SCOPE", "UNSUPPORTED", "UNRESOLVED"],
+    "binding": "Bind judgments to exact packet units, source bytes and pointer values. Record reviewer provenance, materiality and final endorsement separately. Mechanical inventory completeness is not exhaustive semantic decomposition or reviewer accuracy."
+  },
+  "acceptance": {
+    "criteria": "Every declared criterion must be SATISFIED under a separately bound completed claim review.",
+    "claims": "Complete declared material-claim audit with no endorsed material unsupported or unresolved assertion; retain all historical errors and uncertainty.",
+    "disposition": "Missing output stays NOT_PROVIDED. An honest abstention may contain supported limitations but does not satisfy this answer task.",
+    "comparison": "No winner, useful-coordination benefit or routing promotion can be inferred from operational pilot review. A separately frozen paired campaign must preserve all planned slots and inclusive usage."
+  }
+}

@@ -159,7 +159,12 @@ work, executes selected fresh role questions and final joint reconciliation,
 and exports an unreviewed trial with inclusive stage accounting. It preserves
 the prefix and every earlier outcome without reusing an old prefix-only grant.
 Joint semantic review and separately frozen paired trials remain pending;
-operational completion does not establish a coordination benefit.
+operational completion does not establish a coordination benefit. Separate
+[invoice review-input packets](invoice-review-inputs.md) now bind the four selected
+operational arm results and all available claim/response lineage alongside a
+protected six-criterion rubric and contract snapshot. These pilots predate that
+rubric: subsequent inspection is post-hoc, with no retroactive campaign acceptance.
+Claim judgments and the independently frozen paired campaign remain outstanding.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

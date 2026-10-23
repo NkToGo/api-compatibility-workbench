@@ -218,8 +218,10 @@ unresolved possible conflicts. A [durable invoice review runner](docs/invoice-te
 now executes original investigations and coordinator review with sealed recovery
 under the common budget. A [complete invoice team adapter](docs/invoice-team-comparison.md)
 now executes selected fresh follow-ups and final joint reconciliation, preserving
-all prior outcomes and exporting one unreviewed trial. Joint semantic review and
-separately frozen paired quality measurement remain pending.
+all prior outcomes and exporting one unreviewed trial. Separate
+[invoice review-input packets](docs/invoice-review-inputs.md) now bind all four
+selected operational arms, the protected rubric/contract and full claim lineage.
+Claim judgments and separately frozen paired quality measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

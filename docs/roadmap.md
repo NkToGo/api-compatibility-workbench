@@ -367,8 +367,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      registers every stage up front, runs only selected depth-one fresh role
      questions, reconciles one joint advisory dossier and exports inclusive
      trial accounting. Original claims, failed/missing work and unresolved
-     conflicts remain visible. Joint semantic review follows separately;
-     no paired campaign or coordination benefit is established here.
+     conflicts remain visible. **4e3g4 implemented:** [bound invoice review inputs](invoice-review-inputs.md)
+     preserve four explicitly selected operational trials, protected rubric/contract,
+     final/partial role outputs, all team claims and rejected model responses.
+     Existing pilots remain post-hoc review inputs; no paired campaign or
+     coordination benefit is established. Bound claim-level judgments follow
+     separately before the independently frozen campaign.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

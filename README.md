@@ -216,8 +216,10 @@ without model aggregation. An [invoice coordinator review boundary](docs/invoice
 now preserves those original claims and validates inert role-bound questions and
 unresolved possible conflicts. A [durable invoice review runner](docs/invoice-team-runner.md)
 now executes original investigations and coordinator review with sealed recovery
-under the common budget. Follow-ups, reconciliation, complete invoice team export
-and paired quality measurement remain pending.
+under the common budget. A [complete invoice team adapter](docs/invoice-team-comparison.md)
+now executes selected fresh follow-ups and final joint reconciliation, preserving
+all prior outcomes and exporting one unreviewed trial. Joint semantic review and
+separately frozen paired quality measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

@@ -144,35 +144,43 @@ public final class InvoiceTeamRunner {
     }
     private JsonObject action(Path run, Spec spec, String participant, int turn, String step, java.util.function.Supplier<ModelCallBroker.Request> request,
                               Worker worker, InvoiceTeamReview review, List<JsonObject> pages) throws IOException {
-        String prefix = turn + "-" + participant, eventFile = "event-" + prefix + ".json", seal = "event-" + prefix + "-receipt.json";
         if (worker != null && exists(run, "metadata-" + participant + ".json")) {
             worker.metadata = record(run, "metadata-" + participant + ".json"); verifyMetadata(spec, worker);
         }
+        return action(run, spec, participant, turn, step, () -> {
+            if (worker != null && worker.metadata == null) {
+                try {
+                    worker.metadata = runtime.describe(spec.runId(), participant, "metadata", CASE).getAsJsonObject("page");
+                    retain(run, "metadata-" + participant + ".json", worker.metadata); verifyMetadata(spec, worker);
+                } catch (IOException e) { throw new java.io.UncheckedIOException(e); }
+            }
+            return request.get();
+        }, worker == null ? InvoiceTeamDecision::parse : InvoiceInvestigationDecision::parse, d -> validate(d, worker, review, pages));
+    }
+    JsonObject action(Path run, Spec spec, String participant, int turn, String step, java.util.function.Supplier<ModelCallBroker.Request> request,
+                      java.util.function.Function<String, JsonObject> decoder, java.util.function.Consumer<JsonObject> validator) throws IOException {
+        String prefix = turn + "-" + participant, eventFile = "event-" + prefix + ".json", seal = "event-" + prefix + "-receipt.json";
         if (exists(run, seal)) {
             var event = record(run, eventFile); CaseInputs.require(record(run, seal).equals(eventReceipt(run, prefix, step, participant)), "Changed sealed invoice team event");
             CaseInputs.require(event.get("turn").getAsInt() == turn && event.get("participant").getAsString().equals(participant)
                     && event.get("callReserved").getAsBoolean() == runtime.reserved(spec.runId(), participant, "decision-" + turn), "Changed invoice team reservation");
             if (exists(run, "request-" + prefix + ".json")) retain(run, "request-" + prefix + ".json", request.get());
-            if (event.has("decision")) validate(event.getAsJsonObject("decision"), worker, review, pages);
+            if (event.has("decision")) validator.accept(decoder.apply(JSON.toJson(Map.of("decision", event.get("decision")))));
             if (event.has("page")) verifyPage(spec, participant, turn, event.getAsJsonObject("decision"), event.getAsJsonObject("page")); return event;
         }
         JsonObject event;
         try {
-            if (worker != null && worker.metadata == null) {
-                worker.metadata = runtime.describe(spec.runId(), participant, "metadata", CASE).getAsJsonObject("page");
-                retain(run, "metadata-" + participant + ".json", worker.metadata); verifyMetadata(spec, worker);
-            }
             var payload = request.get(); retain(run, "request-" + prefix + ".json", payload);
             var response = runtime.call(spec.runId(), participant, "decision-" + turn, payload); String status = response.get("status").getAsString();
             if (status.equals("ACTIVE")) return json(Map.of("status", "ACTIVE"));
             if (!status.equals("COMPLETED")) event = stopped("MODEL_" + status);
             else {
                 JsonObject decision = null;
-                try { decision = worker == null ? InvoiceTeamDecision.parse(response.get("outputText").getAsString()) : InvoiceInvestigationDecision.parse(response.get("outputText").getAsString()); }
+                try { decision = decoder.apply(response.get("outputText").getAsString()); }
                 catch (RuntimeException ignored) { /* Untrusted output does not grant tools or permissions. */ }
                 if (decision == null) event = stopped("INVALID_MODEL_DECISION");
                 else try {
-                    validate(decision, worker, review, pages);
+                    validator.accept(decision);
                     if (decision.get("action").getAsString().equals("finish")) { runtime.start(spec.runId()); event = json(Map.of("decision", decision)); }
                     else event = json(Map.of("decision", decision, "page", readPage(spec, participant, turn, decision)));
                 } catch (IllegalArgumentException e) { event = stopped("UNSUPPORTED_MODEL_DECISION"); }
@@ -206,7 +214,10 @@ public final class InvoiceTeamRunner {
                 && read.get("bundleIdentity").getAsString().equals(spec.bundleId()) && read.get("pageRequest").equals(JSON.toJsonTree(expected)), "Changed invoice runtime read binding"); return read;
     }
     private void verifyMetadata(Spec spec, Worker worker) throws IOException {
-        CaseInputs.require(worker.metadata.equals(retainedRead(spec, worker.id, "metadata", new ComparisonEvidence.PageRequest("describe", CASE, "", 0, 0)).get("page")), "Changed invoice worker metadata binding");
+        verifyMetadata(spec, worker.id, worker.metadata);
+    }
+    void verifyMetadata(Spec spec, String participant, JsonObject metadata) throws IOException {
+        CaseInputs.require(metadata.equals(retainedRead(spec, participant, "metadata", new ComparisonEvidence.PageRequest("describe", CASE, "", 0, 0)).get("page")), "Changed invoice worker metadata binding");
     }
     private void verifyPage(Spec spec, String participant, int turn, JsonObject decision, JsonObject captured) throws IOException {
         String kind = decision.get("action").getAsString(); var expected = new ComparisonEvidence.PageRequest(kind, CASE, kind.equals("catalog") ? "" : decision.get("alias").getAsString(),

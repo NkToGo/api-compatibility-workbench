@@ -153,7 +153,13 @@ reuses the existing cumulative allocation arithmetic. A [durable invoice review
 runner](invoice-team-runner.md) now executes the original workers and coordinator
 review with sealed barriers, enforced cumulative stage accounting and no-replay
 recovery. Its retained prefix leaves follow-ups, reconciliation, full comparison
-export and semantic acceptance pending.
+export and semantic acceptance pending. The separate [complete invoice team
+adapter](invoice-team-comparison.md) now registers the full policy before any
+work, executes selected fresh role questions and final joint reconciliation,
+and exports an unreviewed trial with inclusive stage accounting. It preserves
+the prefix and every earlier outcome without reusing an old prefix-only grant.
+Joint semantic review and separately frozen paired trials remain pending;
+operational completion does not establish a coordination benefit.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

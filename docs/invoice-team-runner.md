@@ -8,6 +8,10 @@ read/call limits and original deadline. It retains a recoverable workflow prefix
 it does not dispatch fresh follow-ups, reconcile answers, finalize the whole
 trial or export a completed `CoordinationTrial`.
 
+The separate [complete team adapter](invoice-team-comparison.md) registers all
+stages up front and uses this runner for its original/review prefix. A historical
+prefix-only trial cannot be upgraded with additional participants or a new deadline.
+
 ## Roles and shared stage limits
 
 Registration binds the exact input identity, definition, coordinated-arm slot,
@@ -38,7 +42,8 @@ Unused opportunities move forward. Two immediate original abstentions leave up
 to 28 calls for review, while 24 original reservations leave six. Uncertain or
 known-not-dispatched reservations consume an opportunity. A context rejected
 before reservation does not. This prefix cannot spend the final 30 opportunities
-as another review pool. Future stages remain unimplemented.
+as another review pool. Later stages belong to the separately registered complete
+adapter, not this prefix-only entry point.
 
 The two original metadata reads and every selected catalog/text read count toward
 the shared 100-read ceiling. The coordinator uses its worker/claim inventory and

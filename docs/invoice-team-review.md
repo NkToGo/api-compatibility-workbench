@@ -131,9 +131,11 @@ arithmetic. They use synthetic local objects and loopback HTTP, with no paid
 model calls or new consumer execution.
 
 There is no standalone command for these pure components. The durable runner
-provides original/review execution and recovery. Fresh follow-up dispatch,
-reconciliation and joint final dossiers remain unimplemented for the invoice
-arm. Their compiled policy must be fixed before a separately frozen campaign. Semantic
+provides original/review execution and recovery. The separate
+[complete invoice adapter](invoice-team-comparison.md) now executes selected
+fresh follow-ups and final joint reconciliation under a full policy registered
+before any work. Its final trial remains unreviewed; that policy must be fixed
+before a separately frozen campaign. Semantic
 acceptance, measured benefit and Milestone 4 acceptance remain open. The historical
 two-case campaign and its negative coordination result remain unchanged.
 

@@ -363,8 +363,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      enforce cumulative stage limits, the sealed original-outcome barrier and
      recovery under one unchanged trial deadline. The retained report is a prefix,
      preserving missing/uncertain work without finalizing or exporting a whole
-     team trial. Fresh follow-ups, reconciliation, complete export and joint
-     semantic review follow separately; no campaign is established here.
+     team trial. **4e3g3 implemented:** a [complete invoice team adapter](invoice-team-comparison.md)
+     registers every stage up front, runs only selected depth-one fresh role
+     questions, reconciles one joint advisory dossier and exports inclusive
+     trial accounting. Original claims, failed/missing work and unresolved
+     conflicts remain visible. Joint semantic review follows separately;
+     no paired campaign or coordination benefit is established here.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

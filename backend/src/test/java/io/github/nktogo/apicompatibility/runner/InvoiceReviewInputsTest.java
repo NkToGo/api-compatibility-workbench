@@ -166,6 +166,21 @@ class InvoiceReviewInputsTest {
         if (!process.waitFor(60, java.util.concurrent.TimeUnit.SECONDS)) { process.destroyForcibly(); fail("Fresh-JVM packet inspection timed out"); }
         assertEquals(0, process.exitValue(), "Fresh-JVM retained input validation failed"); assertArrayEquals(before, Files.readAllBytes(packet)); assertEquals(evidenceBefore, sourceHashes()); assertNotNull(adapter().read(id));
     }
+    @Test void incompleteSemanticReviewVerifiesInAFreshJvmWithoutDispatchOrSourceChanges() throws Exception {
+        var selected = fixture(); String id = adapter().prepare(selected); var sourceBefore = sourceHashes(); int callsBefore = registrations.get();
+        var reviewer = new InvoiceSemanticReview(root, root.resolve("out")); Path file = root.resolve("review.json");
+        reviewer.create(file, id, digest(packet(id).resolve("packet.json"))); var reviewIdentity = digest(file); byte[] before = Files.readAllBytes(file);
+        var result = reviewer.verify(file, reviewIdentity); assertEquals(0, result.get("claimJudgments").getAsInt()); assertTrue(result.get("pendingUnits").getAsInt() > 0);
+        assertEquals("NOT_ESTABLISHED", result.get("campaignAcceptance").getAsString());
+        assertThrows(IOException.class, () -> reviewer.create(file, id, digest(packet(id).resolve("packet.json"))));
+        assertThrows(RuntimeException.class, () -> reviewer.verify(file, new ContentDigest("f".repeat(64))));
+        assertThrows(RuntimeException.class, () -> reviewer.create(inputs.resolve("review.json"), id, digest(packet(id).resolve("packet.json")))); assertFalse(Files.exists(inputs.resolve("review.json")));
+        String executable = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java").toString();
+        var builder = new ProcessBuilder(executable, "-cp", System.getProperty("java.class.path"), InvoiceSemanticReview.class.getName(), "verify", root.toString(), root.resolve("out").toString(), file.toString(), reviewIdentity.sha256()).redirectErrorStream(true).redirectOutput(root.resolve("review-restart.log").toFile());
+        builder.environment().remove("OPENAI_API_KEY"); var process = builder.start();
+        if (!process.waitFor(60, java.util.concurrent.TimeUnit.SECONDS)) { process.destroyForcibly(); fail("Fresh-JVM semantic review verification timed out"); }
+        assertEquals(0, process.exitValue(), "Fresh-JVM semantic review validation failed"); assertArrayEquals(before, Files.readAllBytes(file)); assertEquals(sourceBefore, sourceHashes()); assertEquals(callsBefore, registrations.get());
+    }
     private static InvoiceReviewInputs.Selection replace(InvoiceReviewInputs.Selection s, List<InvoiceReviewInputs.Source> sources) { return new InvoiceReviewInputs.Selection(1, s.inputDirectory(), s.inputIdentity(), s.contractDirectory(), s.contractIdentity(), s.rubricArtifact(), s.rubricIdentity(), sources); }
     private Path packet(String id) { return root.resolve("out/invoice-review-packets/" + id); }
     private void reseal(String id) throws IOException { Files.writeString(packet(id).resolve("receipt.json"), JSON.toJson(Map.of("packetSha256", digest(packet(id).resolve("packet.json")).sha256()))); }

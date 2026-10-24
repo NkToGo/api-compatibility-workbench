@@ -371,8 +371,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      preserve four explicitly selected operational trials, protected rubric/contract,
      final/partial role outputs, all team claims and rejected model responses.
      Existing pilots remain post-hoc review inputs; no paired campaign or
-     coordination benefit is established. Bound claim-level judgments follow
-     separately before the independently frozen campaign.
+     coordination benefit is established. **4e3g5 implemented:**
+     [bound invoice claim-review records](invoice-semantic-review.md) preserve
+     pending units/criteria and supplied anchored judgments, reviewer provenance,
+     historical errors and conservative descriptive gates. Mechanical validation
+     does not establish semantic truth or complete claim inspection. Completing
+     the descriptive inspection remains separate work before the frozen campaign.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

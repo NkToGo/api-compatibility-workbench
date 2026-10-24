@@ -164,7 +164,11 @@ operational completion does not establish a coordination benefit. Separate
 operational arm results and all available claim/response lineage alongside a
 protected six-criterion rubric and contract snapshot. These pilots predate that
 rubric: subsequent inspection is post-hoc, with no retroactive campaign acceptance.
-Claim judgments and the independently frozen paired campaign remain outstanding.
+Separate [invoice claim-review records](invoice-semantic-review.md) now preserve
+pending work and supplied anchored judgments with provenance, historical error
+counts and conservative descriptive gates. A valid incomplete record cannot
+become a completed review. Full claim inspection and the independently frozen
+paired campaign remain outstanding.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

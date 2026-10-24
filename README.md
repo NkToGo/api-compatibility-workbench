@@ -223,8 +223,10 @@ all prior outcomes and exporting one unreviewed trial. Separate
 selected operational arms, the protected rubric/contract and full claim lineage.
 Separate [invoice claim-review records](docs/invoice-semantic-review.md) now bind
 supplied judgments and explicitly pending work, with claim anchors, provenance and
-conservative descriptive gates. Complete claim inspection and separately frozen
-paired quality measurement remain pending.
+conservative descriptive gates. A [complete descriptive invoice review](docs/invoice-review-results.md)
+now records all 217 units and 24 criterion judgments, preserving an unsupported
+scope assertion and all incomplete task outcomes. No arm meets every declared
+gate. Separately frozen paired quality measurement remains pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

@@ -117,11 +117,13 @@ It reports `INVOICE_REVIEW_BINDINGS_MATCHED` even for a valid incomplete review;
 inspect `reviewedTrials`, `pendingUnits`, `pendingCriteria` and each trial's gate. `campaignAcceptance`
 always remains `NOT_ESTABLISHED`.
 
-Review files are limited to 1 MiB and use the packet's strict UTF-8/JSON parser:
+Each unit can contain at most 2,000 claim judgments, including large structured
+diagnostic sections. Review files remain limited to 1 MiB and use the packet's strict UTF-8/JSON parser:
 duplicate/trailing fields, oversized collections and excessive nesting fail.
 References, linked paths and changed evidence are refused by the retained-input
 boundary. Use stable completed local stores on a trusted host. Hash consistency
 does not protect against replacing the review and all independently retained
-bindings together. Claim inspection of the four historical arms remains
-incomplete; this step supplies the record/validation path, not a completed
-semantic assessment or paired measurement.
+bindings together. A separate [descriptive invoice inspection](invoice-review-results.md)
+now records the completed declared review of all four historical arms. That
+review's supplied judgments remain distinct from this mechanical validation path
+and from the separately frozen paired measurement.

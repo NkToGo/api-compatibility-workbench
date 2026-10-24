@@ -118,7 +118,7 @@ public final class InvoiceSemanticReview {
                 require(id.equals(string(item, "unitId")) && byId.putIfAbsent(id, unit) == null && unit.get("valueIdentity").equals(item.get("valueIdentity")), "Changed, reordered or duplicate invoice review unit"); kinds.put(id, item);
                 var value = InvoiceReviewInputs.pointer(sourceValue(checked.read(string(item, "artifact"))), string(item, "pointer"));
                 require(item.get("valueIdentity").equals(json(digest(encoded(value)))), "Changed reviewed unit value");
-                text(unit, "notes"); var judgments = array(unit, "claims", 1000); var coveredBy = array(unit, "coveredBy", 2000);
+                text(unit, "notes"); var judgments = array(unit, "claims", 2000); var coveredBy = array(unit, "coveredBy", 2000);
                 require(Set.of("PENDING", "CLAIMS", "CONTAINER", "CONTEXT").contains(coverage), "Invalid invoice unit coverage");
                 if (coverage.equals("PENDING")) { require(judgments.isEmpty() && coveredBy.isEmpty(), "Pending units cannot conceal judgments"); rowPending++; continue; }
                 judgmentsMade = true;

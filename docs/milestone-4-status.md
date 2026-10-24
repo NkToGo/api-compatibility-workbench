@@ -158,8 +158,7 @@ adapter](invoice-team-comparison.md) now registers the full policy before any
 work, executes selected fresh role questions and final joint reconciliation,
 and exports an unreviewed trial with inclusive stage accounting. It preserves
 the prefix and every earlier outcome without reusing an old prefix-only grant.
-Joint semantic review and separately frozen paired trials remain pending;
-operational completion does not establish a coordination benefit. Separate
+Operational completion does not establish a coordination benefit. Separate
 [invoice review-input packets](invoice-review-inputs.md) now bind the four selected
 operational arm results and all available claim/response lineage alongside a
 protected six-criterion rubric and contract snapshot. These pilots predate that
@@ -167,8 +166,12 @@ rubric: subsequent inspection is post-hoc, with no retroactive campaign acceptan
 Separate [invoice claim-review records](invoice-semantic-review.md) now preserve
 pending work and supplied anchored judgments with provenance, historical error
 counts and conservative descriptive gates. A valid incomplete record cannot
-become a completed review. Full claim inspection and the independently frozen
-paired campaign remain outstanding.
+become a completed review. A [complete descriptive invoice inspection](invoice-review-results.md)
+now records all 217 units and 24 criterion judgments, with no pending entries.
+It preserves two occurrences of one unsupported scope assertion and the failed,
+abstained team outcome. No arm meets every declared criterion and claim gate.
+These are post-hoc judgments, not a coordination-benefit result; the independently
+frozen paired campaign remains outstanding.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

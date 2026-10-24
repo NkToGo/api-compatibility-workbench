@@ -147,4 +147,12 @@ class InvoiceSemanticReviewTest {
         for (String verdict : List.of("NOT_SATISFIED", "UNRESOLVED")) { criterion.addProperty("judgment", verdict); assertFalse(accepted(check(), 0)); }
         criterion.addProperty("criterionId", "invented"); assertThrows(RuntimeException.class, this::check);
     }
+    @Test void aLargeRecordedDiagnosticUnitRetainsEveryJudgmentWithoutRemovingTheBound() throws Exception {
+        fixture(); complete(); var claims = reviewedUnit(0, 1).getAsJsonArray("claims"); var template = claims.get(0).getAsJsonObject();
+        for (int i = 2; i <= 1161; i++) { var c = template.deepCopy(); c.addProperty("claimId", "claim-" + i); claims.add(c); }
+        assertEquals(1176, check().get("claimJudgments").getAsInt());
+        for (int i = 1162; i <= 2000; i++) { var c = template.deepCopy(); c.addProperty("claimId", "claim-" + i); claims.add(c); }
+        assertEquals(2015, check().get("claimJudgments").getAsInt());
+        var excess = template.deepCopy(); excess.addProperty("claimId", "claim-2001"); claims.add(excess); assertThrows(RuntimeException.class, this::check);
+    }
 }

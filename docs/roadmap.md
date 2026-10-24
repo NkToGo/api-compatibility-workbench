@@ -375,8 +375,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      [bound invoice claim-review records](invoice-semantic-review.md) preserve
      pending units/criteria and supplied anchored judgments, reviewer provenance,
      historical errors and conservative descriptive gates. Mechanical validation
-     does not establish semantic truth or complete claim inspection. Completing
-     the descriptive inspection remains separate work before the frozen campaign.
+     does not establish semantic truth or complete claim inspection.
+     **4e3g6 completed:** the [descriptive invoice review](invoice-review-results.md)
+     covers all 217 units and 24 criterion judgments, with independent structured
+     fact recomputation and retained historical errors/failures. No arm satisfies
+     every declared gate. It remains post-hoc and establishes no paired benefit,
+     routing change or Milestone 4 acceptance.
      **4e4 planned:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.

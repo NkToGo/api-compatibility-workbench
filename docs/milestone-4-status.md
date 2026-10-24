@@ -171,7 +171,10 @@ now records all 217 units and 24 criterion judgments, with no pending entries.
 It preserves two occurrences of one unsupported scope assertion and the failed,
 abstained team outcome. No arm meets every declared criterion and claim gate.
 These are post-hoc judgments, not a coordination-benefit result; the independently
-frozen paired campaign remains outstanding.
+frozen paired campaign has a [registration boundary](invoice-campaign.md) that
+binds the unchanged policies, protected rubric/contract, common limits and all
+twelve ordered slots without dispatch. Fresh ordered execution, campaign-bound
+review and paired reporting remain outstanding.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

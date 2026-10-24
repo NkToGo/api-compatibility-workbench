@@ -226,7 +226,10 @@ supplied judgments and explicitly pending work, with claim anchors, provenance a
 conservative descriptive gates. A [complete descriptive invoice review](docs/invoice-review-results.md)
 now records all 217 units and 24 criterion judgments, preserving an unsupported
 scope assertion and all incomplete task outcomes. No arm meets every declared
-gate. Separately frozen paired quality measurement remains pending.
+gate. A separate [invoice campaign registration](docs/invoice-campaign.md) now
+freezes the existing four policies, protected rubric/contract and all twelve
+ordered slots before new measurement. Registration grants no trial capability;
+ordered execution and campaign-bound quality measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

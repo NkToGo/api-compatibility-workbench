@@ -381,9 +381,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      fact recomputation and retained historical errors/failures. No arm satisfies
      every declared gate. It remains post-hoc and establishes no paired benefit,
      routing change or Milestone 4 acceptance.
-     **4e4 planned:** separately freeze/execute ordered paired trials and complete
+     **4e4 in progress:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.
+     **4e4a implemented:** [frozen invoice campaign registration](invoice-campaign.md)
+     binds the unchanged four policies, captured input, protected contract/rubric,
+     common budgets and all twelve ordered slots, with sealed orphan recovery
+     and a separate current-policy admission check. It dispatches no participant.
+     Ordered invoice execution, campaign-bound review and paired reporting follow.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

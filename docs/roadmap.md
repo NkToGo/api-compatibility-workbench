@@ -389,6 +389,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      common budgets and all twelve ordered slots, with sealed orphan recovery
      and a separate current-policy admission check. It dispatches no participant.
      Ordered invoice execution, campaign-bound review and paired reporting follow.
+     **4e4b implemented:** the [ordered invoice controller](invoice-campaign-execution.md)
+     binds fresh slots to exact runtime/adapter records, retained independent
+     receipt identities and dispatch-code snapshots, with no-replay recovery and
+     inclusive participant accounting. Synthetic controller completion establishes
+     no model quality. The measured campaign, campaign-bound review and paired
+     reporting remain separate work.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

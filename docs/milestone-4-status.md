@@ -174,7 +174,10 @@ These are post-hoc judgments, not a coordination-benefit result; the independent
 frozen paired campaign has a [registration boundary](invoice-campaign.md) that
 binds the unchanged policies, protected rubric/contract, common limits and all
 twelve ordered slots without dispatch. Fresh ordered execution, campaign-bound
-review and paired reporting remain outstanding.
+review and paired reporting remain outstanding. An
+[ordered invoice controller](invoice-campaign-execution.md) now provides fresh
+slot mapping, interrupted-work recovery and inclusive retained accounting without
+grading results. Its controller tests remain separate from measured participants.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

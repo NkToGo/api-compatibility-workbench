@@ -228,8 +228,10 @@ now records all 217 units and 24 criterion judgments, preserving an unsupported
 scope assertion and all incomplete task outcomes. No arm meets every declared
 gate. A separate [invoice campaign registration](docs/invoice-campaign.md) now
 freezes the existing four policies, protected rubric/contract and all twelve
-ordered slots before new measurement. Registration grants no trial capability;
-ordered execution and campaign-bound quality measurement remain pending.
+ordered slots before new measurement. Registration grants no trial capability.
+An [ordered invoice controller](docs/invoice-campaign-execution.md) now binds each
+slot to one recoverable trial, preserving failed/uncertain outcomes and inclusive
+accounting. The measured campaign and campaign-bound quality review remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

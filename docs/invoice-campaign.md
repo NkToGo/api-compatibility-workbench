@@ -132,7 +132,7 @@ orphan recovery, ambiguous/incomplete registration, strict parsing, separate-pro
 receipt recovery and the separate live-policy gate. The linked-evidence control executes where link creation is
 permitted. Run the README verification commands for the full suite.
 
-Step 4e4a implements registration. Durable ordered invoice trial execution,
-campaign-bound semantic review and paired results reporting remain subsequent
-steps. Existing pilots cannot fill these newly declared trial slots. No routing
+Step 4e4a implements registration. The [ordered invoice controller](invoice-campaign-execution.md)
+now provides durable slot execution. The measured campaign, campaign-bound semantic
+review and paired results reporting remain subsequent work. Existing pilots cannot fill these newly declared trial slots. No routing
 promotion is authorized by registration or operational completion.

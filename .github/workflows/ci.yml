@@ -104,12 +104,15 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: stripe-case-reports-${{ matrix.os }}
+          include-hidden-files: true
           path: |
             backend/target/test-case-runs/**/report.json
             backend/target/test-case-runs/**/report.html
             backend/target/subscription-period-case-reports/
             backend/target/versioned-invoice-build-tests/
             backend/target/invoice-campaign-execution-tests/
+            !backend/target/**/.env
+            !backend/target/**/.env.*
           if-no-files-found: warn
           retention-days: 14
       - name: Build isolated invoice worker

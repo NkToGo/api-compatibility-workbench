@@ -395,6 +395,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      inclusive participant accounting. Synthetic controller completion establishes
      no model quality. The measured campaign, campaign-bound review and paired
      reporting remain separate work.
+     **4e4c completed:** the [measured invoice campaign](invoice-campaign-measurement.md)
+     seals all twelve fresh slots under the unchanged frozen conditions, retaining
+     every failed/missing/abstained answer and inclusive participant accounting.
+     Credential-free completed replay and mechanical source/trace/usage checks
+     establish retained-byte integrity only. Campaign-bound semantic review and
+     paired quality/resource conclusions remain next; no routing promotion or
+     Milestone 4 acceptance is established.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

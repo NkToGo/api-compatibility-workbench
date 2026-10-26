@@ -1,0 +1,2328 @@
+{
+  "formatVersion": 1,
+  "authority": "operational-measurement-not-semantic-review",
+  "sourceRevision": "0ff747e0e079ba82aac7a6ac9b2f49bdcec5549b",
+  "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+  "comparisonId": "comparison-784b2b42-fa95-4e13-a452-33617165c363",
+  "status": "FINISHED",
+  "qualityReview": "NOT_PERFORMED",
+  "plannedTrials": 12,
+  "recordedTrials": 12,
+  "plannedCaseOutputs": 12,
+  "registrationReceiptSha256": "4481be329dffa6c3d8ee07ab0db642ee4bc5eae3f6f2aa008fb4f7e53724a0c1",
+  "definitionIdentity": {
+    "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+  },
+  "retainedCampaignReceipt": {
+    "planSha256": "75b59e2780e512634403bc824333cfd9c42726e88a0376200d940f1bba055150",
+    "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+    "rubricSha256": "9f89e515bcea47606e76573874304d2fda2fbcbd522e2283e7b520d4b4e960ab",
+    "frozenSha256": "63a7a3a97210fb8103ad5ce5df74cfa461981333397f9be34cb3b919da108800",
+    "formatVersion": 1,
+    "registrationSha256": "68d3ab56219ba6f7bc1c21bd8b011435ba9a809779d33ae64b5eb0ce792220a1"
+  },
+  "retainedExecutionReceipt": {
+    "resultSha256": "7f9066169b38a327854e79ab5c5d17ac06ec28e466abc8dc64774cc3e8079d60",
+    "registrationReceiptSha256": "63c996982b54505b712b85dbce6ed27258c5be36b6cdab086604eba4f599f6b0",
+    "recordsSha256": "b1d30e21e6918d47d69190ee9a828d2cdb9b7f722c849b39330ee4faab3f436f"
+  },
+  "retainedFileSha256": {
+    "frozen": "63a7a3a97210fb8103ad5ce5df74cfa461981333397f9be34cb3b919da108800",
+    "executionRegistration": "9132c6162a287607213723518ab45fc8786206a4ccd1884a11ef28292454fc75",
+    "executionRecords": "b1d30e21e6918d47d69190ee9a828d2cdb9b7f722c849b39330ee4faab3f436f",
+    "executionResult": "7f9066169b38a327854e79ab5c5d17ac06ec28e466abc8dc64774cc3e8079d60",
+    "executionReceipt": "70595d10172a878545d9e91a03ab8a1027cd426d08cad710fb9731e1d80a86a5"
+  },
+  "runtimeArtifactSha256": {
+    "backend/target/api-compatibility-backend-0.1.0-SNAPSHOT.jar": "b3a6cffa2734e2263cb7ba3a1af67ba66b1bf3795d781d310fbe5a63b0d7182c",
+    "scripts/Run-InvoiceCampaign.ps1": "95b2bea33995607fb5313cb8de8a0a5466c53ac463aad83d9e277f2a48eb00e9",
+    "scripts/Invoice-Campaign.ps1": "f0715e7b0dacd044d042d56bddbb4061aed82411e3d93dc8a04959d7ee57113b",
+    "scripts/Run-InvoiceDiagnostics.ps1": "19e651387e2c6ccf0789fb870e3751ec65c8c7c1d503f81ebfdccbb7874166a4",
+    "scripts/Run-InvoiceSingleAgent.ps1": "3695780147b2cf2c254e6e8118d29e363c4da2b41b460ce8791bac3b983fba2d",
+    "scripts/Run-InvoiceIndependentWorkers.ps1": "23a0b99a2e125608c26652c516c4215a8419fa02d929bf9436429b1a8d6ce110",
+    "scripts/Run-InvoiceTeamComparison.ps1": "b071b6be0086d2ff7177c751f9eaa79b93d9b1b651c56f8b3c377cf10b87dcc5",
+    "docs/evaluations/invoice-review-rubric-v1.json": "9f89e515bcea47606e76573874304d2fda2fbcbd522e2283e7b520d4b4e960ab"
+  },
+  "frozenRegistration": {
+    "formatVersion": 1,
+    "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+    "frozenAt": "2026-10-26T14:58:25.889198700Z",
+    "scope": "Known synthetic invoice case; post-pilot conditions, not held-out accuracy or general superiority.",
+    "selection": {
+      "formatVersion": 1,
+      "inputDirectory": "inputs",
+      "inputIdentity": {
+        "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+      },
+      "contractDirectory": "contract",
+      "contractIdentity": {
+        "sha256": "a4455ca1fad869e676d06b359cff6885ed6dcfd12d44219b85be9e9f7448abe8"
+      },
+      "rubricArtifact": "rubric.json",
+      "rubricIdentity": {
+        "sha256": "9f89e515bcea47606e76573874304d2fda2fbcbd522e2283e7b520d4b4e960ab"
+      }
+    },
+    "sourceArtifacts": {
+      "contract/README.md": "172559694f4cf50a9ae78d7ca3e47b4e388db2aed70d788ba2843939c2178b19",
+      "contract/business-oracle.md": "1717390d5b9ca1e4902aaa93303c902f9f3462a9fb87463cace31aea41dff515",
+      "contract/consumer-sources-v1/build-registration.json": "1f74dcacd771d6a9202186fa501e29dc97426c60452887ec42835ccf49463610",
+      "contract/consumer-sources-v1/core/pom.xml": "7291ad59e28f8099cedf38731b87cc372c9015cd96a9a5978fbea6eb93d449f6",
+      "contract/consumer-sources-v1/core/src/main/java/io/github/nktogo/invoiceconsumer/RenewalPolicy.java": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "contract/consumer-sources-v1/pom.xml": "6485d2ad716371b415ce1ae0e77c277d5cf8f123a8c3a3a64d889ce03890a9da",
+      "contract/consumer-sources-v1/reconciliation/pom.xml": "2eb797a319fbce75bc052532b7a5a4435f49886991b7736f630b439da7805c5b",
+      "contract/consumer-sources-v1/reconciliation/src/acacia/java/io/github/nktogo/invoiceconsumer/InvoiceReconciliationConsumer.java": "5a6f531c14f4ab93ccabde3d6c4311e9885d2c8989144a1d51e38c67c56ec52e",
+      "contract/consumer-sources-v1/reconciliation/src/basil/java/io/github/nktogo/invoiceconsumer/InvoiceReconciliationConsumer.java": "92765c66c18ce12d20dc48ab9030fb579a7df2ddef8bc28543dc2c11a010101d",
+      "contract/consumer-sources-v1/webhook/pom.xml": "1ff6aaaa752a50147f4ac90251a00d5b3942147227de6dacbfa5db9da25d259c",
+      "contract/consumer-sources-v1/webhook/src/acacia/java/io/github/nktogo/invoiceconsumer/InvoiceWebhookConsumer.java": "c8ec43cd9a1e3767547f90a3fe5b5b5ccb492e726b5cfcb9438ca76244a726b5",
+      "contract/consumer-sources-v1/webhook/src/basil/java/io/github/nktogo/invoiceconsumer/InvoiceWebhookConsumer.java": "6b4a8b67e1faa6aa69a226f6fd3699777475d285cb939c490669a531ee821794",
+      "contract/contract-integrity.json": "97fec1eb25c3882b9cae4cf46372b325ac20dfde0b9e0db07a965c6f2ca6756a",
+      "contract/fixtures/association-v1/bundle.json": "991c268eb208ba25a1704ed7583e85d00cfa5165400f522eadd6a5f3ffff0940",
+      "contract/fixtures/association-v1/expanded-reconciliation-acacia-reconciliation.json": "f59d10660e6673a7b82811895f94e72997bcfc51d2e9cd1b688f6cb27325113e",
+      "contract/fixtures/association-v1/expanded-reconciliation-acacia-webhook.json": "c6e7f23f4209a3a96af50bdfcfcb0b8356c88cf5d4af2b30dd24f8858efe3458",
+      "contract/fixtures/association-v1/expanded-reconciliation-basil-reconciliation.json": "2d98589fccb83caee469eea138d63248da1da429fdebdea963ada3c1895bc717",
+      "contract/fixtures/association-v1/expanded-reconciliation-basil-webhook.json": "876c722f479136db3a42db534313d72d7484fd3ee597138c7285a3bf4a874134",
+      "contract/fixtures/association-v1/expanded-webhook-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/association-v1/expanded-webhook-acacia-webhook.json": "1da1a48ac848f0a0a447e0d7e394347adea11a0faaf7891a6935aa8151c93ee3",
+      "contract/fixtures/association-v1/expanded-webhook-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/association-v1/expanded-webhook-basil-webhook.json": "30da05dd56cc57a896aa0cdc08eafca4c07819a48973e818d90961fbab27e04d",
+      "contract/fixtures/association-v1/expectations.json": "47fd69b3bff8778c6df5f78bacdeb595d68a83bb04fe1001ede5803505669157",
+      "contract/fixtures/association-v1/quote-parent-acacia-reconciliation.json": "3e5cb6b212599dffba40fc13502b9d815459e82c003f7a9b912a1cfa12b3d853",
+      "contract/fixtures/association-v1/quote-parent-acacia-webhook.json": "bed3119475d7e3e8a7bb797ced02216fe289fa434b5c0d4c5c7fd75f54b64a8b",
+      "contract/fixtures/association-v1/quote-parent-basil-reconciliation.json": "cace639210cec53d6068c817776cbd52cfe04652b95f72babfbbe33e947c8d40",
+      "contract/fixtures/association-v1/quote-parent-basil-webhook.json": "7b10c9c9c02431ae0ed798e1c3589c6423d07f820870b65956dadeb1077b2866",
+      "contract/fixtures/association-v1/scenarios.json": "33ec0036959fb768cdfb1b29bbdc251e740c121c56fed5fdc75f1093474de575",
+      "contract/fixtures/association-v1/standalone-invoice-acacia-reconciliation.json": "65b6f68d8682c5d7c224281ae181e3a8b6af3419a1b24b4d907ce45c5f17eb6e",
+      "contract/fixtures/association-v1/standalone-invoice-acacia-webhook.json": "8744725736bf844eb9874ef4c6b2e7fc2203b7828051b7b3591471163a5a045c",
+      "contract/fixtures/association-v1/standalone-invoice-basil-reconciliation.json": "832d2f23124eeb7e34fb5dba4898b90d811bb0a67a1ce2b97150b307aff6df9f",
+      "contract/fixtures/association-v1/standalone-invoice-basil-webhook.json": "e7f4a70bce812689f5e2d1da01d5754a4307b4e128677fa507ec9c666e5eec96",
+      "contract/fixtures/association-v1/state-list-acacia-forward.json": "1be7ef6f337b79fc87a4e1d56724bae6de0edb42a5185ebf219f73a1665b482c",
+      "contract/fixtures/association-v1/state-list-acacia-reverse.json": "600086b4b9f39386089d0daf8921d39a7eb9bbade86b8fb3c0c44e4d45633bcc",
+      "contract/fixtures/association-v1/state-list-basil-forward.json": "1be7ef6f337b79fc87a4e1d56724bae6de0edb42a5185ebf219f73a1665b482c",
+      "contract/fixtures/association-v1/state-list-basil-reverse.json": "600086b4b9f39386089d0daf8921d39a7eb9bbade86b8fb3c0c44e4d45633bcc",
+      "contract/fixtures/association-v1/state-primary-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/association-v1/state-primary-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/association-v1/two-subscriptions-acacia-reconciliation-primary.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/association-v1/two-subscriptions-acacia-reconciliation-secondary.json": "74544e787d140de0c8abc61af21606edc807e6f6b67e884de4af05c3199d71bd",
+      "contract/fixtures/association-v1/two-subscriptions-acacia-webhook-primary.json": "eea23098f60ab6a92b734538c0b13cdd47966cc669d03a17b2fe40031426c555",
+      "contract/fixtures/association-v1/two-subscriptions-acacia-webhook-secondary.json": "48a07ac7a10cf083b49fd6ee74d53a13795e9a4fabaee9240c1cacda1d2ea157",
+      "contract/fixtures/association-v1/two-subscriptions-basil-reconciliation-primary.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/association-v1/two-subscriptions-basil-reconciliation-secondary.json": "01fb0d8c0d433bcb686bb8ad9ab03b5b302b2de63f1dcf3366b7e531d5937dcc",
+      "contract/fixtures/association-v1/two-subscriptions-basil-webhook-primary.json": "a1519adb89386f05ee036899b8236cb2aa653ade7969f25be390e2177fcfe176",
+      "contract/fixtures/association-v1/two-subscriptions-basil-webhook-secondary.json": "e385bbe78a80b86dc738b766e8104dc431d848fc7097be75465c7ec3b1977c54",
+      "contract/fixtures/boundary-v1/bundle.json": "6b125b99a1fbccd13364022bd87d4471947b94d96265f7941e03489596db85eb",
+      "contract/fixtures/boundary-v1/controls.json": "8b40e2af5df94bff3d2c18e49063d0fa04432a38a5d45a0f4718487802393188",
+      "contract/fixtures/boundary-v1/event-basil.json": "af723a0f78172c2a6783c4152e05ec63127c4e943c688fa20dd478b8836449be",
+      "contract/fixtures/boundary-v1/event-missing.json": "fab28a74917ef0abce96a8044f09278846577b9006f44327a31fbc06cd369c47",
+      "contract/fixtures/boundary-v1/event-null.json": "e2af1f8ec11cf1a31bf7cc07786f6e505c1350891afc648b7b51203cbcdc9fc9",
+      "contract/fixtures/boundary-v1/event-unknown.json": "2140e1ceaf3abfbfaf41aca06c9d1c01c02b7d08bc028a08cdd10ec560cedd56",
+      "contract/fixtures/boundary-v1/event-wrong-type.json": "3c700818daa9dea8c75278ba392a4436a07590e0b7c78d85e935ec4554cff392",
+      "contract/fixtures/boundary-v1/expectations.json": "e49b6bf944eb644948eb60aa662f82dda7cd66b651215c1906e236e9bd61ef46",
+      "contract/fixtures/boundary-v1/invoice-basil.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/boundary-v1/state-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/delivery-v1/bundle.json": "9f8a794fd81f34ca322b9b3d867bc036080231255f716ce1bf7c0b7bc92af376",
+      "contract/fixtures/delivery-v1/duplicate-delivery-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/delivery-v1/duplicate-delivery-acacia-webhook-alternate.json": "aff3694e266b769f3d70fb785d1ce1040580c4adddddb585c2e60eef115a86cb",
+      "contract/fixtures/delivery-v1/duplicate-delivery-acacia-webhook.json": "fb050dca1c8b489c44fec4f93c7443f523c97294adcef080e97aa2675d6868e3",
+      "contract/fixtures/delivery-v1/duplicate-delivery-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/delivery-v1/duplicate-delivery-basil-webhook-alternate.json": "7255eb774f11bdcfd9d1f2376ef0ae0e04311a25282ad65fdef9e62718f4f809",
+      "contract/fixtures/delivery-v1/duplicate-delivery-basil-webhook.json": "9778e1e2b544c8e65d29fa71521806627736112d4de0780e53a0a6c2d95029fc",
+      "contract/fixtures/delivery-v1/expectations.json": "ae506b2077634e9896c2a1c6123bde94805cc7daf9110a60b7e04763e84b078f",
+      "contract/fixtures/delivery-v1/fresh-conflict-acacia-reconciliation.json": "8aaa896d83d54dce6146a57f00638ec284364e49d5c5cd29177ccce0eefd2060",
+      "contract/fixtures/delivery-v1/fresh-conflict-acacia-webhook.json": "f9f2b61f2d758480948a79d2a433683532f4621afe0ea971327eb566cd79a459",
+      "contract/fixtures/delivery-v1/fresh-conflict-basil-reconciliation.json": "edbc94a1ad050944abb8e7609332803222dee496529474f4590f30ef95dfedc8",
+      "contract/fixtures/delivery-v1/fresh-conflict-basil-webhook.json": "8dded04c45708f271dc00ad6125ceb35129eccd0c64491d12161ac825efc20ea",
+      "contract/fixtures/delivery-v1/scenarios.json": "3f035b5d6fe07624f5688b2e586cf585bdc5f72bf0daf0b14e620a0d48f2c51e",
+      "contract/fixtures/delivery-v1/seeded-conflict-acacia-reconciliation.json": "8aaa896d83d54dce6146a57f00638ec284364e49d5c5cd29177ccce0eefd2060",
+      "contract/fixtures/delivery-v1/seeded-conflict-acacia-webhook.json": "b3eed579d0ba213a857ef38b376228fac543b1b386c6dae70875f81c5ced0dcc",
+      "contract/fixtures/delivery-v1/seeded-conflict-basil-reconciliation.json": "edbc94a1ad050944abb8e7609332803222dee496529474f4590f30ef95dfedc8",
+      "contract/fixtures/delivery-v1/seeded-conflict-basil-webhook.json": "bb94642b98e1d172d4fd675afe9a562c1e28bfa78b8514f2189f05d17d9f5580",
+      "contract/fixtures/delivery-v1/state-primary-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/delivery-v1/state-primary-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/delivery-v1/state-secondary-acacia.json": "3f9e7b296935d9115b92fcbbf93c0da45bfef18ff919a035d6dfa9633ffa68ed",
+      "contract/fixtures/delivery-v1/state-secondary-basil.json": "3f9e7b296935d9115b92fcbbf93c0da45bfef18ff919a035d6dfa9633ffa68ed",
+      "contract/fixtures/old-delivery-v1/bundle.json": "566d590d793fcdb09e8809cd9306732b32fd677ad805803d58f022aa2179a2cb",
+      "contract/fixtures/old-delivery-v1/event-acacia.json": "3147e633643c36bf053662c2642df48715a425c02392bccd24702aec3f10b1d3",
+      "contract/fixtures/old-delivery-v1/expectations.json": "5edbe8048eba25317cb9ce70fdaf362142a9bdf5c9ed6d68d87599c3ff9ae1b9",
+      "contract/fixtures/old-delivery-v1/invoice-basil.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/old-delivery-v1/scenarios.json": "519360a462b9912624e7b424197b45fe3395b666f18657465f125f3ed4c38dd0",
+      "contract/fixtures/old-delivery-v1/state-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/refusal-v1/bundle.json": "4a0eb74bce5f89b8ec85f200bda3dc5b2d7d16fa828bcac64fc7389521173f9f",
+      "contract/fixtures/refusal-v1/conflicting-fields-basil-reconciliation.json": "276ea3f94be3b4cea4feac12a9feb91705976cbd5f4a58019ffc433132a2638c",
+      "contract/fixtures/refusal-v1/conflicting-fields-basil-webhook.json": "85c374f9fd03ceb1ed83193644107a0ce1fd5aade334d80defa719079e23b5fd",
+      "contract/fixtures/refusal-v1/expectations.json": "34d5901945cac02de3e0525cb2623b79ec4b575fced000a341c96fa15d251830",
+      "contract/fixtures/refusal-v1/missing-details-basil-reconciliation.json": "a19230d1ca86e8f2a66dc94c5a63d495a7b3f958023e4d717b41dcba81f7e308",
+      "contract/fixtures/refusal-v1/missing-details-basil-webhook.json": "952b3f477dbd5bba0860cbfd9f2af32fbcbc7f6d876fcb4f97da621935fce1cf",
+      "contract/fixtures/refusal-v1/missing-field-acacia-reconciliation.json": "ddb3c1685a07cf249c270875fd67930a819198c95a14c3651cca28fb8e9650e5",
+      "contract/fixtures/refusal-v1/missing-field-acacia-webhook.json": "f62a6e73d97f0b251e577fae161114e105faa070a389aa26e81e369da67451d2",
+      "contract/fixtures/refusal-v1/missing-id-basil-reconciliation.json": "ba5429317bb4e4fd930100442334d5a7f8f24a89053170f9afdd7ba0f9ab241e",
+      "contract/fixtures/refusal-v1/missing-id-basil-webhook.json": "9a5153db7d9645eaea5f60fd30bf7ff5de520e8b010a322a5d7b4dc20d6c2867",
+      "contract/fixtures/refusal-v1/missing-parent-basil-reconciliation.json": "ddb3c1685a07cf249c270875fd67930a819198c95a14c3651cca28fb8e9650e5",
+      "contract/fixtures/refusal-v1/missing-parent-basil-webhook.json": "e89cb18981f85e13035d1b75e9ea31efc57d4fc35df0b4c82b829bb37a7954d3",
+      "contract/fixtures/refusal-v1/null-association-acacia-reconciliation.json": "509638318b3770b58276d87a7440a3ae6a9d25a83324e6e76f220e47833baa9d",
+      "contract/fixtures/refusal-v1/null-association-acacia-webhook.json": "56a1863c8ed5213203a249fdbce9e8cce1b7118e203b500b86a4fa2de3122493",
+      "contract/fixtures/refusal-v1/null-details-basil-reconciliation.json": "02205834f0d96e2d2efdfa837b8cf0e2dd5f43ea6ef6bbadfe7fda859dcb1aeb",
+      "contract/fixtures/refusal-v1/null-details-basil-webhook.json": "a1528ec7eab660423cf5aef222cc21a8f2187ac8de6abfcb43ecd7c31071f9f2",
+      "contract/fixtures/refusal-v1/null-id-basil-reconciliation.json": "be6489014cd69aba420ec3a35594be1b3a461eb28f741f7d59a5e2a764222209",
+      "contract/fixtures/refusal-v1/null-id-basil-webhook.json": "8b9f3c66dcb0501af5193fa1b563656fcb9e0fcbc6eff9d2704a8679b1528ff7",
+      "contract/fixtures/refusal-v1/null-parent-basil-reconciliation.json": "e893e0fa494dbdf4fe7153cdfbdfeb52bec63aabc12eaec8289520f4b0b43ab7",
+      "contract/fixtures/refusal-v1/null-parent-basil-webhook.json": "ced5e5b659c1fd72895e358afc0533ccf93552c709100403f9183fa34d31e4fa",
+      "contract/fixtures/refusal-v1/quote-with-subscription-basil-reconciliation.json": "3589026b20fa7bc13e10ab85d103d3e84a253d6ebe765599de34eaab617ac5c8",
+      "contract/fixtures/refusal-v1/quote-with-subscription-basil-webhook.json": "e871a18899c9b104b4e4fff698d490744de5347b5edde22ad8257f9748cf7a7e",
+      "contract/fixtures/refusal-v1/scenarios.json": "ce6d1b9bdc739efa6b07039ad44ea408f8e2cce23792524a58c7eb44e2831072",
+      "contract/fixtures/refusal-v1/state-primary-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/refusal-v1/state-primary-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/refusal-v1/unknown-parent-basil-reconciliation.json": "d46fbe130c8b0265f69e796298f60a96fd6bdc28ecac9c7349aec718df3b2194",
+      "contract/fixtures/refusal-v1/unknown-parent-basil-webhook.json": "2beccd69b301e020c49dd076f181ea07b959e7506ddfe31c944cfd38a9bad1d1",
+      "contract/fixtures/registry-v1/bundle.json": "ca7579e6856f50ce0264961f8511aed7c9f83af256bb934671217a99a867f9be",
+      "contract/fixtures/registry-v1/registry.json": "933c5bd2225a3fea091e442069c803b1cac10d9c1f95381a5307ab5a8ef9c2e5",
+      "contract/fixtures/rollout-v1/bundle.json": "9696c4ef9321c0dc61f41e843f29bd93082121cdba876e6085f70b984629a0d1",
+      "contract/fixtures/rollout-v1/event-acacia.json": "1a305642dcfa4a091b487636f8e7282338c3cadbfdfd6b5f0eafbc62333e776f",
+      "contract/fixtures/rollout-v1/event-basil.json": "af723a0f78172c2a6783c4152e05ec63127c4e943c688fa20dd478b8836449be",
+      "contract/fixtures/rollout-v1/expectations.json": "0aa0fccb11ab371b8633d9b20ee641a5512c88098909eb0bee54800b64acbcb5",
+      "contract/fixtures/rollout-v1/invoice-acacia.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/rollout-v1/invoice-basil.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/rollout-v1/scenarios.json": "4062b4334fe5fadf2b577c07cb92e5c557a382abaf3daa7d4eac510a6bdc7378",
+      "contract/fixtures/rollout-v1/state-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/rollout-v1/state-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/state-v1/absent-state-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/state-v1/absent-state-acacia-webhook.json": "ccd82ccaf0f55f44ec8bc3e75e5840ff1ee6a47334d32b5756e6ffb24502aaa0",
+      "contract/fixtures/state-v1/absent-state-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/state-v1/absent-state-basil-webhook.json": "b5d1377b744a2426be78ae5db40dd90baeb45dd590b986c965610d7a33d675fd",
+      "contract/fixtures/state-v1/bundle.json": "71a4413a2a85e9380aa7f4188f2de2dbf5941e4c143793c4b49f30aa52987a48",
+      "contract/fixtures/state-v1/expectations.json": "dd0053ce0cebd8ce19703d18f6f7af1bdf292d695f9dfbe0656b98e7f2890ff4",
+      "contract/fixtures/state-v1/failed-state-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/state-v1/failed-state-acacia-webhook.json": "449da5f10bce698870c6ed49b13e13687f70c8434c00e6460af23610152c4f48",
+      "contract/fixtures/state-v1/failed-state-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/state-v1/failed-state-basil-webhook.json": "ab1ee0715494defe990fed9fb9c213b13c47d2a4201221a34366324a490b201a",
+      "contract/fixtures/state-v1/inactive-state-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/state-v1/inactive-state-acacia-webhook.json": "f16db23e83665217158df8eb5bb3a996e8af299aa74a6907c1df539f9a008520",
+      "contract/fixtures/state-v1/inactive-state-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/state-v1/inactive-state-basil-webhook.json": "3d25d9930b7a9407ace5a2ae6943e2b183a504bb1aa58a3ed62d376ce0b5b209",
+      "contract/fixtures/state-v1/scenarios.json": "ce410993cf2f3177e30a97bcb5c6f4b653fc05461a6cd96806c6b7110314fa70",
+      "contract/fixtures/state-v1/state-absent-acacia.json": "a1082d8132cf16299b6e05b4fce8b821e700691fc102746542fe9607ee30264c",
+      "contract/fixtures/state-v1/state-absent-basil.json": "a1082d8132cf16299b6e05b4fce8b821e700691fc102746542fe9607ee30264c",
+      "contract/fixtures/state-v1/state-failed-acacia.json": "ab2eb0a2bf0c3f2e1e679a57d92a85f08d8b17adbf1e666a76185a933aaaa182",
+      "contract/fixtures/state-v1/state-failed-basil.json": "ab2eb0a2bf0c3f2e1e679a57d92a85f08d8b17adbf1e666a76185a933aaaa182",
+      "contract/fixtures/state-v1/state-inactive-acacia.json": "cbc516fa61aadd73ff70227f8d795acfdb6578522bc05d432cd051923d0972cf",
+      "contract/fixtures/state-v1/state-inactive-basil.json": "cbc516fa61aadd73ff70227f8d795acfdb6578522bc05d432cd051923d0972cf",
+      "contract/fixtures/state-v1/state-wrong-customer-acacia.json": "c766c5061d7c43d57ac7222aaf13a965b3559d504c8e7f406af04ca8b42b6e16",
+      "contract/fixtures/state-v1/state-wrong-customer-basil.json": "c766c5061d7c43d57ac7222aaf13a965b3559d504c8e7f406af04ca8b42b6e16",
+      "contract/fixtures/state-v1/state-wrong-subscription-acacia.json": "3f9e7b296935d9115b92fcbbf93c0da45bfef18ff919a035d6dfa9633ffa68ed",
+      "contract/fixtures/state-v1/state-wrong-subscription-basil.json": "3f9e7b296935d9115b92fcbbf93c0da45bfef18ff919a035d6dfa9633ffa68ed",
+      "contract/fixtures/state-v1/wrong-customer-state-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/state-v1/wrong-customer-state-acacia-webhook.json": "54399cae0c645db60381612822c53831de312f41a930c1865c9085dafd2da72e",
+      "contract/fixtures/state-v1/wrong-customer-state-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/state-v1/wrong-customer-state-basil-webhook.json": "5e941facbcd5aac05aa8459328a57725c8c63a3c4c5e5362f5962418d06ba5c1",
+      "contract/fixtures/state-v1/wrong-subscription-state-acacia-reconciliation.json": "36580ef2342d9c1a2ea62ebce36f8b2d5e72f0a96c736f791fd39a6982f942b2",
+      "contract/fixtures/state-v1/wrong-subscription-state-acacia-webhook.json": "c02ef5a90d30774609ae48b5ddb55bfd99e7c62411caab8d20903a5db004cefd",
+      "contract/fixtures/state-v1/wrong-subscription-state-basil-reconciliation.json": "afc6ee60b2c3953c2105ac295e2133468c6bab24bbafb6238e4043fe89855fee",
+      "contract/fixtures/state-v1/wrong-subscription-state-basil-webhook.json": "06e3699d469739db28f01d30a17ef15acad278e4cf7a24fceb9a75f162156d91",
+      "contract/fixtures/unpaid-v1/bundle.json": "a48cb128e73a59365e30938e66ba19e5d8050cbca6539ed92f024f8e5b074ec1",
+      "contract/fixtures/unpaid-v1/expectations.json": "5b59b279abd431ec4babbdad92538db1c51a711925f96b59f5f8a56f191caffa",
+      "contract/fixtures/unpaid-v1/open-fresh-acacia-reconciliation.json": "edd3bded3d4ff8a2b4722e5aedfc1a076e014471c5524e3990e6b390352a0251",
+      "contract/fixtures/unpaid-v1/open-fresh-acacia-webhook.json": "22c1c94f2ba1b232ef74cbe80255da70c0eca15d35ad7fae2c27b03cf7900284",
+      "contract/fixtures/unpaid-v1/open-fresh-basil-reconciliation.json": "1ee7ea2822a5517548d22ae35f8e0319c3fbc683498776e8e03688f6b90c8e0e",
+      "contract/fixtures/unpaid-v1/open-fresh-basil-webhook.json": "6c43a3f8d65c1c825cca9cb8879343ac3cea074da18fb5a059995c0e3ef0ea72",
+      "contract/fixtures/unpaid-v1/open-seeded-acacia-reconciliation.json": "edd3bded3d4ff8a2b4722e5aedfc1a076e014471c5524e3990e6b390352a0251",
+      "contract/fixtures/unpaid-v1/open-seeded-acacia-webhook.json": "17145e1560bf1c659a40e31715fbe69bfc02bac68f29e429b9d23f22481d7c19",
+      "contract/fixtures/unpaid-v1/open-seeded-basil-reconciliation.json": "1ee7ea2822a5517548d22ae35f8e0319c3fbc683498776e8e03688f6b90c8e0e",
+      "contract/fixtures/unpaid-v1/open-seeded-basil-webhook.json": "aad053ec6d57fe7bc9efda90b2fa8821f51f7b093ecdb18a5569a4f37f94d8a7",
+      "contract/fixtures/unpaid-v1/scenarios.json": "3a4657fa84f39724e1d5ef861aad404073ccb81930488f65ace96a26432acd1b",
+      "contract/fixtures/unpaid-v1/state-primary-acacia.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/fixtures/unpaid-v1/state-primary-basil.json": "bc0aca208c9ecd472632d0773270a199a4697ed8f4b717a37ee1814d1b9301b5",
+      "contract/provenance.json": "2e1be9cd1df971a025993af262dd5328c6b8532276291e87fe225d76bb2416c6",
+      "contract/versioned-webhook-v1/acacia-adapter/pom.xml": "05d80edf9bfa8a49e3315a84b63e66b8d82e81df18f9d5e4a0187075b2171742",
+      "contract/versioned-webhook-v1/acacia-adapter/src/main/java/io/github/nktogo/invoiceconsumer/legacy/AcaciaInvoiceAdapter.java": "16f5862b9538cbf0f938b4c93c85dff88765a8937e2a0b1971c474731e4d870f",
+      "contract/versioned-webhook-v1/build-registration.json": "8965f53b87cadfc03a1111b7f58d16332b53d7c9905d718bb61dc827491c0eb4",
+      "contract/versioned-webhook-v1/policy/pom.xml": "6413fca89e46845effb3962eaa381b4bee2110007c8d39e16a9bf0356288c520",
+      "contract/versioned-webhook-v1/pom.xml": "c4b224cc0c08c29e8cd4d8c59ada9cba01690c86100da411b5dd9964ddc73e48",
+      "contract/versioned-webhook-v1/webhook/pom.xml": "532f204411bf0fbabee1071fddaadc130d6d01858dc01555af42ee6abfcbf8a1",
+      "contract/versioned-webhook-v1/webhook/src/main/java/io/github/nktogo/invoiceconsumer/VersionedInvoiceWebhookConsumer.java": "7a23c5b725abb82e1fdaff92d71746cecf43cd6193f9357a0a81b76f466aafcf",
+      "inputs/0001.txt": "d19461c4f0e3c8d91ff265acdf2f08ed5fffc979101242b91e61d40c4aeee72c",
+      "inputs/0002.txt": "cd8e73e9bc2a6d4f5baaa489703c45394b3fe97afd350ef10d10a62969c28816",
+      "inputs/0003.txt": "7c30ed70b5472eb08ef36b2fd6a28b2d4f9460c9a2ca2ef076a11099306f29a4",
+      "inputs/0004.txt": "579a8fc23ae5c35145cecb6fbe31e2600b0c73a7caa9113a432df777b60aae6d",
+      "inputs/0005.txt": "7b87747d959b6987358fef359c1fb334a8a1bb71d1cb9f4f40617cb8025e24fb",
+      "inputs/0006.txt": "3d4aee1a7c14ca5d9fc1120584002677df097017b324b34d57d5fcde3477ff3c",
+      "inputs/0007.txt": "3d75fc9ab39f145ea6f57f9ce1021b627ea75aec88d24dc8b9d435cb52afe85d",
+      "inputs/0008.txt": "82f0732e59272bd0da07443b8b0c4b91849fa3e2bd569d89b517b3a0b4fb96e5",
+      "inputs/0009.txt": "3d1d694ced199535b16600ce99ba9d4d5b7c0ad901abd1591f99464f7ca701ad",
+      "inputs/0010.txt": "7633f2d21af7a9ab01adc60db71c7921abcc46cb3c5ba7d1f7f67dc4e3767803",
+      "inputs/0011.txt": "a01567d2b9b4e4f9d505278b5ea94e87e92d602e0404a0bf957d1386f770ae7e",
+      "inputs/0012.txt": "589f3bcb8f60a1428104b9ba41d64d4cf74ad23dcd397c4d7a184c34673c0da5",
+      "inputs/0013.txt": "0c1e6555608eadafbf18e5194a0ffd0cf16e90003b50c1b9a54a7e4c879e3fb0",
+      "inputs/0014.txt": "6c6952f63c708e33d4fa6131e678fd86330b19e60999edb051e9d1bd7e2081dd",
+      "inputs/0015.txt": "b0533569e11e82df02e03176a4e0209d6c581af46b018ac863515d0e636f2149",
+      "inputs/0016.txt": "a19cd69e98cd6a07b5cf580eb20a9efc3807a7f6cde232e147b9d0fd8c9bdec3",
+      "inputs/0017.txt": "3b8f4bf05f560057f54ada4e07971ca67ff87f48b52251bbd70b90ac0c6d2c22",
+      "inputs/0018.txt": "b997c4421d1028d7a066351fcbc1e916b6d5f97d5e7c936fa5224515683ac435",
+      "inputs/0019.txt": "f0475170623f50966742fc2879edd60e6c4f3630fb92db2430e172aaf09a6c64",
+      "inputs/0020.txt": "0f1829f64b717aa208e3fd8a70391ab8d62311b62775f91cc83066da2ee04f0d",
+      "inputs/0021.txt": "27b63371f25d4e7380df9a3ed21116dc37597952da52d1516e311564c79bf140",
+      "inputs/0022.txt": "8e086ae8e575e8c3c423c39b45a7f46dcb5c73f6829f4b03d600424d97def448",
+      "inputs/0023.txt": "2b92c192f33c760508e62ba550375d634b6894299b92a82dd38b070f18ffd9e9",
+      "inputs/0024.txt": "ede5446f938991c6367df16369a3517e5905c6a3c84aaf89e40320dc2883e85b",
+      "inputs/0025.txt": "bdab53c25784f35533c06ad66c25ec51cd8ed8d5069d0829420d815f5af6e8fb",
+      "inputs/0026.txt": "b8175b80ffcabd7f3c30c50cbfd7ba9f3c25bb59f2e35cfb2a6add9744e1fdeb",
+      "inputs/0027.txt": "93b0b05a1cb67116c9662398a589b5475691864765666742d0732ae7bb210640",
+      "inputs/0028.txt": "b1e0f71cc2a329d1fd4a6d12f5fcf9c29bad2ba2347fdff175507764197b5e64",
+      "inputs/0029.txt": "4b72acf33c7732815525c4b88f656564da2b5aa32d36c38c209999ef8b208ca3",
+      "inputs/0030.txt": "fb58842dd6abaaed3a4ce41b283d98aa95a95ce668a15137c0eb19373820f10f",
+      "inputs/0031.txt": "c12db8b7735306304412ad9c613ead752bd0febafb7a64fb47294c72ae998094",
+      "inputs/0032.txt": "d39349f54bbd7408720437ea2c56f3bae2dac39b5e7af99223a76d07d0e8031c",
+      "inputs/0033.txt": "b18825053934dbaa37827fed77a9907ef1d7ddb2c674d059dd7e7ea6c1ef885c",
+      "inputs/0034.txt": "78c9420e12f0b773a88c0465883873e3ce090257091bf9982110bb4f4819c2cf",
+      "inputs/0035.txt": "3eb9fbdbe62d403a53f3f70d539808aaf20ba9ec664ead733783676db274179d",
+      "inputs/0036.txt": "c7f65dd24008ad21a653904369f713b8781b6cdcc33048e7907763e12729c92c",
+      "inputs/0037.txt": "82f8b557a5cc1768f282b2b6480a7d76b36f85862eaad6c8c1b9afe413f1a202",
+      "inputs/0038.txt": "7777430d8e9f814a1c276b1e9d09103b3e971c31ead1d9f84c344d6c82c8ba50",
+      "inputs/0039.txt": "3d7731acf2e866acd2fc7c287f1acb2c347ea3e5c6de17b85a4f716d1ec4a0fb",
+      "inputs/0040.txt": "1a99775c19a0901cd5df1a326e9d46fafb2f2fdde84748825c582608ea6a7dcb",
+      "inputs/0041.txt": "f781f6f62b1cc0a28e45e2364f75e4d7dbbd144b78a861e7e29f3cc44f7a1071",
+      "inputs/0042.txt": "0dc1d13a3611b1547f8842b0ca9d2d1de3d180e2af893aa1474d634dcf76fe4d",
+      "inputs/0043.txt": "23200649b083289e18e9e3fac32fad3b3621c213a6e0740f09d6a9d66e9d79eb",
+      "inputs/0044.txt": "7da0cd03da5abf70bf6c5c8760a0d49af571dc8b71452f8e9dea245060b81058",
+      "inputs/0045.txt": "0177156f0425031f2f433710fdff56f1136356fb04bc5a03952cda5d13e08f21",
+      "inputs/0046.txt": "18141fb7d149db04fe8537f0614ab9288c585d8f5f3013a833fea480a5b12bad",
+      "inputs/0047.txt": "81c1c1ffbae0630fb20bac78554c35845a3e77ba84f2668d09adbe797a6cfdf5",
+      "inputs/0048.txt": "aa4a636661616f47b557a87209c40fc3a3ca8a26096904f6070eabdb45bd2cb0",
+      "inputs/0049.txt": "b3390689c2073ce8919fe2d9235c5571b135088af7ab462296859fab7167cb3e",
+      "inputs/0050.txt": "1cdd5b6a7cdf009a19180cacc221df62edc68887acd68fd8c32ec1ec392e3fb3",
+      "inputs/0051.txt": "ca68286bc1250a5d48d4134926f87710ce5f3f4b3762824b70362f77f0c4a776",
+      "inputs/0052.txt": "a319919572506fdac9cb7d632f794d6ead2d1cf0c822766e00303255ab678641",
+      "inputs/0053.txt": "7d419808b382ec98a307f00a3e843aebff7a6da4714981f3b83e29a4fabfc4e1",
+      "inputs/0054.txt": "4557eeb12237c479c0ccbe914ce711f41c25d828acdd2deffd6a5281d407176c",
+      "inputs/0055.txt": "c592369e44ddf13e27c049aff0a9e7a4ccdbc23d47ace0b1a8d4095b2b710f29",
+      "inputs/0056.txt": "e4e5228d47255b6b62c72d2734b3ba275dace872db1c2b2f53e3fb6e917e33c8",
+      "inputs/0057.txt": "73874a76de57a655333f68e3f202821b168a74aa9f985884203fb035ddf99c75",
+      "inputs/0058.txt": "42b8880ca53c1213eb88eaf95e3dd1f82d1c10758a59f2aa51468ffee0cdfe91",
+      "inputs/0059.txt": "4d8e5c18ed960d63616d019867d8d373f873f3403077963b75a8820b1dd48aa8",
+      "inputs/0060.txt": "7eeb1ed64c0dcc75fd88325da354e760ba57e54f20435265693d5e07d66b6c59",
+      "inputs/0061.txt": "085a431591173165f748f9589822e58f70319b70cc56256442f6984732e593c9",
+      "inputs/0062.txt": "b16deb1a05163be1fe9b11f06235c3755d5f6e7d86505779b138d2d0a57a38fc",
+      "inputs/0063.txt": "11608bdd998c2e35818ca265231b02de5dfcd7689c72c22fe793a3b0e20e54ad",
+      "inputs/0064.txt": "f4182c7b7b13e5025c9758f719a1fca85c3043e7bf07b19b4bdc28530bfa4465",
+      "inputs/0065.txt": "19c03a07cde56c906b2eca8ee4051d49b2537a831d5408f7e6f54419801b4afa",
+      "inputs/0066.txt": "97a452f3717214c1a782db870e31bce57eed378309efd9c869a914f95d2d51c8",
+      "inputs/0067.txt": "8c25dbd4ade38ef481f7a8fd69ead46fa65c3903db5ff670fe5003eeb5ed9d4f",
+      "inputs/0068.txt": "e07a4660e7bc44347b6bd46032761314192b2e69cef42e8adfcaeef203380d68",
+      "inputs/0069.txt": "90b0b0809e5b09500c87a3b71df68e421f889f1606e178de207c40118fe04b1f",
+      "inputs/0070.txt": "3ebdbeb0441f4699811b972ce41dbc3db1d5925f8047bdda4516c696d8095a6e",
+      "inputs/0071.txt": "990fa8d669c724fcf0bb227947c2f77fbc24589b9a12651a11d692541efe10df",
+      "inputs/0072.txt": "b1ad2699c8be2f3d8c1bc78b7104c1209a1033d6a2804db120054c77290d64ba",
+      "inputs/0073.txt": "a10ba0a0ecd226eb499ca1cc9a07cb7051defa5b91bb8590cce4cfbb1653615a",
+      "inputs/0074.txt": "bdf56dbdc3753828eb3a52c459410f39410c1548468454b9c3de3147534b2329",
+      "inputs/0075.txt": "a5667ec03233edd4267b0dac64687d0c729384a4a0c0356d48ef5a340540b05f",
+      "inputs/0076.txt": "69759bc995e2986f4d63caa155c9a99c4e3039119c7ffaa28131edfc9cba8304",
+      "inputs/0077.txt": "328f5401703a42dc229e0b40bb09f5ae807568ddbde1b1f9d0aaa9a8b650d1e7",
+      "inputs/0078.txt": "f842edf0d2c160ec1fb0f7dc1b592aeac92af2cfb121b411485343a62556f755",
+      "inputs/0079.txt": "01a33401b56a258bd521f52177aacb708ad7c26a4a1640d39169e1351d519a09",
+      "inputs/0080.txt": "8383502c23bdf639ad706bb854fa77b41629f14a82720abfe0e841a3a3462f46",
+      "inputs/0081.txt": "e1b9e6c7bb91e6764854f8d1f6c89c6ebba7e328ff235bda78cc62872238e389",
+      "inputs/0082.txt": "b43529f6f24ebcb97a22ed7bffb96660de8ce6c502d4c8789b3eafc48f62bae2",
+      "inputs/0083.txt": "5b73c2ae8bcb221933e292b6be9e6c2a2f53cf75a14f6b1a82862cff9f70ceee",
+      "inputs/0084.txt": "2b1e3397c707d748adaad4b8b4621a541203057290f242842ae185a5ebe9bad1",
+      "inputs/0085.txt": "4b38c51796afab47112b95e6e4e74cc5b219cd440094d7b8dbbc046d28212c14",
+      "inputs/0086.txt": "7fe7de53154b59b5dc3342deb532b5f545936e50f7a51e7cfeada13a32e5aba8",
+      "inputs/0087.txt": "96c4c59b264249019cf09c0ba6985b48d218c7148dcce07ffdd855a96aa42fe6",
+      "inputs/0088.txt": "8d59249e87f0f14afd095fc07cb6e97af843b918a7c87b8d655102bfd47a9731",
+      "inputs/0089.txt": "0dfcb1901f43c3eb70bd5163b104b922cbe17c83c6964377871fb306c221967f",
+      "inputs/0090.txt": "1e3dd7764243fe898d119a95f026e69a4a9c90a7f919a089feadf6dd7eb69e28",
+      "inputs/0091.txt": "ef4f4add3a450f87ce6da95fc5b4df6f5540c13b5bca719236eb694d193c6d78",
+      "inputs/0092.txt": "e1e9c99aa92401daa141f770b9d53b1af155e3bb7986b482ccb37fd55f5c4d85",
+      "inputs/0093.txt": "b8eb2e2571162e185dcec0b558a26553d08a1e56813d2e029536939392a092a7",
+      "inputs/0094.txt": "ee5684352de74332418fbaca93b4b5889fe4b31394d9c1c58ae9d2d702c683c3",
+      "inputs/0095.txt": "f0616bf2df4ac24df5f502d4348c3e58eec42d0e744965919b7adf09995158c0",
+      "inputs/0096.txt": "2d156b3420544e200c3257bd1102ca749a3e86009cb49a06c0b7624dc84d1c57",
+      "inputs/0097.txt": "66ca4bfa15d5a7409f3134cfc39d415e541c7a72912de94015accc0595cb63d2",
+      "inputs/0098.txt": "653caeaa48f17c281006db5617d7777506aa3af53f353946ffa5b3ab0c7f5fd7",
+      "inputs/0099.txt": "e4c4ee00c8972dfbc1088633bffb43e441f3afb3c936de3daf37a03419c62825",
+      "inputs/0100.txt": "66c4fb13d5316b8513ee0d33a8412f0ddaaa96b240653a31bafa9a597d8daf11",
+      "inputs/0101.txt": "07351114b3d30adb9e5a74b555137a11c26a61dd1632c5b2a39034a48fe0fad7",
+      "inputs/0102.txt": "101c2bf166dd395ed4c328c11fb773ab094590a2f44e2037ddabec8f67480a62",
+      "inputs/0103.txt": "f8bcbba8fc7f25c0a6408f0ca3e5e1300336fd90f94dad13b35711348084b639",
+      "inputs/0104.txt": "e5d3e5f6ebbb4047b1bd4de77e98b0e789bd042e36cc017ef1ae8b5f47789eb6",
+      "inputs/0105.txt": "3c8800870404d74fd29df469d0624705265f28c706ebccac5b6ed62e96530007",
+      "inputs/0106.txt": "958bce70a93ede6046afed6e68f81be12c7a43af4c09f1282b472217d4bc7d6a",
+      "inputs/0107.txt": "bb83db0a6cd430cff6f139de405fcc9d1642b32e764782ab4584f63f567c84b6",
+      "inputs/0108.txt": "964811439f970c13ad28b45c4eaffda7b38610c0698baa774d3f85e47f236af8",
+      "inputs/0109.txt": "079c291ac39e70ffc6be0f49a2ff231c8593c1bac3da4bf555b6e506c7a55aa1",
+      "inputs/0110.txt": "f89f1afeb8f9f8955ac0ec464c9b431fdbb4a6e03e6898e916da1c5595b2c70e",
+      "inputs/0111.txt": "1f4a722d0b17eefa21d7ff940e98bf4d1878b6bbcbe03e4b1b2f1647ef38eb09",
+      "inputs/0112.txt": "2fe39aa0a02b1606fb016be2de01ea92790dbb1e1f88e0c4d03e7924a1fa6478",
+      "inputs/0113.txt": "8b905d4d10aecfb33dccdcd924661f69aa4bbce458c72bba6e42a2e1da730b95",
+      "inputs/0114.txt": "ad01ba524e6e8ac281ce242d9c080a11f0372f41990b71075d41c447d39c6f9f",
+      "inputs/0115.txt": "e2c55d281bc11f5f1e937943ba76b9a78b06a9001e10296f2f06f48c47de8158",
+      "inputs/0116.txt": "1be19fe340ec56d2a891a74b2ddbffde2f6a45fc38d31b367f3a5994bcde2c22",
+      "inputs/0117.txt": "e8cbab0cec1058e174c8a853ad856f8c9950ab2355ef310b391053e68569c04b",
+      "inputs/0118.txt": "607c6a0272d0b653ec22a28ac8bbb85765a7094e895d82d86a084daf05699483",
+      "inputs/0119.txt": "0bcb95b1ccaf8c4dbcb5d70851783a8046812199bed86c3cdba4a5300369240b",
+      "inputs/0120.txt": "ef131e6baafd43d7a9a1f4b9cc220b36e59f91f42e20394032657016143c1a26",
+      "inputs/0121.txt": "244bf5be524c44f61473725b9d1b9b9e944687159b7682c96556dfb61e141121",
+      "inputs/0122.txt": "74b82548e22ed7aa3b1004febe02eb61f3561721bbc824a088c356d857d81e56",
+      "inputs/0123.txt": "13126e53c3b8044e6be14db112eae10e39b4a41ddbed16d1a398ec26e659b4f7",
+      "inputs/0124.txt": "ef4d8c3b6cf69745a79763b7ec2e6c8818ffcfc290d3e568483088a0382421dd",
+      "inputs/0125.txt": "5e5da47952112396d5421cd7119f0a28e5ff014bf12fe380cbf51d71acf44c94",
+      "inputs/0126.txt": "6e80cbdac9df6ecb1cdbf16df4db6d67feaf290d29bed929a59146a6ac0ef8e7",
+      "inputs/0127.txt": "162a4b734c84cf32d03342f281d59fad11404b3833885a829e22fca6b23f4835",
+      "inputs/0128.txt": "07e814f6a725b7de3e4de656aa00302f1b4ad60f4712681a800a4c5566a68671",
+      "inputs/0129.txt": "ffa7509ce30d4a1d1532e0fdf9ca91b028f4a633bed6c2670dd05450826d77fc",
+      "inputs/0130.txt": "84df1a04c3919e49163f3f8a092c8cb1215dc533e233515bef9494876471c652",
+      "inputs/0131.txt": "a209613790f93f78723a63164fb2ccd98ceb7dfc2a2debd972d970501555b19b",
+      "inputs/0132.txt": "b7e40ac43c349906548568d9b0b752533824e53e1ca056a8811878724f9f0853",
+      "inputs/0133.txt": "531ecb1ede76b069cef941e6d8f129a51f4e56a8d9f4ef064a6536b45fc7fba2",
+      "inputs/0134.txt": "fa247bb3b544267d43adf7e5199e5df63718fb762675327fdaf5e72654c3ab70",
+      "inputs/0135.txt": "b50b2f00f2f53d200b414c02a63f9b373675ce09266c98c96229354bc64dfe9f",
+      "inputs/0136.txt": "312cdffd8f68d68686c7e65fc34bd7017c2f8a6b5170d47e96798c6d72a87aec",
+      "inputs/0137.txt": "3f68739d8052917192e1fef290bbf10eab845e9cc0126c1b669b31fb9a09d29e",
+      "inputs/0138.txt": "9ef8bfff96e60af9c4636184e9c877070fb0bed71146ffdc2fb0ac1a27e4f6b1",
+      "inputs/0139.txt": "9f64e2de121c74efcf5d2ed3520862fd6d77b7795824f5b87aa5617d5b63a1b0",
+      "inputs/0140.txt": "e546a3eb31b67fca4d8cf9308229dcba94ef0c5b4a4187e0199e1f165ffebc39",
+      "inputs/0141.txt": "049751329faf9304a73113fc694ff607bbc43c794071298730d4e16347ce1239",
+      "inputs/0142.txt": "106dfaebb4ca9cffc36596c2564b313ff6b8d07612ea2bcad9c2ae2754c59123",
+      "inputs/0143.txt": "ad2a07f69e317104768ad77699dc73fcd6830a6e08d2efa20ab0487efa8d5461",
+      "inputs/0144.txt": "99f46e1657e6d6fb7abaa8c83b5f7c42ff72012ffda5e2bca161cc0a8bebfa40",
+      "inputs/0145.txt": "8d403ea8fada47a7da16e8de1bf825fe49e98faf9cc041047c0c89c744daea67",
+      "inputs/0146.txt": "436b99019fb5ce52b5f2b1afb8f48a1c268705a556ba62f2126bd76472fb8f8e",
+      "inputs/0147.txt": "eb6657c532ddb494a81c8922638d3f0a6e71d6dd3d202636023ff23d656228a3",
+      "inputs/0148.txt": "df306b67577b9306cdf8d2dd453745c3a2f7227477c6ff6e274efb1b95748296",
+      "inputs/0149.txt": "3dd93711b2bee7da71c1c7525c4908745ebc77f007a60975d41ceedb82fc231c",
+      "inputs/0150.txt": "4ba9bd98ad4dfa2b36a3f1be42b6046202e39ce81259279ccd7bc7755c611a6e",
+      "inputs/0151.txt": "3bd88fb0566500892437498dfefb91655f4014ef2a412b4a50ee11f2778bcde8",
+      "inputs/0152.txt": "bae6adb1c8fd270211ffb976ce371f8219568916c6a6f30c64b1b41ac8d10a7c",
+      "inputs/0153.txt": "cbcfae14ead3ab40b92ea438fbacd1a905ebc95e3bcf643e76e202fde4031ce8",
+      "inputs/0154.txt": "2b389b1efd3b5ff80aa4d3b9e42b1f15830554c14abafd148730dc9d4262d4b8",
+      "inputs/0155.txt": "7b3fb98333967c5d5ad885647a016d3199f65dcd0b82819c5be35d6dc4ccd378",
+      "inputs/0156.txt": "04097af2787b040fa1e9af63e191d30d49de6a77cf0fd5e3e641abb0a95e9920",
+      "inputs/0157.txt": "d0fe64c6ffec4d3a7582e2ec1dae18012b92224f32ad9fb51360ab2b7aa807c0",
+      "inputs/0158.txt": "da48da30a62fee39269bb71714879c7407a561ccf12800ae283d6080a3f04e6f",
+      "inputs/0159.txt": "51cc580e3419400ab43ee6c52b66ec7adac78b4faebb684c79df215db2e576a1",
+      "inputs/0160.txt": "49fd60963afa3c8df3e268ce062ff261579571a6841a6df22a8573758b38f9c7",
+      "inputs/0161.txt": "faf33334a2d655d28e52f3e9d51457847af5b7d329b679d94945f27656551c02",
+      "inputs/0162.txt": "6fbbdae2b34184ef1a77cd1178a87a46236a8848dc6025a4b34c9a74d49b4f90",
+      "inputs/0163.txt": "f281583a7ef12fd0bfbbc5323a152faabd03611eb7c943698fae58e3f7ef5074",
+      "inputs/0164.txt": "229eaf13335245b26497a0f9b83897a7aaf58380b56b4f617c04d779e21edacc",
+      "inputs/0165.txt": "092fcca04c61f69121eb80aa69b92c6b19f06b14c3cfed73fca82a2db3859bf7",
+      "inputs/0166.txt": "84d55ddca24734f16a4739bb9385be4e772ab617cee259ba400af95c31588703",
+      "inputs/0167.txt": "d5ea8474773468072beb612349d0afb117ec566020e260fe0026e760ee911734",
+      "inputs/0168.txt": "e82b7e425ac3ff7172c471916b954408553dd00e427b0435c7bc18d9e7b5bda1",
+      "inputs/0169.txt": "446dd3b216b7225b675eb23ab4dc6a62c66012b2adaabfcc25c160734f4e2228",
+      "inputs/0170.txt": "4f625db175a02901f0e4d15ab3df0088c0b461a58600c9d1d6e30a4d6b9f8f3c",
+      "inputs/0171.txt": "807e062d39fc623f7e24c15eaa2301f75d4d99e57ecacbd5ce06b7b596a97c49",
+      "inputs/0172.txt": "ec8cbb63ef68a51491e3dbb758f8ff8e59f5481ef83f45495725cefca61fe7da",
+      "inputs/0173.txt": "1a120672be287b664b531e92396795537c80375baf82bf78b06f0816e5ab82c0",
+      "inputs/0174.txt": "64a968f373bbc07eedefed3e7d8dbdb84e0fa7ae501c65061bf2c4ba50fc21b0",
+      "inputs/0175.txt": "e6314dd2ec27ae902922244b8cee2f05ea6e7d662bf346b959df881dfc4ea26d",
+      "inputs/0176.txt": "6f9e4d126a4f97d5ad6f1690f4e0c2156708d88ffbd204f67d7dc69ff497942b",
+      "inputs/0177.txt": "1db95e1aa0454f6fef3ad70cdde3f94cc33ab03d3768179f414fbdda8bd55524",
+      "inputs/0178.txt": "d615d5f3f0924b97ad05ce2fa965e6b97c53484ccdfe1ef15641964544a88cd0",
+      "inputs/0179.txt": "b33f0d466707fc71d48046f4fe9eb755c168d7e97b755b11569fe231812cc716",
+      "inputs/0180.txt": "a52e502c2465cda62c9d7fa1454a2c52df3d66f6512e1ba541fcf0520d176e91",
+      "inputs/0181.txt": "4fc1375ac665989f3393b4f7cdafc6ecc6921b342947d7a05866f030c272d2b4",
+      "inputs/0182.txt": "1bce4c52434ed2dacbb2bc23b8054e5ff236b57ccbdd19c59438987c08f7b39c",
+      "inputs/0183.txt": "97f5c441aa4ffb81d12a3f5df73eebd328539306d8737b55cf7b4e401bbf60aa",
+      "inputs/0184.txt": "cb651b243d4f7e9a3d7874c2927334f994f68ac8af2b59a4c5cccf0a5574c933",
+      "inputs/0185.txt": "bdd12b14cc9f10ac129f867ad42957bd3774a00badc7fe01e44250feda9273a4",
+      "inputs/0186.txt": "c77ba327afdb5a48dd1f2065e8584aeba61c7d0f9159a7e8d3a4b7e7dab43734",
+      "inputs/0187.txt": "16194f5daeccc9e16f751a6902e583eb4f963b80657afdd9de4a4caf8cfda4c6",
+      "inputs/0188.txt": "5dfc5508a9e8d36b249b0bf77d6f333469315f635ee3fb04f4567bbe84f9dc09",
+      "inputs/0189.txt": "abe0392c454596ddaa0cec4bf25109b139425df821a34b2f24e7424a480ec8e9",
+      "inputs/0190.txt": "5197424e3dcc678cf6841a91db7f4b8880ba03bd4ab2ec0a6c1e786c99a3ad2b",
+      "inputs/0191.txt": "3e9d759a5afc06097423bb5a57dae1f455d5ebc6618f7290149034bf9c237fd7",
+      "inputs/0192.txt": "4230f04f34b465104ca7dd119a3501d9e134cde9ba2b5e522b67f055e9eece63",
+      "inputs/0193.txt": "ad41f3a1a014252cfac118f51d8f6cca0668412823dc3832fbccfadc9bbe9256",
+      "inputs/0194.txt": "fe884ffce20825486525ccd2f49f1ee64171218fad7cba84f03a63bdf5409632",
+      "inputs/0195.txt": "66b8479527d2f8cfe361e321b56cef738072593a6fd52532a5a6e24d0315834c",
+      "inputs/0196.txt": "d389d62faee43f2a0ca099c65b95bd36eb1cfdea46e4a3d198bddd591c94d5fe",
+      "inputs/0197.txt": "795e477871520c0380628e8397a84738f0fcd767ed72628f099503056a84d238",
+      "inputs/0198.txt": "51c9c6816785e71c73d1a3c5c8cd7bad377d33100ac2869c69d1511c575da505",
+      "inputs/0199.txt": "deee5fa661f9a756729662e1162714aed3d75c6997fe3191fac6a0593519008f",
+      "inputs/0200.txt": "578e41f433a29e518dc2b2100083b3b259cc2c046d7c1803d0a5bb95dadee5f7",
+      "inputs/0201.txt": "513bd488a36465641b86885fd13ddd43fb04e6d75bd4fe3f414008b257be0ab9",
+      "inputs/0202.txt": "acbf2bcb0a30c879a47e399b7bfe9820ccc479d71d72e37f87b19cddab1c7e2b",
+      "inputs/0203.txt": "09fff7959545ed103ffdddacefae8915303e2e2a3a1d912fe3f073b6de09213e",
+      "inputs/0204.txt": "a9171925463a53241de8395e9041545211dab72e89fbb6fe94152907f6c01060",
+      "inputs/0205.txt": "5a5fad9143bbef40f513ca48ad16f6b922835385faaffe7fb51189bf3389e276",
+      "inputs/0206.txt": "ca4f2bccce777d2ca8f0e1b0d17404377c812d9507efe80a740412c679c59c50",
+      "inputs/0207.txt": "6308e802ce38781a3e7426c46925725078edfb73d5ab6100a1bc86355f5bd3f7",
+      "inputs/0208.txt": "e071078d955df2fd3ee8aed5f48b476de26624e26a2905c742574e193ed0e405",
+      "inputs/0209.txt": "b7e603b2726d41827e0005c46def71a2495576a78b093311fe13496b73d13834",
+      "inputs/0210.txt": "bcc5543df3a1180b52e790af9c2456f3e3d54246953856de0d467ce80da6aa47",
+      "inputs/0211.txt": "86ebf30498b8459107da1908ae9097977bf262353d5817fe75b8fdd9eed69535",
+      "inputs/0212.txt": "e5b98e5eea8f8e81dc60533616d4cb669bc29b4c20401d46162786d55bbd5dc8",
+      "inputs/0213.txt": "88f0c68a99e3a84d2bb1da78ac4d604a79f9cb9e5a9065f26f00e941ae5b9d51",
+      "inputs/0214.txt": "91b3985b9ba3589f34e895d350413acb438a6ba7d40d6504d3c21ab7af0a0d32",
+      "inputs/0215.txt": "dc996532a78ca16422143fb599c880bf89b9c374f5712a71c3fba606c1e0c646",
+      "inputs/0216.txt": "13f1150f8a2a6f35d9f470022639d233c11c57ce5de8a576ae5e48f971830688",
+      "inputs/0217.txt": "f2b9ba5170889e447b3e24ed4c3e5013da3784e1367387376efbb18961ceb3c0",
+      "inputs/0218.txt": "bfe6a5ef8237fb038389df3d1b92b6e4f01c45cd7b2ecb6b746ed1e54b8db32e",
+      "inputs/0219.txt": "ae588e940d0fe734b71830f52b7c0f404d3e4f28fa9060245e2d24f408ae042f",
+      "inputs/0220.txt": "046e5d58583dc86a650b5ccb124c8ee6a7b7ed3936023e3c5024eab2819bb41d",
+      "inputs/0221.txt": "4deb37aaba3700ea1c447f047cbe44f749378744670964eed4a14eb0807b91dc",
+      "inputs/0222.txt": "d9a091dcb582970d26080106f6d348676503206ca026cb15f5e1aa1418edc06b",
+      "inputs/0223.txt": "5201a99ac42d3e0af0ebad2aaf8057453ba81dec4416754c49d85a2523d15a50",
+      "inputs/0224.txt": "aa1860c81ff872ff9c605cf203cf780f657f810be1df530ca7ae30cd1c03dcd6",
+      "inputs/0225.txt": "e3dea580f121f7ccb9e5c558196b7c38f8a42a3e349871555986424673a72a61",
+      "inputs/0226.txt": "66417d191f1a94b019583f99541036c7747e7838ffb4b2c87ebda434b27f90b5",
+      "inputs/0227.txt": "e6d183b433dc3b786fe11c3ed56868d52c775f1ead1ea4416e0e0df7ee059c68",
+      "inputs/0228.txt": "de453f83b9e8e14c13e050afbc1a25833d52585bb1611885cac7b63692486aee",
+      "inputs/0229.txt": "1f529f18df4b8c0d63dff7fdd0b7a4fd95eedd589ae01cd87f5a55088114e823",
+      "inputs/0230.txt": "4663fff778e3aa1b591407fdb75d717f5ba94bff0b854d4f1c36f8a2e60f142a",
+      "inputs/0231.txt": "2eb7dab9cd2822bf6a6d37c41c6865d72caf21247821b14e9a119c2b3e7cc695",
+      "inputs/0232.txt": "ff0041de14ad92ff1c673009257db53cf409e3b6cfed59879605c6cca2d6d811",
+      "inputs/0233.txt": "aa6120e9c658472da8cb31b4cec02463e5df4a5189959686225db2bc9a391cc1",
+      "inputs/0234.txt": "6b6c294febda22fffbddb27e1772909ae090ee640978be4c48c3bf2bc3dce3d9",
+      "inputs/0235.txt": "3dd396cd2153c41bb2b9103e34d19edf4faa17581b47c2b8a019b7d1425c5842",
+      "inputs/0236.txt": "8fe93bef6f7e36baaf02036439b0ea13652b509f029c2f443eb954c37a7d154b",
+      "inputs/0237.txt": "1f78e0a515014f7b35925303cc2770fffe98a5ca543916364a838d388ccd4442",
+      "inputs/0238.txt": "63e99b83bcd39ed274e982dc0f00ad5706846b4e3296bf61dce89c19d9657fb0",
+      "inputs/0239.txt": "dbb5b52e0fde9c0e188f8d3fdd952a069a35bc3a54c669879e7e395c0eaf58f5",
+      "inputs/0240.txt": "69da117585adf568a1c1705555781f33863b44e7326a1c0298a2754467c32293",
+      "inputs/0241.txt": "9763f2e79dfcccf0b7ea6b1ee6a463d46b6889d432e1363107317700ceb5807d",
+      "inputs/0242.txt": "ea148564fbeb503bf317a8da6303fc5863cc63ca1c44ff7b58df93cf70cf078b",
+      "inputs/0243.txt": "60a92411a1d325bfb889af92ccd678424b255fb1247322b96b421ac91b8bde3d",
+      "inputs/0244.txt": "1f6954ea2f2b3dbbee5e770442b5e2fc1945472b8eafdf634af6994a18c7562e",
+      "inputs/0245.txt": "5a34897abdd5ce3a82dc731321c61ea49ce3278b5cd8c4f732decba16673678e",
+      "inputs/0246.txt": "bf49c2e0134705119d87fa47503e36bc082f95eba67a8464221ec981738829c5",
+      "inputs/0247.txt": "963951dae5c4d15d74097edce4453c4a44679cdbe8336d7b37cf94998fa12341",
+      "inputs/0248.txt": "cf74320f07486bf0d099fdaf31ec4de6bdfa0439ea43e55253426c8bde295383",
+      "inputs/0249.txt": "1f3d1845a618e6f72ecf2af5a1af0d38ddb399cccb576dcb6bda42aa9b85f094",
+      "inputs/0250.txt": "dd662886426a6e29bad89c93885e4334630808049488aa90cd49a64dfc4d596d",
+      "inputs/0251.txt": "d7b3ce4a6dc1d16997df71d1f833189e71b82f9468e6cc13f120d2a758d6d48b",
+      "inputs/0252.txt": "1b9a922505ab1497299dc8d6113794566b15e6dd2fc017886baec76bbf4fc12a",
+      "inputs/0253.txt": "60ccd30342ef63981c74f20b6e8b396e59f7bbf184b38b2b62c01fc0845051a1",
+      "inputs/0254.txt": "c28b12fa486908c218bbfbfea0b6e49b5b01d88a962c0161c1132ad3cb28714e",
+      "inputs/0255.txt": "4b00d4169ff5a47b7c769eae6d78148841882f9c1add93756eb3bf26c3c165b6",
+      "inputs/0256.txt": "0c4d6414853bd022cacef8a6518cc78827374c1033549ca89ec763bacec1dd68",
+      "inputs/0257.txt": "9f48020c8817f1c36df5b0098543ff7303a3170dd285ef25eacb28103f838b53",
+      "inputs/0258.txt": "3ad056a58df46078c9f2a0ae70b69d93bdbd0e6355b33a82ea711887929d5c1e",
+      "inputs/0259.txt": "aee30481cdaa30e555c9c9a08cd9af2c6c3d5d9733684f38b7dd82e15d3d9312",
+      "inputs/0260.txt": "5a3f823ac3b07126a2c435f481b1a963a789ad656066a481b7dbedd2e0296344",
+      "inputs/0261.txt": "ad08b01df420e16fe74a860503c6ac9f4e9ac2d21cdea9bb11e9fb75cffba0c4",
+      "inputs/0262.txt": "2179b34628c484d9901a0ed5a32a69d5bf4009956ce4ef4eaad3a3f97244b1dc",
+      "inputs/0263.txt": "5c3c18fbe5a1aac18c3daff82c61c56d7a804d4113218a2bd620854150c9b6c2",
+      "inputs/0264.txt": "19303ff9ee1e13bfb288b0d1bd68816c5cb9d6b56ce085d269d11bcdc0ff042d",
+      "inputs/0265.txt": "6f176388cef71ef2a78d20454a61e1a100de7dd33bc80a52bdcf711f9187d47b",
+      "inputs/0266.txt": "058606fabcb677a28934b77193af911be1b732ba53736ff778f78c9415fd982b",
+      "inputs/0267.txt": "dc0e04bddd9a58036ad2d41cfa12fdf13bc57472d3fc319a37255ffb0c4093b0",
+      "inputs/0268.txt": "84534f026aa7af4a2c82ac76d4706ac7573f18859894648d8e1cd4dfef84cd36",
+      "inputs/0269.txt": "32d716cbcdaa204ff030b25bc6f48e85d9776210b9de4c2e45e495091e486914",
+      "inputs/0270.txt": "89ecba949fab3a22d3ace138f95b689dc237d2158b8f42e15554286719be6066",
+      "inputs/0271.txt": "339da1ea739f63ae839eb513998645014a5445065e8673ca1aad3c12dc9abc57",
+      "inputs/0272.txt": "1f9b53033175682d20935a7933da165516a16461a1716ceff88a2d40fd8b4b6e",
+      "inputs/0273.txt": "28c30bc368865d5133e0e881ea189305efb3b4dc226343ef1f2fbfca979a9072",
+      "inputs/0274.txt": "147b6974b89778ad005e57e9693ec20f37deea2ad4857ff6cd7d4404324463e2",
+      "inputs/0275.txt": "d901097e8f37033f425815bc3774eddc447f11b5c548cc8b561d9e10d8b88fec",
+      "inputs/0276.txt": "dd994f9316b2e21459211ac550bc788b1b4890c26ab310676b62a9617ce1a08b",
+      "inputs/0277.txt": "7cabed9394c8a5d3a71e1ad1f109c0774c75c5ce373afd66b38c05bc1a8ccabf",
+      "inputs/0278.txt": "4385edd723fdcf717d6461800345dc3edbaa0e082f980c080e7a094eee71ccac",
+      "inputs/0279.txt": "ced062dcd2089da378b79f34435625266e111a0adfddcc2b35ce3a9fb03e95f7",
+      "inputs/0280.txt": "fafdbc681efa4a643692f5f6957131896107fe49f2c3b825e65c99a4da07890c",
+      "inputs/0281.txt": "f0cd1aa813e94eb296e1a7da16f671dd3aaa23503efb26e31fb2d2fcb8c8767b",
+      "inputs/0282.txt": "6dac2c789b27059caec3f4451edb257697bd0f5638c3686fc2b9c4596d0d165e",
+      "inputs/0283.txt": "dbdbefa26d8765d6227e67b9e4da81b4ed51f5bb82fa7c6980b95a9a39432e38",
+      "inputs/0284.txt": "7b646848b15b60bd2ef98a3178160d8c0d3038aee360cf64cfe1716c7d9bb49d",
+      "inputs/0285.txt": "ff03836f3047fe6fd99361feb3429cc425192b79730e354ce964a67a3d227c0b",
+      "inputs/0286.txt": "ffc95fd283131719817ecdb1dc8cdcb48407301f159e0a76618c9599a16ac3fb",
+      "inputs/0287.txt": "a57e8970356d9c5bf2a81398352d703bbc7a987d1d378eb554feda4dfb896595",
+      "inputs/0288.txt": "e57218d22b984296cd3647dad3105d24f13f1bffeb38527d27cdf73b8bb6f1b9",
+      "inputs/0289.txt": "b5e909719dd83c6d9b581b6270f0bf68eccaf585ad67dfe87a60826187754888",
+      "inputs/0290.txt": "6a95845d648defff5cf4bc9898ab4da31c84e0e93a6767eed1c08c4fab48060b",
+      "inputs/0291.txt": "72acc389b5edf6145ae78827ef7d41fbe33f2d7ef2d69b9133f4ea45d7cc39ac",
+      "inputs/0292.txt": "0ebba185722e5261a4c7e3ff1e65509c02c2458f6b41e050d124cddb78831460",
+      "inputs/0293.txt": "0509e946eca6a5b510367d457b0b583fa7a9c2f3eac82d67aaa285a38d7b8800",
+      "inputs/0294.txt": "3b38d750da433b1265e1429c63858d85db36ce9f2fc6cdc6f9ae3879f33795d4",
+      "inputs/0295.txt": "b6e10df81ba65585996804e688fb49396a4840621136a719a34b10ee7cd8e0ed",
+      "inputs/0296.txt": "ff042328f45f46ee5600d1f877a51c23cffb4cb0750441c61f9582fe8377345b",
+      "inputs/0297.txt": "c9ed4d624d4e9845b35cac677ddcf93dc8396a1afafcd972bb9f63efa378915a",
+      "inputs/0298.txt": "a5a5807ad1864ee288b3dc1d98278e813ee2f7f1c39d6969092b7265a88e551f",
+      "inputs/0299.txt": "a63726218cd380f644a46dac7a7b94cce05162d6573376daf2193ac41fa2f2b3",
+      "inputs/0300.txt": "e536349fa1d91162a5f5046af8f2a78d3f94bb030e5b19ab1ba0e3a7672e64c9",
+      "inputs/0301.txt": "dce63bc58a0cde5b63629eaf9a1f432602b005ec3cd82dec27e9fd117e93b89b",
+      "inputs/0302.txt": "b14e4fe7233ce778f38a5d9670e62fdd0307e6a6b16d312834c203e50a506690",
+      "inputs/0303.txt": "6e0afda1e4cb95e712c94cb1600e14c86dbfd6148248790bc4bf68b11dec43bc",
+      "inputs/0304.txt": "77411d4f633cc0c58ec384ab126781456ef9b7f079cedcdd293fc9cfeb23aeb2",
+      "inputs/0305.txt": "aa96445da02775e529d2dc271980bf735e3d9c7d2cd1520d05b441fddbae0478",
+      "inputs/0306.txt": "993bfb59bd8e34ceb584ce823183eb95f4a53406c81850948183a6074d95d444",
+      "inputs/0307.txt": "c02f87da9e9e248adb1ffc045d5106dbc97e7894bd7b8da27535cb2f3ac50de2",
+      "inputs/0308.txt": "9cc49fe41c351437bf219e70e07dcbc312c8a7eec0a603b17b843b95d3443c5e",
+      "inputs/0309.txt": "2b17ee8a712910c997e26a6089390d21e76c7392b95c7cfa3a0adad346ed5645",
+      "inputs/0310.txt": "8c86c9f9421e558152382266376a79d9ec1200c983df3bc3592334c8957e6224",
+      "inputs/0311.txt": "67a7d25cb51c52a562ca6ff235a9e0825b8006a4e5bcd5631b2291102606eabd",
+      "inputs/0312.txt": "363e07c0eb309cd03e40ab447092a2e977c64b7b47078c3a4614943220af3eb8",
+      "inputs/0313.txt": "7d37cf2c6b0e2cf976c9095e2ac8d8c88427790cb99a76e616d0fa080fbb55ae",
+      "inputs/0314.txt": "5fa56745f042908c32c5e826105734aedeb945c4c4c0383414ae6eccebc813cc",
+      "inputs/0315.txt": "dae0f2e764bc023034483bd76d645cf1d7af3e144aee50103b97646162b12406",
+      "inputs/0316.txt": "f7bf837412dea801f472d62c422d0fd4f9602bc638f34a4c2332bf22fb90ac28",
+      "inputs/0317.txt": "f5d80817df59cc5a01842f3c75c0dfc14402809b8804be764611535efb43f58d",
+      "inputs/0318.txt": "57e0f6e4c7f254034c630efad2ab4e5149d0a3c759c29d42b8059c1e432a5af9",
+      "inputs/0319.txt": "7df824a3086b443b0735f14c281a36747f2cc52d626c5ee8f8f1aacf6dc28c73",
+      "inputs/0320.txt": "54b03bef6be3ba86ef32f83e201968b1e19e1f5a014bcda335f1a469f3d974c8",
+      "inputs/0321.txt": "2f811edb4557516e1213ae8fb60baa75cc58c3fd754d33549b43c6d3ed78dfeb",
+      "inputs/0322.txt": "0e4e1075b008cce607254ad4873efa01cc878211636a2711353ecf30c17bf032",
+      "inputs/0323.txt": "0a8669753dc3b3a9829cf4e8b4d8d0c85326bdad4976f470750f8ee1a3aba6c1",
+      "inputs/0324.txt": "f2abf8b599700d5b22c215048b124ca7598e6442dbed19be4e6a77fdbb27fa47",
+      "inputs/0325.txt": "dd025e1caa0eb044b44dff9ac77fbcc5920669808613dede21f9c7258560b429",
+      "inputs/0326.txt": "108f66b7a931b06ffbc6ce5c19945fc9d43b1535a8b5311e9bfda960ebf0bb7f",
+      "inputs/0327.txt": "0c9dd5be8af3f6530980bf3c1fc834dfd4ead22794c0325e89ef6280de667201",
+      "inputs/0328.txt": "d1068998568b9ae27d66bd3f933ee05c63db979cf66436a24cdd12fec6828b37",
+      "inputs/0329.txt": "653ebb0f36b2993b200853f40ed34668d37d09e0fe96ca3f93b79ad4a7c50c59",
+      "inputs/0330.txt": "b5b91ebae400dd8649e96aaaaf00d50aa87100ec07a3e3b84177178fd2bcb012",
+      "inputs/0331.txt": "cfeda088e61548b6a80caa8398c9c93b5697db90433583894cc03732e919493e",
+      "inputs/0332.txt": "c8aefbb0f92a61360d9dfe0f394a81ce3db057fb8c324b579080f9429a43f628",
+      "inputs/0333.txt": "ae671315cb654df468d6b4e2b7675f2904f29387d7e80ec715c1873b7d3db21d",
+      "inputs/0334.txt": "3fd8e0cad1d96f410b7b34ad5c8e765695629a388523129365d7c9a12852564a",
+      "inputs/0335.txt": "a81bd933fd5b95709bd2dcd9029db382040a50cfc9dbf26e1dc0c3783b7a2805",
+      "inputs/0336.txt": "f069ff867d7ad90de98688744e8a4fdb8ce0249cb56ffcb6d42dce979802bf6b",
+      "inputs/0337.txt": "93fdd0e2ea416b7aff41eed2d9da5c54bab13ba1208da9deafaadd6a38b159e3",
+      "inputs/0338.txt": "2c93193d80ac533b07aec16556b55e9dd1eb886a5d6a581c8c4a5a39e7989191",
+      "inputs/0339.txt": "150da3ae87d1afd9bb819663fd35e2cd38e8c2de9b1101cde0a94932b55621f8",
+      "inputs/0340.txt": "98594994a6c055f4f35ca46cd645b2f7491f7e2bfd70aa3652f741d5b3cba578",
+      "inputs/0341.txt": "136098bd6ad8d4280980955173ba41d9e7307e4f11eb1545c32349b24a9e5a8f",
+      "inputs/0342.txt": "7076ae33ffeb4293776b0108c7459fe0067858ebd897ef7583b147d4d113a0c3",
+      "inputs/0343.txt": "234d1fe5bc89b68d11158469fb5d9943fa6404e830eb2c715111c13c3e09b9a3",
+      "inputs/0344.txt": "9f47f6b496359f1c0d35f88b03a5290d0cf105adb83f9adf8804a2c3cb127cce",
+      "inputs/0345.txt": "04277b94d1c19e2108ebc8c4ea94d08374718cbc262ea752a9476ef18b6613aa",
+      "inputs/0346.txt": "7ba501defe1fd64a3c1bc9c1d28f9ce379bed9d421a67eeaadbd2478d67db57a",
+      "inputs/0347.txt": "6960d8d3d1db8b9a26fa41b3b5ddc051071e52d0db065e1b4a85d5751ba1c993",
+      "inputs/0348.txt": "bb5e5324a67942ed003011866202ad02c32c510c7dc4e7ffa2e0a282f9bea8e0",
+      "inputs/0349.txt": "75706c3cf0a201c42acc4e76da48181bb7aa399d48c86d2d6231db708784eb71",
+      "inputs/0350.txt": "03973f8e2d47854edd9d9800eb85b673a7535d5ae89a10d07421517faa947e01",
+      "inputs/0351.txt": "65a25e18035fcd67a5d326f1e0182cbc40ede90228f51f7edfa2fdd4905b0454",
+      "inputs/0352.txt": "882e20796087395faf3e72cd9431b450d213db9fbbafcb9d486b0596fe45187b",
+      "inputs/0353.txt": "a10a3328eabe74e1b95f3a0bb76cbadcb4314a6fa4c9d926e035f8202699ff8d",
+      "inputs/0354.txt": "4a4ee3edb4ca142f43fab0aa4a5d5e855581b59403f41b46bf5c86ba2e2c3370",
+      "inputs/0355.txt": "5895c4443a805873a953527edee85a1640201f81e0cc782a67cbf7d575b89d96",
+      "inputs/0356.txt": "f4895b70a5fe07f5e31e4e3d0fd2c10f3cf5bbfbf011bd52ceabc76463fa1271",
+      "inputs/0357.txt": "4d13d892c187031f7f3120529da3978b90618c96656d7c1217bdb398a8cb047d",
+      "inputs/0358.txt": "0f609974cb4a04f8394231903a2427e7fd6f19141c940b4e2c3beda84121bdb1",
+      "inputs/0359.txt": "be1f0a8e48e8897e9f87289362fcb37dccf2aa088f734e5d47406655b7d5e386",
+      "inputs/0360.txt": "00de3d7209c710ab039d7f8483f6ce78afe4b474b612b59d3add465af0f8aa9d",
+      "inputs/0361.txt": "6c4d96d9d35121b9cc2035e7f6c413fd949beafbaf4b7fe02887f9b8f89bb61f",
+      "inputs/0362.txt": "55c417040fcac3868bd080c92e3677159dd978785248e3cffcb8172e385a0598",
+      "inputs/0363.txt": "bca37b1590a2ee075d00a33b54d1aad9664ca809ba43158d742b705df7e4c1b0",
+      "inputs/0364.txt": "12fe8d35f67ba9f346fd1c39d5438c4e06de74f8695eb278aa66eabf1d5442a3",
+      "inputs/0365.txt": "58c073d945c5ae9fb4f8da077edde6bdbe0a86a9a5360fe38f4b5df9c64cce40",
+      "inputs/0366.txt": "bfd2945fe98d8ac980ff29ee70a8248586c5e660473f36456e606d711a80da0f",
+      "inputs/0367.txt": "319ca80508ae5b114233eba2bcd0206992003fb47f2cd02201129f1fa85a4389",
+      "inputs/0368.txt": "912fde501e7114aebc70131d46969e593ac69bf0a7611fca3032c35057ebfba3",
+      "inputs/0369.txt": "730f9a0ad7bab9757e716e21ec27c3db8ed84779654589f4a29642625a761044",
+      "inputs/0370.txt": "e22ac2637a7e228279fb58a32066f73ac57a6de35f070997f8667d1d943100fc",
+      "inputs/0371.txt": "32516eb2cccc9933eff032df252727398a13f7c312edf2bd9d5c89bdea569539",
+      "inputs/0372.txt": "fb0833748ed6e83cd5cbea64d11b448d1be7cab016f2db33472ab3a98e7c91da",
+      "inputs/0373.txt": "5ee89e5046c7d23807ca5651613995fedbeab73983499b702bf10a95b958351d",
+      "inputs/0374.txt": "8ec39d942ba77afbd8bee63d89ee84de755e15ea1db3504ab6dbeadde5380a23",
+      "inputs/0375.txt": "0196eebd1c56f36c2879d0fedf6a8de4cee43e2b385da22f481227aa06197453",
+      "inputs/0376.txt": "b4a775aec162b7f71cf5780a191387afa684c20850006ac7ca465d32f36d9f76",
+      "inputs/0377.txt": "6810971ad8dfc9143cabc390f7b2177030a4e7ae40b83d04dcd61b8cf43cd89d",
+      "inputs/0378.txt": "b03520eb55e57987df409b157c2215dde0adb46a5e2fd95cf9501084dbe705bb",
+      "inputs/0379.txt": "66deeec050fbc4c781310b2e970e1ce805762c5d957b822caa7d2ec37d84d18d",
+      "inputs/0380.txt": "b40c21c3c0d33cbbf5d910cbbe106fa1266c5274c2cbb7eb74f4f031cd86911b",
+      "inputs/0381.txt": "1ac7854576edae8e7338a52f1dca5d14e80c7c8a3fa20df832b28879a78160c0",
+      "inputs/0382.txt": "b57a6e286976c266a673090928538ed0353192c9f570470e1139d4ab5e5883ea",
+      "inputs/0383.txt": "3a86232451f5d6b78e146a798350a238c4237c5143649e753a3784a34360a7a4",
+      "inputs/0384.txt": "eaf7dd7f20805d76e38bfb9eb3eb3df4ee4a6328c3eccee3559550bf0b854a0a",
+      "inputs/0385.txt": "9895bc4b6f4f46f50ec1907357559d704617ef8d00a8da532b47aa0e9e5a899f",
+      "inputs/0386.txt": "b90735564b708f5b341a3ecc5f9b35af03cd3de4588cb8bddb3ba8ebd8229868",
+      "inputs/0387.txt": "c8ed458fe830b147c6419e619a20f26f57ca5b75f198b6f9c526961e936533ab",
+      "inputs/0388.txt": "bef27c1513e135485500ca3a8b73fb8df4ab7948f810c642f06ab2c4abcb9840",
+      "inputs/0389.txt": "7c3bf12586638a175d7213b1ba8caa5f02943ae7a940c8f805604fd78291c002",
+      "inputs/0390.txt": "b7de9d9f635841afbc98a71a2facda58e542f93d5ef118db4163c352443ca7d2",
+      "inputs/0391.txt": "2f5185d29860f431b61522fdac2deaae98aacfbcd024f2685d6479f1a30789f5",
+      "inputs/0392.txt": "3587f4614d2f5f472c8a39e8952621db379c43c71bd4b3f19fab1423af1a9fbc",
+      "inputs/0393.txt": "d7a38880661b00cc17b02fb9ae12c0e50fcc39ba48ed988834eb89f88b3aed84",
+      "inputs/0394.txt": "214c3a9665c18dcf741d9769e03342a0ed00fba184ff48ded12631cb9aa9a2a4",
+      "inputs/0395.txt": "6fdb2241455cf6b950eecf741a43fcc0c25a34a0c6de5c64fe3126deed1ac18d",
+      "inputs/0396.txt": "31edec5a8f34aafca988b31c494e468a20a8ba5647ea8445eb84bfb0d549f5c0",
+      "inputs/0397.txt": "f43ac4df7d714f07d4f68160c3c9ea3ea9c3a5abc0f4952037f99d716a26581a",
+      "inputs/0398.txt": "eb9d7e9340f4d16ed432785d9457b3dcbcebd038eb9b60be5c7c992d0929e0e4",
+      "inputs/0399.txt": "7cfb4f5f59f1d46c1347065e0e147006180cd18c79b072af675fc39903e5a8d5",
+      "inputs/0400.txt": "41bb44a82143c954a4018ac778543091cd2987b01dbc2ca024e43f2a5c2e9088",
+      "inputs/0401.txt": "81780977927b9de8255de4b9fa0ff533cdfffd26a92eec098b6060abafceab92",
+      "inputs/0402.txt": "c2bc5dccb41ce129061c476de813bc97db5a031979393807df46ef2987988531",
+      "inputs/0403.txt": "de7e12f057ac86d13ae110fbba83931ca83b64a8342398b78d2b6a5abc72ffc1",
+      "inputs/0404.txt": "83129a2ec7cf79e473a242abd47d779c6f33a90fa7f5991030292a1408f8cc4a",
+      "inputs/0405.txt": "7dfd48aa4e19e2acfa64f55175c8cbf61849a032654eecd0904ac2a018a86474",
+      "inputs/0406.txt": "6e9d8540c6c5a869d5c1f6ba3e5f5d465dd221b7d53ebeeefcfbaf5fbcff887c",
+      "inputs/0407.txt": "1a0758c40a8b03b1b3cf9406afa58850da5b9cbac7963da1c588b373b2e21942",
+      "inputs/0408.txt": "9543650458d1431988248bc776d1cfabf66438810564b8cac859918531b976c6",
+      "inputs/0409.txt": "110f3411749995a7300d1587aed7f233e859644a182895b3e6f16d4780a7c03b",
+      "inputs/0410.txt": "b2004ea0eca21c7117fef21f37f0309e97a9696335278707fa765cfbf48c3bbe",
+      "inputs/0411.txt": "348eb02dc8f6b844ce91162e49d2134c577744bbfdc71174088d377a71988a1c",
+      "inputs/0412.txt": "531742fdb0dc7b1c087d068129479a1c070dd3fc8c17621f495d2bd001d1c274",
+      "inputs/0413.txt": "1a1523d80fea21b24cfafd24b9f3263f9d4872aeaf7acbb5f200fa77ca13701e",
+      "inputs/0414.txt": "d9902f550b876eba619ab45355da9c985847d38e9151935b4efdddac2577e3b6",
+      "inputs/0415.txt": "a41977a0081c1488214f6e6871b64f84478a4a9c8ec14768636e3d59f57bcb9c",
+      "inputs/0416.txt": "bedd513b0411cd5114b45fc60e93990f481f86ebe937942d7b4403d073568158",
+      "inputs/0417.txt": "8c8679e5bd647e501fb83cb084118103852c4a426528b163f98afc7eb5736c7c",
+      "inputs/0418.txt": "d7df5b9d3741bd381b2b3beeaeaf69ee9dca0a34329264ec2533fb7ded9dd6b3",
+      "inputs/0419.txt": "c8436936654396db0fdecb913be4f14b4e415baf0ac8ee254c6437ec859ad1a1",
+      "inputs/0420.txt": "f6621febbcb0101b2d748db9564c8fbc3ae85945b5ce5c6d49c0f6c0bc7c1875",
+      "inputs/0421.txt": "ff237441656063c44a4dcc6c317a28a4df57e5f3789fe2e28f8fc5425d7363f9",
+      "inputs/0422.txt": "fd8f52f6e898bf160caf8e9c1bf08242ed9fe338e425d61d6739b0af9d36f3fa",
+      "inputs/0423.txt": "8565c803420120eae2b9e4cac151dd4d1fe332739e2b842b1bb30bb318954482",
+      "inputs/0424.txt": "9ea3f5f3e517885d9503085e91bb1ca64ec0a9bfc5bd19cfc154c1d5df759339",
+      "inputs/0425.txt": "17ca89abae11a13caf8c60dc6d94e2a5d68c4c68599da32aca22c2ae8b6dada9",
+      "inputs/0426.txt": "fc8f1175c9f8bb40bfec53f053c36ab8ac7ae07b408668b9835898a6d3091ce5",
+      "inputs/0427.txt": "2c50816392d3a6c42a50a8396abf896244a258b307afcdc0d0acefbf964a2ec0",
+      "inputs/0428.txt": "9d5da7615eb138e4241445606acb591ebb7161b13e7d78257031e1536b2e2c00",
+      "inputs/0429.txt": "5a6f531c14f4ab93ccabde3d6c4311e9885d2c8989144a1d51e38c67c56ec52e",
+      "inputs/0430.txt": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "inputs/0431.txt": "92765c66c18ce12d20dc48ab9030fb579a7df2ddef8bc28543dc2c11a010101d",
+      "inputs/0432.txt": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "inputs/0433.txt": "5a6f531c14f4ab93ccabde3d6c4311e9885d2c8989144a1d51e38c67c56ec52e",
+      "inputs/0434.txt": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "inputs/0435.txt": "16f5862b9538cbf0f938b4c93c85dff88765a8937e2a0b1971c474731e4d870f",
+      "inputs/0436.txt": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "inputs/0437.txt": "7a23c5b725abb82e1fdaff92d71746cecf43cd6193f9357a0a81b76f466aafcf",
+      "inputs/0438.txt": "c8ec43cd9a1e3767547f90a3fe5b5b5ccb492e726b5cfcb9438ca76244a726b5",
+      "inputs/0439.txt": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "inputs/0440.txt": "6b4a8b67e1faa6aa69a226f6fd3699777475d285cb939c490669a531ee821794",
+      "inputs/0441.txt": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "inputs/0442.txt": "c8ec43cd9a1e3767547f90a3fe5b5b5ccb492e726b5cfcb9438ca76244a726b5",
+      "inputs/0443.txt": "4acf7fb89e9e21253d612b5d1cae5794cf0612f7ab82a3b8e67133cd54fca886",
+      "inputs/0444.txt": "1d90242394270be4b70c047133bcc25b05b9758fb2f852ae4b6623d79d7c009f",
+      "inputs/manifest.json": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295",
+      "inputs/receipt.json": "038247d9f03f846699cd6ddedaddd7597a7841115ff72199eaa63274ae878ca5",
+      "rubric.json": "9f89e515bcea47606e76573874304d2fda2fbcbd522e2283e7b520d4b4e960ab"
+    },
+    "policies": {
+      "DETERMINISTIC": {
+        "parallelCalls": 1,
+        "maxReads": 100,
+        "adapterIdentity": {
+          "sha256": "a51ba5e12db8276a50f2fc4deb566ba4da29eabe2a76b5168d6332cb54ec2b06"
+        },
+        "promptIdentity": {
+          "sha256": "23760541cd220a6e7a3779c3c0976d20e8cf4685301a98aedca2d2539a2f210a"
+        },
+        "toolPolicyIdentity": {
+          "sha256": "097d12d6342a2e92a229d5926c8456b67ead414a9ef5f31ae5c2fe8010d44ddd"
+        },
+        "contextPolicyIdentity": {
+          "sha256": "4923df783893c2bb0fbf1ce5978502ba3c06fc2a0b5b4647af0c27b4c0879005"
+        },
+        "finalSelection": "complete-fixed-invoice-dossier",
+        "participants": [
+          {
+            "id": "invoice-diagnostics",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": []
+          }
+        ]
+      },
+      "SINGLE_AGENT": {
+        "parallelCalls": 1,
+        "maxReads": 100,
+        "adapterIdentity": {
+          "sha256": "a51ba5e12db8276a50f2fc4deb566ba4da29eabe2a76b5168d6332cb54ec2b06"
+        },
+        "promptIdentity": {
+          "sha256": "61dea6bf58634f3312bf79ce216900df9e4bce54ff6b7fea0951dda1de500e83"
+        },
+        "toolPolicyIdentity": {
+          "sha256": "097d12d6342a2e92a229d5926c8456b67ead414a9ef5f31ae5c2fe8010d44ddd"
+        },
+        "contextPolicyIdentity": {
+          "sha256": "d681673180dcf9e3a3bb4f52d0962d1483e2b8b3cdbc35c625785c86f7d070c6"
+        },
+        "finalSelection": "complete-final-invoice-dossier",
+        "participants": [
+          {
+            "id": "invoice-single-agent",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-investigation-v1"
+            ]
+          }
+        ]
+      },
+      "INDEPENDENT_WORKERS": {
+        "parallelCalls": 2,
+        "maxReads": 100,
+        "adapterIdentity": {
+          "sha256": "a51ba5e12db8276a50f2fc4deb566ba4da29eabe2a76b5168d6332cb54ec2b06"
+        },
+        "promptIdentity": {
+          "sha256": "d99547f44fa55a6abdda7c437a4e430a766736ae0163e2bf7a73525774ed6821"
+        },
+        "toolPolicyIdentity": {
+          "sha256": "097d12d6342a2e92a229d5926c8456b67ead414a9ef5f31ae5c2fe8010d44ddd"
+        },
+        "contextPolicyIdentity": {
+          "sha256": "b55f6b9be18169714b4495c12b81ffc7590d19732072c5066bb838a674ba3af3"
+        },
+        "finalSelection": "verbatim-independent-dossiers-conservative-joint-response",
+        "participants": [
+          {
+            "id": "invoice-reconciliation",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-reconciliation-v1"
+            ]
+          },
+          {
+            "id": "invoice-webhook",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-webhook-v1"
+            ]
+          }
+        ]
+      },
+      "COORDINATED_TEAM": {
+        "parallelCalls": 2,
+        "maxReads": 100,
+        "adapterIdentity": {
+          "sha256": "a51ba5e12db8276a50f2fc4deb566ba4da29eabe2a76b5168d6332cb54ec2b06"
+        },
+        "promptIdentity": {
+          "sha256": "413e176d7cc899432ef77c8f5d887f972ddc7736ff0b08ccb4088928b0f8fff3"
+        },
+        "toolPolicyIdentity": {
+          "sha256": "097d12d6342a2e92a229d5926c8456b67ead414a9ef5f31ae5c2fe8010d44ddd"
+        },
+        "contextPolicyIdentity": {
+          "sha256": "92604527341f18a3fb311c6184704d450384c0701c344f44f15b951ec7430915"
+        },
+        "finalSelection": "invoice-one-final-joint-dossier-no-fallback-v1",
+        "participants": [
+          {
+            "id": "invoice-reconciliation",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-reconciliation-v1"
+            ]
+          },
+          {
+            "id": "invoice-webhook",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-webhook-v1"
+            ]
+          },
+          {
+            "id": "invoice-coordinator",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-team-review-v1"
+            ]
+          },
+          {
+            "id": "fresh-invoice-reconciliation",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-fresh-reconciliation-v1"
+            ]
+          },
+          {
+            "id": "fresh-invoice-webhook",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-fresh-webhook-v1"
+            ]
+          },
+          {
+            "id": "invoice-final-reconciler",
+            "cases": [
+              "stripe-invoice-subscription-2025-03-31"
+            ],
+            "protocols": [
+              "invoice-final-reconciliation-v1"
+            ]
+          }
+        ]
+      }
+    },
+    "definition": {
+      "experimentId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+      "origin": "SUPPLIED_RECORDS",
+      "model": "gpt-5.6-terra",
+      "rubricIdentity": {
+        "sha256": "9f89e515bcea47606e76573874304d2fda2fbcbd522e2283e7b520d4b4e960ab"
+      },
+      "implementations": {
+        "DETERMINISTIC": {
+          "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+        },
+        "SINGLE_AGENT": {
+          "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+        },
+        "INDEPENDENT_WORKERS": {
+          "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+        },
+        "COORDINATED_TEAM": {
+          "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+        }
+      },
+      "workloads": [
+        {
+          "workloadId": "invoice-joint",
+          "cases": [
+            {
+              "caseId": "stripe-invoice-subscription-2025-03-31",
+              "inputIdentity": {
+                "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+              },
+              "expectedResponse": "ANSWER",
+              "criteria": [
+                "versioned-association",
+                "independent-version-boundaries",
+                "application-policy-gates",
+                "joint-ledger-behavior",
+                "execution-and-causal-scope",
+                "evidence-and-uncertainty"
+              ]
+            }
+          ]
+        }
+      ],
+      "repetitions": 3,
+      "limits": {
+        "modelCalls": 60,
+        "elapsedMillis": 1200000,
+        "inputBytesPerCall": 64000,
+        "outputTokensPerCall": 2048
+      }
+    },
+    "order": [
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 1,
+        "arm": "DETERMINISTIC"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 1,
+        "arm": "SINGLE_AGENT"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 1,
+        "arm": "INDEPENDENT_WORKERS"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 1,
+        "arm": "COORDINATED_TEAM"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 2,
+        "arm": "SINGLE_AGENT"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 2,
+        "arm": "INDEPENDENT_WORKERS"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 2,
+        "arm": "COORDINATED_TEAM"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 2,
+        "arm": "DETERMINISTIC"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 3,
+        "arm": "INDEPENDENT_WORKERS"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 3,
+        "arm": "COORDINATED_TEAM"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 3,
+        "arm": "DETERMINISTIC"
+      },
+      {
+        "workloadId": "invoice-joint",
+        "repetition": 3,
+        "arm": "SINGLE_AGENT"
+      }
+    ],
+    "teamAllocation": {
+      "investigation": 24,
+      "review": 6,
+      "followUp": 24,
+      "reconciliation": 6
+    },
+    "allocationPolicy": "team-cumulative-stages-equal-worker-pools-ten-percent-review-and-reconciliation-forward-carry-v1"
+  },
+  "usage": {
+    "reservedCalls": 313,
+    "registeredCalls": 313,
+    "completedResponses": 312,
+    "notDispatchedSlots": 0,
+    "unresolvedUsageSlots": 1,
+    "inputTokens": 3705339,
+    "outputTokens": 36547,
+    "toolCalls": 610,
+    "caseExecutions": 0
+  },
+  "slots": [
+    {
+      "position": 1,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 1,
+          "arm": "DETERMINISTIC"
+        },
+        "runId": "trial-1a905593-3c92-4382-bcc3-8179f8c20e37",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+        },
+        "model": null,
+        "status": "COMPLETED",
+        "traceIdentity": {
+          "sha256": "4482ef62ff2ed4806684d4a34bf6ee7842cd87c6366f8d77d774db7f2ffac036"
+        },
+        "usage": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 99,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 1851,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ANSWERED",
+            "outputIdentity": {
+              "sha256": "7b16b29272d0f88d9b253fe6b096eedbfeb9b44ecb5fa8c02befe6544b35cd28"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T14:59:52.643479800Z",
+      "deadline": "2026-10-26T15:19:52.643479800Z",
+      "finishedAt": "2026-10-26T14:59:54.495712600Z",
+      "participants": {
+        "invoice-diagnostics": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 99,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "deterministic"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "cc6c75b115cf6b69a88c700659b96476299df1e9b1d2531706cc1604ecfc0efd",
+        "mappingSha256": "18cdf8a4068de1726fc12e366dc9f185af8af114ba3622337c6ef71fab5b8d84",
+        "outcomeSha256": "c098f4072af2d70b5bbe6926c1be83891c3aa670f37cd923bb525d7824f89068",
+        "slotReceiptSha256": "20b1c8185d400108aac7833ef7e63438627663086527c2cb6442f8a38342a5b8",
+        "runtimeSpecSha256": "dca08e0bba5bcf05ba8e5d697341521b88ef4416b2ebd572a2af6ff482023e28",
+        "adapterSpecSha256": "de4c73e3d12dccb1195afb619de07028c806d50b5c841675d3825f9c58c202ad",
+        "adapterRegistrationSha256": "4bc304d4a7bcda5741ef0ae121fd6e5b43b1bd61bf0484a14df5e3f48c24c95e",
+        "adapterResultSha256": "9d2005449704ca1ff915ad75fc88dd1762ab37c6e16083ef358075e45354ee65",
+        "adapterReceiptSha256": "843c3a3a0970b2579e4fb6a52246d29f54535df1d6239a071ec334d8dfa7abdd",
+        "traceReceiptSha256": "ad4908afd54b5a8b9a7fa6fff94b62a34adad10418d6209ee76a2000bce4fd7b"
+      }
+    },
+    {
+      "position": 2,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 1,
+          "arm": "SINGLE_AGENT"
+        },
+        "runId": "trial-de0d812e-f7c6-4e48-89ac-4deb018249aa",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "FAILED",
+        "traceIdentity": {
+          "sha256": "d185b42c0959db8ada760feea362794928f69b06f9485fec26b9e00cd9acd912"
+        },
+        "usage": {
+          "reservedCalls": 25,
+          "registeredCalls": 25,
+          "completedResponses": 25,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 320947,
+          "outputTokens": 3172,
+          "toolCalls": 25,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 76337,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "NOT_PROVIDED",
+            "outputIdentity": null,
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:00:06.654901600Z",
+      "deadline": "2026-10-26T15:20:06.654901600Z",
+      "finishedAt": "2026-10-26T15:01:23.029613500Z",
+      "participants": {
+        "invoice-single-agent": {
+          "reservedCalls": 25,
+          "registeredCalls": 25,
+          "completedResponses": 25,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 320947,
+          "outputTokens": 3172,
+          "toolCalls": 25,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "FAILED",
+          "stopReason": "UNSUPPORTED_DOSSIER",
+          "participant": "invoice-single-agent"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "48479c8e0665d2f15d6463492505049bbbf0dfca4e99fb1585781ca9673419ed",
+        "mappingSha256": "c248dd032259ee7241c34c8189a4e24432fb7e955992548b3655a04a0a0e05ca",
+        "outcomeSha256": "d2b6e2c5bc31d9c714a0a5ddfde4d226a35ad6730d8c02ac7ed9dad9b16e48de",
+        "slotReceiptSha256": "a952fd66baaf47abec9ca4db8ac5a9dd6795f08081483ddc1059ec699dff1b92",
+        "runtimeSpecSha256": "b57a73263766944d55730fe61738fe55a756fc05eb60b619ee315dfb34489220",
+        "adapterSpecSha256": "00ac22d6fa04aa7ef8c5851e6a95e33a8469a24468b6f9b0b8fbe1e735f0aeff",
+        "adapterRegistrationSha256": "a7808944397096170526f71537813b345c807a8cd02e6ea3326f8a90fbd53f97",
+        "adapterResultSha256": "62af9cd5f34234dd25e6222c6939a24854449ed5e3541af9ca8f13d2a93d5b67",
+        "adapterReceiptSha256": "1639bfedeec8a219600e1da6ed2c01bea2c6a76ca102dc0a6713f888a7dbdb85",
+        "traceReceiptSha256": "66dfd52b1bd116d94461e814b9fbd79a7412a10997d15a8596182d18bdb45381"
+      }
+    },
+    {
+      "position": 3,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 1,
+          "arm": "INDEPENDENT_WORKERS"
+        },
+        "runId": "trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "COMPLETED",
+        "traceIdentity": {
+          "sha256": "08d3042e301c43f802ea038c114c77a64c7359cbbf88f9ae89fad985789033cc"
+        },
+        "usage": {
+          "reservedCalls": 41,
+          "registeredCalls": 41,
+          "completedResponses": 41,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 455246,
+          "outputTokens": 5571,
+          "toolCalls": 41,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 73319,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ANSWERED",
+            "outputIdentity": {
+              "sha256": "01ad09e6943205297110946a2d0dd9de9543bb3ffb01be0006b0df58de8d8993"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:01:37.847755200Z",
+      "deadline": "2026-10-26T15:21:37.847755200Z",
+      "finishedAt": "2026-10-26T15:02:51.241591200Z",
+      "participants": {
+        "invoice-reconciliation": {
+          "reservedCalls": 20,
+          "registeredCalls": 20,
+          "completedResponses": 20,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 234702,
+          "outputTokens": 2480,
+          "toolCalls": 20,
+          "caseExecutions": 0
+        },
+        "invoice-webhook": {
+          "reservedCalls": 21,
+          "registeredCalls": 21,
+          "completedResponses": 21,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 220544,
+          "outputTokens": 3091,
+          "toolCalls": 21,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-reconciliation"
+        },
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-webhook"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "eed872c46a3e0e951648ec133757bde6f3df2997cbe4526144338307e3f37c83",
+        "mappingSha256": "445849a258d05c3aa17f2930c256e725fffde2132c0b1a4cbc564246e2c76ca9",
+        "outcomeSha256": "bbef88d2d16c77d7a3097350df4c816452663d940568e8a6fc6fe9f74ded4d98",
+        "slotReceiptSha256": "175f035fca4831e3c58f4d753b767e8a05a050f1f1900886cb1747800ad1d364",
+        "runtimeSpecSha256": "0a217c49ef5288ade0ddb02a304a7733dffd43ad4c52dfd30bbea886d99d36fc",
+        "adapterSpecSha256": "ecf6439f452475ceba9e8eeefb6b9ea2509ccf970f160aacc80d57d6cc727ebb",
+        "adapterRegistrationSha256": "0df8994cbba5f4b46aa4552ae1f238fe9a690b81f16ce63f6f533600817a68f4",
+        "adapterResultSha256": "6cce21c2349497498ea6d0ce1a4775cf246a1517a9b4fc77661d56cb66c71676",
+        "adapterReceiptSha256": "62de8168dd7f99ea934d237b94aeec1aef4249815fb4de6656d139c6cdf25142",
+        "traceReceiptSha256": "6c98ac8e80472ccf6ab6eb60ef5b4c859500b015097ddc553b3fa13ff73d682a"
+      }
+    },
+    {
+      "position": 4,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 1,
+          "arm": "COORDINATED_TEAM"
+        },
+        "runId": "trial-00ec370f-67e6-4dfa-882c-e1f09f7df607",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "FAILED",
+        "traceIdentity": {
+          "sha256": "3c9fe72f719319d261dd5893a93773dced20757afdd1b6ce5040d3f50e0c0f11"
+        },
+        "usage": {
+          "reservedCalls": 31,
+          "registeredCalls": 31,
+          "completedResponses": 31,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 319501,
+          "outputTokens": 3469,
+          "toolCalls": 31,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 55320,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ABSTAINED",
+            "outputIdentity": {
+              "sha256": "d8797a16813a09ca38208fa7c14099265feb72d6caf14aceaa90f9be841bb5ed"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:03:11.511384600Z",
+      "deadline": "2026-10-26T15:23:11.511384600Z",
+      "finishedAt": "2026-10-26T15:04:06.886931600Z",
+      "participants": {
+        "invoice-reconciliation": {
+          "reservedCalls": 12,
+          "registeredCalls": 12,
+          "completedResponses": 12,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 147223,
+          "outputTokens": 1197,
+          "toolCalls": 13,
+          "caseExecutions": 0
+        },
+        "invoice-webhook": {
+          "reservedCalls": 12,
+          "registeredCalls": 12,
+          "completedResponses": 12,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 133703,
+          "outputTokens": 1227,
+          "toolCalls": 13,
+          "caseExecutions": 0
+        },
+        "invoice-coordinator": {
+          "reservedCalls": 6,
+          "registeredCalls": 6,
+          "completedResponses": 6,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 36380,
+          "outputTokens": 780,
+          "toolCalls": 5,
+          "caseExecutions": 0
+        },
+        "fresh-invoice-reconciliation": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        },
+        "fresh-invoice-webhook": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        },
+        "invoice-final-reconciler": {
+          "reservedCalls": 1,
+          "registeredCalls": 1,
+          "completedResponses": 1,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 2195,
+          "outputTokens": 265,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "FAILED",
+          "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+          "participant": "invoice-reconciliation"
+        },
+        {
+          "status": "FAILED",
+          "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+          "participant": "invoice-webhook"
+        },
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-coordinator"
+        }
+      ],
+      "stageReservations": {
+        "investigation": 24,
+        "review": 6,
+        "followUp": 0,
+        "reconciliation": 1
+      },
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "5b99903a3ab8eb5c41ebfb1dc382ac9731fd0305aee52a830b08d72a5a73d8cb",
+        "mappingSha256": "f174d137895a4967540f9cb31a3041b8eb3c314e69ed847b82c4fd3bc3f4cf49",
+        "outcomeSha256": "ddc00f687df877b26608cc7dd202ad58be7957f001a6896e6713a3b1abff97ab",
+        "slotReceiptSha256": "453aab0db5e7c2811eda2e57a089887516bccb3362ef283874f3025358567bde",
+        "runtimeSpecSha256": "4bf8020044534bf814d00d131d8afafe5757427f2aef0d1e5ef0ec86ddaf03db",
+        "adapterSpecSha256": "48740132e3679a6b8fa678e82ca9949547566c97594ecb1c12c749a9aa4680f2",
+        "adapterRegistrationSha256": "5229c192f52115b9bad68dc853ee64fcc6cff09a46be6b6618fae8783fa99304",
+        "adapterResultSha256": "3cbfaccf9869b916007dcbcfdf62ab1f526c89d759985593e7ff6be1a6e06852",
+        "adapterReceiptSha256": "3105d0021a92caea21b04f1ce2090381ca1afc46513d43d898a71f6d6767f2ad",
+        "traceReceiptSha256": "299a1b83342bfced33ffbb05e86b429c7120ad31f3bf4e5bb293b64b54e2fec4"
+      }
+    },
+    {
+      "position": 5,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 2,
+          "arm": "SINGLE_AGENT"
+        },
+        "runId": "trial-fd9c532c-3579-4077-8076-170b59b565ab",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "FAILED",
+        "traceIdentity": {
+          "sha256": "c211e27fb896ca0bd5896fa2f2757f7cdf03d4068dab85f4642f3f72a1c2969c"
+        },
+        "usage": {
+          "reservedCalls": 38,
+          "registeredCalls": 38,
+          "completedResponses": 38,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 491634,
+          "outputTokens": 3714,
+          "toolCalls": 38,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 91974,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "NOT_PROVIDED",
+            "outputIdentity": null,
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:04:30.930830700Z",
+      "deadline": "2026-10-26T15:24:30.930830700Z",
+      "finishedAt": "2026-10-26T15:06:02.968156100Z",
+      "participants": {
+        "invoice-single-agent": {
+          "reservedCalls": 38,
+          "registeredCalls": 38,
+          "completedResponses": 38,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 491634,
+          "outputTokens": 3714,
+          "toolCalls": 38,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "FAILED",
+          "stopReason": "UNSUPPORTED_DOSSIER",
+          "participant": "invoice-single-agent"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "da29b66f8f2a68f1ba5df524da5c9dbf061f57662392c3bd4fdd9aff90b54630",
+        "mappingSha256": "98a353d29a853268e941741b8c04a3b3b16d82e4b92af37452658f2d1a35de27",
+        "outcomeSha256": "ec4467d525223c30440035a1f7d52bcc8c3f195c41fafbf9f4d9adc4459eb512",
+        "slotReceiptSha256": "8c5b894cc7ae6bbb8e4271e3c9256e5bfcd798ab822d3ec96296e1cde42f2eef",
+        "runtimeSpecSha256": "45bd40948f7e16c761598228c35e7055fd2d3cd578c59772db2bee1fc54f488c",
+        "adapterSpecSha256": "12aa5480de4f716e14e8a85cd3a34a7e166308f96847a816c1389ff9742c03e8",
+        "adapterRegistrationSha256": "46386d9eeaf680613d9f587a0f2c63ab8fcf9443c40da7ddff28fe91d3709dbb",
+        "adapterResultSha256": "88fdfb1bb40ae8be0253f52b30b38066e5212585ec9d1de130abae08469b9c4b",
+        "adapterReceiptSha256": "27c2e5000d3d1b4732b37b891330cd2b382f4aee2dd8f45917cfb3ce83eeaf70",
+        "traceReceiptSha256": "ef3ebe88c778a712b020613979f79284adc0d508e521a625e2ba71dfb36ff6e5"
+      }
+    },
+    {
+      "position": 6,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 2,
+          "arm": "INDEPENDENT_WORKERS"
+        },
+        "runId": "trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "COMPLETED",
+        "traceIdentity": {
+          "sha256": "8d7f8667a144493cb240ad10a3a1a8f806a8a54e825c0d4eb67ce7627ee246d6"
+        },
+        "usage": {
+          "reservedCalls": 47,
+          "registeredCalls": 47,
+          "completedResponses": 47,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 618378,
+          "outputTokens": 6138,
+          "toolCalls": 47,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 90330,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ANSWERED",
+            "outputIdentity": {
+              "sha256": "50d0c12dc2ce0cd7cae4d38cf5bc4af2449008aa6fc4fcec67b03824667f82c9"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:06:29.317609700Z",
+      "deadline": "2026-10-26T15:26:29.317609700Z",
+      "finishedAt": "2026-10-26T15:07:59.732764600Z",
+      "participants": {
+        "invoice-reconciliation": {
+          "reservedCalls": 24,
+          "registeredCalls": 24,
+          "completedResponses": 24,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 332035,
+          "outputTokens": 3061,
+          "toolCalls": 24,
+          "caseExecutions": 0
+        },
+        "invoice-webhook": {
+          "reservedCalls": 23,
+          "registeredCalls": 23,
+          "completedResponses": 23,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 286343,
+          "outputTokens": 3077,
+          "toolCalls": 23,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-reconciliation"
+        },
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-webhook"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "7dbd753f94268ce09237ede60a9cf82dc551755c5b03902eda3c4a5770058052",
+        "mappingSha256": "53e5a5d6eadbc0835e1e3da9bf961815f7bbc4f7bdb93037187e8399b5a7446d",
+        "outcomeSha256": "e66c0dde7b8efa19d6f845425ff205cf84d6ffe62abb6cb22caf52638d9b0c92",
+        "slotReceiptSha256": "a0614536b1941e12536175ec1237e8a603a4c7828762a4fdb41adf91ea8b2c1c",
+        "runtimeSpecSha256": "f5819d2fa0faafde67f7df9b76b6b0ca1743bed9de98c540fcaf18841bd9065b",
+        "adapterSpecSha256": "2d5718296d733510d1312205b78fe710c6f4ae889386d977ce7eb6fe77c6d890",
+        "adapterRegistrationSha256": "c150d2c42feea9cbff9c10a29b698e4c896c9701ee11d3f7f73d271b622eaa5e",
+        "adapterResultSha256": "4081f1f9397abef509a8f999226eac2ad327cb184babc9f35fa7106fcde7d9b1",
+        "adapterReceiptSha256": "c1f2041ecdebdade62abcabaca76e1de8c3c5d6b8412cf265c5c06e4e28e3f4e",
+        "traceReceiptSha256": "6c9cf36c427730860729797957617f347f950e74b637635e580f23b4e7425915"
+      }
+    },
+    {
+      "position": 7,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 2,
+          "arm": "COORDINATED_TEAM"
+        },
+        "runId": "trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "FAILED",
+        "traceIdentity": {
+          "sha256": "fe4d79be8393436fb4b5ce22608b46d12dd700b712639ed13c3d8395def10e2b"
+        },
+        "usage": {
+          "reservedCalls": 31,
+          "registeredCalls": 31,
+          "completedResponses": 31,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 311063,
+          "outputTokens": 3382,
+          "toolCalls": 31,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 58488,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ABSTAINED",
+            "outputIdentity": {
+              "sha256": "f0ad1789ce1b529e6ca6f478a7b26c69be12b945ea150f93858a6ae1cc261457"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:08:32.193038300Z",
+      "deadline": "2026-10-26T15:28:32.193038300Z",
+      "finishedAt": "2026-10-26T15:09:30.732972900Z",
+      "participants": {
+        "invoice-reconciliation": {
+          "reservedCalls": 12,
+          "registeredCalls": 12,
+          "completedResponses": 12,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 139649,
+          "outputTokens": 1376,
+          "toolCalls": 13,
+          "caseExecutions": 0
+        },
+        "invoice-webhook": {
+          "reservedCalls": 12,
+          "registeredCalls": 12,
+          "completedResponses": 12,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 125908,
+          "outputTokens": 1121,
+          "toolCalls": 13,
+          "caseExecutions": 0
+        },
+        "invoice-coordinator": {
+          "reservedCalls": 6,
+          "registeredCalls": 6,
+          "completedResponses": 6,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 43428,
+          "outputTokens": 625,
+          "toolCalls": 5,
+          "caseExecutions": 0
+        },
+        "fresh-invoice-reconciliation": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        },
+        "fresh-invoice-webhook": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        },
+        "invoice-final-reconciler": {
+          "reservedCalls": 1,
+          "registeredCalls": 1,
+          "completedResponses": 1,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 2078,
+          "outputTokens": 260,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "FAILED",
+          "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+          "participant": "invoice-reconciliation"
+        },
+        {
+          "status": "FAILED",
+          "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+          "participant": "invoice-webhook"
+        },
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-coordinator"
+        }
+      ],
+      "stageReservations": {
+        "investigation": 24,
+        "review": 6,
+        "followUp": 0,
+        "reconciliation": 1
+      },
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "073199fa4951b7b5b1c56ad68b8b56b59374e69a34bef6e2702dec6f5ad2ade9",
+        "mappingSha256": "b423fef027cf1c311882346bae48c22a944a3b6c33496349289915bce4114db7",
+        "outcomeSha256": "833c3059ecef2b0e961510ba739b37e9a71adb4799bfbaba21c209ff886aa2b3",
+        "slotReceiptSha256": "0cbc316282733b6bdc5e972b84260b92bee1a081eca51128638d9a24127351ac",
+        "runtimeSpecSha256": "92eaa2a0711f35fd69d243afeddd98dbe52766e9e3294053c3376096b98b8f52",
+        "adapterSpecSha256": "cf5861f32fb016ea980db2e0fe8781546d179f2ac7592becec61e6fd81d1b9cd",
+        "adapterRegistrationSha256": "736ebeea261556de79176deb57b84b63dd19f58be9b8660df051e950c74d0c59",
+        "adapterResultSha256": "16a9fa3a1c2ce4a53657e800ad9b09e2b788d396bb31f81108ef39c4d1c89e04",
+        "adapterReceiptSha256": "42b3f2b8afa453b0c35ffec5792fa1ce7bf62475acddaf04c739486621aedd62",
+        "traceReceiptSha256": "38028a3a5a05ca1fac6ae1e0288fb9d205b49e1f2c777e9be58476ffcb86bad9"
+      }
+    },
+    {
+      "position": 8,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 2,
+          "arm": "DETERMINISTIC"
+        },
+        "runId": "trial-9f528f65-a468-4ab2-b637-ec7a26b9e55f",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+        },
+        "model": null,
+        "status": "COMPLETED",
+        "traceIdentity": {
+          "sha256": "b934bea4429663cd9a527dbacca01065565016782faf08a7f4b315f12ecd1e6b"
+        },
+        "usage": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 99,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 1831,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ANSWERED",
+            "outputIdentity": {
+              "sha256": "1b47c2802dc05346d7d593d515bc9e5886d6f96166e7cea048abe730023d7b27"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:10:05.892524300Z",
+      "deadline": "2026-10-26T15:30:05.892524300Z",
+      "finishedAt": "2026-10-26T15:10:07.725467700Z",
+      "participants": {
+        "invoice-diagnostics": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 99,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "deterministic"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "4604dd2f7f7cfaf80e8113e4c04075d5d70c839c2417d65c29fb90e6dd2feba4",
+        "mappingSha256": "5fa78a4008396cb06adb8b38c8ba0b7a9e0d7655dbb0aa67cb6df1dd7516a9ac",
+        "outcomeSha256": "5f9d2fc031349d328fb21a67ffebc2af9d6130d4869b7c96b16b50cfe663fb6a",
+        "slotReceiptSha256": "4c555dd3c7ddfd4feab4610daa53f325b700383aef5045a6c454fb289bb5edea",
+        "runtimeSpecSha256": "7c3207f5106feaee4376e83972c4ed11831b6dbccfb1acc15b31d698a0eb3c87",
+        "adapterSpecSha256": "ede8fe6566667a30b188dcd99d28dc09c024a108edfbf7b9d08aff394b3b7a7f",
+        "adapterRegistrationSha256": "89d499f3d29a8a7f64e0ec048bc7595f9f2d42591d2d9bb0c24041982178c70d",
+        "adapterResultSha256": "a21d6d7769ffa99776ff26b452b2b460ee4a2af37a5077a367bf79fd925b9627",
+        "adapterReceiptSha256": "e55ad09e3278565248dc98c8157f0f316dbac9ac2957d8792681d13a1b372b95",
+        "traceReceiptSha256": "d829d421d038c0e98bbcd50a308a3abf03f14812b80d618dabefc42beb352646"
+      }
+    },
+    {
+      "position": 9,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 3,
+          "arm": "INDEPENDENT_WORKERS"
+        },
+        "runId": "trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "FAILED",
+        "traceIdentity": {
+          "sha256": "9e8ed1d388bac9466b141cd7a5831c17566832451398d3897c14fd7787236700"
+        },
+        "usage": {
+          "reservedCalls": 52,
+          "registeredCalls": 52,
+          "completedResponses": 52,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 654914,
+          "outputTokens": 7284,
+          "toolCalls": 52,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 125928,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "NOT_PROVIDED",
+            "outputIdentity": null,
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:10:43.329173100Z",
+      "deadline": "2026-10-26T15:30:43.329173100Z",
+      "finishedAt": "2026-10-26T15:12:49.346663Z",
+      "participants": {
+        "invoice-reconciliation": {
+          "reservedCalls": 33,
+          "registeredCalls": 33,
+          "completedResponses": 33,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 430868,
+          "outputTokens": 4989,
+          "toolCalls": 33,
+          "caseExecutions": 0
+        },
+        "invoice-webhook": {
+          "reservedCalls": 19,
+          "registeredCalls": 19,
+          "completedResponses": 19,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 224046,
+          "outputTokens": 2295,
+          "toolCalls": 19,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "FAILED",
+          "stopReason": "UNSUPPORTED_DOSSIER",
+          "participant": "invoice-reconciliation"
+        },
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-webhook"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "9de04afc12a84ae3b2ea3dc0d9b14fd56f59dace86bb0bcbbce59f598cd4ae92",
+        "mappingSha256": "815b5d632d9b86b7d2f61a5624f123826c1a6cbf2c14c211cd76a28b10dcdc3a",
+        "outcomeSha256": "48035c508613d7af9b889c8527fbd328e68de1f9b930f9102c11104d141bd6d6",
+        "slotReceiptSha256": "b5132ec2b4f926c39689fbbed4496a1eb566c51d1b972f80edffccdaef11186a",
+        "runtimeSpecSha256": "f750275626958904179cc91de5d6ae115cefeeb266017080ef627ac602e08f6b",
+        "adapterSpecSha256": "ed2643f18b71fca7e2173ebb47941936a504716a8639102caf559f616ba32a60",
+        "adapterRegistrationSha256": "d604adb4cff93dd2b677946998fbecc32c2299b455c55ad63cc55e8fda111d27",
+        "adapterResultSha256": "37f9d3f375bf270401721805e3ab6527ad508102110e31a21a1212044a163610",
+        "adapterReceiptSha256": "c03169c56cd177216e2ee1923cd2302d6ed8fa73fbcee2199f31596c6bf1f99d",
+        "traceReceiptSha256": "629ae2c3af1ddfcc8c531393854ea1fa21399ee53583696a8389868b7d384d6f"
+      }
+    },
+    {
+      "position": 10,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 3,
+          "arm": "COORDINATED_TEAM"
+        },
+        "runId": "trial-d4edbf70-e04d-4a97-8090-cacf1842f29f",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "FAILED",
+        "traceIdentity": {
+          "sha256": "a819d5b38017d24b966e07f461a18017a1b00bdba6fb90cc48c4753b79acd489"
+        },
+        "usage": {
+          "reservedCalls": 30,
+          "registeredCalls": 30,
+          "completedResponses": 30,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 310774,
+          "outputTokens": 2672,
+          "toolCalls": 30,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 44933,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ABSTAINED",
+            "outputIdentity": {
+              "sha256": "f8681bad2ea25cbc5fc48ac68ddcb33096697e90836a00584340c222f52a7150"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:13:32.968488100Z",
+      "deadline": "2026-10-26T15:33:32.968488100Z",
+      "finishedAt": "2026-10-26T15:14:17.956481600Z",
+      "participants": {
+        "invoice-reconciliation": {
+          "reservedCalls": 12,
+          "registeredCalls": 12,
+          "completedResponses": 12,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 135515,
+          "outputTokens": 1024,
+          "toolCalls": 13,
+          "caseExecutions": 0
+        },
+        "invoice-webhook": {
+          "reservedCalls": 12,
+          "registeredCalls": 12,
+          "completedResponses": 12,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 143207,
+          "outputTokens": 1018,
+          "toolCalls": 13,
+          "caseExecutions": 0
+        },
+        "invoice-coordinator": {
+          "reservedCalls": 5,
+          "registeredCalls": 5,
+          "completedResponses": 5,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 30015,
+          "outputTokens": 373,
+          "toolCalls": 4,
+          "caseExecutions": 0
+        },
+        "fresh-invoice-reconciliation": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        },
+        "fresh-invoice-webhook": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        },
+        "invoice-final-reconciler": {
+          "reservedCalls": 1,
+          "registeredCalls": 1,
+          "completedResponses": 1,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 2037,
+          "outputTokens": 257,
+          "toolCalls": 0,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "FAILED",
+          "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+          "participant": "invoice-reconciliation"
+        },
+        {
+          "status": "FAILED",
+          "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+          "participant": "invoice-webhook"
+        },
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "invoice-coordinator"
+        }
+      ],
+      "stageReservations": {
+        "investigation": 24,
+        "review": 5,
+        "followUp": 0,
+        "reconciliation": 1
+      },
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "7930f5f5ed85e7c564a33752897229d5f44ca7a28e77a15b99d9a4359dca240c",
+        "mappingSha256": "7e7d3cafcf90c9b9060faedb64ac967bb66354889457bc4d0397dc7875cc5202",
+        "outcomeSha256": "643e010b2ae315b4c70b006160c06c7bc2f9bc2d6d90b90fad758b8d718b31a4",
+        "slotReceiptSha256": "121fe35ace46f54617f14f6232e58ce1a88bca8695daf1b5997fa6c458d1b48b",
+        "runtimeSpecSha256": "1b64a3210bef2879df683974dbe4a03991ef101dcbeef47264f022e285048100",
+        "adapterSpecSha256": "8dac5970cb2e552922ff657aa91504e6538f0e0876ca1d2edb49eb54d3c9ecbb",
+        "adapterRegistrationSha256": "4d4de3a6c468d116d76464206fcf349dd3609f5e6ebc4488bfce5f49599e0df9",
+        "adapterResultSha256": "62a47dcc02209dc15dc56602a36da7c5bc0912f62020e6c19234ea18568c1753",
+        "adapterReceiptSha256": "0289b3231eb959529bb128445da241a4db6634ef347bc490d77f6b8dc5f3db53",
+        "traceReceiptSha256": "876e8dca0c7eb2582820142c778c50bb633a8a20d5be75045c1261e2470940bc"
+      }
+    },
+    {
+      "position": 11,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 3,
+          "arm": "DETERMINISTIC"
+        },
+        "runId": "trial-7fca4a59-0253-4c01-9c52-6dc943d88c91",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+        },
+        "model": null,
+        "status": "COMPLETED",
+        "traceIdentity": {
+          "sha256": "e570f37d54297db0835503013f2c5a6f1e3f64c730edb493653ba4adf5753004"
+        },
+        "usage": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 99,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 1816,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "ANSWERED",
+            "outputIdentity": {
+              "sha256": "cc27bd1dee48b472e1c0f9553c28175794f0db0d4e1acc9b6c985c85940f973a"
+            },
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:15:03.921612900Z",
+      "deadline": "2026-10-26T15:35:03.921612900Z",
+      "finishedAt": "2026-10-26T15:15:05.737615500Z",
+      "participants": {
+        "invoice-diagnostics": {
+          "reservedCalls": 0,
+          "registeredCalls": 0,
+          "completedResponses": 0,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "toolCalls": 99,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "COMPLETED",
+          "stopReason": "NONE",
+          "participant": "deterministic"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "f7e073b9377e12b717e44c9564518523daeb69ad36c50126dfc49308395f7b4a",
+        "mappingSha256": "7da9d8caacf536fd4275f9a0096cb06cfcb97289bb31329f81127de74dba47c3",
+        "outcomeSha256": "9dd5a66c84b9459cfcb046b34cffbd2f123562aa74493b1bdb211a7bfdb591b1",
+        "slotReceiptSha256": "3ace692ff0906cfd017f30d8f299022bc6dc471dd3e1af159f1f144183a4c46d",
+        "runtimeSpecSha256": "0e42453300c6780d0b472ef8bf7016697e0652ee29d3d4ccb98bea134dacd2f1",
+        "adapterSpecSha256": "980d890995623ed99af12fd6bb8ffcd6346d80b6c4e55d4fce1cff6639a8d06f",
+        "adapterRegistrationSha256": "16706b4c075f1f92ea08956db8f07bdc468ff13c2c7fb920a0bdaffb29fc6624",
+        "adapterResultSha256": "a499990c397c93426e083de834415b234362c9e20f2c5a8f53ce39656146f4d5",
+        "adapterReceiptSha256": "7a4119c2c38070157d22e3556bc3cbf18807db7b6479533944fc221ffe22833e",
+        "traceReceiptSha256": "1eb2d00418b154b0a01a2db1b1f2a590b015e9e723b5b3bc1714bd08b0ef285d"
+      }
+    },
+    {
+      "position": 12,
+      "trial": {
+        "slot": {
+          "workloadId": "invoice-joint",
+          "repetition": 3,
+          "arm": "SINGLE_AGENT"
+        },
+        "runId": "trial-525b453c-e3de-45b9-b7e8-d92d656642ec",
+        "definitionIdentity": {
+          "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+        },
+        "implementationIdentity": {
+          "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+        },
+        "model": "gpt-5.6-terra",
+        "status": "UNKNOWN_REMOTE_OUTCOME",
+        "traceIdentity": {
+          "sha256": "544001a50c9c198d3e25221f684b10509a84cd15b9fed0ee9a13622be0e7a626"
+        },
+        "usage": {
+          "reservedCalls": 18,
+          "registeredCalls": 18,
+          "completedResponses": 17,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 1,
+          "inputTokens": 222882,
+          "outputTokens": 1145,
+          "toolCalls": 18,
+          "caseExecutions": 0
+        },
+        "elapsedMillis": 34067,
+        "cases": [
+          {
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "inputIdentity": {
+              "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+            },
+            "response": "NOT_PROVIDED",
+            "outputIdentity": null,
+            "review": null
+          }
+        ]
+      },
+      "startedAt": "2026-10-26T15:15:52.268879600Z",
+      "deadline": "2026-10-26T15:35:52.268879600Z",
+      "finishedAt": "2026-10-26T15:16:26.365747400Z",
+      "participants": {
+        "invoice-single-agent": {
+          "reservedCalls": 18,
+          "registeredCalls": 18,
+          "completedResponses": 17,
+          "notDispatchedSlots": 0,
+          "unresolvedUsageSlots": 1,
+          "inputTokens": 222882,
+          "outputTokens": 1145,
+          "toolCalls": 18,
+          "caseExecutions": 0
+        }
+      },
+      "participantOutcomes": [
+        {
+          "status": "UNKNOWN_REMOTE_OUTCOME",
+          "stopReason": "MODEL_RATE_LIMITED",
+          "participant": "invoice-single-agent"
+        }
+      ],
+      "stageReservations": null,
+      "resourceIssues": [],
+      "nonCompletedBrokerOutcomes": [
+        {
+          "status": "RATE_LIMITED",
+          "inputTokens": null,
+          "remoteOutcome": "RESPONSE_RECEIVED",
+          "outputTokens": null,
+          "httpStatus": 429,
+          "resultSha256": "fcbeef78510bad0abd7d8b15c481994eea05a5f2558eb89a8cf764e2f43086a4",
+          "participant": "invoice-single-agent",
+          "callId": "model-30c72375-88d9-4d6d-b6d0-e6ae2d402476"
+        }
+      ],
+      "qualityReview": "NOT_PERFORMED",
+      "retainedBindings": {
+        "intentSha256": "82d516aafbbf54b0a121a9e84f5dc8d863bcb8bfd33cede451cedac72a63293b",
+        "mappingSha256": "8b4ce35cbb1525d2a2f129b49dabac5a45d4dd091add6676cd0360867b32038a",
+        "outcomeSha256": "0108f03cd0d76195287b5576003d725fc64aef888d18d39d78982e08b4fbb64a",
+        "slotReceiptSha256": "c81f808ae53f70d78619caf7e951b095692b6d2640510ed4555eee0402057540",
+        "runtimeSpecSha256": "5eb51ca4a46633ae1e02d5c4230ba9d2ffc5e1f583feb9e49b1e023fb22760b2",
+        "adapterSpecSha256": "5ae3fc15e44e32fe39abec9ff5e1ed2c00d0dc9f3a39a36e68276e38ca904a5f",
+        "adapterRegistrationSha256": "121f2b118f5c091ce285e4845bef809a65ebd8cdcdd57ed7caa525248028a054",
+        "adapterResultSha256": "9a4774d7163a3a131335f508ea07b24c4eda2b3e5ebf4b5451c76caf7be35513",
+        "adapterReceiptSha256": "5199b5e8dae90b7485ef8c5592a77eb5ba437345ec0d089ef74262c9d8addf1d",
+        "traceReceiptSha256": "17ff55905cd356ea572079b841a16a05c5c20830276d3a58bf1e230e68a9db1a"
+      }
+    }
+  ],
+  "mechanicalAudit": {
+    "status": "PASSED",
+    "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+    "trials": 12,
+    "uniqueTrialIds": 12,
+    "sourceArtifactsChecked": 622,
+    "historicalFilesChecked": 2292,
+    "traceArtifactsChecked": 2524,
+    "adapterArtifactsChecked": 1040,
+    "usage": {
+      "reservedCalls": 313,
+      "registeredCalls": 313,
+      "completedResponses": 312,
+      "notDispatchedSlots": 0,
+      "unresolvedUsageSlots": 1,
+      "inputTokens": 3705339,
+      "outputTokens": 36547,
+      "toolCalls": 610,
+      "caseExecutions": 0
+    },
+    "qualityReview": "NOT_PERFORMED"
+  },
+  "limitations": [
+    "Known synthetic case previously examined in pilots; not held-out accuracy.",
+    "Three paired rotations are not fully counterbalanced.",
+    "Model alias and provider execution are not a reproducible model snapshot.",
+    "Protocol acceptance, operational completion and answer quality are separate.",
+    "Tokens are known recorded usage, not an invoice or billed currency.",
+    "Summed trial durations are not campaign wall time or a causal speedup estimate.",
+    "Raw local evidence is required to revalidate retained hashes; hashes alone do not establish semantic truth.",
+    "No routing promotion, migration approval or Milestone 4 acceptance."
+  ],
+  "completedReplay": {
+    "status": "PASSED",
+    "actions": [
+      "read",
+      "completed-run"
+    ],
+    "credentialAbsent": true,
+    "retainedNonLockFilesUnchanged": 4647,
+    "newTrials": 0,
+    "newReservations": 0,
+    "newReads": 0,
+    "qualityReview": "NOT_PERFORMED"
+  }
+}

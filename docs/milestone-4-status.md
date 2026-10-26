@@ -173,11 +173,17 @@ abstained team outcome. No arm meets every declared criterion and claim gate.
 These are post-hoc judgments, not a coordination-benefit result; the independently
 frozen paired campaign has a [registration boundary](invoice-campaign.md) that
 binds the unchanged policies, protected rubric/contract, common limits and all
-twelve ordered slots without dispatch. Fresh ordered execution, campaign-bound
-review and paired reporting remain outstanding. An
+twelve ordered slots without dispatch. An
 [ordered invoice controller](invoice-campaign-execution.md) now provides fresh
 slot mapping, interrupted-work recovery and inclusive retained accounting without
 grading results. Its controller tests remain separate from measured participants.
+The [separately frozen measured invoice campaign](invoice-campaign-measurement.md)
+now seals all twelve fresh operational trials, including failed investigations
+and abstained/missing joint answers, with inclusive participant accounting.
+Completed credential-free replay leaves the retained evidence unchanged.
+Campaign-bound semantic review and paired quality/resource reporting remain
+outstanding; operational completion establishes no useful-coordination benefit,
+routing promotion or acceptance.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

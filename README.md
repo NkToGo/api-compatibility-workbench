@@ -231,7 +231,10 @@ freezes the existing four policies, protected rubric/contract and all twelve
 ordered slots before new measurement. Registration grants no trial capability.
 An [ordered invoice controller](docs/invoice-campaign-execution.md) now binds each
 slot to one recoverable trial, preserving failed/uncertain outcomes and inclusive
-accounting. The measured campaign and campaign-bound quality review remain pending.
+accounting. A [separately frozen measured campaign](docs/invoice-campaign-measurement.md)
+now records all twelve fresh trials and their participant/resource accounting.
+Campaign-bound quality review and paired quality reporting remain pending; the
+operational results establish no coordination benefit or routing change.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

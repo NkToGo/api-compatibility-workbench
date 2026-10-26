@@ -233,7 +233,10 @@ An [ordered invoice controller](docs/invoice-campaign-execution.md) now binds ea
 slot to one recoverable trial, preserving failed/uncertain outcomes and inclusive
 accounting. A [separately frozen measured campaign](docs/invoice-campaign-measurement.md)
 now records all twelve fresh trials and their participant/resource accounting.
-Campaign-bound quality review and paired quality reporting remain pending; the
+A [campaign-bound review-input command](docs/invoice-campaign-review-inputs.md)
+now binds all twelve original slots, including rejected responses and uncertain
+broker outcomes, without running participants or grading advice.
+Campaign-bound claim review and paired quality reporting remain pending; the
 operational results establish no coordination benefit or routing change.
 
 There is no hosted web application or general migration runner yet. Broader

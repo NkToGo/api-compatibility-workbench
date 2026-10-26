@@ -15,6 +15,13 @@ A future paired campaign must independently freeze the rubric's exact bytes,
 criterion IDs, inputs, policies, limits and ordered trial slots before execution.
 The historical known-case campaign and its negative result remain unchanged.
 
+For a completed frozen twelve-slot invoice campaign, use the separate
+[campaign-bound command](invoice-campaign-review-inputs.md). Its transient
+`InvoiceReviewInputs inspect` action reuses this inventory logic without
+publishing a four-arm packet or inferring chronology. Historical packets retain
+their existing format and post-hoc timing; the outer campaign binding establishes
+the new campaign's criteria timing separately.
+
 ## Protected rubric and contract
 
 The six criteria cover versioned association, independent version boundaries,

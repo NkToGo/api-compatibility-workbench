@@ -1,0 +1,297 @@
+{
+  "formatVersion": 1,
+  "authority": "campaign-bound-review-inputs-not-semantic-acceptance",
+  "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+  "expectedCampaignReceiptSha256": "4481be329dffa6c3d8ee07ab0db642ee4bc5eae3f6f2aa008fb4f7e53724a0c1",
+  "packetId": "reviewpacket-8fb56f51-6a26-44ae-9a79-72ed85a115a7",
+  "packetSha256": "666b667993833f0855b70ac01905885469d093101be9955ec69ddc85b975ca13",
+  "packetBytes": 1181097,
+  "producer": {
+    "extractor": "invoice-campaign-review-v1",
+    "scriptSha256": "ba36907ab500093ba630bf7fe1ac49f8982ba60ff91951be720955e951b081d7"
+  },
+  "criteriaTiming": "FROZEN_BEFORE_TRIALS",
+  "qualityReview": "NOT_PERFORMED",
+  "campaignAcceptance": "NOT_ESTABLISHED",
+  "plannedTrials": 12,
+  "boundTrials": 12,
+  "reviewUnits": 521,
+  "unitsByKind": {
+    "TRIAL_OUTCOME": 12,
+    "FINAL_DOSSIER": 8,
+    "DOSSIER_SECTION": 117,
+    "MODEL_RESPONSE": 312,
+    "WORKER_OUTCOME": 6,
+    "WORKER_DOSSIER": 5,
+    "FINDING": 36,
+    "SUMMARY": 8,
+    "TEAM_CONTEXT": 12,
+    "RECONCILIATION": 3,
+    "PARTIAL_AGGREGATE": 1,
+    "BROKER_OUTCOME": 1
+  },
+  "inputIdentity": {
+    "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+  },
+  "contractIdentity": {
+    "sha256": "a4455ca1fad869e676d06b359cff6885ed6dcfd12d44219b85be9e9f7448abe8"
+  },
+  "rubricIdentity": {
+    "sha256": "9f89e515bcea47606e76573874304d2fda2fbcbd522e2283e7b520d4b4e960ab"
+  },
+  "sourceArtifacts": 4647,
+  "trials": [
+    {
+      "position": 1,
+      "repetition": 1,
+      "arm": "DETERMINISTIC",
+      "runId": "trial-1a905593-3c92-4382-bcc3-8179f8c20e37",
+      "status": "COMPLETED",
+      "response": "ANSWERED",
+      "outputIdentity": {
+        "sha256": "7b16b29272d0f88d9b253fe6b096eedbfeb9b44ecb5fa8c02befe6544b35cd28"
+      },
+      "sourceResultSha256": "9d2005449704ca1ff915ad75fc88dd1762ab37c6e16083ef358075e45354ee65",
+      "reviewUnits": 13,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 11
+      }
+    },
+    {
+      "position": 2,
+      "repetition": 1,
+      "arm": "SINGLE_AGENT",
+      "runId": "trial-de0d812e-f7c6-4e48-89ac-4deb018249aa",
+      "status": "FAILED",
+      "response": "NOT_PROVIDED",
+      "outputIdentity": null,
+      "sourceResultSha256": "62af9cd5f34234dd25e6222c6939a24854449ed5e3541af9ca8f13d2a93d5b67",
+      "reviewUnits": 26,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "MODEL_RESPONSE": 25
+      }
+    },
+    {
+      "position": 3,
+      "repetition": 1,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc",
+      "status": "COMPLETED",
+      "response": "ANSWERED",
+      "outputIdentity": {
+        "sha256": "01ad09e6943205297110946a2d0dd9de9543bb3ffb01be0006b0df58de8d8993"
+      },
+      "sourceResultSha256": "6cce21c2349497498ea6d0ce1a4775cf246a1517a9b4fc77661d56cb66c71676",
+      "reviewUnits": 85,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 25,
+        "WORKER_OUTCOME": 2,
+        "WORKER_DOSSIER": 2,
+        "FINDING": 11,
+        "SUMMARY": 2,
+        "MODEL_RESPONSE": 41
+      }
+    },
+    {
+      "position": 4,
+      "repetition": 1,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-00ec370f-67e6-4dfa-882c-e1f09f7df607",
+      "status": "FAILED",
+      "response": "ABSTAINED",
+      "outputIdentity": {
+        "sha256": "d8797a16813a09ca38208fa7c14099265feb72d6caf14aceaa90f9be841bb5ed"
+      },
+      "sourceResultSha256": "3cbfaccf9869b916007dcbcfdf62ab1f526c89d759985593e7ff6be1a6e06852",
+      "reviewUnits": 48,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 6,
+        "FINDING": 3,
+        "SUMMARY": 1,
+        "TEAM_CONTEXT": 4,
+        "RECONCILIATION": 1,
+        "MODEL_RESPONSE": 31
+      }
+    },
+    {
+      "position": 5,
+      "repetition": 2,
+      "arm": "SINGLE_AGENT",
+      "runId": "trial-fd9c532c-3579-4077-8076-170b59b565ab",
+      "status": "FAILED",
+      "response": "NOT_PROVIDED",
+      "outputIdentity": null,
+      "sourceResultSha256": "88fdfb1bb40ae8be0253f52b30b38066e5212585ec9d1de130abae08469b9c4b",
+      "reviewUnits": 39,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "MODEL_RESPONSE": 38
+      }
+    },
+    {
+      "position": 6,
+      "repetition": 2,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58",
+      "status": "COMPLETED",
+      "response": "ANSWERED",
+      "outputIdentity": {
+        "sha256": "50d0c12dc2ce0cd7cae4d38cf5bc4af2449008aa6fc4fcec67b03824667f82c9"
+      },
+      "sourceResultSha256": "4081f1f9397abef509a8f999226eac2ad327cb184babc9f35fa7106fcde7d9b1",
+      "reviewUnits": 91,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 25,
+        "WORKER_OUTCOME": 2,
+        "WORKER_DOSSIER": 2,
+        "FINDING": 11,
+        "SUMMARY": 2,
+        "MODEL_RESPONSE": 47
+      }
+    },
+    {
+      "position": 7,
+      "repetition": 2,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0",
+      "status": "FAILED",
+      "response": "ABSTAINED",
+      "outputIdentity": {
+        "sha256": "f0ad1789ce1b529e6ca6f478a7b26c69be12b945ea150f93858a6ae1cc261457"
+      },
+      "sourceResultSha256": "16a9fa3a1c2ce4a53657e800ad9b09e2b788d396bb31f81108ef39c4d1c89e04",
+      "reviewUnits": 48,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 6,
+        "FINDING": 3,
+        "SUMMARY": 1,
+        "TEAM_CONTEXT": 4,
+        "RECONCILIATION": 1,
+        "MODEL_RESPONSE": 31
+      }
+    },
+    {
+      "position": 8,
+      "repetition": 2,
+      "arm": "DETERMINISTIC",
+      "runId": "trial-9f528f65-a468-4ab2-b637-ec7a26b9e55f",
+      "status": "COMPLETED",
+      "response": "ANSWERED",
+      "outputIdentity": {
+        "sha256": "1b47c2802dc05346d7d593d515bc9e5886d6f96166e7cea048abe730023d7b27"
+      },
+      "sourceResultSha256": "a21d6d7769ffa99776ff26b452b2b460ee4a2af37a5077a367bf79fd925b9627",
+      "reviewUnits": 13,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 11
+      }
+    },
+    {
+      "position": 9,
+      "repetition": 3,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc",
+      "status": "FAILED",
+      "response": "NOT_PROVIDED",
+      "outputIdentity": null,
+      "sourceResultSha256": "37f9d3f375bf270401721805e3ab6527ad508102110e31a21a1212044a163610",
+      "reviewUnits": 79,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "PARTIAL_AGGREGATE": 1,
+        "DOSSIER_SECTION": 16,
+        "WORKER_OUTCOME": 2,
+        "WORKER_DOSSIER": 1,
+        "FINDING": 5,
+        "SUMMARY": 1,
+        "MODEL_RESPONSE": 52
+      }
+    },
+    {
+      "position": 10,
+      "repetition": 3,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-d4edbf70-e04d-4a97-8090-cacf1842f29f",
+      "status": "FAILED",
+      "response": "ABSTAINED",
+      "outputIdentity": {
+        "sha256": "f8681bad2ea25cbc5fc48ac68ddcb33096697e90836a00584340c222f52a7150"
+      },
+      "sourceResultSha256": "62a47dcc02209dc15dc56602a36da7c5bc0912f62020e6c19234ea18568c1753",
+      "reviewUnits": 47,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 6,
+        "FINDING": 3,
+        "SUMMARY": 1,
+        "TEAM_CONTEXT": 4,
+        "RECONCILIATION": 1,
+        "MODEL_RESPONSE": 30
+      }
+    },
+    {
+      "position": 11,
+      "repetition": 3,
+      "arm": "DETERMINISTIC",
+      "runId": "trial-7fca4a59-0253-4c01-9c52-6dc943d88c91",
+      "status": "COMPLETED",
+      "response": "ANSWERED",
+      "outputIdentity": {
+        "sha256": "cc27bd1dee48b472e1c0f9553c28175794f0db0d4e1acc9b6c985c85940f973a"
+      },
+      "sourceResultSha256": "a499990c397c93426e083de834415b234362c9e20f2c5a8f53ce39656146f4d5",
+      "reviewUnits": 13,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "FINAL_DOSSIER": 1,
+        "DOSSIER_SECTION": 11
+      }
+    },
+    {
+      "position": 12,
+      "repetition": 3,
+      "arm": "SINGLE_AGENT",
+      "runId": "trial-525b453c-e3de-45b9-b7e8-d92d656642ec",
+      "status": "UNKNOWN_REMOTE_OUTCOME",
+      "response": "NOT_PROVIDED",
+      "outputIdentity": null,
+      "sourceResultSha256": "9a4774d7163a3a131335f508ea07b24c4eda2b3e5ebf4b5451c76caf7be35513",
+      "reviewUnits": 19,
+      "unitsByKind": {
+        "TRIAL_OUTCOME": 1,
+        "MODEL_RESPONSE": 17,
+        "BROKER_OUTCOME": 1
+      }
+    }
+  ],
+  "mechanicalAudit": {
+    "status": "PASSED",
+    "originalMeasuredFilesUnchanged": 4647,
+    "boundSourceArtifacts": 4647,
+    "unitsChecked": 521,
+    "retainedModelResponses": 312,
+    "nonCompletedBrokerOutcomes": 1,
+    "trialCount": 12,
+    "qualityReview": "NOT_PERFORMED"
+  },
+  "limitations": [
+    "Units may contain multiple material claims; inventory completeness is not complete semantic inspection.",
+    "Citations do not establish endorsement or support.",
+    "No claim judgments, accepted cases, coordination benefit, routing promotion or milestone acceptance are established.",
+    "Raw source evidence and model text remain in the retained local stores."
+  ]
+}

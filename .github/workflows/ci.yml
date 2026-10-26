@@ -63,6 +63,9 @@ jobs:
       - name: Verify ordered invoice campaign execution
         shell: pwsh
         run: ./scripts/Test-InvoiceCampaignExecution.ps1
+      - name: Verify invoice campaign review input binding
+        shell: pwsh
+        run: ./scripts/Test-InvoiceCampaignReview.ps1
       - name: Verify coordination review input binding
         shell: pwsh
         run: ./scripts/Test-CoordinationReviewPacket.ps1
@@ -111,6 +114,7 @@ jobs:
             backend/target/subscription-period-case-reports/
             backend/target/versioned-invoice-build-tests/
             backend/target/invoice-campaign-execution-tests/
+            backend/target/invoice-campaign-review-tests/
             !backend/target/**/.env
             !backend/target/**/.env.*
           if-no-files-found: warn

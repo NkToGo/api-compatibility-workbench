@@ -181,6 +181,10 @@ The [separately frozen measured invoice campaign](invoice-campaign-measurement.m
 now seals all twelve fresh operational trials, including failed investigations
 and abstained/missing joint answers, with inclusive participant accounting.
 Completed credential-free replay leaves the retained evidence unchanged.
+Separate [campaign-bound review inputs](invoice-campaign-review-inputs.md) now
+bind the twelve original slots, protected rubric/contract and complete available
+response/claim lineage, including rejected and uncertain broker outcomes. This
+establishes review inputs only; it supplies no claim judgments or accepted cases.
 Campaign-bound semantic review and paired quality/resource reporting remain
 outstanding; operational completion establishes no useful-coordination benefit,
 routing promotion or acceptance.

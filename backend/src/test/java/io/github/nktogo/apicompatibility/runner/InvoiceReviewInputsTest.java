@@ -18,6 +18,7 @@ class InvoiceReviewInputsTest {
     private final Map<String, JsonObject> responses = new java.util.concurrent.ConcurrentHashMap<>();
     private final java.util.concurrent.atomic.AtomicInteger registrations = new java.util.concurrent.atomic.AtomicInteger();
     private boolean failFinalAndIndependentWebhook;
+    private boolean rateLimitSingle;
     private Path inputs; private ContentDigest identity; private InvoiceReviewInputs.Selection selection;
     private static final Gson JSON = new GsonBuilder().serializeNulls().create();
     private InvoiceReviewInputs adapter() throws IOException { return new InvoiceReviewInputs(root, root.resolve("out")); }
@@ -51,6 +52,10 @@ class InvoiceReviewInputsTest {
         return new CoordinationRuntime.Broker() {
             public String register(ModelCallBroker.Request request, Duration lifetime) throws IOException {
                 String id = "model-" + UUID.randomUUID(); Files.createDirectory(store.resolve(id)); DurableExecution.publish(store.resolve(id + "/request.json"), request); registrations.incrementAndGet();
+                if (rateLimitSingle && store.startsWith(root.resolve("SINGLE_AGENT"))) {
+                    var response = json(Map.of("callId", id, "status", "RATE_LIMITED", "remoteOutcome", "RESPONSE_RECEIVED", "httpStatus", 429));
+                    responses.put(id, response); DurableExecution.publish(store.resolve(id + "/result.json"), response); return id;
+                }
                 JsonObject decision;
                 if (request.protocol().equals(InvoiceTeamDecision.PROTOCOL)) decision = json(Map.of("action", "finish", "summary", "Both role histories are retained.", "citations", List.of("worker-1", "worker-2"), "followUps", List.of(), "conflicts", List.of(Map.of("claimIds", List.of("claim-1", "claim-2"), "statement", "A possible scope difference remains unresolved."))));
                 else if (failFinalAndIndependentWebhook && (request.protocol().equals(InvoiceReconciliationDecision.PROTOCOL)
@@ -72,6 +77,17 @@ class InvoiceReviewInputsTest {
         assertEquals(id, adapter().prepare(id, selected)); assertEquals(packet, adapter().read(id)); assertEquals(before, sourceHashes());
         var overlapping = new InvoiceReviewInputs(root, root.resolve("contract"));
         assertThrows(RuntimeException.class, () -> overlapping.prepare(selected)); assertFalse(Files.exists(root.resolve("contract/invoice-review-packets"))); assertEquals(before, sourceHashes());
+    }
+    @Test void transientInspectionPreservesUncertainBrokerOutcomeWithoutWritingOrInferringTiming() throws Exception {
+        rateLimitSingle = true; var selected = fixture(); var before = sourceHashes(); int calls = registrations.get();
+        var inventory = adapter().inspect(selected);
+        assertEquals("NOT_INFERRED_FROM_SELECTION", inventory.get("criteriaTiming").getAsString());
+        assertEquals(4, inventory.getAsJsonArray("trials").size());
+        var single = inventory.getAsJsonArray("trials").get(1).getAsJsonObject();
+        assertEquals("UNKNOWN_REMOTE_OUTCOME", single.getAsJsonObject("trial").get("status").getAsString());
+        assertTrue(single.getAsJsonArray("units").asList().stream().anyMatch(u -> u.getAsJsonObject().get("kind").getAsString().equals("BROKER_OUTCOME") && u.getAsJsonObject().get("pointer").getAsString().isEmpty()));
+        assertEquals(inventory, adapter().inspect(selected)); assertEquals(calls, registrations.get()); assertEquals(before, sourceHashes());
+        assertFalse(Files.exists(root.resolve("out/invoice-review-packets")));
     }
     @Test void originalUncitedClaimsConflictsAndEveryModelResponseRemainReviewable() throws Exception {
         var selected = fixture(); var packet = adapter().read(adapter().prepare(selected)); var units = packet.getAsJsonObject("inventory").getAsJsonArray("trials").get(3).getAsJsonObject().getAsJsonArray("units");

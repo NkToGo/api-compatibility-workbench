@@ -55,7 +55,10 @@ public final class InvoiceReviewInputs {
                 "authority", "post-hoc-operational-review-inputs-not-semantic-acceptance-or-paired-campaign"));
         CaseInputs.require(packet.equals(expected), "Changed invoice review inventory or scope"); return packet;
     }
-    private JsonObject derive(Selection selection) throws IOException {
+    /** Transient inventory; timing and campaign membership must be established by the caller. */
+    public JsonObject inspect(Selection selection) throws IOException { return derive(selection, true); }
+    private JsonObject derive(Selection selection) throws IOException { return derive(selection, false); }
+    private JsonObject derive(Selection selection, boolean neutralTiming) throws IOException {
         separated(selection);
         var roots = new ArrayList<String>(); roots.add(selection.inputDirectory()); roots.add(selection.contractDirectory()); roots.add(selection.rubricArtifact());
         var observed = new TreeMap<String, String>();
@@ -118,6 +121,7 @@ public final class InvoiceReviewInputs {
             var runtimeFiles = inventory(List.of(runtime));
             for (String file : runtimeFiles.keySet()) if (file.matches(".*/broker/model-[0-9a-f-]+/result\\.json")) {
                 var response = sourceJson(file, observed);
+                if (neutralTiming && !response.get("status").getAsString().equals("COMPLETED")) unit(units, "BROKER_OUTCOME", file, "", "", "", observed);
                 if (response.has("outputText")) unit(units, "MODEL_RESPONSE", file, "/outputText", "", "", observed);
             }
             var row = json(Map.of("position", rows.size() + 1, "source", source, "trial", trial, "units", units));
@@ -127,7 +131,7 @@ public final class InvoiceReviewInputs {
         var after = inventory(roots); CaseInputs.require(all.equals(after), "Review source inventory changed during inspection");
         return json(Map.of("inputIdentity", selection.inputIdentity(), "rubricArtifact", selection.rubricArtifact(), "rubricIdentity", selection.rubricIdentity(),
                 "contractDirectory", selection.contractDirectory(), "contractIdentity", selection.contractIdentity(), "sourceArtifacts", all, "trials", rows,
-                "criteriaTiming", "POST_HOC_FOR_EXISTING_OPERATIONAL_TRIALS", "campaignAcceptance", "NOT_ESTABLISHED"));
+                "criteriaTiming", neutralTiming ? "NOT_INFERRED_FROM_SELECTION" : "POST_HOC_FOR_EXISTING_OPERATIONAL_TRIALS", "campaignAcceptance", "NOT_ESTABLISHED"));
     }
     private void sections(JsonArray units, String kind, String artifact, JsonObject value, Map<String, String> observed) throws IOException {
         unit(units, kind, artifact, "", "", "", observed);
@@ -252,9 +256,10 @@ public final class InvoiceReviewInputs {
         Files.move(pending, run.resolve(name), StandardCopyOption.ATOMIC_MOVE);
     }
     public static void main(String[] args) throws IOException {
-        CaseInputs.require(args.length == 4 || args.length == 5, "Usage: prepare EVIDENCE STATE SELECTION [PACKET] | read EVIDENCE STATE PACKET | contract EVIDENCE STATE DIRECTORY");
+        CaseInputs.require(args.length == 4 || args.length == 5, "Usage: prepare EVIDENCE STATE SELECTION [PACKET] | inspect EVIDENCE STATE SELECTION | read EVIDENCE STATE PACKET | contract EVIDENCE STATE DIRECTORY");
         var inputs = new InvoiceReviewInputs(Path.of(args[1]), Path.of(args[2])); String id;
         if (args[0].equals("contract") && args.length == 4) { System.out.println("Contract inventory SHA-256: " + inputs.contractIdentity(args[3]).sha256()); return; }
+        if (args[0].equals("inspect") && args.length == 4) { Path plan = Path.of(args[3]).toAbsolutePath(); System.out.println(encoded(inputs.inspect(selection(readJson(plan.getParent(), plan.getFileName().toString()))))); return; }
         if (args[0].equals("prepare")) { Path plan = Path.of(args[3]).toAbsolutePath(); var selection = selection(readJson(plan.getParent(), plan.getFileName().toString())); id = args.length == 5 ? inputs.prepare(args[4], selection) : inputs.prepare(selection); }
         else { CaseInputs.require(args[0].equals("read") && args.length == 4, "Invalid invoice review action"); id = args[3]; }
         var packet = inputs.read(id); var rows = packet.getAsJsonObject("inventory").getAsJsonArray("trials");

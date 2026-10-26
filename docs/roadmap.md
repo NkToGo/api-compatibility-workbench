@@ -402,6 +402,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      establish retained-byte integrity only. Campaign-bound semantic review and
      paired quality/resource conclusions remain next; no routing promotion or
      Milestone 4 acceptance is established.
+     **4e4d implemented:** [campaign-bound invoice review inputs](invoice-campaign-review-inputs.md)
+     bind all twelve original measured slots and their source/claim lineage,
+     preserving rejected model responses, partial worker output and uncertain
+     broker outcomes. Independently pinned campaign/packet identities, exact
+     publication recovery and credential-free inspection preserve the original
+     records. Historical four-arm packets stay post-hoc; campaign claim grading
+     and paired quality/resource reporting remain separate next steps.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

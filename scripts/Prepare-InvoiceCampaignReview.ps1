@@ -19,7 +19,10 @@ $icrRepository=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 function ICR-Require([bool]$Condition,[string]$Message) { if(-not $Condition) { throw $Message } }
 function ICR-Safe([string]$Path) {
     for($cursor=[IO.Path]::GetFullPath($Path);$cursor;$cursor=[IO.Path]::GetDirectoryName($cursor)) {
-        if(Test-Path -LiteralPath $cursor) { ICR-Require (-not ((Get-Item -LiteralPath $cursor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) 'Linked invoice review paths are unsupported.' }
+        try { $attributes=[IO.File]::GetAttributes($cursor) }
+        catch [IO.FileNotFoundException] { continue }
+        catch [IO.DirectoryNotFoundException] { continue }
+        ICR-Require (-not ($attributes -band [IO.FileAttributes]::ReparsePoint)) 'Linked invoice review paths are unsupported.'
     }
 }
 function ICR-Relative([string]$Absolute) {

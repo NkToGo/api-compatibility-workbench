@@ -409,6 +409,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      publication recovery and credential-free inspection preserve the original
      records. Historical four-arm packets stay post-hoc; campaign claim grading
      and paired quality/resource reporting remain separate next steps.
+     **4e4e implemented:** [campaign-bound claim-review records](invoice-campaign-claim-review.md)
+     preserve all twelve original slots, pending units and 72 frozen criterion
+     entries. The host revalidates independent campaign/packet/review identities
+     around shared anchored-claim checking, preserving the legacy post-hoc path.
+     Supplied judgments establish binding/gate results only; actual semantic
+     inspection and paired quality/resource conclusions remain next.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

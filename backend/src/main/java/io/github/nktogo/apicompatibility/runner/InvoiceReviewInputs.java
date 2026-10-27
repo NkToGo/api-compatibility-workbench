@@ -215,7 +215,10 @@ public final class InvoiceReviewInputs {
     private static Selection selection(JsonObject value) { var selection = JSON.fromJson(value, Selection.class); CaseInputs.require(value.equals(JSON.toJsonTree(selection)), "Unexpected invoice selection fields"); return selection; }
     private static JsonObject readJson(Path root, String name) throws IOException { return object(ConsumerTasks.bytes(root, name)); }
     static JsonObject object(byte[] bytes) {
-        CaseInputs.require(bytes.length <= 1048576, "Invoice review JSON exceeds 1 MiB");
+        return object(bytes, 1048576);
+    }
+    static JsonObject object(byte[] bytes, int limit) {
+        CaseInputs.require(limit > 0 && limit <= 8388608 && bytes.length <= limit, "Invoice review JSON exceeds its byte limit");
         try (var reader = new JsonReader(new StringReader(StandardCharsets.UTF_8.newDecoder().decode(java.nio.ByteBuffer.wrap(bytes)).toString()))) {
             reader.setStrictness(Strictness.STRICT); var value = element(reader, 0).getAsJsonObject(); CaseInputs.require(reader.peek() == JsonToken.END_DOCUMENT, "Trailing invoice review JSON"); return value;
         } catch (IOException e) { throw new IllegalArgumentException("Invalid invoice review JSON", e); }

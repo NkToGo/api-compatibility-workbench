@@ -236,8 +236,11 @@ now records all twelve fresh trials and their participant/resource accounting.
 A [campaign-bound review-input command](docs/invoice-campaign-review-inputs.md)
 now binds all twelve original slots, including rejected responses and uncertain
 broker outcomes, without running participants or grading advice.
-Campaign-bound claim review and paired quality reporting remain pending; the
-operational results establish no coordination benefit or routing change.
+A [campaign-bound claim-review command](docs/invoice-campaign-claim-review.md)
+now creates explicitly pending records and checks supplied anchored judgments
+under the unchanged rubric, preserving failed/uncertain trials and historical
+errors. Actual campaign claim inspection and paired quality reporting remain
+pending; the operational results establish no coordination benefit or routing change.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

@@ -1,0 +1,175 @@
+{
+  "formatVersion": 1,
+  "authority": "pending-campaign-claim-review-not-semantic-acceptance",
+  "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+  "expectedCampaignReceiptSha256": "4481be329dffa6c3d8ee07ab0db642ee4bc5eae3f6f2aa008fb4f7e53724a0c1",
+  "packetId": "reviewpacket-8fb56f51-6a26-44ae-9a79-72ed85a115a7",
+  "packetSha256": "666b667993833f0855b70ac01905885469d093101be9955ec69ddc85b975ca13",
+  "reviewId": "semanticreview-934398be-23ae-4230-9dd3-9e1c43d27241",
+  "reviewSha256": "2d79efed89692d3b49591e0b7752f534b989cf44cd7dfbddded2a3efd5fd7482",
+  "reviewBytes": 181757,
+  "criteriaTiming": "FROZEN_BEFORE_TRIALS",
+  "reviewedTrials": 0,
+  "pendingUnits": 521,
+  "pendingCriteria": 72,
+  "claimJudgments": 0,
+  "reviewer": {
+    "blinded": false,
+    "calibratedReviewerAccuracy": false,
+    "independentHumanAdjudication": false,
+    "label": "Not reviewed",
+    "method": "NOT_RECORDED",
+    "newProviderCalls": 0,
+    "reviewedOn": null
+  },
+  "campaignAcceptance": "NOT_ESTABLISHED",
+  "trials": [
+    {
+      "position": 1,
+      "runId": "trial-1a905593-3c92-4382-bcc3-8179f8c20e37",
+      "arm": "DETERMINISTIC",
+      "repetition": 1,
+      "originalStatus": "COMPLETED",
+      "response": "ANSWERED",
+      "pendingUnits": 13,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 2,
+      "runId": "trial-de0d812e-f7c6-4e48-89ac-4deb018249aa",
+      "arm": "SINGLE_AGENT",
+      "repetition": 1,
+      "originalStatus": "FAILED",
+      "response": "NOT_PROVIDED",
+      "pendingUnits": 26,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 3,
+      "runId": "trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc",
+      "arm": "INDEPENDENT_WORKERS",
+      "repetition": 1,
+      "originalStatus": "COMPLETED",
+      "response": "ANSWERED",
+      "pendingUnits": 85,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 4,
+      "runId": "trial-00ec370f-67e6-4dfa-882c-e1f09f7df607",
+      "arm": "COORDINATED_TEAM",
+      "repetition": 1,
+      "originalStatus": "FAILED",
+      "response": "ABSTAINED",
+      "pendingUnits": 48,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 5,
+      "runId": "trial-fd9c532c-3579-4077-8076-170b59b565ab",
+      "arm": "SINGLE_AGENT",
+      "repetition": 2,
+      "originalStatus": "FAILED",
+      "response": "NOT_PROVIDED",
+      "pendingUnits": 39,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 6,
+      "runId": "trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58",
+      "arm": "INDEPENDENT_WORKERS",
+      "repetition": 2,
+      "originalStatus": "COMPLETED",
+      "response": "ANSWERED",
+      "pendingUnits": 91,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 7,
+      "runId": "trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0",
+      "arm": "COORDINATED_TEAM",
+      "repetition": 2,
+      "originalStatus": "FAILED",
+      "response": "ABSTAINED",
+      "pendingUnits": 48,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 8,
+      "runId": "trial-9f528f65-a468-4ab2-b637-ec7a26b9e55f",
+      "arm": "DETERMINISTIC",
+      "repetition": 2,
+      "originalStatus": "COMPLETED",
+      "response": "ANSWERED",
+      "pendingUnits": 13,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 9,
+      "runId": "trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc",
+      "arm": "INDEPENDENT_WORKERS",
+      "repetition": 3,
+      "originalStatus": "FAILED",
+      "response": "NOT_PROVIDED",
+      "pendingUnits": 79,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 10,
+      "runId": "trial-d4edbf70-e04d-4a97-8090-cacf1842f29f",
+      "arm": "COORDINATED_TEAM",
+      "repetition": 3,
+      "originalStatus": "FAILED",
+      "response": "ABSTAINED",
+      "pendingUnits": 47,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 11,
+      "runId": "trial-7fca4a59-0253-4c01-9c52-6dc943d88c91",
+      "arm": "DETERMINISTIC",
+      "repetition": 3,
+      "originalStatus": "COMPLETED",
+      "response": "ANSWERED",
+      "pendingUnits": 13,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    },
+    {
+      "position": 12,
+      "runId": "trial-525b453c-e3de-45b9-b7e8-d92d656642ec",
+      "arm": "SINGLE_AGENT",
+      "repetition": 3,
+      "originalStatus": "UNKNOWN_REMOTE_OUTCOME",
+      "response": "NOT_PROVIDED",
+      "pendingUnits": 19,
+      "pendingCriteria": 6,
+      "satisfiesDeclaredReview": false
+    }
+  ],
+  "mechanicalAudit": {
+    "status": "PASSED",
+    "originalFilesUnchanged": 4652,
+    "boundUnitsChecked": 521,
+    "criteriaChecked": 72,
+    "claimJudgments": 0,
+    "acceptedTrials": 0,
+    "reviewerRecorded": false,
+    "qualityReview": "NOT_PERFORMED"
+  },
+  "limitations": [
+    "A valid pending draft supplies no semantic judgments or accepted cases.",
+    "Mechanical binding and supplied gate checks do not establish truth, reviewer accuracy, coordination benefit, routing promotion or release approval.",
+    "Original failed, abstained, missing and uncertain outcomes remain unchanged."
+  ]
+}

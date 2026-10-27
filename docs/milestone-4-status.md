@@ -185,6 +185,11 @@ Separate [campaign-bound review inputs](invoice-campaign-review-inputs.md) now
 bind the twelve original slots, protected rubric/contract and complete available
 response/claim lineage, including rejected and uncertain broker outcomes. This
 establishes review inputs only; it supplies no claim judgments or accepted cases.
+Separate [campaign claim-review records](invoice-campaign-claim-review.md) now
+start all twelve slots and 72 criteria pending and verify supplied anchors,
+historical errors and declared gates with independent identities. Original
+evidence stays unchanged; a mechanically valid pending record has no reviewed
+claims or accepted cases.
 Campaign-bound semantic review and paired quality/resource reporting remain
 outstanding; operational completion establishes no useful-coordination benefit,
 routing promotion or acceptance.

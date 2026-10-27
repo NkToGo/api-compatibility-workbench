@@ -8,7 +8,11 @@ The original packet, trials and `qualityReview: NOT_PERFORMED` fields stay intac
 The selected operational trials predate the protected rubric. These reviews are
 descriptive and post-hoc. Even a complete review passing every declared gate cannot
 establish frozen-campaign acceptance, a coordination benefit, routing permission
-or migration/release approval. The separate paired campaign remains future work.
+or migration/release approval. For the separately frozen twelve-slot campaign,
+use the [campaign-bound command](invoice-campaign-claim-review.md). It reuses these
+claim rules with the campaign's exact packet and timing; legacy four-arm records
+retain their post-hoc interpretation. Actual semantic inspection and paired
+reporting remain separate from record validation.
 
 ## Start with explicit pending work
 

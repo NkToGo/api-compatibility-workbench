@@ -190,9 +190,12 @@ start all twelve slots and 72 criteria pending and verify supplied anchors,
 historical errors and declared gates with independent identities. Original
 evidence stays unchanged; a mechanically valid pending record has no reviewed
 claims or accepted cases.
-Campaign-bound semantic review and paired quality/resource reporting remain
-outstanding; operational completion establishes no useful-coordination benefit,
-routing promotion or acceptance.
+A [campaign-bound semantic inspection](invoice-campaign-review-results.md) now
+reviews all twelve slots, 521 units and 72 criteria with no pending entries,
+preserving unsupported assertions, interpretive uncertainty and failed/missing
+answers. No trial meets every declared review gate. Paired quality/resource
+reporting remains outstanding; these results establish no useful-coordination
+benefit, routing promotion or acceptance.
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

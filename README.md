@@ -239,8 +239,11 @@ broker outcomes, without running participants or grading advice.
 A [campaign-bound claim-review command](docs/invoice-campaign-claim-review.md)
 now creates explicitly pending records and checks supplied anchored judgments
 under the unchanged rubric, preserving failed/uncertain trials and historical
-errors. Actual campaign claim inspection and paired quality reporting remain
-pending; the operational results establish no coordination benefit or routing change.
+errors. A [complete campaign claim inspection](docs/invoice-campaign-review-results.md)
+now reviews all 521 units and 72 criteria, preserving unsupported assertions,
+interpretive uncertainty and every failed/missing answer. No trial satisfies
+every declared review gate. Paired quality/resource reporting remains next;
+no coordination benefit or routing change is established.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

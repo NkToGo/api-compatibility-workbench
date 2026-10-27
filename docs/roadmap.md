@@ -415,6 +415,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      around shared anchored-claim checking, preserving the legacy post-hoc path.
      Supplied judgments establish binding/gate results only; actual semantic
      inspection and paired quality/resource conclusions remain next.
+     **4e4f completed:** the [campaign-bound semantic inspection](invoice-campaign-review-results.md)
+     reviews all 521 units and 72 frozen criterion entries, including rejected
+     responses, partial reports and uncertain broker outcomes. Independent
+     reconstruction checks all three deterministic selections and their recorded
+     diagnostic facts. Unsupported assertions, ambiguous scope and omitted
+     explanations remain distinct. No trial satisfies the full review gate;
+     paired quality/resource reporting remains next, without replacing runs or
+     promoting routing or Milestone 4 acceptance.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

@@ -99,8 +99,11 @@ The [27 October pending-review record](evaluations/invoice-campaign-pending-revi
 binds the original twelve trials, 521 pending units and 72 pending criteria. Its
 independent structural audit found zero supplied judgments and accepted trials;
 all 4,652 original evidence/packet files stayed unchanged. The historical
-four-trial review retained its exact gates and counters. This records preparation
-and binding only; semantic inspection is still pending.
+four-trial review retained its exact gates and counters. That pending record still
+records preparation only. A separate [complete semantic inspection](invoice-campaign-review-results.md)
+now reviews the same twelve slots without changing their original evidence or
+earlier records. No trial meets every declared review gate; paired reporting
+and acceptance remain separate work.
 
 Campaign packets and review records are bounded to 2 MiB. The shared legacy
 parser keeps its 1 MiB default; the campaign path explicitly selects its larger

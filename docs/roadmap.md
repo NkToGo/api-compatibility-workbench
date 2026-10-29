@@ -423,6 +423,14 @@ provider families and automatic repair-feedback loops remain outside its scope.
      explanations remain distinct. No trial satisfies the full review gate;
      paired quality/resource reporting remains next, without replacing runs or
      promoting routing or Milestone 4 acceptance.
+     **4e4g completed:** a [bound paired invoice report](invoice-campaign-results.md)
+     revalidates the exact complete review and all twelve original slots, exports
+     version 2 metadata for provided outputs without inventing absent answers,
+     and reuses the comparison evaluator through a read-only file mode. Separate
+     create-only artifacts retain publication recovery, historical judgments,
+     incomplete usage and inclusive resources. The two unestablished quality
+     blocks stay outside win/tie counts; their recorded costs and durations stay
+     included. No accepted bundle or useful coordination is established.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

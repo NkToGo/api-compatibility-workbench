@@ -27,6 +27,20 @@ public final class CoordinationComparisonReport {
     public CoordinationComparisonReport(Path state) throws IOException {
         root = state.toAbsolutePath().normalize().resolve("coordination-comparisons"); Files.createDirectories(root); ConsumerTasks.directory(root);
     }
+    /** Pure file assessment: no registration, report directory, participant or permission is created. */
+    public static JsonObject evaluateFiles(Path planFile, Path recordsFile) throws IOException {
+        planFile = planFile.toAbsolutePath().normalize(); recordsFile = recordsFile.toAbsolutePath().normalize();
+        byte[] planBytes = ConsumerTasks.bytes(planFile.getParent(), planFile.getFileName().toString());
+        byte[] recordBytes = ConsumerTasks.bytes(recordsFile.getParent(), recordsFile.getFileName().toString());
+        var plan = decode(planFile, Plan.class); var records = decode(recordsFile, Records.class);
+        CaseInputs.require(records.formatVersion() == 2 || records.trials().stream().flatMap(t -> t.cases().stream()).allMatch(c -> c.review() == null),
+                "New reviewed records require formatVersion 2 and an explicit unresolved claim count");
+        var result = JSON.toJsonTree(Map.of("formatVersion", records.formatVersion(), "planSha256", CaseInputs.hash(planBytes),
+                "recordsSha256", CaseInputs.hash(recordBytes), "assessment", assessment(plan.definition(), records))).getAsJsonObject();
+        CaseInputs.require(Arrays.equals(planBytes, ConsumerTasks.bytes(planFile.getParent(), planFile.getFileName().toString()))
+                && Arrays.equals(recordBytes, ConsumerTasks.bytes(recordsFile.getParent(), recordsFile.getFileName().toString())), "Comparison input changed during assessment");
+        return result;
+    }
     public String register(Path planFile) throws IOException { return register(decode(planFile, Plan.class)); }
     private String register(Plan plan) throws IOException {
         String id = "comparison-" + UUID.randomUUID(); Path directory = Files.createDirectory(root.resolve(id));
@@ -113,7 +127,11 @@ public final class CoordinationComparisonReport {
     }
     private static ContentDigest digest(char value) { return new ContentDigest(String.valueOf(value).repeat(64)); }
     public static void main(String[] args) throws IOException {
-        CaseInputs.require(args.length >= 2, "Usage: CoordinationComparisonReport example STATE | register STATE PLAN | assess STATE COMPARISON RECORDS | read STATE COMPARISON REPORT");
+        CaseInputs.require(args.length >= 2, "Usage: CoordinationComparisonReport evaluate PLAN RECORDS | example STATE | register STATE PLAN | assess STATE COMPARISON RECORDS | read STATE COMPARISON REPORT");
+        if (args[0].equals("evaluate")) {
+            CaseInputs.require(args.length == 3, "Invalid read-only evaluation arguments");
+            System.out.println(JSON.toJson(evaluateFiles(Path.of(args[1]), Path.of(args[2])))); return;
+        }
         var reports = new CoordinationComparisonReport(Path.of(args[1])); String id, report;
         switch (args[0]) {
             case "example" -> {

@@ -242,8 +242,10 @@ under the unchanged rubric, preserving failed/uncertain trials and historical
 errors. A [complete campaign claim inspection](docs/invoice-campaign-review-results.md)
 now reviews all 521 units and 72 criteria, preserving unsupported assertions,
 interpretive uncertainty and every failed/missing answer. No trial satisfies
-every declared review gate. Paired quality/resource reporting remains next;
-no coordination benefit or routing change is established.
+every declared review gate. The [paired invoice report](docs/invoice-campaign-results.md)
+now preserves all twelve original trials, inclusive resources and distinct
+quality/timing/usage denominators. Its bound, read-only comparison selects no
+winning architecture or routing promotion; Milestone 4 acceptance remains open.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

@@ -7,6 +7,9 @@ review and the paired report preserve the declared denominator, original claims,
 unsupported/unresolved findings and inclusive resource/timing records.
 The [scoped routing policy](coordination-routing.md) is implemented as a read-only
 diagnostics-first recommendation with mandatory maintainer review.
+The separate [joint invoice campaign report](invoice-campaign-results.md) is also
+complete and preserves its failed, negative and uncertain outcomes. It establishes
+no accepted whole bundle or useful-coordination benefit.
 
 **Milestone 4 acceptance is not established.** Its declared criterion remains
 useful coordination on heterogeneous consumers under declared budgets, without
@@ -40,6 +43,10 @@ Before closing the milestone or promoting automatic team routing:
 4. Demonstrate useful coordination under the original budget/permission criterion
    before claiming acceptance. If it remains unestablished, retain simpler routing
    and the explicit gap; do not select favorable retries or lower the rubric.
+
+The joint invoice workload below has now been frozen, executed and reviewed.
+Its paired report leaves useful coordination unestablished, so item 4 remains
+an open gate.
 
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider
@@ -194,8 +201,10 @@ A [campaign-bound semantic inspection](invoice-campaign-review-results.md) now
 reviews all twelve slots, 521 units and 72 criteria with no pending entries,
 preserving unsupported assertions, interpretive uncertainty and failed/missing
 answers. No trial meets every declared review gate. Paired quality/resource
-reporting remains outstanding; these results establish no useful-coordination
-benefit, routing promotion or acceptance.
+reporting now preserves all twelve trials, the two unestablished quality blocks
+and inclusive resources without inventing missing answers or zero unknown usage.
+These results establish no useful-coordination benefit, routing promotion or
+acceptance; see the [bound paired report](invoice-campaign-results.md).
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

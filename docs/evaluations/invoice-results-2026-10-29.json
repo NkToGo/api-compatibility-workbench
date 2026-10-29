@@ -1,0 +1,1192 @@
+{
+  "assessment": {
+    "authority": "supplied-comparison-records-not-authenticated",
+    "conclusion": "UNRESOLVED",
+    "definition": {
+      "experimentId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+      "implementations": {
+        "COORDINATED_TEAM": {
+          "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+        },
+        "DETERMINISTIC": {
+          "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+        },
+        "INDEPENDENT_WORKERS": {
+          "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+        },
+        "SINGLE_AGENT": {
+          "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+        }
+      },
+      "limits": {
+        "elapsedMillis": 1200000,
+        "inputBytesPerCall": 64000,
+        "modelCalls": 60,
+        "outputTokensPerCall": 2048
+      },
+      "model": "gpt-5.6-terra",
+      "origin": "SUPPLIED_RECORDS",
+      "repetitions": 3,
+      "rubricIdentity": {
+        "sha256": "9f89e515bcea47606e76573874304d2fda2fbcbd522e2283e7b520d4b4e960ab"
+      },
+      "workloads": [
+        {
+          "cases": [
+            {
+              "caseId": "stripe-invoice-subscription-2025-03-31",
+              "criteria": [
+                "versioned-association",
+                "independent-version-boundaries",
+                "application-policy-gates",
+                "joint-ledger-behavior",
+                "execution-and-causal-scope",
+                "evidence-and-uncertainty"
+              ],
+              "expectedResponse": "ANSWER",
+              "inputIdentity": {
+                "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+              }
+            }
+          ],
+          "workloadId": "invoice-joint"
+        }
+      ]
+    },
+    "issues": [
+      "UNESTABLISHED_PAIRED_COVERAGE"
+    ],
+    "metrics": {
+      "COORDINATED_TEAM": {
+        "ambiguousSlots": 0,
+        "comparableAcceptedBundles": 0,
+        "comparableBundles": 3,
+        "failedBundles": 3,
+        "incompleteUsageSlots": 0,
+        "missingSlots": 0,
+        "plannedBundles": 3,
+        "reportedCaseExecutionsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 158741,
+        "reportedInputTokensForUnambiguousSlots": 941338,
+        "reportedOutputTokensForUnambiguousSlots": 9523,
+        "reportedReservedCallsForUnambiguousSlots": 92,
+        "reportedToolCallsForUnambiguousSlots": 92,
+        "reviewedAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0
+      },
+      "DETERMINISTIC": {
+        "ambiguousSlots": 0,
+        "comparableAcceptedBundles": 0,
+        "comparableBundles": 3,
+        "failedBundles": 0,
+        "incompleteUsageSlots": 0,
+        "missingSlots": 0,
+        "plannedBundles": 3,
+        "reportedCaseExecutionsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 5498,
+        "reportedInputTokensForUnambiguousSlots": 0,
+        "reportedOutputTokensForUnambiguousSlots": 0,
+        "reportedReservedCallsForUnambiguousSlots": 0,
+        "reportedToolCallsForUnambiguousSlots": 297,
+        "reviewedAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0
+      },
+      "INDEPENDENT_WORKERS": {
+        "ambiguousSlots": 0,
+        "comparableAcceptedBundles": 0,
+        "comparableBundles": 2,
+        "failedBundles": 1,
+        "incompleteUsageSlots": 0,
+        "missingSlots": 0,
+        "plannedBundles": 3,
+        "reportedCaseExecutionsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 289577,
+        "reportedInputTokensForUnambiguousSlots": 1728538,
+        "reportedOutputTokensForUnambiguousSlots": 18993,
+        "reportedReservedCallsForUnambiguousSlots": 140,
+        "reportedToolCallsForUnambiguousSlots": 140,
+        "reviewedAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0
+      },
+      "SINGLE_AGENT": {
+        "ambiguousSlots": 0,
+        "comparableAcceptedBundles": 0,
+        "comparableBundles": 2,
+        "failedBundles": 3,
+        "incompleteUsageSlots": 1,
+        "missingSlots": 0,
+        "plannedBundles": 3,
+        "reportedCaseExecutionsForUnambiguousSlots": 0,
+        "reportedElapsedMillisForUnambiguousSlots": 202378,
+        "reportedInputTokensForUnambiguousSlots": 1035463,
+        "reportedOutputTokensForUnambiguousSlots": 8031,
+        "reportedReservedCallsForUnambiguousSlots": 81,
+        "reportedToolCallsForUnambiguousSlots": 81,
+        "reviewedAcceptedBundles": 0,
+        "reviewedAcceptedCasesForUnambiguousSlots": 0
+      }
+    },
+    "pairs": [
+      {
+        "bothAcceptedBundle": 0,
+        "comparableBlocks": 2,
+        "equalAcceptedCases": 2,
+        "left": "DETERMINISTIC",
+        "leftMoreAcceptedCases": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "neitherAcceptedBundle": 2,
+        "right": "SINGLE_AGENT",
+        "rightMoreAcceptedCases": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "unestablishedBlocks": 1
+      },
+      {
+        "bothAcceptedBundle": 0,
+        "comparableBlocks": 2,
+        "equalAcceptedCases": 2,
+        "left": "DETERMINISTIC",
+        "leftMoreAcceptedCases": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "neitherAcceptedBundle": 2,
+        "right": "INDEPENDENT_WORKERS",
+        "rightMoreAcceptedCases": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "unestablishedBlocks": 1
+      },
+      {
+        "bothAcceptedBundle": 0,
+        "comparableBlocks": 3,
+        "equalAcceptedCases": 3,
+        "left": "DETERMINISTIC",
+        "leftMoreAcceptedCases": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "neitherAcceptedBundle": 3,
+        "right": "COORDINATED_TEAM",
+        "rightMoreAcceptedCases": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "unestablishedBlocks": 0
+      },
+      {
+        "bothAcceptedBundle": 0,
+        "comparableBlocks": 1,
+        "equalAcceptedCases": 1,
+        "left": "SINGLE_AGENT",
+        "leftMoreAcceptedCases": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "neitherAcceptedBundle": 1,
+        "right": "INDEPENDENT_WORKERS",
+        "rightMoreAcceptedCases": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "unestablishedBlocks": 2
+      },
+      {
+        "bothAcceptedBundle": 0,
+        "comparableBlocks": 2,
+        "equalAcceptedCases": 2,
+        "left": "SINGLE_AGENT",
+        "leftMoreAcceptedCases": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "neitherAcceptedBundle": 2,
+        "right": "COORDINATED_TEAM",
+        "rightMoreAcceptedCases": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "unestablishedBlocks": 1
+      },
+      {
+        "bothAcceptedBundle": 0,
+        "comparableBlocks": 2,
+        "equalAcceptedCases": 2,
+        "left": "INDEPENDENT_WORKERS",
+        "leftMoreAcceptedCases": 0,
+        "leftOnlyAcceptedBundle": 0,
+        "neitherAcceptedBundle": 2,
+        "right": "COORDINATED_TEAM",
+        "rightMoreAcceptedCases": 0,
+        "rightOnlyAcceptedBundle": 0,
+        "unestablishedBlocks": 1
+      }
+    ],
+    "routingDecision": "NOT_ESTABLISHED",
+    "rows": [
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [],
+            "materialUnresolvedClaims": 0,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 1
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "7b16b29272d0f88d9b253fe6b096eedbfeb9b44ecb5fa8c02befe6544b35cd28"
+                },
+                "response": "ANSWERED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 0,
+                  "materialUnsupportedClaims": 0,
+                  "outputIdentity": {
+                    "sha256": "7b16b29272d0f88d9b253fe6b096eedbfeb9b44ecb5fa8c02befe6544b35cd28"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 1851,
+            "implementationIdentity": {
+              "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+            },
+            "model": null,
+            "runId": "trial-1a905593-3c92-4382-bcc3-8179f8c20e37",
+            "slot": {
+              "arm": "DETERMINISTIC",
+              "repetition": 1,
+              "workloadId": "invoice-joint"
+            },
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "4482ef62ff2ed4806684d4a34bf6ee7842cd87c6366f8d77d774db7f2ffac036"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 0,
+              "inputTokens": 0,
+              "notDispatchedSlots": 0,
+              "outputTokens": 0,
+              "registeredCalls": 0,
+              "reservedCalls": 0,
+              "toolCalls": 99,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "DETERMINISTIC",
+          "repetition": 1,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "NO_ANSWER_PROVIDED"
+            ],
+            "materialUnresolvedClaims": null,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 0
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": null,
+                "response": "NOT_PROVIDED",
+                "review": null
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 76337,
+            "implementationIdentity": {
+              "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-de0d812e-f7c6-4e48-89ac-4deb018249aa",
+            "slot": {
+              "arm": "SINGLE_AGENT",
+              "repetition": 1,
+              "workloadId": "invoice-joint"
+            },
+            "status": "FAILED",
+            "traceIdentity": {
+              "sha256": "d185b42c0959db8ada760feea362794928f69b06f9485fec26b9e00cd9acd912"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 25,
+              "inputTokens": 320947,
+              "notDispatchedSlots": 0,
+              "outputTokens": 3172,
+              "registeredCalls": 25,
+              "reservedCalls": 25,
+              "toolCalls": 25,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "SINGLE_AGENT",
+          "repetition": 1,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "MATERIAL_UNRESOLVED_CLAIM",
+              "MATERIAL_UNSUPPORTED_CLAIM"
+            ],
+            "materialUnresolvedClaims": 3,
+            "materialUnsupportedClaims": 3,
+            "qualityResolved": false,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 0
+          }
+        ],
+        "comparable": false,
+        "issues": [
+          "INCOMPLETE_QUALITY_REVIEW"
+        ],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "01ad09e6943205297110946a2d0dd9de9543bb3ffb01be0006b0df58de8d8993"
+                },
+                "response": "ANSWERED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "NOT_SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 3,
+                  "materialUnsupportedClaims": 3,
+                  "outputIdentity": {
+                    "sha256": "01ad09e6943205297110946a2d0dd9de9543bb3ffb01be0006b0df58de8d8993"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 73319,
+            "implementationIdentity": {
+              "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc",
+            "slot": {
+              "arm": "INDEPENDENT_WORKERS",
+              "repetition": 1,
+              "workloadId": "invoice-joint"
+            },
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "08d3042e301c43f802ea038c114c77a64c7359cbbf88f9ae89fad985789033cc"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 41,
+              "inputTokens": 455246,
+              "notDispatchedSlots": 0,
+              "outputTokens": 5571,
+              "registeredCalls": 41,
+              "reservedCalls": 41,
+              "toolCalls": 41,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "INDEPENDENT_WORKERS",
+          "repetition": 1,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "UNEXPECTED_RESPONSE_DISPOSITION"
+            ],
+            "materialUnresolvedClaims": 0,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 1
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "d8797a16813a09ca38208fa7c14099265feb72d6caf14aceaa90f9be841bb5ed"
+                },
+                "response": "ABSTAINED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 0,
+                  "materialUnsupportedClaims": 0,
+                  "outputIdentity": {
+                    "sha256": "d8797a16813a09ca38208fa7c14099265feb72d6caf14aceaa90f9be841bb5ed"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 55320,
+            "implementationIdentity": {
+              "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-00ec370f-67e6-4dfa-882c-e1f09f7df607",
+            "slot": {
+              "arm": "COORDINATED_TEAM",
+              "repetition": 1,
+              "workloadId": "invoice-joint"
+            },
+            "status": "FAILED",
+            "traceIdentity": {
+              "sha256": "3c9fe72f719319d261dd5893a93773dced20757afdd1b6ce5040d3f50e0c0f11"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 31,
+              "inputTokens": 319501,
+              "notDispatchedSlots": 0,
+              "outputTokens": 3469,
+              "registeredCalls": 31,
+              "reservedCalls": 31,
+              "toolCalls": 31,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "COORDINATED_TEAM",
+          "repetition": 1,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [],
+            "materialUnresolvedClaims": 0,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 1
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "1b47c2802dc05346d7d593d515bc9e5886d6f96166e7cea048abe730023d7b27"
+                },
+                "response": "ANSWERED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 0,
+                  "materialUnsupportedClaims": 0,
+                  "outputIdentity": {
+                    "sha256": "1b47c2802dc05346d7d593d515bc9e5886d6f96166e7cea048abe730023d7b27"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 1831,
+            "implementationIdentity": {
+              "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+            },
+            "model": null,
+            "runId": "trial-9f528f65-a468-4ab2-b637-ec7a26b9e55f",
+            "slot": {
+              "arm": "DETERMINISTIC",
+              "repetition": 2,
+              "workloadId": "invoice-joint"
+            },
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "b934bea4429663cd9a527dbacca01065565016782faf08a7f4b315f12ecd1e6b"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 0,
+              "inputTokens": 0,
+              "notDispatchedSlots": 0,
+              "outputTokens": 0,
+              "registeredCalls": 0,
+              "reservedCalls": 0,
+              "toolCalls": 99,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "DETERMINISTIC",
+          "repetition": 2,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "NO_ANSWER_PROVIDED"
+            ],
+            "materialUnresolvedClaims": null,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 0
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": null,
+                "response": "NOT_PROVIDED",
+                "review": null
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 91974,
+            "implementationIdentity": {
+              "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-fd9c532c-3579-4077-8076-170b59b565ab",
+            "slot": {
+              "arm": "SINGLE_AGENT",
+              "repetition": 2,
+              "workloadId": "invoice-joint"
+            },
+            "status": "FAILED",
+            "traceIdentity": {
+              "sha256": "c211e27fb896ca0bd5896fa2f2757f7cdf03d4068dab85f4642f3f72a1c2969c"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 38,
+              "inputTokens": 491634,
+              "notDispatchedSlots": 0,
+              "outputTokens": 3714,
+              "registeredCalls": 38,
+              "reservedCalls": 38,
+              "toolCalls": 38,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "SINGLE_AGENT",
+          "repetition": 2,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [],
+            "materialUnresolvedClaims": 0,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 1
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "50d0c12dc2ce0cd7cae4d38cf5bc4af2449008aa6fc4fcec67b03824667f82c9"
+                },
+                "response": "ANSWERED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 0,
+                  "materialUnsupportedClaims": 0,
+                  "outputIdentity": {
+                    "sha256": "50d0c12dc2ce0cd7cae4d38cf5bc4af2449008aa6fc4fcec67b03824667f82c9"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 90330,
+            "implementationIdentity": {
+              "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58",
+            "slot": {
+              "arm": "INDEPENDENT_WORKERS",
+              "repetition": 2,
+              "workloadId": "invoice-joint"
+            },
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "8d7f8667a144493cb240ad10a3a1a8f806a8a54e825c0d4eb67ce7627ee246d6"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 47,
+              "inputTokens": 618378,
+              "notDispatchedSlots": 0,
+              "outputTokens": 6138,
+              "registeredCalls": 47,
+              "reservedCalls": 47,
+              "toolCalls": 47,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "INDEPENDENT_WORKERS",
+          "repetition": 2,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "UNEXPECTED_RESPONSE_DISPOSITION"
+            ],
+            "materialUnresolvedClaims": 0,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 1
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "f0ad1789ce1b529e6ca6f478a7b26c69be12b945ea150f93858a6ae1cc261457"
+                },
+                "response": "ABSTAINED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 0,
+                  "materialUnsupportedClaims": 0,
+                  "outputIdentity": {
+                    "sha256": "f0ad1789ce1b529e6ca6f478a7b26c69be12b945ea150f93858a6ae1cc261457"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 58488,
+            "implementationIdentity": {
+              "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0",
+            "slot": {
+              "arm": "COORDINATED_TEAM",
+              "repetition": 2,
+              "workloadId": "invoice-joint"
+            },
+            "status": "FAILED",
+            "traceIdentity": {
+              "sha256": "fe4d79be8393436fb4b5ce22608b46d12dd700b712639ed13c3d8395def10e2b"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 31,
+              "inputTokens": 311063,
+              "notDispatchedSlots": 0,
+              "outputTokens": 3382,
+              "registeredCalls": 31,
+              "reservedCalls": 31,
+              "toolCalls": 31,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "COORDINATED_TEAM",
+          "repetition": 2,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [],
+            "materialUnresolvedClaims": 0,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 1
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "cc27bd1dee48b472e1c0f9553c28175794f0db0d4e1acc9b6c985c85940f973a"
+                },
+                "response": "ANSWERED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 0,
+                  "materialUnsupportedClaims": 0,
+                  "outputIdentity": {
+                    "sha256": "cc27bd1dee48b472e1c0f9553c28175794f0db0d4e1acc9b6c985c85940f973a"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 1816,
+            "implementationIdentity": {
+              "sha256": "df4d67db28689dd90eba535cf5f74dc0b161e709ecd4e0446feeaa1c878ea70e"
+            },
+            "model": null,
+            "runId": "trial-7fca4a59-0253-4c01-9c52-6dc943d88c91",
+            "slot": {
+              "arm": "DETERMINISTIC",
+              "repetition": 3,
+              "workloadId": "invoice-joint"
+            },
+            "status": "COMPLETED",
+            "traceIdentity": {
+              "sha256": "e570f37d54297db0835503013f2c5a6f1e3f64c730edb493653ba4adf5753004"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 0,
+              "inputTokens": 0,
+              "notDispatchedSlots": 0,
+              "outputTokens": 0,
+              "registeredCalls": 0,
+              "reservedCalls": 0,
+              "toolCalls": 99,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "DETERMINISTIC",
+          "repetition": 3,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "NO_ANSWER_PROVIDED"
+            ],
+            "materialUnresolvedClaims": null,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": false,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 0
+          }
+        ],
+        "comparable": false,
+        "issues": [
+          "UNKNOWN_REMOTE_OUTCOME",
+          "INCOMPLETE_USAGE",
+          "INCOMPLETE_QUALITY_REVIEW"
+        ],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": null,
+                "response": "NOT_PROVIDED",
+                "review": null
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 34067,
+            "implementationIdentity": {
+              "sha256": "f2bd791c0a1af1400e39cfdb76cd97601afb0b169d11196fd03f6d07ced1fabd"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-525b453c-e3de-45b9-b7e8-d92d656642ec",
+            "slot": {
+              "arm": "SINGLE_AGENT",
+              "repetition": 3,
+              "workloadId": "invoice-joint"
+            },
+            "status": "UNKNOWN_REMOTE_OUTCOME",
+            "traceIdentity": {
+              "sha256": "544001a50c9c198d3e25221f684b10509a84cd15b9fed0ee9a13622be0e7a626"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 17,
+              "inputTokens": 222882,
+              "notDispatchedSlots": 0,
+              "outputTokens": 1145,
+              "registeredCalls": 18,
+              "reservedCalls": 18,
+              "toolCalls": 18,
+              "unresolvedUsageSlots": 1
+            }
+          }
+        ],
+        "slot": {
+          "arm": "SINGLE_AGENT",
+          "repetition": 3,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "NO_ANSWER_PROVIDED"
+            ],
+            "materialUnresolvedClaims": null,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 0
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": null,
+                "response": "NOT_PROVIDED",
+                "review": null
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 125928,
+            "implementationIdentity": {
+              "sha256": "8144e7fcddb8ff522ec399906f44aacecc23a7cf1513a71f3648cf2c0c1a7924"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc",
+            "slot": {
+              "arm": "INDEPENDENT_WORKERS",
+              "repetition": 3,
+              "workloadId": "invoice-joint"
+            },
+            "status": "FAILED",
+            "traceIdentity": {
+              "sha256": "9e8ed1d388bac9466b141cd7a5831c17566832451398d3897c14fd7787236700"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 52,
+              "inputTokens": 654914,
+              "notDispatchedSlots": 0,
+              "outputTokens": 7284,
+              "registeredCalls": 52,
+              "reservedCalls": 52,
+              "toolCalls": 52,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "INDEPENDENT_WORKERS",
+          "repetition": 3,
+          "workloadId": "invoice-joint"
+        }
+      },
+      {
+        "acceptedBundle": false,
+        "cases": [
+          {
+            "accepted": false,
+            "caseId": "stripe-invoice-subscription-2025-03-31",
+            "issues": [
+              "UNEXPECTED_RESPONSE_DISPOSITION"
+            ],
+            "materialUnresolvedClaims": 0,
+            "materialUnsupportedClaims": 0,
+            "qualityResolved": true,
+            "requiredCriteria": 6,
+            "satisfiedCriteria": 1
+          }
+        ],
+        "comparable": true,
+        "issues": [],
+        "records": [
+          {
+            "cases": [
+              {
+                "caseId": "stripe-invoice-subscription-2025-03-31",
+                "inputIdentity": {
+                  "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+                },
+                "outputIdentity": {
+                  "sha256": "f8681bad2ea25cbc5fc48ac68ddcb33096697e90836a00584340c222f52a7150"
+                },
+                "response": "ABSTAINED",
+                "review": {
+                  "claimAuditComplete": true,
+                  "judgments": {
+                    "application-policy-gates": "NOT_SATISFIED",
+                    "evidence-and-uncertainty": "SATISFIED",
+                    "execution-and-causal-scope": "NOT_SATISFIED",
+                    "independent-version-boundaries": "NOT_SATISFIED",
+                    "joint-ledger-behavior": "NOT_SATISFIED",
+                    "versioned-association": "NOT_SATISFIED"
+                  },
+                  "materialUnresolvedClaims": 0,
+                  "materialUnsupportedClaims": 0,
+                  "outputIdentity": {
+                    "sha256": "f8681bad2ea25cbc5fc48ac68ddcb33096697e90836a00584340c222f52a7150"
+                  },
+                  "reviewIdentity": {
+                    "sha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf"
+                  }
+                }
+              }
+            ],
+            "definitionIdentity": {
+              "sha256": "73f44bf49f4bf70b7ffd3a83687b0721180f32ee46a3551ccf633ca9f884f8a1"
+            },
+            "elapsedMillis": 44933,
+            "implementationIdentity": {
+              "sha256": "033fc44e49bc38c309f83d44d57ec0fa0eb15f8839e686f5c965018087691dec"
+            },
+            "model": "gpt-5.6-terra",
+            "runId": "trial-d4edbf70-e04d-4a97-8090-cacf1842f29f",
+            "slot": {
+              "arm": "COORDINATED_TEAM",
+              "repetition": 3,
+              "workloadId": "invoice-joint"
+            },
+            "status": "FAILED",
+            "traceIdentity": {
+              "sha256": "a819d5b38017d24b966e07f461a18017a1b00bdba6fb90cc48c4753b79acd489"
+            },
+            "usage": {
+              "caseExecutions": 0,
+              "completedResponses": 30,
+              "inputTokens": 310774,
+              "notDispatchedSlots": 0,
+              "outputTokens": 2672,
+              "registeredCalls": 30,
+              "reservedCalls": 30,
+              "toolCalls": 30,
+              "unresolvedUsageSlots": 0
+            }
+          }
+        ],
+        "slot": {
+          "arm": "COORDINATED_TEAM",
+          "repetition": 3,
+          "workloadId": "invoice-joint"
+        }
+      }
+    ],
+    "unexpectedRecords": []
+  },
+  "formatVersion": 2,
+  "planSha256": "75b59e2780e512634403bc824333cfd9c42726e88a0376200d940f1bba055150",
+  "recordsSha256": "1da728f6de95bf131f54582dce7657d13136e2847f1e5deabe0744920d25a75c"
+}

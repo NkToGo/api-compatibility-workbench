@@ -2,9 +2,12 @@
 
 The 26 October 2026 campaign executes the four existing invoice policies in
 three declared paired repetitions. It measures operational outcomes and recorded
-resource use on one captured synthetic invoice case. **Answer quality remains
-unreviewed.** Neither a completed process nor a protocol-valid answer establishes
-semantic correctness, useful coordination or migration approval.
+resource use on one captured synthetic invoice case. **Its original quality
+fields remain unreviewed.** A separate [semantic inspection](invoice-campaign-review-results.md)
+and [paired quality/resource report](invoice-campaign-results.md) now assess the
+same twelve slots without rewriting this operational history. Neither a completed
+process nor a protocol-valid answer establishes semantic correctness, useful
+coordination or migration approval.
 
 The [machine-readable record](evaluations/invoice-campaign-2026-10-26.json)
 contains all twelve slots, participant accounting, execution timestamps, output
@@ -136,8 +139,9 @@ remain in the denominator, including failed and missing answers. Known tokens
 are recorded usage, not a provider invoice. Trial durations are separate from
 campaign wall time and do not establish causal speedup.
 
-Next, bind review packets to these exact twelve trial outputs and review their
-complete available claim lineage against the frozen rubric and contract. Only
-then can a paired quality/resource report assess benefit while preserving
-unsupported, unresolved, historical and missing work. No routing change or
-Milestone 4 acceptance follows from this operational measurement.
+Separate review packets now bind these exact twelve outputs and their complete
+available claim lineage. The [semantic inspection](invoice-campaign-review-results.md)
+and [paired report](invoice-campaign-results.md) preserve unsupported, unresolved,
+historical and missing work under the unchanged rubric and contract. No routing
+change or Milestone 4 acceptance follows from the operational measurement or
+subsequent comparison.

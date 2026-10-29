@@ -1,0 +1,170 @@
+{
+  "absentOutputsPreserved": 4,
+  "assessmentSha256": "13257f2da413528c165c95bb981425cc28636fcb7cd69d3161962a1689cf02c6",
+  "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+  "comparisonId": "comparison-784b2b42-fa95-4e13-a452-33617165c363",
+  "expectedCampaignReceiptSha256": "4481be329dffa6c3d8ee07ab0db642ee4bc5eae3f6f2aa008fb4f7e53724a0c1",
+  "formatVersion": 1,
+  "inspection": {
+    "authority": "Validates supplied bindings and declared review gates, not semantic truth, reviewer accuracy, release approval or routing permission.",
+    "campaignAcceptance": "NOT_ESTABLISHED",
+    "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+    "claimJudgments": 3826,
+    "criteriaTiming": "FROZEN_BEFORE_TRIALS",
+    "expectedCampaignReceiptSha256": "4481be329dffa6c3d8ee07ab0db642ee4bc5eae3f6f2aa008fb4f7e53724a0c1",
+    "historicalMaterialUnresolved": 4,
+    "historicalMaterialUnsupported": 4,
+    "packetId": "reviewpacket-8fb56f51-6a26-44ae-9a79-72ed85a115a7",
+    "packetSha256": "666b667993833f0855b70ac01905885469d093101be9955ec69ddc85b975ca13",
+    "participantCallsInitiatedByThisCommand": 0,
+    "pendingCriteria": 0,
+    "pendingUnits": 0,
+    "reviewId": "semanticreview-759e19a3-3dde-4dad-aea9-ad6f0e372dc7",
+    "reviewSha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf",
+    "reviewedTrials": 12,
+    "status": "INVOICE_REVIEW_BINDINGS_MATCHED",
+    "trials": [
+      {
+        "arm": "DETERMINISTIC",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 1,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "SINGLE_AGENT",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 2,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "INDEPENDENT_WORKERS",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 3,
+        "endorsedMaterialUnsupported": 3,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 3,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "COORDINATED_TEAM",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 4,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "SINGLE_AGENT",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 5,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "INDEPENDENT_WORKERS",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 6,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "COORDINATED_TEAM",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 7,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "DETERMINISTIC",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 8,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "INDEPENDENT_WORKERS",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 9,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "COORDINATED_TEAM",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 10,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "DETERMINISTIC",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 11,
+        "satisfiesDeclaredReview": false
+      },
+      {
+        "arm": "SINGLE_AGENT",
+        "coverageAttestedComplete": true,
+        "endorsedMaterialUnresolved": 0,
+        "endorsedMaterialUnsupported": 0,
+        "pendingCriteria": 0,
+        "pendingUnits": 0,
+        "position": 12,
+        "satisfiesDeclaredReview": false
+      }
+    ]
+  },
+  "originalRecordsSha256": "b1d30e21e6918d47d69190ee9a828d2cdb9b7f722c849b39330ee4faab3f436f",
+  "packetId": "reviewpacket-8fb56f51-6a26-44ae-9a79-72ed85a115a7",
+  "packetSha256": "666b667993833f0855b70ac01905885469d093101be9955ec69ddc85b975ca13",
+  "planSha256": "75b59e2780e512634403bc824333cfd9c42726e88a0376200d940f1bba055150",
+  "plannedSlots": 12,
+  "providedOutputsBound": 8,
+  "recordFormatVersion": 2,
+  "recordsSha256": "1da728f6de95bf131f54582dce7657d13136e2847f1e5deabe0744920d25a75c",
+  "reviewId": "semanticreview-759e19a3-3dde-4dad-aea9-ad6f0e372dc7",
+  "reviewSha256": "0981e5b5f5c9a1964c4f0337391a5311b8127824e24855ccb42c1561870875bf",
+  "reviewer": {
+    "blinded": false,
+    "calibratedReviewerAccuracy": false,
+    "independentHumanAdjudication": false,
+    "label": "Offline claim inspection with independent direct-fact and access reconstruction",
+    "method": "model-assisted-offline-inspection",
+    "newProviderCalls": 0,
+    "reviewedOn": "2026-10-27"
+  },
+  "role": "bound-invoice-campaign-comparison",
+  "scope": "Bound supplied review and descriptive recorded resources; no authenticated semantic truth, routing, execution or release approval."
+}

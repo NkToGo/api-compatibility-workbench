@@ -12,6 +12,33 @@ class CoordinationComparisonReportTest {
     private static final Gson JSON = new GsonBuilder().serializeNulls().setPrettyPrinting().disableHtmlEscaping().create();
     private Path plan() throws Exception { Path path = root.resolve("plan.json"); Files.writeString(path, JSON.toJson(CoordinationComparisonReport.examplePlan())); return path; }
     private Path records() throws Exception { Path path = root.resolve("records.json"); Files.writeString(path, JSON.toJson(new CoordinationComparisonReport.Records(1, List.of()))); return path; }
+    @Test void fileEvaluationCreatesNoStateAndPreservesExactInputIdentities() throws Exception {
+        Path p = plan(), r = records(); byte[] originalPlan = Files.readAllBytes(p), originalRecords = Files.readAllBytes(r);
+        var result = CoordinationComparisonReport.evaluateFiles(p, r);
+        assertEquals(CaseInputs.hash(originalPlan), result.get("planSha256").getAsString());
+        assertEquals(CaseInputs.hash(originalRecords), result.get("recordsSha256").getAsString());
+        assertEquals("UNRESOLVED", result.getAsJsonObject("assessment").get("conclusion").getAsString());
+        assertEquals(12, result.getAsJsonObject("assessment").getAsJsonArray("rows").size());
+        assertArrayEquals(originalPlan, Files.readAllBytes(p)); assertArrayEquals(originalRecords, Files.readAllBytes(r));
+        try (var entries = Files.list(root)) { assertEquals(2, entries.count()); }
+    }
+    @Test void readOnlyEvaluationRejectsUnversionedHistoricalReviewWithoutWriting() throws Exception {
+        Path fixture = legacyFixture();
+        assertThrows(RuntimeException.class, () -> CoordinationComparisonReport.evaluateFiles(fixture.getParent().resolve("plan.json"), fixture.resolve("records.json")));
+        assertFalse(Files.exists(root.resolve("results")));
+    }
+    @Test void fileEvaluationPreservesExplicitMaterialUncertaintyAndStrictFields() throws Exception {
+        Path fixture = legacyFixture(); var tree = CaseInputs.object(Files.readAllBytes(fixture.resolve("records.json"))); tree.addProperty("formatVersion", 2);
+        for (var t : tree.getAsJsonArray("trials")) for (var c : t.getAsJsonObject().getAsJsonArray("cases")) {
+            var review = c.getAsJsonObject().get("review"); if (!review.isJsonNull()) review.getAsJsonObject().addProperty("materialUnresolvedClaims", 3);
+        }
+        Path r = root.resolve("explicit-v2.json"); Files.writeString(r, tree.toString());
+        var result = CoordinationComparisonReport.evaluateFiles(fixture.getParent().resolve("plan.json"), r);
+        assertEquals("UNRESOLVED", result.getAsJsonObject("assessment").get("conclusion").getAsString());
+        assertTrue(result.toString().contains("MATERIAL_UNRESOLVED_CLAIM"));
+        tree.addProperty("winner", "COORDINATED_TEAM"); Files.writeString(r, tree.toString());
+        assertThrows(RuntimeException.class, () -> CoordinationComparisonReport.evaluateFiles(fixture.getParent().resolve("plan.json"), r));
+    }
     private Path legacyFixture() throws Exception {
         Path directory = root.resolve("coordination-comparisons/comparison-cc35117f-f36a-497e-a0da-82d3138aeccc");
         Path report = directory.resolve("report-0a58dd53-43bc-4600-80e4-c818c68223e2"); Files.createDirectories(report);

@@ -10,9 +10,10 @@ The original five completed trials, six failed trials and one uncertain remote
 outcome remain present. Rejected finish responses and accepted partial role
 reports are inspected without replacing failed runs with successful answers.
 Neither this review nor operational completion establishes useful coordination,
-routing promotion or migration/release approval. The paired quality/resource
-report remains separate work; [Milestone 4 acceptance](milestone-4-status.md) stays
-open.
+routing promotion or migration/release approval. The separate
+[paired quality/resource report](invoice-campaign-results.md) now retains every
+original trial and its inclusive costs; [Milestone 4 acceptance](milestone-4-status.md)
+stays open.
 
 ## Method and evidence
 

@@ -381,7 +381,7 @@ provider families and automatic repair-feedback loops remain outside its scope.
      fact recomputation and retained historical errors/failures. No arm satisfies
      every declared gate. It remains post-hoc and establishes no paired benefit,
      routing change or Milestone 4 acceptance.
-     **4e4 in progress:** separately freeze/execute ordered paired trials and complete
+     **4e4 completed:** separately freeze/execute ordered paired trials and complete
      bound semantic review/reporting. Do not select workloads or criteria to
      guarantee a team winner; do not promote routing without reviewed benefit.
      **4e4a implemented:** [frozen invoice campaign registration](invoice-campaign.md)
@@ -431,6 +431,16 @@ provider families and automatic repair-feedback loops remain outside its scope.
      incomplete usage and inclusive resources. The two unestablished quality
      blocks stay outside win/tie counts; their recorded costs and durations stay
      included. No accepted bundle or useful coordination is established.
+     **4e5 in progress:** prospectively revise the investigation protocol without
+     rewriting the negative campaign. **4e5a completed:** a [structural protocol
+     diagnosis and follow-up design](invoice-protocol-follow-up.md) reconstructs
+     all fifteen original adaptive investigation contexts, including three
+     rejected finishes and all six original-team budget stops. It defines
+     candidate readiness, bounded lookup, scheduling and public-task changes;
+     these are not implemented policies or a registered new campaign. Next is
+     a pure versioned readiness boundary, followed by separate navigation and
+     adapter integration before any new frozen measurement. Existing ceilings,
+     baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

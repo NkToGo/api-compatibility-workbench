@@ -246,6 +246,9 @@ every declared review gate. The [paired invoice report](docs/invoice-campaign-re
 now preserves all twelve original trials, inclusive resources and distinct
 quality/timing/usage denominators. Its bound, read-only comparison selects no
 winning architecture or routing promotion; Milestone 4 acceptance remains open.
+A [structural protocol diagnosis](docs/invoice-protocol-follow-up.md) now identifies
+recorded read/citation and completion gaps and defines prospective changes.
+The revised readiness/navigation protocol is not implemented or measured yet.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

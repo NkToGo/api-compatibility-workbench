@@ -1,0 +1,819 @@
+{
+  "formatVersion": 1,
+  "diagnosisId": "invoice-protocol-diagnosis-2026-10-29",
+  "authority": "read-only-structural-reconstruction-not-new-semantic-review",
+  "sourceRevision": "7aacb17d6b53105726cd2514b5420f3e3dd66c4b",
+  "campaignId": "invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6",
+  "inputIdentity": {
+    "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+  },
+  "sourceManifest": {
+    "path": "evidence/inputs/manifest.json",
+    "sha256": "f33c31738c753c6af710f7b0797f4bef3a3e0911c74eb211f8068759adca7295"
+  },
+  "originalRecords": {
+    "path": "state/invoice-campaign-executions/invoicecampaign-c86bfdd4-8bc2-4fd3-bd44-ab80761d30d6/records.json",
+    "sha256": "b1d30e21e6918d47d69190ee9a828d2cdb9b7f722c849b39330ee4faab3f436f"
+  },
+  "implementation": {
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvoiceSingleAgent.java": "6bb9b77673745bdf048819ee37f7ef6bb6c9d6ec9c8e786b171bf8fdb76d125b",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvoiceWorkerDecision.java": "123b31528bbab279194190616333e2957066b17174590efb120a33d1c8b18bca",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvoiceInvestigationDecision.java": "9c28946b4382cd46e7b40dd4410561f477118527115ab44b214fd82789fd168e",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvoiceIndependentWorkers.java": "67d18bb2018782ab8e562b0afd7e282b43a2f3bf9c86e53ba98b0181a08ece72",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvoiceTeamRunner.java": "1eae8bf5dba6d8813186a85a8aca37c40d15a0008d750b1df40ba5a95b16221e",
+    "backend/src/main/java/io/github/nktogo/apicompatibility/runner/InvoiceComparisonInputs.java": "7cab843b29eb28daae4fdbbaf7bb5f428cd93cc073e03527968ca1d4a427b0fa"
+  },
+  "scope": {
+    "originalTrialSlots": 12,
+    "adaptiveTrialSlots": 9,
+    "originalInvestigationContexts": 15,
+    "teamOriginalContexts": 6,
+    "deterministicSlotsIncludedInHistoricalReport": 3,
+    "coordinatorAndReconcilerContextsRegraded": 0,
+    "newModelCalls": 0,
+    "newConsumerExecutions": 0,
+    "historicalFilesReadAndPinned": 1127
+  },
+  "participants": [
+    {
+      "position": 2,
+      "repetition": 1,
+      "arm": "SINGLE_AGENT",
+      "runId": "trial-de0d812e-f7c6-4e48-89ac-4deb018249aa",
+      "participant": "invoice-single-agent",
+      "status": "FAILED",
+      "stopReason": "UNSUPPORTED_DOSSIER",
+      "lastDecisionNumber": 25,
+      "sharedDecisionsRemainingBeforeLastCall": 36,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 13,
+        "textPages": 11,
+        "exactRepeatedTextRanges": 2,
+        "distinctReadAliases": 8
+      },
+      "readsAtStop": {
+        "cataloguePages": 13,
+        "textPages": 11,
+        "exactRepeatedTextRanges": 2,
+        "distinctReadAliases": 8
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [
+          "source/webhook-baseline/InvoiceWebhookConsumer.java",
+          "source/reconciliation-baseline/InvoiceReconciliationConsumer.java"
+        ],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [
+          "source/webhook-baseline/InvoiceWebhookConsumer.java",
+          "source/reconciliation-baseline/InvoiceReconciliationConsumer.java"
+        ],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [],
+        "summaryCitationCount": 3,
+        "findingCount": 6,
+        "structurallyAdmissible": false
+      },
+      "optimisticMinimumCallsIncludingFinish": 7,
+      "lastRequest": {
+        "path": "state/invoice-single-agent/trial-de0d812e-f7c6-4e48-89ac-4deb018249aa/request-25.json",
+        "sha256": "cc817809f4a73ddf0651fe1684999351a91c6164175fb722058eb2fdcd362155"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-de0d812e-f7c6-4e48-89ac-4deb018249aa/broker/model-89d400c6-1a09-4acf-a37e-1e690e8b746b/result.json",
+        "sha256": "28a4ea61de695c34ad4523e1be70da40eb32eeaa42ff975d195be293c648206d"
+      }
+    },
+    {
+      "position": 3,
+      "repetition": 1,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc",
+      "participant": "invoice-reconciliation",
+      "status": "COMPLETED",
+      "stopReason": "NONE",
+      "lastDecisionNumber": 20,
+      "sharedDecisionsRemainingBeforeLastCall": 22,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 9,
+        "textPages": 10,
+        "exactRepeatedTextRanges": 1,
+        "distinctReadAliases": 7
+      },
+      "readsAtStop": {
+        "cataloguePages": 9,
+        "textPages": 10,
+        "exactRepeatedTextRanges": 1,
+        "distinctReadAliases": 7
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [],
+        "summaryCitationCount": 5,
+        "findingCount": 6,
+        "structurallyAdmissible": true
+      },
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-independent-workers/trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc/request-20-invoice-reconciliation.json",
+        "sha256": "e5eb81354d6271ca3dabd1d5da4aa545a7e4b29606600cbbbe4ce7c76f254293"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc/broker/model-9554e56b-c776-43fc-98e4-02c0a06a6f5c/result.json",
+        "sha256": "614c770f55e2f632cb81740d2f57fbfb88b999f637d366ec8e6775dfc3ff3520"
+      }
+    },
+    {
+      "position": 3,
+      "repetition": 1,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc",
+      "participant": "invoice-webhook",
+      "status": "COMPLETED",
+      "stopReason": "NONE",
+      "lastDecisionNumber": 21,
+      "sharedDecisionsRemainingBeforeLastCall": 20,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 8,
+        "textPages": 12,
+        "exactRepeatedTextRanges": 3,
+        "distinctReadAliases": 7
+      },
+      "readsAtStop": {
+        "cataloguePages": 8,
+        "textPages": 12,
+        "exactRepeatedTextRanges": 3,
+        "distinctReadAliases": 7
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [],
+        "summaryCitationCount": 4,
+        "findingCount": 5,
+        "structurallyAdmissible": true
+      },
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-independent-workers/trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc/request-21-invoice-webhook.json",
+        "sha256": "06bd80dd2dbcb2a4a0af24edd56bc4ea4ad77244c8c1c68c0683d0c7b0f42a8c"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-33ad0d7a-ad8e-4495-b9f6-331743cb33cc/broker/model-35249b75-59be-4d86-ac47-a0459aedb15a/result.json",
+        "sha256": "1e7d1776cf0ae02969c1a66add2bb6e87732173df096f8a8788b6998579943c5"
+      }
+    },
+    {
+      "position": 4,
+      "repetition": 1,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-00ec370f-67e6-4dfa-882c-e1f09f7df607",
+      "participant": "invoice-reconciliation",
+      "status": "FAILED",
+      "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+      "lastDecisionNumber": 12,
+      "sharedDecisionsRemainingBeforeLastCall": 2,
+      "lastPublicAction": "read_text",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 9,
+        "textPages": 2,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 2
+      },
+      "readsAtStop": {
+        "cataloguePages": 9,
+        "textPages": 3,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 3
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [
+          "task"
+        ],
+        "completeBusinessArtifact": false,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [
+          "task"
+        ],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": null,
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-team-runs/trial-00ec370f-67e6-4dfa-882c-e1f09f7df607/request-12-invoice-reconciliation.json",
+        "sha256": "14ce44088bee8360323d92cb02b8506780c4835867feb7f9d17754fdf5f77ca4"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-00ec370f-67e6-4dfa-882c-e1f09f7df607/broker/model-7bb98659-cdc8-4a4e-9ecd-80fc1efec47c/result.json",
+        "sha256": "2000dd61f4f37cd78ce926d502e886e23d01ef9c266d8dde72ce08db546e3fee"
+      }
+    },
+    {
+      "position": 4,
+      "repetition": 1,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-00ec370f-67e6-4dfa-882c-e1f09f7df607",
+      "participant": "invoice-webhook",
+      "status": "FAILED",
+      "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+      "lastDecisionNumber": 12,
+      "sharedDecisionsRemainingBeforeLastCall": 2,
+      "lastPublicAction": "read_text",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 6,
+        "textPages": 5,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 5
+      },
+      "readsAtStop": {
+        "cataloguePages": 6,
+        "textPages": 6,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 6
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": null,
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-team-runs/trial-00ec370f-67e6-4dfa-882c-e1f09f7df607/request-12-invoice-webhook.json",
+        "sha256": "54cef1bb608ad1d4093d6af6be546a9dd52f4662ffd3085c1c40eb8a27b1078d"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-00ec370f-67e6-4dfa-882c-e1f09f7df607/broker/model-e7a7a3c4-75b0-4805-b5fd-aa985c507e93/result.json",
+        "sha256": "2f07897e0e1dd45cb456effc322ed43155c8ae3f0e8e83cfd59d7f5108db3c92"
+      }
+    },
+    {
+      "position": 5,
+      "repetition": 2,
+      "arm": "SINGLE_AGENT",
+      "runId": "trial-fd9c532c-3579-4077-8076-170b59b565ab",
+      "participant": "invoice-single-agent",
+      "status": "FAILED",
+      "stopReason": "UNSUPPORTED_DOSSIER",
+      "lastDecisionNumber": 38,
+      "sharedDecisionsRemainingBeforeLastCall": 23,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 18,
+        "textPages": 19,
+        "exactRepeatedTextRanges": 6,
+        "distinctReadAliases": 11
+      },
+      "readsAtStop": {
+        "cataloguePages": 18,
+        "textPages": 19,
+        "exactRepeatedTextRanges": 6,
+        "distinctReadAliases": 11
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [
+          "read-33",
+          "read-35"
+        ],
+        "summaryCitationCount": 5,
+        "findingCount": 6,
+        "structurallyAdmissible": false
+      },
+      "optimisticMinimumCallsIncludingFinish": 7,
+      "lastRequest": {
+        "path": "state/invoice-single-agent/trial-fd9c532c-3579-4077-8076-170b59b565ab/request-38.json",
+        "sha256": "f7fdedb7e8df632a4f3892ff93c6dd9db2cf763d18520d9276209b3c1c75444d"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-fd9c532c-3579-4077-8076-170b59b565ab/broker/model-ddb27807-e48d-49e9-a1f2-c6884f1e8da8/result.json",
+        "sha256": "c814a3bb0024a8e51906713a7065909ec1bc7b579f9f4d8636064068538d70f6"
+      }
+    },
+    {
+      "position": 6,
+      "repetition": 2,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58",
+      "participant": "invoice-reconciliation",
+      "status": "COMPLETED",
+      "stopReason": "NONE",
+      "lastDecisionNumber": 24,
+      "sharedDecisionsRemainingBeforeLastCall": 14,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 15,
+        "textPages": 8,
+        "exactRepeatedTextRanges": 1,
+        "distinctReadAliases": 6
+      },
+      "readsAtStop": {
+        "cataloguePages": 15,
+        "textPages": 8,
+        "exactRepeatedTextRanges": 1,
+        "distinctReadAliases": 6
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [],
+        "summaryCitationCount": 2,
+        "findingCount": 5,
+        "structurallyAdmissible": true
+      },
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-independent-workers/trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58/request-24-invoice-reconciliation.json",
+        "sha256": "332c812aa1477d8071a4937e0f19928926629d378188551ceb98ad52297e5ee7"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58/broker/model-ad5adec7-0db6-4eee-afcd-00e79a9fde5b/result.json",
+        "sha256": "d05d68afb6b30d344fae0ab1baf3fa1df4e3201b87587c95df53beb723aa26b0"
+      }
+    },
+    {
+      "position": 6,
+      "repetition": 2,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58",
+      "participant": "invoice-webhook",
+      "status": "COMPLETED",
+      "stopReason": "NONE",
+      "lastDecisionNumber": 23,
+      "sharedDecisionsRemainingBeforeLastCall": 16,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 12,
+        "textPages": 10,
+        "exactRepeatedTextRanges": 2,
+        "distinctReadAliases": 6
+      },
+      "readsAtStop": {
+        "cataloguePages": 12,
+        "textPages": 10,
+        "exactRepeatedTextRanges": 2,
+        "distinctReadAliases": 6
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [],
+        "summaryCitationCount": 5,
+        "findingCount": 6,
+        "structurallyAdmissible": true
+      },
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-independent-workers/trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58/request-23-invoice-webhook.json",
+        "sha256": "e0ec788563658dc75e20e2315de4e7e23901771a2d7e18ac319fff0a20b43200"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-9e3ed127-06ca-4a9d-bd38-286c6d9b3d58/broker/model-7b1b12ca-5645-472f-9d75-0f049876a1c3/result.json",
+        "sha256": "9c3ec8a15983e95202412ded6e7d78e4e1c2d52b65954870fa92f36e11914d00"
+      }
+    },
+    {
+      "position": 7,
+      "repetition": 2,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0",
+      "participant": "invoice-reconciliation",
+      "status": "FAILED",
+      "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+      "lastDecisionNumber": 12,
+      "sharedDecisionsRemainingBeforeLastCall": 2,
+      "lastPublicAction": "read_text",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 7,
+        "textPages": 4,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 4
+      },
+      "readsAtStop": {
+        "cataloguePages": 7,
+        "textPages": 5,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 5
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": null,
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-team-runs/trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0/request-12-invoice-reconciliation.json",
+        "sha256": "b14213e0d35bc8999725fb728cba4082858ef5528c20b212005ceb5c8afc5c1b"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0/broker/model-a100992c-ad50-4ebd-96ed-577cad9127e2/result.json",
+        "sha256": "b53c88abaeae2829619ffdae398e42fc3b05d4c4c639cb1a245c9dc0e96ed631"
+      }
+    },
+    {
+      "position": 7,
+      "repetition": 2,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0",
+      "participant": "invoice-webhook",
+      "status": "FAILED",
+      "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+      "lastDecisionNumber": 12,
+      "sharedDecisionsRemainingBeforeLastCall": 2,
+      "lastPublicAction": "read_text",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 6,
+        "textPages": 5,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 4
+      },
+      "readsAtStop": {
+        "cataloguePages": 6,
+        "textPages": 6,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 5
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": null,
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-team-runs/trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0/request-12-invoice-webhook.json",
+        "sha256": "752251faf2ac14d40f53f215eaa651ba5ea334436236834d7010b72a6db7929a"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-99b18d2c-cb93-4840-a90b-f6f0aa5cf5e0/broker/model-89d599ea-4e14-4a8b-a560-fc987188f6a5/result.json",
+        "sha256": "38dd3298de8aad0f8a879752095ac91d663cf2949a8077a40083f415ece75f9b"
+      }
+    },
+    {
+      "position": 9,
+      "repetition": 3,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc",
+      "participant": "invoice-reconciliation",
+      "status": "FAILED",
+      "stopReason": "UNSUPPORTED_DOSSIER",
+      "lastDecisionNumber": 33,
+      "sharedDecisionsRemainingBeforeLastCall": 9,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 19,
+        "textPages": 13,
+        "exactRepeatedTextRanges": 4,
+        "distinctReadAliases": 8
+      },
+      "readsAtStop": {
+        "cataloguePages": 19,
+        "textPages": 13,
+        "exactRepeatedTextRanges": 4,
+        "distinctReadAliases": 8
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": false,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": false,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [],
+        "summaryCitationCount": 3,
+        "findingCount": 5,
+        "structurallyAdmissible": false
+      },
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-independent-workers/trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc/request-33-invoice-reconciliation.json",
+        "sha256": "f9546449f1761450048996ebb0fcdb7b834f3591e3926b6eb75fb1882e92e54a"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc/broker/model-834fb469-f412-4a3f-ab23-1c24a19b1137/result.json",
+        "sha256": "ec4854dde952381a8ba1ded4af31ea64604a495dfbeb2a00e129e0744db11a26"
+      }
+    },
+    {
+      "position": 9,
+      "repetition": 3,
+      "arm": "INDEPENDENT_WORKERS",
+      "runId": "trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc",
+      "participant": "invoice-webhook",
+      "status": "COMPLETED",
+      "stopReason": "NONE",
+      "lastDecisionNumber": 19,
+      "sharedDecisionsRemainingBeforeLastCall": 24,
+      "lastPublicAction": "finish",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 9,
+        "textPages": 9,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 7
+      },
+      "readsAtStop": {
+        "cataloguePages": 9,
+        "textPages": 9,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 7
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": {
+        "response": "ANSWERED",
+        "invalidCitationIds": [],
+        "summaryCitationCount": 4,
+        "findingCount": 5,
+        "structurallyAdmissible": true
+      },
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-independent-workers/trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc/request-19-invoice-webhook.json",
+        "sha256": "d19d4b66f519485517deb2fb502bd86fd8aa261bfa99b6c10a01e05f1991de4a"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-e3b0c9c6-0ede-4c69-84b6-b385a71f3cfc/broker/model-c4096cab-9872-4c2b-ba4a-817f9bdbad9a/result.json",
+        "sha256": "337ac79eedd10c66326d52270dd5700ce16df9ee6acf59ceedb89ce9fbed59a3"
+      }
+    },
+    {
+      "position": 10,
+      "repetition": 3,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-d4edbf70-e04d-4a97-8090-cacf1842f29f",
+      "participant": "invoice-reconciliation",
+      "status": "FAILED",
+      "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+      "lastDecisionNumber": 12,
+      "sharedDecisionsRemainingBeforeLastCall": 2,
+      "lastPublicAction": "read_text",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 7,
+        "textPages": 4,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 4
+      },
+      "readsAtStop": {
+        "cataloguePages": 7,
+        "textPages": 5,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 5
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": true,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": null,
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-team-runs/trial-d4edbf70-e04d-4a97-8090-cacf1842f29f/request-12-invoice-reconciliation.json",
+        "sha256": "e757f604faec12b6bd60d9a3ef6bebe8046eb23f3e52b362bc17c330a066092f"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-d4edbf70-e04d-4a97-8090-cacf1842f29f/broker/model-9a96eec7-8ca9-48ba-a59b-29b2921247b1/result.json",
+        "sha256": "8134025819591c331b17704ffe7dac6738899b037eb033bc7691129ecbdc9acc"
+      }
+    },
+    {
+      "position": 10,
+      "repetition": 3,
+      "arm": "COORDINATED_TEAM",
+      "runId": "trial-d4edbf70-e04d-4a97-8090-cacf1842f29f",
+      "participant": "invoice-webhook",
+      "status": "FAILED",
+      "stopReason": "STAGE_CALL_BUDGET_EXHAUSTED",
+      "lastDecisionNumber": 12,
+      "sharedDecisionsRemainingBeforeLastCall": 2,
+      "lastPublicAction": "read_text",
+      "lastBrokerStatus": "COMPLETED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 8,
+        "textPages": 3,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 3
+      },
+      "readsAtStop": {
+        "cataloguePages": 8,
+        "textPages": 4,
+        "exactRepeatedTextRanges": 0,
+        "distinctReadAliases": 4
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": false,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [],
+        "completeBusinessArtifact": true,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": null,
+      "optimisticMinimumCallsIncludingFinish": 6,
+      "lastRequest": {
+        "path": "state/invoice-team-runs/trial-d4edbf70-e04d-4a97-8090-cacf1842f29f/request-12-invoice-webhook.json",
+        "sha256": "afb7fa3e6e652efc1ecd8e96fb942b4b1ea7e2c400efae4f30baf3e585461d13"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-d4edbf70-e04d-4a97-8090-cacf1842f29f/broker/model-11c913c6-ec21-467f-aa5e-bed74c11c382/result.json",
+        "sha256": "40c6c42a6459baf5c4ed48491aa4082662c11e241843d92cedaac03a5d8ab679"
+      }
+    },
+    {
+      "position": 12,
+      "repetition": 3,
+      "arm": "SINGLE_AGENT",
+      "runId": "trial-525b453c-e3de-45b9-b7e8-d92d656642ec",
+      "participant": "invoice-single-agent",
+      "status": "UNKNOWN_REMOTE_OUTCOME",
+      "stopReason": "MODEL_RATE_LIMITED",
+      "lastDecisionNumber": 18,
+      "sharedDecisionsRemainingBeforeLastCall": 43,
+      "lastPublicAction": null,
+      "lastBrokerStatus": "RATE_LIMITED",
+      "readsBeforeLastCall": {
+        "cataloguePages": 11,
+        "textPages": 6,
+        "exactRepeatedTextRanges": 2,
+        "distinctReadAliases": 4
+      },
+      "readsAtStop": {
+        "cataloguePages": 11,
+        "textPages": 6,
+        "exactRepeatedTextRanges": 2,
+        "distinctReadAliases": 4
+      },
+      "readinessBeforeLastCall": {
+        "missingRequiredAliases": [
+          "source/webhook-baseline/InvoiceWebhookConsumer.java",
+          "source/reconciliation-baseline/InvoiceReconciliationConsumer.java"
+        ],
+        "completeBusinessArtifact": false,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "readinessAtStop": {
+        "missingRequiredAliases": [
+          "source/webhook-baseline/InvoiceWebhookConsumer.java",
+          "source/reconciliation-baseline/InvoiceReconciliationConsumer.java"
+        ],
+        "completeBusinessArtifact": false,
+        "completeOrderArtifact": false,
+        "sourceExecutionCoverageSatisfied": true
+      },
+      "finish": null,
+      "optimisticMinimumCallsIncludingFinish": 7,
+      "lastRequest": {
+        "path": "state/invoice-single-agent/trial-525b453c-e3de-45b9-b7e8-d92d656642ec/request-18.json",
+        "sha256": "1ffb9a1df4beb84da1a302688fd5602ca4949af7e5f8acea582104bb484e56aa"
+      },
+      "lastResponse": {
+        "path": "state/invoice-comparison-trials/trial-525b453c-e3de-45b9-b7e8-d92d656642ec/broker/model-30c72375-88d9-4d6d-b6d0-e6ae2d402476/result.json",
+        "sha256": "fcbeef78510bad0abd7d8b15c481994eea05a5f2558eb89a8cf764e2f43086a4"
+      }
+    }
+  ],
+  "limitations": [
+    "Metadata and input/source hashes bind recorded bytes, not authenticated semantic truth.",
+    "Last-request readiness is structural access and citation admissibility, not answer quality or migration correctness.",
+    "Exact repeated text ranges can be intentional; counts do not establish wasted work.",
+    "Optimistic minimum calls assume aliases already known, maximum-size pages, no other reads and one finish; they are not a useful-answer or semantic-completeness budget.",
+    "Shared decisions remaining is aggregate, not a guaranteed private turn count. A read on the final scheduled turn leaves no accepted finish; causation by the displayed count is not established.",
+    "No original grade, trial, rubric, failed output or unknown-usage slot is replaced."
+  ]
+}

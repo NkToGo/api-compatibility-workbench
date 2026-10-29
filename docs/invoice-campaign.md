@@ -53,8 +53,9 @@ records are bounded at 1 MiB; source inventories also have bounded counts/bytes.
 There is one joint webhook/reconciliation workload, three paired repetitions
 and four arms: **12 planned trials and 12 joint case outputs**. Each repetition
 contains all four arms, including any later failure, abstention or missing output.
-All arms receive the same captured inventory and the six unchanged rubric
-criteria. Protected contract/grades stay outside participant histories.
+All arms receive the same captured inventory and are assessed against the six
+unchanged rubric criteria. The captured task is broad; it does not enumerate
+those criteria. Protected contract/rubric/grades stay outside participant histories.
 
 | Condition | Frozen value |
 | --- | --- |

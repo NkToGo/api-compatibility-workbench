@@ -48,6 +48,14 @@ The joint invoice workload below has now been frozen, executed and reviewed.
 Its paired report leaves useful coordination unestablished, so item 4 remains
 an open gate.
 
+A [structural diagnosis and prospective protocol design](invoice-protocol-follow-up.md)
+now reconstructs all fifteen original adaptive investigation contexts without
+new participant calls or semantic regrading. It distinguishes missing required
+reads, invalid catalogue citations and original-team stage exhaustion. Proposed
+readiness, bounded navigation, scheduling and public-task disclosure changes
+require separate implementation and a new frozen condition before measurement.
+They establish neither improved answer quality nor useful coordination.
+
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider
 support, live repository inventory, publication authorization and external product

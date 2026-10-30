@@ -49,9 +49,7 @@ final class InvoiceComparisonInputs {
             result.addProperty("nextOffset", end); result.addProperty("totalCharacters", content.length()); result.addProperty("content", content.substring(offset, end)); return result;
         }
         JsonObject catalogPrefix(String prefix, int offset, int limit) {
-            CaseInputs.require(prefix != null && prefix.length() <= 300 && (prefix.isEmpty()
-                    || prefix.matches("[a-zA-Z0-9._-]+(?:/[a-zA-Z0-9._-]+)*/?"))
-                    && Arrays.stream(prefix.split("/")).noneMatch(part -> part.equals(".") || part.equals("..")), "Invalid catalogue prefix");
+            validatePrefix(prefix);
             var keys = artifacts.keySet().stream().filter(alias -> alias.startsWith(prefix)).toList();
             CaseInputs.require(offset >= 0 && offset <= keys.size() && limit >= 1 && limit <= 40, "Invalid prefix catalogue page");
             int end = Math.min(keys.size(), offset + limit); var rows = new JsonArray();
@@ -66,6 +64,11 @@ final class InvoiceComparisonInputs {
             CaseInputs.require(result.toString().getBytes(StandardCharsets.UTF_8).length <= 32768, "Prefix catalogue page exceeds byte limit");
             return result;
         }
+    }
+    static void validatePrefix(String prefix) {
+        CaseInputs.require(prefix != null && prefix.length() <= 300 && (prefix.isEmpty()
+                || prefix.matches("[a-zA-Z0-9._-]+(?:/[a-zA-Z0-9._-]+)*/?"))
+                && Arrays.stream(prefix.split("/")).noneMatch(part -> part.equals(".") || part.equals("..")), "Invalid catalogue prefix");
     }
     static Bundle capture(InvoiceCaseCoverage.Plan plan, InvoiceCaseCoverage.Run run, Path directory) throws IOException {
         CaseInputs.require(plan != null && run != null && run.belongsTo(plan), "Original typed invoice capture and plan required");

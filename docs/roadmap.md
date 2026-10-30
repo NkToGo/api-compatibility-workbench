@@ -446,8 +446,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      filters the same captured aliases with stable pagination through a separately
      admitted read-only boundary. Prefix queries share the existing read pool,
      retain exact retry identity, reject old-policy/tool expansion and cannot
-     dispatch models. Next is the versioned decision/context and host-admission
-     contract, then separate adapter integration before measurement. Existing ceilings,
+     dispatch models. **4e5d implemented:** a [pure v2 decision/context contract](invoice-v2-contract.md)
+     versions strict actions and public requirements, validates owned captured read
+     wrappers, derives bounded readiness/context and distinguishes shared scheduling
+     from private turns. Existing protocol registries still deny v2 model access.
+     Next is separately identified runtime/broker admission, then concrete adapter
+     integration before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

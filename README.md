@@ -251,8 +251,11 @@ recorded read/citation and completion gaps and defines prospective changes.
 A pure [structural readiness inspector](docs/invoice-readiness.md) now reports
 missing/gapped reads and citable page IDs from supplied metadata. It is not yet
 connected to investigators. A separately admitted [prefix catalogue](docs/invoice-prefix-catalogue.md)
-now supports bounded, counted navigation over the same capture. Agent integration
-and revised protocol measurement remain pending.
+now supports bounded, counted navigation over the same capture. A pure
+[v2 decision/context contract](docs/invoice-v2-contract.md) validates owned captured
+pages, explicit public requirements and scheduling disclosures. Its protocol IDs
+remain closed to model dispatch; runtime admission, adapter integration and revised
+protocol measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

@@ -57,7 +57,10 @@ require separate implementation and a new frozen condition before measurement.
 The [pure readiness component](invoice-readiness.md) is now implemented separately
 without changing version 1 investigation behavior. A separate [prefix catalogue
 boundary](invoice-prefix-catalogue.md) now supports counted read-only navigation.
-Versioned agent admission and adapter integration remain pending. These changes
+A pure [v2 decision/context contract](invoice-v2-contract.md) now validates owned
+capture pages, explicit public requirements and scheduling metadata. Its new
+protocol IDs remain denied by the existing model broker and runtime registries.
+Versioned runtime admission and adapter integration remain pending. These changes
 establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

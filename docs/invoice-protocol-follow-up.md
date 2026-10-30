@@ -127,8 +127,11 @@ for missing/gapped reads, role access, catalogue citations and honest scope.
 It is not connected to version 1 investigators and does not change their behavior.
 Step 4e5c implements [bounded prefix catalogue navigation](invoice-prefix-catalogue.md)
 under a separately admitted read-only boundary, including restart, exact query
-identity and shared-budget controls. The versioned decision/context and host
-admission contract is next; concrete adapter integration follows separately.
+identity and shared-budget controls. Step 4e5d implements a [pure versioned
+decision/context contract](invoice-v2-contract.md), validating owned capture pages
+and declaring public requirements and scheduling without granting model access.
+Separately identified runtime/broker admission is next; concrete adapter
+integration follows separately.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

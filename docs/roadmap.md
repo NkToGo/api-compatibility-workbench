@@ -437,9 +437,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      all fifteen original adaptive investigation contexts, including three
      rejected finishes and all six original-team budget stops. It defines
      candidate readiness, bounded lookup, scheduling and public-task changes;
-     these are not implemented policies or a registered new campaign. Next is
-     a pure versioned readiness boundary, followed by separate navigation and
-     adapter integration before any new frozen measurement. Existing ceilings,
+     these are not a registered new campaign. **4e5b implemented:** a [pure
+     versioned readiness boundary](invoice-readiness.md) reports required-read
+     gaps and citable own text-page IDs, rejects mixed subjects and conflicting
+     artifact metadata, and keeps structural access separate from quality.
+     It is not wired into version 1 investigators and grants no access. Next are
+     bounded catalogue lookup and separate adapter integration before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

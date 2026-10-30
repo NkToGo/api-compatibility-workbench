@@ -248,7 +248,9 @@ quality/timing/usage denominators. Its bound, read-only comparison selects no
 winning architecture or routing promotion; Milestone 4 acceptance remains open.
 A [structural protocol diagnosis](docs/invoice-protocol-follow-up.md) now identifies
 recorded read/citation and completion gaps and defines prospective changes.
-The revised readiness/navigation protocol is not implemented or measured yet.
+A pure [structural readiness inspector](docs/invoice-readiness.md) now reports
+missing/gapped reads and citable page IDs from supplied metadata. It is not yet
+connected to investigators; revised navigation and protocol measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

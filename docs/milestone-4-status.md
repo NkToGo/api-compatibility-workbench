@@ -54,7 +54,10 @@ new participant calls or semantic regrading. It distinguishes missing required
 reads, invalid catalogue citations and original-team stage exhaustion. Proposed
 readiness, bounded navigation, scheduling and public-task disclosure changes
 require separate implementation and a new frozen condition before measurement.
-They establish neither improved answer quality nor useful coordination.
+The [pure readiness component](invoice-readiness.md) is now implemented separately
+without changing version 1 runtime behavior. Navigation and revised adapter
+integration are pending. These changes establish neither improved answer quality
+nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider

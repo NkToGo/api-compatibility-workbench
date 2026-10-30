@@ -121,10 +121,10 @@ receive the same navigation/readiness semantics within their authorized scope.
 
 ## Reviewable implementation boundary
 
-Step 4e5a completes the diagnosis and this prospective design only. The next
-implementation is a pure, credential-free readiness boundary with versioned
-output and meaningful controls for missing/gapped reads, role access, catalogue
-citations and honest scope. It must not alter version 1 runtime behavior.
+Step 4e5a completes the diagnosis and prospective design. Step 4e5b implements a
+[pure readiness boundary](invoice-readiness.md) with versioned output and controls
+for missing/gapped reads, role access, catalogue citations and honest scope.
+It is not connected to version 1 investigators and does not change their behavior.
 Bounded catalogue lookup and revised adapter/context admission follow as separate
 changes, including restart, identity, shared-budget and old-record controls.
 

@@ -96,8 +96,9 @@ closure, and makes no provider request or consumer dispatch. Additional
 rejection, role changes and retained malformed decisions without publishing
 credentials or private reasoning.
 
-Next, integrate the single-context invoice investigator with v2 navigation,
-readiness and its host-validated finish gate. Independent workers, team stages
+The [single-context v2 investigator](invoice-single-agent-v2.md) now constructs
+owned context and validates structural finishes through this admission path.
+Independent workers, team stages
 and the deterministic baseline follow in separate reviewable changes before
 freezing a new common condition. Keep the original model, ceilings, baselines,
 six review criteria and historical negative results. No campaign registration,

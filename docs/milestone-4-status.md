@@ -61,7 +61,9 @@ A pure [v2 decision/context contract](invoice-v2-contract.md) now validates owne
 capture pages, explicit public requirements and scheduling metadata. Its new
 protocol IDs now have a [separate v2 admission path](invoice-v2-admission.md), with
 exact policy matching, broker routing and interruption controls. Old factories
-remain closed to these grants. Concrete adapter integration remains pending. These changes
+remain closed to these grants. A separate [single-context v2 investigator](invoice-single-agent-v2.md)
+now uses owned context, prefix reads and structural finish checks. The remaining
+v2 adapters and measurement are still pending. These changes
 establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

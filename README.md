@@ -249,14 +249,17 @@ winning architecture or routing promotion; Milestone 4 acceptance remains open.
 A [structural protocol diagnosis](docs/invoice-protocol-follow-up.md) now identifies
 recorded read/citation and completion gaps and defines prospective changes.
 A pure [structural readiness inspector](docs/invoice-readiness.md) now reports
-missing/gapped reads and citable page IDs from supplied metadata. It is not yet
-connected to investigators. A separately admitted [prefix catalogue](docs/invoice-prefix-catalogue.md)
+missing/gapped reads and citable page IDs from supplied metadata, while preserving
+version 1 behavior. A separately admitted [prefix catalogue](docs/invoice-prefix-catalogue.md)
 now supports bounded, counted navigation over the same capture. A pure
 [v2 decision/context contract](docs/invoice-v2-contract.md) validates owned captured
 pages, explicit public requirements and scheduling disclosures. A separately
 identified [v2 runtime/broker boundary](docs/invoice-v2-admission.md) now admits
 explicit scoped grants under the existing ceilings; old factories remain closed
-to v2 protocols. Concrete adapter integration and revised measurement remain pending.
+to v2 protocols. A separate [single-context v2 investigator](docs/invoice-single-agent-v2.md)
+now uses owned-read context, prefix lookup and host-validated structural finishes.
+The other v2 adapters and revised measurement remain pending; finding quality is
+not established by this integration.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

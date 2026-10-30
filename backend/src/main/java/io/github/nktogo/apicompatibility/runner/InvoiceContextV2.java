@@ -30,13 +30,40 @@ final class InvoiceContextV2 {
         }
     }
     private InvoiceContextV2() {}
+    private record Prepared(JsonObject description, JsonArray metadata, JsonArray recent, InvoiceReadiness.Snapshot readiness) {}
 
     /** Caller must supply only runtime-admitted and integrity-verified records from this participant's trial. */
     static String build(InvoiceReadiness.Subject subject, InvoiceComparisonInputs.Bundle bundle,
                         JsonObject bootstrap, List<JsonObject> suppliedReads, Scheduling scheduling, int byteLimit) {
-        Objects.requireNonNull(subject); Objects.requireNonNull(bundle); Objects.requireNonNull(scheduling);
-        CaseInputs.require(subject.inputIdentity().equals(bundle.identity()), "Context input identity mismatch");
+        Objects.requireNonNull(scheduling);
         CaseInputs.require(byteLimit >= 1 && byteLimit <= MAX_INPUT_BYTES, "Invalid invoice context byte ceiling");
+        var prepared = prepare(subject, bundle, bootstrap, suppliedReads);
+        var description = prepared.description(); var metadata = prepared.metadata(); var recent = prepared.recent(); var readiness = prepared.readiness();
+        var context = new JsonObject(); context.addProperty("formatVersion", 2); context.addProperty("contextPolicy", POLICY);
+        context.addProperty("protocol", InvoiceDecisionV2.protocol(subject.scope()));
+        context.addProperty("contractIdentity", InvoiceDecisionV2.contractIdentity(subject.scope()));
+        context.add("subject", CaseInputs.JSON.toJsonTree(subject)); context.addProperty("caseId", InvoiceRenewalFixtures.CASE_ID);
+        var task = new JsonObject(); task.addProperty("sha256", InvoiceDecisionV2.taskIdentity()); task.addProperty("content", InvoiceDecisionV2.PUBLIC_TASK);
+        context.add("publicTask", task); context.add("captureMetadata", description);
+        context.addProperty("captureMetadataAuthority", "historical-capture-not-current-runtime-capabilities");
+        context.add("readiness", readiness.toJson()); context.add("scheduling", scheduling.toJson());
+        context.add("readMetadata", metadata); context.add("recentPages", recent);
+        context.add("contractActions", CaseInputs.JSON.toJsonTree(List.of("catalog", "catalog_prefix", "read_text", "finish")));
+        context.addProperty("authority", "validated-context-not-runtime-admission-or-semantic-acceptance");
+        context.addProperty("qualityReview", "NOT_PERFORMED");
+        String input = InvoiceDecisionV2.canonical(context);
+        while (bytes(input) > byteLimit && !recent.isEmpty()) { recent.remove(0); input = InvoiceDecisionV2.canonical(context); }
+        if (bytes(input) > byteLimit) throw new CoordinationRuntime.Stop("CONTEXT_BUDGET_EXHAUSTED");
+        return input;
+    }
+    static InvoiceReadiness.Snapshot readiness(InvoiceReadiness.Subject subject, InvoiceComparisonInputs.Bundle bundle,
+                                               JsonObject bootstrap, List<JsonObject> suppliedReads) {
+        return prepare(subject, bundle, bootstrap, suppliedReads).readiness();
+    }
+    private static Prepared prepare(InvoiceReadiness.Subject subject, InvoiceComparisonInputs.Bundle bundle,
+                                     JsonObject bootstrap, List<JsonObject> suppliedReads) {
+        Objects.requireNonNull(subject); Objects.requireNonNull(bundle);
+        CaseInputs.require(subject.inputIdentity().equals(bundle.identity()), "Context input identity mismatch");
         var reads = List.copyOf(suppliedReads); CaseInputs.require(reads.size() <= InvoiceReadiness.MAX_PAGES, "Too many context reads");
         var description = ownedPage(subject, bundle, bootstrap, true);
         var metadata = new JsonArray(); var recent = new JsonArray(); var readinessPages = new ArrayList<InvoiceReadiness.Page>();
@@ -56,22 +83,7 @@ final class InvoiceContextV2 {
             recent.add(page); if (recent.size() > RECENT_PAGES) recent.remove(0);
         }
         var readiness = InvoiceReadiness.inspect(subject, readinessPages, description.get("sourceExecutionCoverageSatisfied").getAsBoolean());
-        var context = new JsonObject(); context.addProperty("formatVersion", 2); context.addProperty("contextPolicy", POLICY);
-        context.addProperty("protocol", InvoiceDecisionV2.protocol(subject.scope()));
-        context.addProperty("contractIdentity", InvoiceDecisionV2.contractIdentity(subject.scope()));
-        context.add("subject", CaseInputs.JSON.toJsonTree(subject)); context.addProperty("caseId", InvoiceRenewalFixtures.CASE_ID);
-        var task = new JsonObject(); task.addProperty("sha256", InvoiceDecisionV2.taskIdentity()); task.addProperty("content", InvoiceDecisionV2.PUBLIC_TASK);
-        context.add("publicTask", task); context.add("captureMetadata", description);
-        context.addProperty("captureMetadataAuthority", "historical-capture-not-current-runtime-capabilities");
-        context.add("readiness", readiness.toJson()); context.add("scheduling", scheduling.toJson());
-        context.add("readMetadata", metadata); context.add("recentPages", recent);
-        context.add("contractActions", CaseInputs.JSON.toJsonTree(List.of("catalog", "catalog_prefix", "read_text", "finish")));
-        context.addProperty("authority", "validated-context-not-runtime-admission-or-semantic-acceptance");
-        context.addProperty("qualityReview", "NOT_PERFORMED");
-        String input = InvoiceDecisionV2.canonical(context);
-        while (bytes(input) > byteLimit && !recent.isEmpty()) { recent.remove(0); input = InvoiceDecisionV2.canonical(context); }
-        if (bytes(input) > byteLimit) throw new CoordinationRuntime.Stop("CONTEXT_BUDGET_EXHAUSTED");
-        return input;
+        return new Prepared(description, metadata, recent, readiness);
     }
     private static JsonObject ownedPage(InvoiceReadiness.Subject subject, InvoiceComparisonInputs.Bundle bundle,
                                          JsonObject record, boolean bootstrap) {

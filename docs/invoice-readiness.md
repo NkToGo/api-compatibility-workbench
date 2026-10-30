@@ -3,9 +3,10 @@
 `InvoiceReadiness` is a pure, package-local Java component for disclosing access
 progress over supplied read metadata. Its output is version 1 with policy
 `invoice-readiness-v1`. It implements the first boundary in the
-[protocol follow-up](invoice-protocol-follow-up.md); no investigator currently
-receives this output. Navigation and version 2 runtime admission remain separate
-work. Existing prompts, tools, finish guards and stored trials are unchanged.
+[protocol follow-up](invoice-protocol-follow-up.md). The separate
+[single-context v2 investigator](invoice-single-agent-v2.md) now receives this
+output through validated owned-read context and uses it for its structural finish
+gate. Version 1 prompts, tools, finish guards and stored trials are unchanged.
 
 ## Inputs and ownership
 
@@ -80,7 +81,7 @@ without the answered-task access floor; readiness does not fabricate that answer
 The fixed authority is `supplied-read-metadata-not-semantic-acceptance`. The
 component has no runtime, broker, evidence-store, scheduler or credential handle.
 It dispatches nothing, consumes no extra model opportunity and grants no tool,
-execution or publication permission. When integrated later, its metadata must
+execution or publication permission. Inside an investigator, its metadata must
 fit the existing context-byte ceiling rather than adding an uncounted channel.
 Version 1 investigation contexts and historical results are not rewritten.
 
@@ -100,7 +101,8 @@ valid access against the existing finish guards and preserves the version 1
 context fields. These are structural controls, not a quality evaluation.
 
 No revised participant condition or improved coordination has been measured.
-[Milestone 4 acceptance](milestone-4-status.md) remains open. The next boundary
-is the versioned decision/context and host-admission contract. A separate
-[prefix catalogue boundary](invoice-prefix-catalogue.md) now supplies counted
-navigation; agent integration and new campaign registration follow separately.
+[Milestone 4 acceptance](milestone-4-status.md) remains open. The separate
+[v2 contract](invoice-v2-contract.md), [admission path](invoice-v2-admission.md)
+and [single investigator](invoice-single-agent-v2.md) now use this component.
+Independent workers and the other adapters still require v2 integration before
+new common-condition registration and measurement.

@@ -76,8 +76,9 @@ Text IDs alone are citable; flat and prefix catalogue IDs remain non-citable.
 Complete minimum reads do not repair incomplete source execution coverage or
 establish a good answer. The prospective finish rule still requires host-side
 ownership/citation checks and structural readiness for `ANSWERED`; parsing a
-finish alone does not accept it. The concrete finish gate is adapter integration
-work, not a new permission in this pure component.
+finish alone does not accept it. The separate [single-context v2 adapter](invoice-single-agent-v2.md)
+now derives that gate from the same validated owned reads; the pure context
+component still grants no permission.
 
 Historical disclosure flags live under `captureMetadata`, explicitly labelled
 `historical-capture-not-current-runtime-capabilities`. For example, its
@@ -115,8 +116,9 @@ continue to reject v2 grants. The [prefix-navigation runtime](invoice-prefix-cat
 remains read-only and cannot dispatch a model. The broker can now recognize v2
 requests; recognition alone is not permission to dispatch.
 
-Concrete single, independent, team and deterministic adapter integration follows
-in reviewable steps. Only afterwards may a new common condition be
+The [single-context v2 adapter](invoice-single-agent-v2.md) is now integrated.
+Independent, team and deterministic adapter integration follows in reviewable
+steps. Only afterwards may a new common condition be
 frozen and measured under the unchanged ceilings, model, baselines and six review
 criteria. No campaign retry, routing promotion or
 [Milestone 4 acceptance](milestone-4-status.md) follows from these contract tests.

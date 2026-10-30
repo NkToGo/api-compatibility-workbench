@@ -453,8 +453,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      admission](invoice-v2-admission.md) binds exact policy/build references,
      enforces the unchanged ceilings, routes strict v2 functions and preserves
      charged/uncertain work across interruption. Old factories reject v2 grants
-     during registration and recovery. Next is single-investigator integration,
-     then the remaining concrete adapters before measurement. Existing ceilings,
+     during registration and recovery. **4e5f implemented:** a [single-context v2
+     investigator](invoice-single-agent-v2.md) selects bounded prefix/text reads,
+     builds owned readiness/context and validates cited structural finishes.
+     Exact replay, rejected candidates and uncertain work remain retained; v1
+     records are unchanged. Next is independent-worker v2 integration, then the
+     remaining concrete adapters before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

@@ -3,8 +3,10 @@
 A separately admitted read-only host API can now filter the captured invoice
 catalogue by a literal alias prefix. This implements the navigation boundary in
 the [protocol follow-up](invoice-protocol-follow-up.md). It uses the same captured
-inventory and retained read accounting. Current investigator schemas, prompts
-and contexts do not expose this tool; versioned agent integration remains pending.
+inventory and retained read accounting. Version 1 investigator schemas, prompts
+and contexts do not expose this tool. The separate
+[single-context v2 investigator](invoice-single-agent-v2.md) now uses prefix
+navigation through its model-enabled admission path.
 
 ## Explicit admission
 
@@ -100,7 +102,8 @@ concurrent accounting, restart/retry identity, scope rejection, old-tool refusal
 model denial, retained-policy checks, tampering, immutable views and terminal
 controls. Those controls establish navigation behavior, not better model answers.
 
-The next reviewable boundary is the versioned decision/context and host-admission
-contract, followed by separate adapter integration before any newly frozen
-participant measurement. All original comparison criteria, budgets and negative
+The separate [v2 contract](invoice-v2-contract.md), [admission path](invoice-v2-admission.md)
+and [single investigator](invoice-single-agent-v2.md) are now implemented.
+Independent-worker and remaining adapter integration follow before any newly
+frozen participant measurement. All original comparison criteria, budgets and negative
 results remain intact. [Milestone 4 acceptance](milestone-4-status.md) stays open.

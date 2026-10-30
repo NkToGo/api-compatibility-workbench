@@ -131,7 +131,9 @@ identity and shared-budget controls. Step 4e5d implements a [pure versioned
 decision/context contract](invoice-v2-contract.md), validating owned capture pages
 and declaring public requirements and scheduling without granting model access.
 Step 4e5e implements [separately identified runtime/broker admission](invoice-v2-admission.md)
-with exact policy, request binding and recovery controls. Single-investigator
+with exact policy, request binding and recovery controls. Step 4e5f implements the
+[single-context v2 investigator](invoice-single-agent-v2.md), including owned
+readiness/context and a host-validated structural finish. Independent-worker
 integration is next; the other concrete adapters follow separately.
 
 Before new participant measurement, freeze the implemented policy/tool/task

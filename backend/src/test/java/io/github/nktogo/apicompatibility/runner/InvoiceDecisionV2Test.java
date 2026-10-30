@@ -61,17 +61,23 @@ class InvoiceDecisionV2Test {
         choices.remove(0); assertEquals(4, InvoiceDecisionV2.schema().getAsJsonObject("properties").getAsJsonObject("decision").getAsJsonArray("anyOf").size());
         assertEquals(3, InvoiceInvestigationDecision.schema().getAsJsonObject("properties").getAsJsonObject("decision").getAsJsonArray("anyOf").size());
     }
-    @Test void distinctScopedIdentitiesDoNotRegisterNewBrokerProtocols() {
+    @Test void distinctScopedIdentitiesBindRecognizedRequestsWithoutLegacyFallback() {
         var identities = new HashSet<String>(); var protocols = new HashSet<String>();
         for (var scope : InvoiceReadiness.Scope.values()) {
             String protocol = InvoiceDecisionV2.protocol(scope); protocols.add(protocol); identities.add(InvoiceDecisionV2.contractIdentity(scope));
             assertTrue(InvoiceDecisionV2.instructions(scope).contains("captureMetadata"));
-            assertThrows(IllegalArgumentException.class, () -> new ModelCallBroker.Request("gpt-6-astra", "context", 2048, protocol));
-            assertThrows(IllegalArgumentException.class, () -> new CoordinationRuntime.Participant("investigator", Set.of(InvoiceRenewalFixtures.CASE_ID), Set.of(protocol)));
+            var request = new ModelCallBroker.Request("gpt-6-astra", "context", 2048, protocol);
+            var body = CaseInputs.object(request.body());
+            assertEquals(InvoiceDecisionV2.instructions(scope), body.get("instructions").getAsString());
+            assertEquals(InvoiceDecisionV2.FUNCTION, body.getAsJsonObject("tool_choice").get("name").getAsString());
+            assertEquals(scope, InvoiceDecisionV2.scope(protocol));
+            assertEquals(Set.of(protocol), new CoordinationRuntime.Participant("investigator", Set.of(InvoiceRenewalFixtures.CASE_ID), Set.of(protocol)).protocols());
         }
         assertEquals(3, identities.size()); assertEquals(3, protocols.size());
         assertEquals(CaseInputs.hash(InvoiceDecisionV2.PUBLIC_TASK.getBytes(StandardCharsets.UTF_8)), InvoiceDecisionV2.taskIdentity());
         assertNotEquals(InvoiceDecisionV2.taskIdentity(), InvoiceDecisionV2.contractIdentity(InvoiceReadiness.Scope.JOINT));
+        assertFalse(InvoiceDecisionV2.accepts(null)); assertFalse(InvoiceDecisionV2.accepts(InvoiceInvestigationDecision.PROTOCOL));
+        assertThrows(IllegalArgumentException.class, () -> InvoiceDecisionV2.scope("invoice-investigation-v3"));
     }
     private static void strictObjects(JsonElement element) {
         if (element.isJsonObject()) {

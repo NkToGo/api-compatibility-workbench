@@ -47,6 +47,13 @@ final class InvoiceDecisionV2 {
             No grades or expected answers are supplied. Return public claims, not private reasoning.
             """;
     private InvoiceDecisionV2() {}
+    static boolean accepts(String protocol) {
+        return protocol != null && Arrays.stream(InvoiceReadiness.Scope.values()).anyMatch(s -> protocol(s).equals(protocol));
+    }
+    static InvoiceReadiness.Scope scope(String protocol) {
+        return Arrays.stream(InvoiceReadiness.Scope.values()).filter(s -> protocol(s).equals(protocol)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unsupported invoice v2 protocol"));
+    }
     static String protocol(InvoiceReadiness.Scope scope) {
         return switch (Objects.requireNonNull(scope)) {
             case JOINT -> "invoice-investigation-v2";

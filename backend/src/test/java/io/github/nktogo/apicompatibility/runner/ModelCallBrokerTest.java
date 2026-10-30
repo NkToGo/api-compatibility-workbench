@@ -73,6 +73,61 @@ class ModelCallBrokerTest {
         var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "captured invoice", 2048, InvoiceInvestigationDecision.PROTOCOL), Duration.ofMinutes(1));
         assertEquals("INVALID_RESPONSE", broker.execute(id)); assertFalse(broker.outcome(id).has("outputText"));
     }
+    @Test void invoiceV2TransportBindsEachScopeToItsStrictFunctionAndDiscardsReasoning() throws Exception {
+        for (var scope : InvoiceReadiness.Scope.values()) {
+            server.createContext("/v1/responses", exchange -> {
+                calls.incrementAndGet(); var body = CaseInputs.object(exchange.getRequestBody().readAllBytes());
+                assertEquals(InvoiceDecisionV2.instructions(scope), body.get("instructions").getAsString());
+                assertEquals(InvoiceDecisionV2.FUNCTION, body.getAsJsonObject("tool_choice").get("name").getAsString());
+                var tool = body.getAsJsonArray("tools").get(0).getAsJsonObject(); assertTrue(tool.get("strict").getAsBoolean());
+                assertEquals(InvoiceDecisionV2.schema(), tool.get("parameters")); assertFalse(body.get("parallel_tool_calls").getAsBoolean());
+                assertFalse(body.get("store").getAsBoolean()); assertFalse(body.get("background").getAsBoolean());
+                String response = CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 10, "output_tokens", 2),
+                        "output", List.of(java.util.Map.of("type", "reasoning", "summary", List.of(java.util.Map.of("text", "do-not-retain-v2-reasoning"))),
+                                java.util.Map.of("type", "function_call", "name", InvoiceDecisionV2.FUNCTION,
+                                        "arguments", "{\"decision\":{\"action\":\"catalog_prefix\",\"prefix\":\"source/\",\"offset\":0,\"limit\":40}}"))));
+                byte[] bytes = response.getBytes(StandardCharsets.UTF_8); exchange.sendResponseHeaders(200, bytes.length);
+                try (var output = exchange.getResponseBody()) { output.write(bytes); }
+            });
+            var broker = broker(); var request = new ModelCallBroker.Request("gpt-test", "approved invoice context", 2048, InvoiceDecisionV2.protocol(scope));
+            String id = broker.register(request, Duration.ofMinutes(1)); assertEquals("COMPLETED", broker.execute(id));
+            var outcome = broker.outcome(id); assertEquals("catalog_prefix", InvoiceDecisionV2.parse(outcome.get("outputText").getAsString()).get("action").getAsString());
+            assertEquals(10, outcome.get("inputTokens").getAsInt()); assertFalse(outcome.toString().contains("do-not-retain-v2-reasoning"));
+            assertEquals("COMPLETED", broker.execute(id)); server.removeContext("/v1/responses");
+        }
+        assertEquals(3, calls.get()); assertNoSecret();
+    }
+    @Test void invoiceV2TransportRejectsOldUnknownAndMultipleFunctions() throws Exception {
+        String function = "{\"type\":\"function_call\",\"name\":\"" + InvoiceDecisionV2.FUNCTION + "\",\"arguments\":\"{}\"}";
+        for (String output : List.of("[" + function.replace(InvoiceDecisionV2.FUNCTION, InvoiceInvestigationDecision.FUNCTION) + "]",
+                "[" + function.replace(InvoiceDecisionV2.FUNCTION, BundleInvestigationDecision.FUNCTION) + "]",
+                "[" + function.replace(InvoiceDecisionV2.FUNCTION, "invoice_investigation_decision_v3") + "]",
+                "[" + function + "," + function + "]", "[]",
+                "[{\"type\":\"message\",\"content\":[{\"type\":\"output_text\",\"text\":\"unbound answer\"}]}]")) {
+            reply(200, "{\"status\":\"completed\",\"usage\":{\"input_tokens\":10,\"output_tokens\":2},\"output\":" + output + "}");
+            var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "approved", 2048,
+                    InvoiceDecisionV2.protocol(InvoiceReadiness.Scope.JOINT)), Duration.ofMinutes(1));
+            assertEquals("INVALID_RESPONSE", broker.execute(id)); assertFalse(broker.outcome(id).has("outputText"));
+            server.removeContext("/v1/responses");
+        }
+        assertEquals(6, calls.get()); assertNoSecret();
+    }
+    @Test void changingTheV2RoleAfterApprovalInvalidatesTheBrokerGrantBeforeCredentialsAreRead() throws Exception {
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "approved", 2048,
+                InvoiceDecisionV2.protocol(InvoiceReadiness.Scope.JOINT)), Duration.ofMinutes(1));
+        Path file = root.resolve(id + "/request.json"); var request = CaseInputs.object(Files.readAllBytes(file));
+        request.addProperty("protocol", InvoiceDecisionV2.protocol(InvoiceReadiness.Scope.WEBHOOK)); Files.writeString(file, request.toString());
+        assertEquals("AUTHORIZATION_DENIED", broker.execute(id)); assertEquals(0, credentialReads.get()); assertEquals(0, calls.get()); assertNoSecret();
+    }
+    @Test void v2TransportCompletionDoesNotSilentlyAcceptMalformedDecisionArguments() throws Exception {
+        String arguments = "{\"decision\":{\"action\":\"catalog_prefix\",\"prefix\":\"../\",\"offset\":0,\"limit\":40}}";
+        reply(200, CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 10, "output_tokens", 2), "output",
+                List.of(java.util.Map.of("type", "function_call", "name", InvoiceDecisionV2.FUNCTION, "arguments", arguments)))));
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "approved", 2048,
+                InvoiceDecisionV2.protocol(InvoiceReadiness.Scope.JOINT)), Duration.ofMinutes(1));
+        assertEquals("COMPLETED", broker.execute(id)); assertEquals(arguments, broker.outcome(id).get("outputText").getAsString());
+        assertThrows(IllegalArgumentException.class, () -> InvoiceDecisionV2.parse(broker.outcome(id).get("outputText").getAsString())); assertNoSecret();
+    }
     @Test void bundleDecisionTransportExtractsOnlyTheExpectedFunctionAndIgnoresReasoning() throws Exception {
         server.createContext("/v1/responses", exchange -> {
             calls.incrementAndGet(); var request = CaseInputs.object(exchange.getRequestBody().readAllBytes());

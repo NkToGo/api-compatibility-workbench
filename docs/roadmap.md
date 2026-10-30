@@ -449,9 +449,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      dispatch models. **4e5d implemented:** a [pure v2 decision/context contract](invoice-v2-contract.md)
      versions strict actions and public requirements, validates owned captured read
      wrappers, derives bounded readiness/context and distinguishes shared scheduling
-     from private turns. Existing protocol registries still deny v2 model access.
-     Next is separately identified runtime/broker admission, then concrete adapter
-     integration before measurement. Existing ceilings,
+     from private turns. **4e5e implemented:** [separately identified v2 runtime/broker
+     admission](invoice-v2-admission.md) binds exact policy/build references,
+     enforces the unchanged ceilings, routes strict v2 functions and preserves
+     charged/uncertain work across interruption. Old factories reject v2 grants
+     during registration and recovery. Next is single-investigator integration,
+     then the remaining concrete adapters before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

@@ -59,8 +59,9 @@ without changing version 1 investigation behavior. A separate [prefix catalogue
 boundary](invoice-prefix-catalogue.md) now supports counted read-only navigation.
 A pure [v2 decision/context contract](invoice-v2-contract.md) now validates owned
 capture pages, explicit public requirements and scheduling metadata. Its new
-protocol IDs remain denied by the existing model broker and runtime registries.
-Versioned runtime admission and adapter integration remain pending. These changes
+protocol IDs now have a [separate v2 admission path](invoice-v2-admission.md), with
+exact policy matching, broker routing and interruption controls. Old factories
+remain closed to these grants. Concrete adapter integration remains pending. These changes
 establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

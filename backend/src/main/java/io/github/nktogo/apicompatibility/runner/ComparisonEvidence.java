@@ -10,6 +10,7 @@ import java.util.Map;
 interface ComparisonEvidence {
     String INVOICE_TOOLS = "invoice-describe-catalog-40-text-4000-utf16-read-only-v1";
     String INVOICE_NAVIGATION_TOOLS = "invoice-describe-catalog-prefix-300-40-32768-text-4000-utf16-read-only-v1";
+    String INVOICE_V2_TOOLS = "invoice-describe-catalog-prefix-300-40-32768-text-4000-utf16-investigation-v2";
     record PageRequest(String kind, String caseId, String alias, int offset, int limit) {}
     Map<String, ContentDigest> identities(String bundle) throws IOException;
     String receiptHash(String bundle) throws IOException;
@@ -18,6 +19,7 @@ interface ComparisonEvidence {
     default void validatePolicy(CoordinationRuntime.Policy policy) {}
     default void validateRetainedPolicy(CoordinationRuntime.Policy policy) {}
     default void validateActivePolicy(CoordinationRuntime.Policy policy) {}
+    default void validateDefinition(io.github.nktogo.apicompatibility.evaluation.CoordinationExperiment.Definition definition) {}
 
     static ComparisonEvidence legacy(Path state) throws IOException {
         var inputs = new CoordinationInputs(state);
@@ -25,6 +27,8 @@ interface ComparisonEvidence {
             public Map<String, ContentDigest> identities(String bundle) throws IOException { return inputs.identities(bundle); }
             public String receiptHash(String bundle) throws IOException { return inputs.receiptHash(bundle); }
             public byte[] read(String bundle, String caseId, String alias) throws IOException { return inputs.read(bundle, caseId, alias); }
+            public void validatePolicy(CoordinationRuntime.Policy policy) { rejectV2Protocols(policy); }
+            public void validateRetainedPolicy(CoordinationRuntime.Policy policy) { validatePolicy(policy); }
         };
     }
 
@@ -32,12 +36,15 @@ interface ComparisonEvidence {
         return invoice(directory, expected, false);
     }
     static ComparisonEvidence invoice(Path directory, ContentDigest expected, boolean investigation) throws IOException {
-        return invoice(directory, expected, investigation, false);
+        return invoice(directory, expected, investigation, false, false);
     }
     static ComparisonEvidence invoiceNavigation(Path directory, ContentDigest expected) throws IOException {
-        return invoice(directory, expected, false, true);
+        return invoice(directory, expected, false, true, false);
     }
-    private static ComparisonEvidence invoice(Path directory, ContentDigest expected, boolean investigation, boolean navigation) throws IOException {
+    static ComparisonEvidence invoiceInvestigationV2(Path directory, ContentDigest expected) throws IOException {
+        return invoice(directory, expected, false, true, true);
+    }
+    private static ComparisonEvidence invoice(Path directory, ContentDigest expected, boolean investigation, boolean navigation, boolean v2) throws IOException {
         var inputs = InvoiceComparisonInputs.open(directory, expected);
         byte[] receipt = ConsumerTasks.bytes(directory, "receipt.json");
         CaseInputs.require(CaseInputs.object(receipt).equals(CaseInputs.JSON.toJsonTree(Map.of("manifestSha256", expected.sha256()))), "Changed invoice input receipt");
@@ -68,6 +75,7 @@ interface ComparisonEvidence {
                 };
             }
             public void validatePolicy(CoordinationRuntime.Policy policy) {
+                if (v2) { InvoiceV2Admission.validate(policy); return; }
                 String tools = navigation ? INVOICE_NAVIGATION_TOOLS : INVOICE_TOOLS;
                 CaseInputs.require((!navigation || policy.maxReads() <= 100)
                         && policy.toolPolicyIdentity().equals(new ContentDigest(CaseInputs.hash(tools.getBytes(java.nio.charset.StandardCharsets.UTF_8))))
@@ -76,11 +84,19 @@ interface ComparisonEvidence {
                         "Invoice participant protocol outside host-selected boundary");
             }
             public void validateRetainedPolicy(CoordinationRuntime.Policy policy) {
-                if (navigation) validatePolicy(policy);
+                if (navigation) validatePolicy(policy); else rejectV2Protocols(policy);
             }
             public void validateActivePolicy(CoordinationRuntime.Policy policy) {
-                if (navigation) CaseInputs.require(currentAdapter.equals(policy.adapterIdentity()), "Changed navigation build; register a new trace");
+                if (navigation) CaseInputs.require(currentAdapter.equals(policy.adapterIdentity()), v2
+                        ? "Changed invoice v2 build; register a new trial" : "Changed navigation build; register a new trace");
+            }
+            public void validateDefinition(io.github.nktogo.apicompatibility.evaluation.CoordinationExperiment.Definition definition) {
+                if (v2) InvoiceV2Admission.validateDefinition(definition);
             }
         };
+    }
+    private static void rejectV2Protocols(CoordinationRuntime.Policy policy) {
+        CaseInputs.require(policy.participants().stream().flatMap(p -> p.protocols().stream()).noneMatch(InvoiceDecisionV2::accepts),
+                "Invoice v2 protocols require the v2 host boundary");
     }
 }

@@ -24,7 +24,8 @@ public final class CoordinationRuntime {
     public record Participant(String id, Set<String> cases, Set<String> protocols) {
         public Participant {
             identifier(id); cases = Collections.unmodifiableSet(new TreeSet<>(cases)); protocols = Collections.unmodifiableSet(new TreeSet<>(protocols));
-            CaseInputs.require(!cases.isEmpty() && cases.size() <= 2 && PROTOCOLS.containsAll(protocols), "Invalid participant scope");
+            CaseInputs.require(!cases.isEmpty() && cases.size() <= 2
+                    && protocols.stream().allMatch(p -> PROTOCOLS.contains(p) || InvoiceDecisionV2.accepts(p)), "Invalid participant scope");
         }
     }
     public record Policy(int parallelCalls, int maxReads, ContentDigest adapterIdentity, ContentDigest promptIdentity, ContentDigest toolPolicyIdentity,
@@ -60,6 +61,16 @@ public final class CoordinationRuntime {
     }
     static CoordinationRuntime forInvoiceInvestigation(Path state, Path directory, ContentDigest expected, Clock clock, Brokers brokers) throws IOException {
         return new CoordinationRuntime(state, clock, brokers, ComparisonEvidence.invoice(directory, expected, true), "invoice-comparison-trials");
+    }
+    /** Separately identified v2 model admission; existing read-only and v1 factories retain their scope. */
+    public static CoordinationRuntime forInvoiceInvestigationV2(Path state, Path directory, ContentDigest expected) throws IOException {
+        return forInvoiceInvestigationV2(state, directory, expected, Clock.systemUTC(), CoordinationRuntime::broker);
+    }
+    static CoordinationRuntime forInvoiceInvestigationV2(Path state, Path directory, ContentDigest expected, Clock clock, Brokers brokers) throws IOException {
+        return new CoordinationRuntime(state, clock, brokers, ComparisonEvidence.invoiceInvestigationV2(directory, expected), "invoice-v2-trials");
+    }
+    public static Policy invoiceInvestigationV2Policy(int parallelCalls, int maxReads, List<Participant> participants) throws IOException {
+        return InvoiceV2Admission.policy(parallelCalls, maxReads, participants);
     }
     /** Separately admitted prefix navigation over captured invoice evidence; no model protocols are allowed. */
     public static CoordinationRuntime forInvoiceNavigation(Path state, Path directory, ContentDigest expected) throws IOException {
@@ -102,6 +113,7 @@ public final class CoordinationRuntime {
         Objects.requireNonNull(definition); Objects.requireNonNull(slot); Objects.requireNonNull(policy);
         inputs.validatePolicy(policy);
         inputs.validateActivePolicy(policy);
+        inputs.validateDefinition(definition);
         CaseInputs.require(definition.origin() == Origin.SUPPLIED_RECORDS, "Synthetic comparison examples cannot authorize runtime work");
         var workload = definition.workloads().stream().filter(w -> w.workloadId().equals(slot.workloadId())).findFirst().orElseThrow();
         CaseInputs.require(slot.repetition() <= definition.repetitions(), "Slot outside registered comparison");
@@ -351,6 +363,7 @@ public final class CoordinationRuntime {
         CaseInputs.require(spec.policy().participants().stream().allMatch(p -> cases.containsAll(p.cases()))
                 && (spec.slot().arm() != Arm.DETERMINISTIC || spec.policy().participants().stream().allMatch(p -> p.protocols().isEmpty())), "Invalid retained trial scope");
         inputs.validateRetainedPolicy(spec.policy());
+        inputs.validateDefinition(spec.definition());
         return spec;
     }
     private static Participant participant(Spec spec, String id) { return spec.policy().participants().stream().filter(p -> p.id().equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("Unknown trial participant")); }

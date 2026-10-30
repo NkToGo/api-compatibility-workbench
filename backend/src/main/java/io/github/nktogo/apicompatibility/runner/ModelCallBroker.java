@@ -34,7 +34,7 @@ public final class ModelCallBroker {
     public record Request(String model, String input, int maxOutputTokens, String protocol) {
         public Request(String model, String input, int maxOutputTokens) { this(model, input, maxOutputTokens, null); }
         public Request {
-            CaseInputs.require(protocol == null || CaseInvestigationDecision.accepts(protocol) || InvoiceWorkerDecision.accepts(protocol) || InvoiceFollowUpDecision.accepts(protocol) || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1", "coordination-v1", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL, InvoiceInvestigationDecision.PROTOCOL, InvoiceTeamDecision.PROTOCOL, InvoiceReconciliationDecision.PROTOCOL).contains(protocol), "Unsupported model protocol");
+            CaseInputs.require(protocol == null || InvoiceDecisionV2.accepts(protocol) || CaseInvestigationDecision.accepts(protocol) || InvoiceWorkerDecision.accepts(protocol) || InvoiceFollowUpDecision.accepts(protocol) || Set.of("investigation-v1", "investigation-v2", "repair-v1", "repair-v2", "subscription-repair-v1", "coordination-v1", "coordination-v2", "reconciliation-v1", BundleInvestigationDecision.PROTOCOL, CapturedTeamDecision.PROTOCOL, CapturedReconciliationDecision.PROTOCOL, InvoiceInvestigationDecision.PROTOCOL, InvoiceTeamDecision.PROTOCOL, InvoiceReconciliationDecision.PROTOCOL).contains(protocol), "Unsupported model protocol");
             CaseInputs.require(model != null && model.matches("gpt-[a-zA-Z0-9.\\-]{1,80}"), "Invalid model identity");
             CaseInputs.require(input != null && !input.isBlank() && input.getBytes(StandardCharsets.UTF_8).length <= (protocol == null ? 16000 : 64000), "Invalid model input size");
             CaseInputs.require(maxOutputTokens >= 16 && maxOutputTokens <= 4096, "Invalid output budget");
@@ -58,6 +58,12 @@ public final class ModelCallBroker {
                     body.put("tools", List.of(Map.of("type", "function", "name", InvoiceInvestigationDecision.FUNCTION,
                             "description", "Read one bounded invoice evidence page or return one cited advisory dossier.", "strict", true, "parameters", InvoiceInvestigationDecision.schema())));
                     body.put("tool_choice", Map.of("type", "function", "name", InvoiceInvestigationDecision.FUNCTION));
+                }
+                if (InvoiceDecisionV2.accepts(protocol)) {
+                    body.put("instructions", InvoiceDecisionV2.instructions(InvoiceDecisionV2.scope(protocol)));
+                    body.put("tools", List.of(Map.of("type", "function", "name", InvoiceDecisionV2.FUNCTION,
+                            "description", "Read one bounded captured invoice page or return one cited advisory dossier.", "strict", true, "parameters", InvoiceDecisionV2.schema())));
+                    body.put("tool_choice", Map.of("type", "function", "name", InvoiceDecisionV2.FUNCTION));
                 }
                 if (protocol.equals(BundleInvestigationDecision.PROTOCOL)) {
                     body.put("instructions", BundleInvestigationDecision.INSTRUCTIONS);
@@ -216,7 +222,7 @@ public final class ModelCallBroker {
 
     private static String extract(byte[] body, Map<String, Object> metadata, String protocol) {
         boolean decision = protocol != null;
-        String function = InvoiceReconciliationDecision.PROTOCOL.equals(protocol) ? InvoiceReconciliationDecision.FUNCTION : InvoiceTeamDecision.PROTOCOL.equals(protocol) ? InvoiceTeamDecision.FUNCTION : InvoiceInvestigationDecision.PROTOCOL.equals(protocol) || InvoiceWorkerDecision.accepts(protocol) || InvoiceFollowUpDecision.accepts(protocol) ? InvoiceInvestigationDecision.FUNCTION : CapturedReconciliationDecision.PROTOCOL.equals(protocol) ? CapturedReconciliationDecision.FUNCTION : CapturedTeamDecision.PROTOCOL.equals(protocol) ? CapturedTeamDecision.FUNCTION : CaseInvestigationDecision.accepts(protocol) ? CaseInvestigationDecision.FUNCTION : BundleInvestigationDecision.PROTOCOL.equals(protocol) ? BundleInvestigationDecision.FUNCTION : "reconciliation-v1".equals(protocol) ? "reconciliation_decision" : Set.of("coordination-v1", "coordination-v2").contains(protocol == null ? "" : protocol) ? "coordination_decision"
+        String function = InvoiceDecisionV2.accepts(protocol) ? InvoiceDecisionV2.FUNCTION : InvoiceReconciliationDecision.PROTOCOL.equals(protocol) ? InvoiceReconciliationDecision.FUNCTION : InvoiceTeamDecision.PROTOCOL.equals(protocol) ? InvoiceTeamDecision.FUNCTION : InvoiceInvestigationDecision.PROTOCOL.equals(protocol) || InvoiceWorkerDecision.accepts(protocol) || InvoiceFollowUpDecision.accepts(protocol) ? InvoiceInvestigationDecision.FUNCTION : CapturedReconciliationDecision.PROTOCOL.equals(protocol) ? CapturedReconciliationDecision.FUNCTION : CapturedTeamDecision.PROTOCOL.equals(protocol) ? CapturedTeamDecision.FUNCTION : CaseInvestigationDecision.accepts(protocol) ? CaseInvestigationDecision.FUNCTION : BundleInvestigationDecision.PROTOCOL.equals(protocol) ? BundleInvestigationDecision.FUNCTION : "reconciliation-v1".equals(protocol) ? "reconciliation_decision" : Set.of("coordination-v1", "coordination-v2").contains(protocol == null ? "" : protocol) ? "coordination_decision"
                 : decision && Set.of("repair-v1", "repair-v2", "subscription-repair-v1").contains(protocol) ? "repair_proposal" : "investigation_decision";
         try {
             var response = CaseInputs.object(body);

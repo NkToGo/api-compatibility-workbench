@@ -108,21 +108,21 @@ The scheduling snapshot cannot override actual cumulative runtime/stage budgets.
 
 ## Admission status and next integration
 
-The existing broker and runtime protocol registries continue to reject all three
-new IDs. The [prefix-navigation runtime](invoice-prefix-catalogue.md) remains
-read-only and cannot dispatch a model. Tests exercise actual retained runtime
-wrappers through the new context contract without broadening that permission.
+Step 4e5d introduced this contract without model admission. Step 4e5e adds a
+[separately identified v2 runtime/broker path](invoice-v2-admission.md) with exact
+policy matching, retained request binding and restart behavior. The old factories
+continue to reject v2 grants. The [prefix-navigation runtime](invoice-prefix-catalogue.md)
+remains read-only and cannot dispatch a model. The broker can now recognize v2
+requests; recognition alone is not permission to dispatch.
 
-Next, add a separately identified model-enabled v2 runtime/broker admission path
-with exact policy matching, retained request validation and restart behavior.
-Concrete single, independent, team and deterministic adapter integration then
-follows in reviewable steps. Only afterwards may a new common condition be
+Concrete single, independent, team and deterministic adapter integration follows
+in reviewable steps. Only afterwards may a new common condition be
 frozen and measured under the unchanged ceilings, model, baselines and six review
 criteria. No campaign retry, routing promotion or
 [Milestone 4 acceptance](milestone-4-status.md) follows from these contract tests.
 
 Run the README verification commands. `InvoiceDecisionV2Test` covers strict
-wire parsing and continued broker denial. `InvoiceContextV2Test` covers owned
+wire parsing and scoped broker request binding. `InvoiceContextV2Test` covers owned
 capture matching, altered wrappers/pages, scoped readiness, non-citable
 catalogues, bounded retention, scheduling and a read-only runtime boundary.
 

@@ -253,9 +253,10 @@ missing/gapped reads and citable page IDs from supplied metadata. It is not yet
 connected to investigators. A separately admitted [prefix catalogue](docs/invoice-prefix-catalogue.md)
 now supports bounded, counted navigation over the same capture. A pure
 [v2 decision/context contract](docs/invoice-v2-contract.md) validates owned captured
-pages, explicit public requirements and scheduling disclosures. Its protocol IDs
-remain closed to model dispatch; runtime admission, adapter integration and revised
-protocol measurement remain pending.
+pages, explicit public requirements and scheduling disclosures. A separately
+identified [v2 runtime/broker boundary](docs/invoice-v2-admission.md) now admits
+explicit scoped grants under the existing ceilings; old factories remain closed
+to v2 protocols. Concrete adapter integration and revised measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

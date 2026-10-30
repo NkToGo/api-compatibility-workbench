@@ -101,5 +101,6 @@ context fields. These are structural controls, not a quality evaluation.
 
 No revised participant condition or improved coordination has been measured.
 [Milestone 4 acceptance](milestone-4-status.md) remains open. The next boundary
-is bounded catalogue lookup; versioned adapter integration and new campaign
-registration follow separately.
+is the versioned decision/context and host-admission contract. A separate
+[prefix catalogue boundary](invoice-prefix-catalogue.md) now supplies counted
+navigation; agent integration and new campaign registration follow separately.

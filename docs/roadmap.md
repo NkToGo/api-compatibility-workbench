@@ -441,8 +441,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      versioned readiness boundary](invoice-readiness.md) reports required-read
      gaps and citable own text-page IDs, rejects mixed subjects and conflicting
      artifact metadata, and keeps structural access separate from quality.
-     It is not wired into version 1 investigators and grants no access. Next are
-     bounded catalogue lookup and separate adapter integration before measurement. Existing ceilings,
+     It is not wired into version 1 investigators and grants no access.
+     **4e5c implemented:** [bounded prefix catalogue navigation](invoice-prefix-catalogue.md)
+     filters the same captured aliases with stable pagination through a separately
+     admitted read-only boundary. Prefix queries share the existing read pool,
+     retain exact retry identity, reject old-policy/tool expansion and cannot
+     dispatch models. Next is the versioned decision/context and host-admission
+     contract, then separate adapter integration before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

@@ -250,7 +250,9 @@ A [structural protocol diagnosis](docs/invoice-protocol-follow-up.md) now identi
 recorded read/citation and completion gaps and defines prospective changes.
 A pure [structural readiness inspector](docs/invoice-readiness.md) now reports
 missing/gapped reads and citable page IDs from supplied metadata. It is not yet
-connected to investigators; revised navigation and protocol measurement remain pending.
+connected to investigators. A separately admitted [prefix catalogue](docs/invoice-prefix-catalogue.md)
+now supports bounded, counted navigation over the same capture. Agent integration
+and revised protocol measurement remain pending.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

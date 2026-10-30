@@ -13,6 +13,7 @@ import java.util.*;
 /** Immutable disclosure of original typed execution evidence; no execution or model-call capability. */
 final class InvoiceComparisonInputs {
     static final String POLICY = "invoice-comparison-observed-inputs-v1";
+    static final String PREFIX_POLICY = "invoice-prefix-catalogue-v1";
     private static final Gson JSON = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
     private static final int MAX_BYTES = 1048576, MAX_TOTAL_BYTES = 8388608, MAX_ARTIFACTS = 768;
     private InvoiceComparisonInputs() {}
@@ -46,6 +47,24 @@ final class InvoiceComparisonInputs {
             int end = (int)Math.min(content.length(), (long)offset + maxCharacters); var result = new JsonObject();
             result.addProperty("alias", alias); result.addProperty("sha256", CaseInputs.hash(artifacts.get(alias))); result.addProperty("offset", offset);
             result.addProperty("nextOffset", end); result.addProperty("totalCharacters", content.length()); result.addProperty("content", content.substring(offset, end)); return result;
+        }
+        JsonObject catalogPrefix(String prefix, int offset, int limit) {
+            CaseInputs.require(prefix != null && prefix.length() <= 300 && (prefix.isEmpty()
+                    || prefix.matches("[a-zA-Z0-9._-]+(?:/[a-zA-Z0-9._-]+)*/?"))
+                    && Arrays.stream(prefix.split("/")).noneMatch(part -> part.equals(".") || part.equals("..")), "Invalid catalogue prefix");
+            var keys = artifacts.keySet().stream().filter(alias -> alias.startsWith(prefix)).toList();
+            CaseInputs.require(offset >= 0 && offset <= keys.size() && limit >= 1 && limit <= 40, "Invalid prefix catalogue page");
+            int end = Math.min(keys.size(), offset + limit); var rows = new JsonArray();
+            for (int index = offset; index < end; index++) {
+                String alias = keys.get(index); var row = new JsonObject(); row.addProperty("alias", alias);
+                row.addProperty("sha256", CaseInputs.hash(artifacts.get(alias))); row.addProperty("totalCharacters", text(artifacts.get(alias)).length()); rows.add(row);
+            }
+            var result = new JsonObject(); result.addProperty("formatVersion", 1); result.addProperty("policy", PREFIX_POLICY);
+            result.addProperty("bundleIdentity", identity.sha256()); result.addProperty("prefix", prefix); result.addProperty("offset", offset);
+            result.addProperty("nextOffset", end); result.addProperty("matchingArtifacts", keys.size()); result.addProperty("inventoryArtifacts", artifacts.size());
+            result.addProperty("authority", "catalogue-metadata-not-content-evidence"); result.add("artifacts", rows);
+            CaseInputs.require(result.toString().getBytes(StandardCharsets.UTF_8).length <= 32768, "Prefix catalogue page exceeds byte limit");
+            return result;
         }
     }
     static Bundle capture(InvoiceCaseCoverage.Plan plan, InvoiceCaseCoverage.Run run, Path directory) throws IOException {

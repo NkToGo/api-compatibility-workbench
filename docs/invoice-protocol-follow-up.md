@@ -125,8 +125,10 @@ Step 4e5a completes the diagnosis and prospective design. Step 4e5b implements a
 [pure readiness boundary](invoice-readiness.md) with versioned output and controls
 for missing/gapped reads, role access, catalogue citations and honest scope.
 It is not connected to version 1 investigators and does not change their behavior.
-Bounded catalogue lookup and revised adapter/context admission follow as separate
-changes, including restart, identity, shared-budget and old-record controls.
+Step 4e5c implements [bounded prefix catalogue navigation](invoice-prefix-catalogue.md)
+under a separately admitted read-only boundary, including restart, exact query
+identity and shared-budget controls. The versioned decision/context and host
+admission contract is next; concrete adapter integration follows separately.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

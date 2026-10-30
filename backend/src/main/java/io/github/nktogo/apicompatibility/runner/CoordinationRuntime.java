@@ -61,6 +61,23 @@ public final class CoordinationRuntime {
     static CoordinationRuntime forInvoiceInvestigation(Path state, Path directory, ContentDigest expected, Clock clock, Brokers brokers) throws IOException {
         return new CoordinationRuntime(state, clock, brokers, ComparisonEvidence.invoice(directory, expected, true), "invoice-comparison-trials");
     }
+    /** Separately admitted prefix navigation over captured invoice evidence; no model protocols are allowed. */
+    public static CoordinationRuntime forInvoiceNavigation(Path state, Path directory, ContentDigest expected) throws IOException {
+        return forInvoiceNavigation(state, directory, expected, Clock.systemUTC());
+    }
+    static CoordinationRuntime forInvoiceNavigation(Path state, Path directory, ContentDigest expected, Clock clock) throws IOException {
+        return new CoordinationRuntime(state, clock, (store, permitted) -> {
+            throw new IllegalStateException("Invoice navigation boundary cannot create a model broker");
+        }, ComparisonEvidence.invoiceNavigation(directory, expected), "invoice-navigation-trials");
+    }
+    public static Policy invoiceNavigationReadPolicy(int maxReads, List<String> participants) throws IOException {
+        CaseInputs.require(maxReads >= 1 && maxReads <= 100, "Invalid invoice navigation read limit");
+        return new Policy(1, maxReads, new ContentDigest(RepairVerification.harness()),
+                new ContentDigest(CaseInputs.hash("invoice-no-model-prompt-v1".getBytes(StandardCharsets.UTF_8))),
+                new ContentDigest(CaseInputs.hash(ComparisonEvidence.INVOICE_NAVIGATION_TOOLS.getBytes(StandardCharsets.UTF_8))),
+                new ContentDigest(CaseInputs.hash("invoice-counted-prefix-navigation-read-only-v1".getBytes(StandardCharsets.UTF_8))),
+                "read-only-trace-no-dossier", participants.stream().map(id -> new Participant(id, Set.of(InvoiceRenewalFixtures.CASE_ID), Set.of())).toList());
+    }
     public static Policy invoiceReadPolicy(int maxReads, List<String> participants) throws IOException {
         return new Policy(1, maxReads, new ContentDigest(RepairVerification.harness()),
                 new ContentDigest(CaseInputs.hash("invoice-no-model-prompt-v1".getBytes(StandardCharsets.UTF_8))),
@@ -84,6 +101,7 @@ public final class CoordinationRuntime {
     public String register(String bundleId, Definition definition, Slot slot, Policy policy) throws IOException {
         Objects.requireNonNull(definition); Objects.requireNonNull(slot); Objects.requireNonNull(policy);
         inputs.validatePolicy(policy);
+        inputs.validateActivePolicy(policy);
         CaseInputs.require(definition.origin() == Origin.SUPPLIED_RECORDS, "Synthetic comparison examples cannot authorize runtime work");
         var workload = definition.workloads().stream().filter(w -> w.workloadId().equals(slot.workloadId())).findFirst().orElseThrow();
         CaseInputs.require(slot.repetition() <= definition.repetitions(), "Slot outside registered comparison");
@@ -102,7 +120,7 @@ public final class CoordinationRuntime {
     public void start(String id) throws IOException {
         Path run = directory(id);
         try (var lease = LocalFileLease.acquire(run.resolve("budget.lock"))) {
-            Objects.requireNonNull(lease); var spec = spec(run); requireOpen(run);
+            Objects.requireNonNull(lease); var spec = spec(run); requireOpen(run); inputs.validateActivePolicy(spec.policy());
             if (!exists(run, "started.json")) {
                 Instant now = clock.instant(); DurableExecution.publish(run.resolve("started.json"), Map.of("runId", id, "specSha256", hash(run, "spec.json"),
                         "startedAt", now.toString(), "deadline", now.plusMillis(spec.definition().limits().elapsedMillis()).toString()));
@@ -167,6 +185,9 @@ public final class CoordinationRuntime {
     }
     public JsonObject readPage(String id, String participant, String operation, String caseId, String alias, int offset, int maxCharacters) throws IOException {
         return page(id, participant, operation, new ComparisonEvidence.PageRequest("read_text", caseId, alias, offset, maxCharacters));
+    }
+    public JsonObject catalogPrefix(String id, String participant, String operation, String caseId, String prefix, int offset, int limit) throws IOException {
+        return page(id, participant, operation, new ComparisonEvidence.PageRequest("catalog_prefix", caseId, prefix, offset, limit));
     }
     private JsonObject page(String id, String participantId, String operationId, ComparisonEvidence.PageRequest request) throws IOException {
         identifier(operationId); start(id); Path run = directory(id); var spec = spec(run);
@@ -303,6 +324,7 @@ public final class CoordinationRuntime {
     private void admit(Path run, Spec spec) throws IOException {
         requireOpen(run);
         if (exists(run, "revoked")) throw new Stop("TRIAL_REVOKED");
+        inputs.validateActivePolicy(spec.policy());
         var grant = record(run, "grant.json"); CaseInputs.require(grant.equals(json(Map.of("permission", "registered-coordination-trial", "specSha256", hash(run, "spec.json")))), "Changed trial admission grant");
         CaseInputs.require(inputs.receiptHash(spec.bundleId()).equals(spec.inputReceiptSha256()), "Changed trial inputs");
         Instant started = started(run), now = clock.instant();
@@ -328,6 +350,7 @@ public final class CoordinationRuntime {
         var cases = new HashSet<String>(); workload.cases().forEach(c -> cases.add(c.caseId()));
         CaseInputs.require(spec.policy().participants().stream().allMatch(p -> cases.containsAll(p.cases()))
                 && (spec.slot().arm() != Arm.DETERMINISTIC || spec.policy().participants().stream().allMatch(p -> p.protocols().isEmpty())), "Invalid retained trial scope");
+        inputs.validateRetainedPolicy(spec.policy());
         return spec;
     }
     private static Participant participant(Spec spec, String id) { return spec.policy().participants().stream().filter(p -> p.id().equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("Unknown trial participant")); }

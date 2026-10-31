@@ -260,8 +260,11 @@ to v2 protocols. A separate [single-context v2 investigator](docs/invoice-single
 now uses owned-read context, prefix lookup and host-validated structural finishes.
 A separate [independent-worker v2 adapter](docs/invoice-independent-workers-v2.md)
 now runs both role contexts with shared scheduling, owned readiness and verbatim
-partial outputs. The remaining v2 adapters and revised measurement are pending;
-finding quality is not established by these integrations.
+partial outputs. A pure [v2 coordinator review boundary](docs/invoice-team-review-v2.md)
+now preserves original claims and missing work, validates owned references and
+selects inert questions under the existing stage arithmetic. Coordinator model
+admission, durable v2 team stages and revised measurement remain pending;
+finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

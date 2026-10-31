@@ -136,7 +136,11 @@ with exact policy, request binding and recovery controls. Step 4e5f implements t
 readiness/context and a host-validated structural finish. Step 4e5g implements
 [independent v2 workers](invoice-independent-workers-v2.md) with the same scoped
 context/readiness/finish boundary, shared scheduling and verbatim partial output.
-The remaining concrete adapters follow separately.
+Step 4e5h implements a pure [v2 coordinator review contract](invoice-team-review-v2.md)
+over explicit worker role/task/contract declarations and owned histories, preserving
+all original claims and incomplete work. It selects inert anchored questions and
+retains unresolved conflicts with cumulative stage disclosure. Coordinator model
+admission and the remaining durable v2 stages follow separately.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

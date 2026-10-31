@@ -460,8 +460,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      records are unchanged. **4e5g implemented:** [independent v2 workers](invoice-independent-workers-v2.md)
      use separate owned contexts, scoped readiness/finish checks, shared fair-round
      scheduling and verbatim partial outputs. Rejected candidates, uncertain work
-     and exact recovery remain visible. The remaining concrete v2 adapters follow
-     before measurement. Existing ceilings,
+     and exact recovery remain visible. **4e5h implemented:** a pure
+     [v2 coordinator review boundary](invoice-team-review-v2.md) binds declared
+     role/task/contract identities, validates owned captured histories, retains
+     all claims/outcomes and selects inert anchored questions with unresolved
+     conflicts. Its context exposes cumulative stage scheduling without new
+     grants or dispatch. Coordinator admission and the remaining concrete v2
+     stages follow before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

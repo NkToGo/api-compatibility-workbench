@@ -65,8 +65,11 @@ remain closed to these grants. A separate [single-context v2 investigator](invoi
 now uses owned context, prefix reads and structural finish checks. Separate
 [independent v2 workers](invoice-independent-workers-v2.md) now use the same owned
 context/finish semantics in two fixed roles with shared fair-round scheduling
-and verbatim partial outputs. The remaining v2 adapters and measurement are still
-pending. These changes
+and verbatim partial outputs. A pure [v2 coordinator boundary](invoice-team-review-v2.md)
+now retains original claims/outcomes, validates declared role/task/contract and
+owned-page bindings, and prepares inert anchored questions with cumulative stage
+disclosure. Coordinator model admission, durable v2 team stages and measurement
+are still pending. These changes
 establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

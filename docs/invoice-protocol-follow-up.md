@@ -133,8 +133,10 @@ and declaring public requirements and scheduling without granting model access.
 Step 4e5e implements [separately identified runtime/broker admission](invoice-v2-admission.md)
 with exact policy, request binding and recovery controls. Step 4e5f implements the
 [single-context v2 investigator](invoice-single-agent-v2.md), including owned
-readiness/context and a host-validated structural finish. Independent-worker
-integration is next; the other concrete adapters follow separately.
+readiness/context and a host-validated structural finish. Step 4e5g implements
+[independent v2 workers](invoice-independent-workers-v2.md) with the same scoped
+context/readiness/finish boundary, shared scheduling and verbatim partial output.
+The remaining concrete adapters follow separately.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

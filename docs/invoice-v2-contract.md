@@ -116,8 +116,9 @@ continue to reject v2 grants. The [prefix-navigation runtime](invoice-prefix-cat
 remains read-only and cannot dispatch a model. The broker can now recognize v2
 requests; recognition alone is not permission to dispatch.
 
-The [single-context v2 adapter](invoice-single-agent-v2.md) is now integrated.
-Independent, team and deterministic adapter integration follows in reviewable
+The [single-context v2 adapter](invoice-single-agent-v2.md) and separate
+[independent v2 workers](invoice-independent-workers-v2.md) are now integrated.
+Team and deterministic adapter integration follows in reviewable
 steps. Only afterwards may a new common condition be
 frozen and measured under the unchanged ceilings, model, baselines and six review
 criteria. No campaign retry, routing promotion or

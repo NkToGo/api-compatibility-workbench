@@ -258,8 +258,10 @@ identified [v2 runtime/broker boundary](docs/invoice-v2-admission.md) now admits
 explicit scoped grants under the existing ceilings; old factories remain closed
 to v2 protocols. A separate [single-context v2 investigator](docs/invoice-single-agent-v2.md)
 now uses owned-read context, prefix lookup and host-validated structural finishes.
-The other v2 adapters and revised measurement remain pending; finding quality is
-not established by this integration.
+A separate [independent-worker v2 adapter](docs/invoice-independent-workers-v2.md)
+now runs both role contexts with shared scheduling, owned readiness and verbatim
+partial outputs. The remaining v2 adapters and revised measurement are pending;
+finding quality is not established by these integrations.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

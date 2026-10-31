@@ -457,8 +457,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      investigator](invoice-single-agent-v2.md) selects bounded prefix/text reads,
      builds owned readiness/context and validates cited structural finishes.
      Exact replay, rejected candidates and uncertain work remain retained; v1
-     records are unchanged. Next is independent-worker v2 integration, then the
-     remaining concrete adapters before measurement. Existing ceilings,
+     records are unchanged. **4e5g implemented:** [independent v2 workers](invoice-independent-workers-v2.md)
+     use separate owned contexts, scoped readiness/finish checks, shared fair-round
+     scheduling and verbatim partial outputs. Rejected candidates, uncertain work
+     and exact recovery remain visible. The remaining concrete v2 adapters follow
+     before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

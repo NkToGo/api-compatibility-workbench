@@ -139,8 +139,10 @@ context/readiness/finish boundary, shared scheduling and verbatim partial output
 Step 4e5h implements a pure [v2 coordinator review contract](invoice-team-review-v2.md)
 over explicit worker role/task/contract declarations and owned histories, preserving
 all original claims and incomplete work. It selects inert anchored questions and
-retains unresolved conflicts with cumulative stage disclosure. Coordinator model
-admission and the remaining durable v2 stages follow separately.
+retains unresolved conflicts with cumulative stage disclosure. Step 4e5i adds
+[dedicated coordinator v2 admission](invoice-team-v2-admission.md) with exact
+worker/review policy binding, scoped transport and retained recovery in a
+separate namespace. The remaining durable v2 stages follow separately.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

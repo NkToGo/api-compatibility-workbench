@@ -101,8 +101,9 @@ owned context and validates structural finishes through this admission path.
 Separate [independent v2 workers](invoice-independent-workers-v2.md) now apply the
 same scoped context/finish rules in shared fair rounds. A pure
 [v2 coordinator contract](invoice-team-review-v2.md) is now defined separately;
-this three-scope factory and the broker still reject its protocol. Dedicated
-coordinator admission, durable team stages and the deterministic baseline follow
+this three-scope factory still rejects its protocol. A separate
+[coordinator admission path](invoice-team-v2-admission.md) now binds worker/review
+grants and strict broker routing in its own namespace. Durable team stages and the deterministic baseline follow
 in separate reviewable changes before
 freezing a new common condition. Keep the original model, ceilings, baselines,
 six review criteria and historical negative results. No campaign registration,

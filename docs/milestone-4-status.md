@@ -68,7 +68,9 @@ context/finish semantics in two fixed roles with shared fair-round scheduling
 and verbatim partial outputs. A pure [v2 coordinator boundary](invoice-team-review-v2.md)
 now retains original claims/outcomes, validates declared role/task/contract and
 owned-page bindings, and prepares inert anchored questions with cumulative stage
-disclosure. Coordinator model admission, durable v2 team stages and measurement
+disclosure. A separate [coordinator v2 admission path](invoice-team-v2-admission.md)
+now binds scoped worker/review grants and exact broker functions with retained
+uncertainty and namespace isolation. Durable v2 team stages and measurement
 are still pending. These changes
 establish neither improved answer quality nor useful coordination.
 

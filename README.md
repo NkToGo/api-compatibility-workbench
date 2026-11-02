@@ -262,8 +262,10 @@ A separate [independent-worker v2 adapter](docs/invoice-independent-workers-v2.m
 now runs both role contexts with shared scheduling, owned readiness and verbatim
 partial outputs. A pure [v2 coordinator review boundary](docs/invoice-team-review-v2.md)
 now preserves original claims and missing work, validates owned references and
-selects inert questions under the existing stage arithmetic. Coordinator model
-admission, durable v2 team stages and revised measurement remain pending;
+selects inert questions under the existing stage arithmetic. A separate
+[coordinator v2 admission path](docs/invoice-team-v2-admission.md) now binds scoped
+worker/review grants, broker routing and retained recovery. Durable v2 team stages
+and revised measurement remain pending;
 finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader

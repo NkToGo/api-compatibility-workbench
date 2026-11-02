@@ -91,8 +91,10 @@ explicit role/task/contract identities, owned-wrapper integrity, strict parsing,
 catalogue citation rejection, target anchors, unresolved conflicts, defensive
 copies, full claim retention, byte trimming and cumulative stage limits.
 
-There is no standalone command or new model grant. The broker and existing invoice
-investigation policy factories still reject the coordinator v2 protocol. Dedicated runtime
-admission, durable team stages, follow-up/reconciliation integration, common
+This pure component has no standalone command or grant. A separate
+[coordinator v2 admission path](invoice-team-v2-admission.md) now registers scoped
+worker/review protocols and routes the strict broker function; the existing
+investigation-only policy factories still reject coordinator grants. Durable team
+stages, follow-up/reconciliation integration, common
 condition registration and measurement remain separate work. This contract
 establishes no live-model quality, coordination benefit or Milestone 4 acceptance.

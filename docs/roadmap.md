@@ -465,8 +465,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      role/task/contract identities, validates owned captured histories, retains
      all claims/outcomes and selects inert anchored questions with unresolved
      conflicts. Its context exposes cumulative stage scheduling without new
-     grants or dispatch. Coordinator admission and the remaining concrete v2
-     stages follow before measurement. Existing ceilings,
+     grants or dispatch. **4e5i implemented:** [dedicated coordinator v2 admission](invoice-team-v2-admission.md)
+     binds exact worker/review policy references and scoped broker functions in
+     a separate namespace, preserving shared ceilings, uncertainty and recovery.
+     Earlier factories reject these grants. Durable concrete v2 team stages
+     follow before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

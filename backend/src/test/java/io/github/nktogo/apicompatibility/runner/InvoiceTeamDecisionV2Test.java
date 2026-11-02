@@ -47,9 +47,8 @@ class InvoiceTeamDecisionV2Test {
         var repeated = finish(); repeated.add("conflicts", CaseInputs.JSON.toJsonTree(List.of(conflict, conflict))); assertThrows(RuntimeException.class, () -> InvoiceTeamDecisionV2.parse(raw(repeated)));
         conflict.addProperty("state", "RESOLVED"); var resolved = finish(); resolved.add("conflicts", CaseInputs.JSON.toJsonTree(List.of(conflict))); assertThrows(RuntimeException.class, () -> InvoiceTeamDecisionV2.parse(raw(resolved)));
     }
-    @Test void separateContractDoesNotExpandTheExistingBrokerOrV2AdmissionFactories() throws Exception {
+    @Test void separateContractDoesNotExpandTheInvestigationOnlyV2AdmissionFactory() throws Exception {
         assertFalse(InvoiceDecisionV2.accepts(InvoiceTeamDecisionV2.PROTOCOL));
-        assertThrows(RuntimeException.class, () -> new ModelCallBroker.Request("gpt-5.6-terra", "input", 2048, InvoiceTeamDecisionV2.PROTOCOL));
         assertThrows(RuntimeException.class, () -> CoordinationRuntime.invoiceInvestigationV2Policy(2, 100, List.of(new CoordinationRuntime.Participant(
                 "invoice-coordinator-v2", Set.of(InvoiceRenewalFixtures.CASE_ID), Set.of(InvoiceTeamDecisionV2.PROTOCOL)))));
         assertEquals(64, InvoiceTeamDecisionV2.contractIdentity().length());

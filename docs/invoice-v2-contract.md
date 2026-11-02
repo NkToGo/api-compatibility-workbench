@@ -120,8 +120,9 @@ The [single-context v2 adapter](invoice-single-agent-v2.md) and separate
 [independent v2 workers](invoice-independent-workers-v2.md) are now integrated.
 The pure [v2 coordinator review boundary](invoice-team-review-v2.md) now preserves
 both original histories and validates owned references and inert questions; it
-grants no model access. Coordinator admission, durable team stages and deterministic
-adapter integration follow in reviewable
+grants no model access. A separate [coordinator admission path](invoice-team-v2-admission.md)
+now grants scoped worker/review protocols without changing investigation-only
+admission. Durable team stages and deterministic adapter integration follow in reviewable
 steps. Only afterwards may a new common condition be
 frozen and measured under the unchanged ceilings, model, baselines and six review
 criteria. No campaign retry, routing promotion or

@@ -94,7 +94,8 @@ copies, full claim retention, byte trimming and cumulative stage limits.
 This pure component has no standalone command or grant. A separate
 [coordinator v2 admission path](invoice-team-v2-admission.md) now registers scoped
 worker/review protocols and routes the strict broker function; the existing
-investigation-only policy factories still reject coordinator grants. Durable team
-stages, follow-up/reconciliation integration, common
+investigation-only policy factories still reject coordinator grants. A separate
+[durable v2 prefix runner](invoice-team-runner-v2.md) now authenticates supplied
+histories against sealed actual stages. Follow-up/reconciliation integration, common
 condition registration and measurement remain separate work. This contract
 establishes no live-model quality, coordination benefit or Milestone 4 acceptance.

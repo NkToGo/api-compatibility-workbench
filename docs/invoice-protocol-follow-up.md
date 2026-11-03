@@ -142,7 +142,9 @@ all original claims and incomplete work. It selects inert anchored questions and
 retains unresolved conflicts with cumulative stage disclosure. Step 4e5i adds
 [dedicated coordinator v2 admission](invoice-team-v2-admission.md) with exact
 worker/review policy binding, scoped transport and retained recovery in a
-separate namespace. The remaining durable v2 stages follow separately.
+separate namespace. Step 4e5j adds a [durable v2 original/review runner](invoice-team-runner-v2.md),
+with sealed owned histories, shared scheduling and no-dispatch inspection.
+Fresh follow-ups and reconciliation remain separate work.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

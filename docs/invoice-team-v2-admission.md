@@ -86,8 +86,9 @@ uses a typed review context and localhost HTTP with a synthetic credential.
 malformed arguments, pre-credential grant rejection and reasoning omission.
 These tests make no provider request.
 
-There is no standalone team-v2 command yet. Durable original-worker/review stages,
-follow-up and reconciliation stages, deterministic integration, common-condition
+The separate [durable v2 prefix runner](invoice-team-runner-v2.md) now registers
+fixed originals and review, builds owned contexts and seals recoverable stages.
+Follow-up and reconciliation stages, deterministic integration, common-condition
 registration and measurement remain separate work. The model, ceilings, baselines,
 six review criteria and historical negative/unknown results remain unchanged.
 This admission step establishes no live-model success, answer-quality improvement,

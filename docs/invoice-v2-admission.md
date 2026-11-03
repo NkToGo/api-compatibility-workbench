@@ -103,8 +103,9 @@ same scoped context/finish rules in shared fair rounds. A pure
 [v2 coordinator contract](invoice-team-review-v2.md) is now defined separately;
 this three-scope factory still rejects its protocol. A separate
 [coordinator admission path](invoice-team-v2-admission.md) now binds worker/review
-grants and strict broker routing in its own namespace. Durable team stages and the deterministic baseline follow
-in separate reviewable changes before
+grants and strict broker routing in its own namespace. A separate
+[durable v2 prefix runner](invoice-team-runner-v2.md) now executes originals and
+review. Fresh follow-ups, reconciliation and the deterministic baseline follow before
 freezing a new common condition. Keep the original model, ceilings, baselines,
 six review criteria and historical negative results. No campaign registration,
 routing promotion or [Milestone 4 acceptance](milestone-4-status.md) follows from

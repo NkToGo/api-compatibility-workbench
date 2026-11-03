@@ -264,8 +264,10 @@ partial outputs. A pure [v2 coordinator review boundary](docs/invoice-team-revie
 now preserves original claims and missing work, validates owned references and
 selects inert questions under the existing stage arithmetic. A separate
 [coordinator v2 admission path](docs/invoice-team-v2-admission.md) now binds scoped
-worker/review grants, broker routing and retained recovery. Durable v2 team stages
-and revised measurement remain pending;
+worker/review grants, broker routing and retained recovery. A separate
+[durable v2 runner](docs/invoice-team-runner-v2.md) now executes original workers,
+seals their histories and records coordinator review under the same trial limits.
+Fresh follow-ups, reconciliation and revised measurement remain pending;
 finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader

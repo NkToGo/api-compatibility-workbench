@@ -70,7 +70,9 @@ now retains original claims/outcomes, validates declared role/task/contract and
 owned-page bindings, and prepares inert anchored questions with cumulative stage
 disclosure. A separate [coordinator v2 admission path](invoice-team-v2-admission.md)
 now binds scoped worker/review grants and exact broker functions with retained
-uncertainty and namespace isolation. Durable v2 team stages and measurement
+uncertainty and namespace isolation. A [durable v2 prefix runner](invoice-team-runner-v2.md)
+now executes original workers and review with owned histories, a sealed barrier
+and cumulative stage accounting. Fresh follow-ups, reconciliation and measurement
 are still pending. These changes
 establish neither improved answer quality nor useful coordination.
 

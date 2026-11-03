@@ -468,8 +468,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      grants or dispatch. **4e5i implemented:** [dedicated coordinator v2 admission](invoice-team-v2-admission.md)
      binds exact worker/review policy references and scoped broker functions in
      a separate namespace, preserving shared ceilings, uncertainty and recovery.
-     Earlier factories reject these grants. Durable concrete v2 team stages
-     follow before measurement. Existing ceilings,
+     Earlier factories reject these grants. **4e5j implemented:** a
+     [durable v2 original-worker/review runner](invoice-team-runner-v2.md) retains
+     owned histories, seals the original-outcome barrier and executes coordinator
+     review under one cumulative budget and deadline. Inspection reconstructs
+     sealed stages without dispatch; the retained result remains a prefix.
+     Fresh follow-ups and reconciliation follow before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

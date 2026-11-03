@@ -122,8 +122,9 @@ The pure [v2 coordinator review boundary](invoice-team-review-v2.md) now preserv
 both original histories and validates owned references and inert questions; it
 grants no model access. A separate [coordinator admission path](invoice-team-v2-admission.md)
 now grants scoped worker/review protocols without changing investigation-only
-admission. Durable team stages and deterministic adapter integration follow in reviewable
-steps. Only afterwards may a new common condition be
+admission. A [durable v2 prefix runner](invoice-team-runner-v2.md) now binds actual
+owned histories and coordinator review to sealed stages. Fresh follow-ups,
+reconciliation and deterministic integration follow before a new common condition is
 frozen and measured under the unchanged ceilings, model, baselines and six review
 criteria. No campaign retry, routing promotion or
 [Milestone 4 acceptance](milestone-4-status.md) follows from these contract tests.

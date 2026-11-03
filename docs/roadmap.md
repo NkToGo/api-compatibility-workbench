@@ -473,7 +473,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      owned histories, seals the original-outcome barrier and executes coordinator
      review under one cumulative budget and deadline. Inspection reconstructs
      sealed stages without dispatch; the retained result remains a prefix.
-     Fresh follow-ups and reconciliation follow before measurement. Existing ceilings,
+     **4e5k implemented:** a pure [scoped follow-up v2 contract](invoice-follow-up-v2-contract.md)
+     recomputes role-bound questions and exact anchors, separates fresh ownership,
+     derives cumulative follow-up context and validates advisory finishes without
+     granting access or dispatch. Admission, fresh execution and reconciliation
+     follow before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

@@ -267,7 +267,9 @@ selects inert questions under the existing stage arithmetic. A separate
 worker/review grants, broker routing and retained recovery. A separate
 [durable v2 runner](docs/invoice-team-runner-v2.md) now executes original workers,
 seals their histories and records coordinator review under the same trial limits.
-Fresh follow-ups, reconciliation and revised measurement remain pending;
+A pure [follow-up v2 contract](docs/invoice-follow-up-v2-contract.md) now binds
+selected role questions and exact anchors to fresh owned-read contexts and
+structural finishes. Follow-up admission/dispatch, reconciliation and revised measurement remain pending;
 finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader

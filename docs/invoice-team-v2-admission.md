@@ -88,7 +88,9 @@ These tests make no provider request.
 
 The separate [durable v2 prefix runner](invoice-team-runner-v2.md) now registers
 fixed originals and review, builds owned contexts and seals recoverable stages.
-Follow-up and reconciliation stages, deterministic integration, common-condition
+A pure [follow-up v2 contract](invoice-follow-up-v2-contract.md) is now defined;
+this factory and the broker still reject its prospective fresh protocols.
+Follow-up admission/dispatch and reconciliation stages, deterministic integration, common-condition
 registration and measurement remain separate work. The model, ceilings, baselines,
 six review criteria and historical negative/unknown results remain unchanged.
 This admission step establishes no live-model success, answer-quality improvement,

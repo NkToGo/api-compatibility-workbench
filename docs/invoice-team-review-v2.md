@@ -96,6 +96,8 @@ This pure component has no standalone command or grant. A separate
 worker/review protocols and routes the strict broker function; the existing
 investigation-only policy factories still reject coordinator grants. A separate
 [durable v2 prefix runner](invoice-team-runner-v2.md) now authenticates supplied
-histories against sealed actual stages. Follow-up/reconciliation integration, common
+histories against sealed actual stages. A pure [follow-up v2 contract](invoice-follow-up-v2-contract.md)
+now binds selected questions to fresh owned contexts without dispatch.
+Follow-up admission/execution, reconciliation integration, common
 condition registration and measurement remain separate work. This contract
 establishes no live-model quality, coordination benefit or Milestone 4 acceptance.

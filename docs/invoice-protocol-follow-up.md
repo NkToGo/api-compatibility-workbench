@@ -144,7 +144,9 @@ retains unresolved conflicts with cumulative stage disclosure. Step 4e5i adds
 worker/review policy binding, scoped transport and retained recovery in a
 separate namespace. Step 4e5j adds a [durable v2 original/review runner](invoice-team-runner-v2.md),
 with sealed owned histories, shared scheduling and no-dispatch inspection.
-Fresh follow-ups and reconciliation remain separate work.
+Step 4e5k adds a pure [follow-up v2 contract](invoice-follow-up-v2-contract.md),
+binding selected role questions and anchors to fresh owned context and finishes.
+Admission, fresh dispatch and reconciliation remain separate work.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

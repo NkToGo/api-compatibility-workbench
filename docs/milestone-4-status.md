@@ -74,7 +74,9 @@ uncertainty and namespace isolation. A [durable v2 prefix runner](invoice-team-r
 now executes original workers and review with owned histories, a sealed barrier
 and cumulative stage accounting. A pure [follow-up v2 boundary](invoice-follow-up-v2-contract.md)
 now binds selected questions/anchors to fresh own contexts and structural finishes.
-Follow-up admission/dispatch, reconciliation and measurement remain pending. These changes
+A separate [follow-up v2 admission path](invoice-follow-up-v2-admission.md) now binds
+original, review and fresh grants with scoped broker routing and retained recovery.
+Durable fresh dispatch, reconciliation and measurement remain pending. These changes
 establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

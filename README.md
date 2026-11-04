@@ -269,7 +269,9 @@ worker/review grants, broker routing and retained recovery. A separate
 seals their histories and records coordinator review under the same trial limits.
 A pure [follow-up v2 contract](docs/invoice-follow-up-v2-contract.md) now binds
 selected role questions and exact anchors to fresh owned-read contexts and
-structural finishes. Follow-up admission/dispatch, reconciliation and revised measurement remain pending;
+structural finishes. A separate [follow-up v2 admission path](docs/invoice-follow-up-v2-admission.md)
+now binds original, review and fresh role permissions with strict broker routing
+and retained recovery. Durable fresh dispatch, reconciliation and revised measurement remain pending;
 finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader

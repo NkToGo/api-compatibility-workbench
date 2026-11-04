@@ -146,7 +146,9 @@ separate namespace. Step 4e5j adds a [durable v2 original/review runner](invoice
 with sealed owned histories, shared scheduling and no-dispatch inspection.
 Step 4e5k adds a pure [follow-up v2 contract](invoice-follow-up-v2-contract.md),
 binding selected role questions and anchors to fresh owned context and finishes.
-Admission, fresh dispatch and reconciliation remain separate work.
+Step 4e5l adds [dedicated follow-up v2 admission](invoice-follow-up-v2-admission.md),
+binding original, review and fresh grants with exact broker routing and recovery.
+Durable fresh dispatch and reconciliation remain separate work.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

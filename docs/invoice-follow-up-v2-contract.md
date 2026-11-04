@@ -22,7 +22,7 @@ ownership merely because the same participant name was reused.
 
 The boundary retains the complete recomputed selection and its canonical value
 identity. Each question binds the input identity, role, fresh participant,
-prospective protocol, contract, shared public task, selection and exact selected
+fresh protocol, contract, shared public task, selection and exact selected
 proposal. It carries only the cited anchors: original outcomes, original claims
 or coordinator-owned text. Unselected claims, complete original read histories
 and sibling follow-up messages are not injected into the fresh context.
@@ -41,7 +41,7 @@ the caller-supplied claims were actually authored by a model or are correct.
 ## Fresh context and strict decisions
 
 `InvoiceFollowUpDecisionV2` declares `invoice-fresh-webhook-v2` and
-`invoice-fresh-reconciliation-v2`, with prospective function
+`invoice-fresh-reconciliation-v2`, with function
 `invoice_follow_up_decision_v2`. Role-specific instructions, schema, public task,
 worker/review contracts, source/context, readiness, navigation and stage-budget
 policies contribute to its identity. Existing v1 and v2 contracts are unchanged.
@@ -97,9 +97,10 @@ stage snapshots, strict decisions and both positive role-specific finish gates.
 The positive readiness fixture is authored structural data, not newly observed
 consumer execution or a measured model result.
 
-The broker and current runtime factories still reject these prospective fresh
-protocols. There is no new grant, model call or standalone follow-up command.
-Separate admission, durable dispatch, reconciliation, deterministic integration,
+The broker now routes these fresh protocols through a separate
+[host admission path](invoice-follow-up-v2-admission.md). Earlier runtime factories
+still reject them. The pure boundary itself creates no grant or model call;
+there is no standalone follow-up command. Durable dispatch, reconciliation, deterministic integration,
 common-condition registration and measurement remain subsequent work. The model,
 ceilings, baselines, six criteria and historical failed/unknown results remain
 unchanged. [Milestone 4 acceptance](milestone-4-status.md) remains open.

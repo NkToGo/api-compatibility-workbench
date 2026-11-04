@@ -128,6 +128,57 @@ class ModelCallBrokerTest {
         assertEquals("COMPLETED", broker.execute(id)); assertEquals(arguments, broker.outcome(id).get("outputText").getAsString());
         assertThrows(IllegalArgumentException.class, () -> InvoiceDecisionV2.parse(broker.outcome(id).get("outputText").getAsString())); assertNoSecret();
     }
+    @Test void freshV2TransportBindsEachRolesContractAndRetainsNoReasoning() throws Exception {
+        for (String worker : InvoiceWorkerDecision.WORKERS) {
+            server.createContext("/v1/responses", exchange -> {
+                calls.incrementAndGet(); var body = CaseInputs.object(exchange.getRequestBody().readAllBytes());
+                assertEquals(InvoiceFollowUpDecisionV2.instructions(worker), body.get("instructions").getAsString());
+                assertEquals(InvoiceFollowUpDecisionV2.FUNCTION, body.getAsJsonObject("tool_choice").get("name").getAsString());
+                assertEquals(1, body.getAsJsonArray("tools").size()); var tool = body.getAsJsonArray("tools").get(0).getAsJsonObject();
+                assertEquals(InvoiceFollowUpDecisionV2.FUNCTION, tool.get("name").getAsString());
+                assertTrue(tool.get("strict").getAsBoolean()); assertEquals(InvoiceFollowUpDecisionV2.schema(), tool.get("parameters"));
+                assertFalse(body.get("parallel_tool_calls").getAsBoolean()); assertFalse(body.get("store").getAsBoolean()); assertFalse(body.get("background").getAsBoolean());
+                var arguments = CaseInputs.JSON.toJson(java.util.Map.of("decision", java.util.Map.of("action", "catalog_prefix", "prefix", "source/", "offset", 0, "limit", 40)));
+                var response = java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 10, "output_tokens", 2), "output", List.of(
+                        java.util.Map.of("type", "reasoning", "summary", List.of(java.util.Map.of("text", "do-not-retain-fresh-v2-reasoning"))),
+                        java.util.Map.of("type", "function_call", "name", InvoiceFollowUpDecisionV2.FUNCTION, "arguments", arguments)));
+                byte[] bytes = CaseInputs.JSON.toJson(response).getBytes(StandardCharsets.UTF_8); exchange.sendResponseHeaders(200, bytes.length);
+                try (var output = exchange.getResponseBody()) { output.write(bytes); }
+            });
+            var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "selected question context", 2048, InvoiceFollowUpDecisionV2.protocol(worker)), Duration.ofMinutes(1));
+            assertEquals("COMPLETED", broker.execute(id)); assertEquals("COMPLETED", broker.execute(id));
+            var outcome = broker.outcome(id); assertEquals("catalog_prefix", InvoiceFollowUpDecisionV2.parse(outcome.get("outputText").getAsString()).get("action").getAsString());
+            assertEquals(10, outcome.get("inputTokens").getAsInt()); assertFalse(outcome.toString().contains("do-not-retain-fresh-v2-reasoning")); server.removeContext("/v1/responses");
+        }
+        assertEquals(2, calls.get()); assertNoSecret();
+    }
+    @Test void freshV2RejectsOriginalReviewUnknownDuplicateAndAbsentFunctionsWithoutReplay() throws Exception {
+        var valid = java.util.Map.of("type", "function_call", "name", InvoiceFollowUpDecisionV2.FUNCTION, "arguments", "{}");
+        for (String worker : InvoiceWorkerDecision.WORKERS) for (var output : List.of(
+                List.of(java.util.Map.of("type", "function_call", "name", InvoiceInvestigationDecision.FUNCTION, "arguments", "{}")),
+                List.of(java.util.Map.of("type", "function_call", "name", InvoiceDecisionV2.FUNCTION, "arguments", "{}")),
+                List.of(java.util.Map.of("type", "function_call", "name", InvoiceTeamDecisionV2.FUNCTION, "arguments", "{}")),
+                List.of(java.util.Map.of("type", "function_call", "name", "unknown_function", "arguments", "{}")), List.of(valid, valid), List.of(),
+                List.of(java.util.Map.of("type", "message", "content", List.of(java.util.Map.of("type", "output_text", "text", "unbound answer")))))) {
+            reply(200, CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 1, "output_tokens", 1), "output", output)));
+            var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "selected question context", 2048, InvoiceFollowUpDecisionV2.protocol(worker)), Duration.ofMinutes(1));
+            assertEquals("INVALID_RESPONSE", broker.execute(id)); assertEquals("INVALID_RESPONSE", broker.execute(id)); assertFalse(broker.outcome(id).has("outputText")); server.removeContext("/v1/responses");
+        }
+        assertEquals(14, calls.get()); assertNoSecret();
+    }
+    @Test void freshV2MalformedDecisionsRemainTransportEvidenceForExplicitHostRejection() throws Exception {
+        String arguments = CaseInputs.JSON.toJson(java.util.Map.of("decision", java.util.Map.of("action", "grant_permissions")));
+        reply(200, CaseInputs.JSON.toJson(java.util.Map.of("status", "completed", "usage", java.util.Map.of("input_tokens", 1, "output_tokens", 1), "output",
+                List.of(java.util.Map.of("type", "function_call", "name", InvoiceFollowUpDecisionV2.FUNCTION, "arguments", arguments)))));
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "selected question context", 2048, InvoiceFollowUpDecisionV2.WEBHOOK), Duration.ofMinutes(1));
+        assertEquals("COMPLETED", broker.execute(id)); assertEquals(arguments, broker.outcome(id).get("outputText").getAsString());
+        assertThrows(IllegalArgumentException.class, () -> InvoiceFollowUpDecisionV2.parse(arguments)); assertNoSecret();
+    }
+    @Test void changingAFreshV2RoleAfterApprovalDeniesBeforeCredentialsOrTransport() throws Exception {
+        var broker = broker(); String id = broker.register(new ModelCallBroker.Request("gpt-test", "selected question context", 2048, InvoiceFollowUpDecisionV2.WEBHOOK), Duration.ofMinutes(1));
+        Path file = root.resolve(id + "/request.json"); var request = CaseInputs.object(Files.readAllBytes(file)); request.addProperty("protocol", InvoiceFollowUpDecisionV2.RECONCILIATION);
+        Files.writeString(file, request.toString()); assertEquals("AUTHORIZATION_DENIED", broker.execute(id)); assertEquals(0, credentialReads.get()); assertEquals(0, calls.get()); assertNoSecret();
+    }
     @Test void invoiceTeamV2TransportUsesItsExactContractWithoutRetainingReasoning() throws Exception {
         server.createContext("/v1/responses", exchange -> {
             calls.incrementAndGet(); var body = CaseInputs.object(exchange.getRequestBody().readAllBytes());

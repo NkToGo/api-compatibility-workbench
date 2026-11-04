@@ -3,12 +3,19 @@ package io.github.nktogo.apicompatibility.runner;
 import com.google.gson.JsonObject;
 import java.nio.charset.StandardCharsets;
 
-/** Prospective fresh-role wire contract; it creates neither a participant nor a model grant. */
+/** Fresh-role wire contract; it creates neither a participant nor a model grant. */
 final class InvoiceFollowUpDecisionV2 {
     static final String WEBHOOK = "invoice-fresh-webhook-v2", RECONCILIATION = "invoice-fresh-reconciliation-v2";
     static final String FUNCTION = "invoice_follow_up_decision_v2";
     private InvoiceFollowUpDecisionV2() {}
     static boolean accepts(String protocol) { return WEBHOOK.equals(protocol) || RECONCILIATION.equals(protocol); }
+    static String worker(String protocol) {
+        return switch (protocol) {
+            case WEBHOOK -> "invoice-webhook";
+            case RECONCILIATION -> "invoice-reconciliation";
+            default -> throw new IllegalArgumentException("Unknown fresh invoice v2 protocol");
+        };
+    }
     static InvoiceReadiness.Scope scope(String worker) {
         return switch (worker) {
             case "invoice-webhook" -> InvoiceReadiness.Scope.WEBHOOK;

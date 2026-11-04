@@ -141,6 +141,8 @@ limits, counted bootstrap reads, uncertainty, interruption, lifecycle gates,
 barrier tampering, receipt recovery and credential-free process inspection.
 A pure [follow-up v2 contract](invoice-follow-up-v2-contract.md) now binds selected
 questions and anchors to fresh own contexts without adding runtime grants.
-Follow-up admission/dispatch and reconciliation integration, the deterministic baseline, new common
+A separate [follow-up admission path](invoice-follow-up-v2-admission.md) now registers
+original, review and fresh protocols; it does not expand this prefix registration.
+Durable fresh dispatch and reconciliation integration, the deterministic baseline, new common
 conditions and separately reviewed measurement remain subsequent work.
 [Milestone 4 acceptance](milestone-4-status.md) remains open.

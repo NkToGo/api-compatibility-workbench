@@ -98,6 +98,7 @@ investigation-only policy factories still reject coordinator grants. A separate
 [durable v2 prefix runner](invoice-team-runner-v2.md) now authenticates supplied
 histories against sealed actual stages. A pure [follow-up v2 contract](invoice-follow-up-v2-contract.md)
 now binds selected questions to fresh owned contexts without dispatch.
-Follow-up admission/execution, reconciliation integration, common
+A separate [follow-up v2 admission path](invoice-follow-up-v2-admission.md) now binds
+original, review and fresh grants in its own namespace. Durable fresh execution, reconciliation integration, common
 condition registration and measurement remain separate work. This contract
 establishes no live-model quality, coordination benefit or Milestone 4 acceptance.

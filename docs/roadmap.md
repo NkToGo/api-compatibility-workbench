@@ -476,8 +476,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4e5k implemented:** a pure [scoped follow-up v2 contract](invoice-follow-up-v2-contract.md)
      recomputes role-bound questions and exact anchors, separates fresh ownership,
      derives cumulative follow-up context and validates advisory finishes without
-     granting access or dispatch. Admission, fresh execution and reconciliation
-     follow before measurement. Existing ceilings,
+     granting access or dispatch. **4e5l implemented:** [dedicated follow-up v2
+     admission](invoice-follow-up-v2-admission.md) binds original, review and fresh
+     role grants with exact broker routing, namespace isolation and retained
+     recovery under the common ceilings. Durable selected fresh execution and
+     reconciliation follow before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

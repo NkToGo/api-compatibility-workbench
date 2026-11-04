@@ -17,6 +17,7 @@ public final class InvoiceTeamRunnerV2 {
     private final Path state, root;
     private final CoordinationRuntime runtime;
     private final InvoiceComparisonInputs.Bundle inputs;
+    private final boolean followUp;
     record Spec(int formatVersion, String runId, String bundleId, Definition definition, Slot slot,
                 CoordinationRuntime.Policy policy, String runtimeSpecSha256, String publicTaskSha256) {}
     private static final class Worker {
@@ -34,8 +35,26 @@ public final class InvoiceTeamRunnerV2 {
         this(state, InvoiceComparisonInputs.open(inputs, expected), CoordinationRuntime.forInvoiceTeamReviewV2(state, inputs, expected));
     }
     InvoiceTeamRunnerV2(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime) throws IOException {
+        this(state, inputs, runtime, false);
+    }
+    private InvoiceTeamRunnerV2(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime, boolean followUp) throws IOException {
         this.state = state.toAbsolutePath().normalize(); this.inputs = Objects.requireNonNull(inputs); this.runtime = runtime;
-        root = this.state.resolve("invoice-team-v2-runs"); Files.createDirectories(root); ConsumerTasks.directory(root);
+        this.followUp = followUp;
+        root = this.state.resolve(followUp ? "invoice-team-follow-up-v2-prefix-runs" : "invoice-team-v2-runs"); Files.createDirectories(root); ConsumerTasks.directory(root);
+    }
+    static InvoiceTeamRunnerV2 forFollowUps(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime) throws IOException {
+        return new InvoiceTeamRunnerV2(state, inputs, runtime, true);
+    }
+    static CoordinationRuntime.Policy followUpPolicy() throws IOException {
+        return CoordinationRuntime.invoiceFollowUpV2Policy(2, 100, followUpParticipants());
+    }
+    private static List<CoordinationRuntime.Participant> followUpParticipants() {
+        var members = new ArrayList<>(participants());
+        for (String worker : InvoiceWorkerDecision.WORKERS) members.add(new CoordinationRuntime.Participant(InvoiceFollowUpDecisionV2.participant(worker), Set.of(CASE), Set.of(InvoiceFollowUpDecisionV2.protocol(worker))));
+        return List.copyOf(members);
+    }
+    private CoordinationRuntime.Policy executionPolicy() throws IOException {
+        return followUp ? followUpPolicy() : policy();
     }
     public static CoordinationRuntime.Policy policy() throws IOException {
         return CoordinationRuntime.invoiceTeamReviewV2Policy(2, 100, participants());
@@ -50,7 +69,7 @@ public final class InvoiceTeamRunnerV2 {
         CaseInputs.require(slot.arm() == Arm.COORDINATED_TEAM, "Invoice team runner requires the coordinated arm");
         CaseInputs.require(inputs.identity().sha256().equals(bundle), "Invoice v2 team input identity mismatch");
         CoordinationTeamBudget.forCeiling(definition.limits().modelCalls());
-        var policy = policy();
+        var policy = executionPolicy();
         String id = runtime.register(bundle, definition, slot, policy); Path run = Files.createDirectory(root.resolve(id));
         publish(run, "spec.json", new Spec(2, id, bundle, definition, slot, policy, hash(parent(id), "spec.json"), InvoiceDecisionV2.taskIdentity()));
         publish(run, "registration.json", Map.of("specSha256", hash(run, "spec.json"))); return id;
@@ -67,7 +86,7 @@ public final class InvoiceTeamRunnerV2 {
                 }
                 return retained(id);
             }
-            CaseInputs.require(spec.policy().equals(policy()), "Changed invoice team implementation; use a new trial");
+            CaseInputs.require(spec.policy().equals(executionPolicy()), "Changed invoice team implementation; use a new trial");
             var allocation = CoordinationTeamBudget.forCeiling(spec.definition().limits().modelCalls());
             var workers = InvoiceWorkerDecision.WORKERS.stream().map(w -> new Worker(w, spec.bundleId())).toList();
             boolean sealedOriginals = exists(run, "originals.json");
@@ -156,16 +175,31 @@ public final class InvoiceTeamRunnerV2 {
     }
     private JsonObject action(Path run, Spec spec, String participant, int turn, String step, java.util.function.Supplier<ModelCallBroker.Request> request,
                               Worker worker, InvoiceTeamReviewV2 review, List<JsonObject> pages) throws IOException {
+        var result = action(run, spec, participant, turn, step, () -> {
+            if (worker != null) worker.metadata = recordUnchecked(run, "metadata-" + participant + ".json");
+            return request.get();
+        }, worker == null ? InvoiceTeamDecisionV2::parse : InvoiceDecisionV2::parse,
+                (decision, bootstrap) -> validate(spec, decision, worker, review, bootstrap, pages), subject(spec, participant), pages);
+        if (worker != null && exists(run, "metadata-" + participant + ".json")) worker.metadata = record(run, "metadata-" + participant + ".json");
+        return result;
+    }
+    JsonObject action(Path run, Spec spec, String participant, int turn, String step, java.util.function.Supplier<ModelCallBroker.Request> request,
+                      java.util.function.Function<String, JsonObject> parse, java.util.function.BiConsumer<JsonObject, JsonObject> validateFinish,
+                      InvoiceReadiness.Subject subject, List<JsonObject> pages) throws IOException {
+        CaseInputs.require(subject.participantId().equals(participant) && subject.inputIdentity().sha256().equals(spec.bundleId()), "Changed invoice action subject");
         String prefix = turn + "-" + participant, eventFile = "event-" + prefix + ".json", seal = "event-" + prefix + "-receipt.json", metadataFile = "metadata-" + participant + ".json";
         JsonObject bootstrap = exists(run, metadataFile) ? record(run, metadataFile) : null;
-        if (bootstrap != null) { verifyMetadata(spec, participant, bootstrap); if (worker != null) worker.metadata = bootstrap; }
+        if (bootstrap != null) verifyMetadata(spec, participant, bootstrap);
         if (exists(run, seal)) {
             var event = record(run, eventFile);
             CaseInputs.require(record(run, seal).equals(eventReceipt(run, prefix, step, participant))
                     && event.get("turn").getAsInt() == turn && event.get("participant").getAsString().equals(participant)
                     && event.get("callReserved").getAsBoolean() == runtime.reserved(spec.runId(), participant, "decision-" + turn), "Changed sealed invoice v2 team event");
             if (exists(run, "request-" + prefix + ".json")) retain(run, "request-" + prefix + ".json", request.get());
-            if (event.has("decision") && !event.has("stopReason")) validate(spec, event.getAsJsonObject("decision"), worker, review, bootstrap, pages);
+            if (event.has("decision") && !event.has("stopReason")) {
+                var decision = parse.apply(JSON.toJson(Map.of("decision", event.getAsJsonObject("decision"))));
+                if (decision.get("action").getAsString().equals("finish")) validateFinish.accept(decision, bootstrap);
+            }
             if (event.has("page")) verifyPage(spec, participant, turn, event.getAsJsonObject("decision"), event.getAsJsonObject("page"));
             return event;
         }
@@ -173,24 +207,24 @@ public final class InvoiceTeamRunnerV2 {
         try {
             if (bootstrap == null) {
                 bootstrap = runtime.describe(spec.runId(), participant, "metadata", CASE); retain(run, metadataFile, bootstrap);
-                verifyMetadata(spec, participant, bootstrap); if (worker != null) worker.metadata = bootstrap;
+                verifyMetadata(spec, participant, bootstrap);
             }
             var payload = request.get(); retain(run, "request-" + prefix + ".json", payload);
             var response = runtime.call(spec.runId(), participant, "decision-" + turn, payload); String status = response.get("status").getAsString();
             if (status.equals("ACTIVE")) return json(Map.of("status", "ACTIVE"));
             if (!status.equals("COMPLETED")) event = stopped("MODEL_" + status);
             else {
-                try { candidate = worker == null ? InvoiceTeamDecisionV2.parse(response.get("outputText").getAsString()) : InvoiceDecisionV2.parse(response.get("outputText").getAsString()); }
+                try { candidate = parse.apply(response.get("outputText").getAsString()); }
                 catch (RuntimeException ignored) { /* Untrusted output cannot expand the admitted action set. */ }
                 if (candidate == null) { event = stopped("INVALID_MODEL_DECISION"); event.addProperty("actionStatus", "REJECTED_DECISION"); }
                 else if (!candidate.get("action").getAsString().equals("finish")) {
                     try { event = json(Map.of("decision", candidate, "page", readPage(spec, participant, turn, candidate))); }
                     catch (IllegalArgumentException e) { event = stopped("INVALID_EVIDENCE_READ"); event.addProperty("actionStatus", "REJECTED_READ"); event.add("decision", candidate); }
                 } else {
-                    try { validate(spec, candidate, worker, review, bootstrap, pages); runtime.start(spec.runId()); event = json(Map.of("decision", candidate)); }
+                    try { validateFinish.accept(candidate, bootstrap); runtime.start(spec.runId()); event = json(Map.of("decision", candidate)); }
                     catch (IllegalArgumentException e) {
                         event = stopped("UNSUPPORTED_DOSSIER"); event.addProperty("actionStatus", "REJECTED_FINISH"); event.add("decision", candidate);
-                        event.add("readiness", InvoiceContextV2.readiness(subject(spec, participant), inputs, bootstrap, pages).toJson());
+                        event.add("readiness", InvoiceContextV2.readiness(subject, inputs, bootstrap, pages).toJson());
                     }
                 }
             }
@@ -318,7 +352,7 @@ public final class InvoiceTeamRunnerV2 {
         CaseInputs.require(host.get("bundleId").getAsString().equals(spec.bundleId()) && host.get("definition").equals(JSON.toJsonTree(spec.definition())) && host.get("slot").equals(JSON.toJsonTree(spec.slot()))
                 && host.get("policy").equals(JSON.toJsonTree(spec.policy())) && spec.slot().arm() == Arm.COORDINATED_TEAM
                 && spec.policy().parallelCalls() == 2 && spec.policy().maxReads() == 100
-                && spec.policy().participants().equals(participants()), "Changed invoice team runtime binding or fixed membership");
+                && spec.policy().participants().equals(followUp ? followUpParticipants() : participants()), "Changed invoice team runtime binding or fixed membership");
         CoordinationTeamBudget.forCeiling(spec.definition().limits().modelCalls()); artifacts(run); return spec;
     }
     private static Map<String, String> artifacts(Path run) throws IOException {
@@ -328,7 +362,7 @@ public final class InvoiceTeamRunnerV2 {
                     || name.matches("(?:round|review-turn)-[1-9][0-9]{0,2}\\.json") || name.matches("(?:request|event)-[1-9][0-9]{0,2}-invoice-(?:webhook|reconciliation|coordinator)(?:-receipt)?\\.json"), "Unexpected invoice team artifact"); hashes.put(name, hash(run, name));
         } } return hashes;
     }
-    private Path parent(String id) { return state.resolve("invoice-team-v2-trials/" + id); }
+    private Path parent(String id) { return state.resolve((followUp ? "invoice-team-follow-up-v2-trials/" : "invoice-team-v2-trials/") + id); }
     private Path directory(String id) { CaseInputs.require(id != null && id.matches("trial-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid invoice team reference"); ConsumerTasks.directory(root); Path run = root.resolve(id); ConsumerTasks.directory(run); return run; }
     static Definition checkDefinition(ContentDigest bundle) throws IOException {
         var base = InvoiceSingleAgentV2.checkDefinition(bundle); var implementations = new EnumMap<>(base.implementations()); implementations.put(Arm.COORDINATED_TEAM, CoordinationRuntime.implementationIdentity(policy()));

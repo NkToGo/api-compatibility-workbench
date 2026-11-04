@@ -143,6 +143,9 @@ A pure [follow-up v2 contract](invoice-follow-up-v2-contract.md) now binds selec
 questions and anchors to fresh own contexts without adding runtime grants.
 A separate [follow-up admission path](invoice-follow-up-v2-admission.md) now registers
 original, review and fresh protocols; it does not expand this prefix registration.
-Durable fresh dispatch and reconciliation integration, the deterministic baseline, new common
+A separate [durable follow-up runner](invoice-follow-up-runner-v2.md) now uses an
+internal five-member prefix mode in dedicated directories, without expanding old
+prefix registrations. It authenticates this engine's sealed stages before fresh
+dispatch. Reconciliation integration, the deterministic baseline, new common
 conditions and separately reviewed measurement remain subsequent work.
 [Milestone 4 acceptance](milestone-4-status.md) remains open.

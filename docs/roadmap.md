@@ -479,8 +479,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      granting access or dispatch. **4e5l implemented:** [dedicated follow-up v2
      admission](invoice-follow-up-v2-admission.md) binds original, review and fresh
      role grants with exact broker routing, namespace isolation and retained
-     recovery under the common ceilings. Durable selected fresh execution and
-     reconciliation follow before measurement. Existing ceilings,
+     recovery under the common ceilings. **4e5m implemented:** a
+     [durable selected follow-up runner](invoice-follow-up-runner-v2.md) authenticates
+     sealed original/review sources, dispatches only selected fresh roles with
+     owned contexts and finishes, and retains interruption recovery under the
+     unchanged cumulative pool and deadline. Reconciliation follows before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

@@ -100,7 +100,9 @@ consumer execution or a measured model result.
 The broker now routes these fresh protocols through a separate
 [host admission path](invoice-follow-up-v2-admission.md). Earlier runtime factories
 still reject them. The pure boundary itself creates no grant or model call;
-there is no standalone follow-up command. Durable dispatch, reconciliation, deterministic integration,
+its typed values alone cannot authorize execution. A separate
+[durable runner](invoice-follow-up-runner-v2.md) now authenticates actual sealed
+stages and executes selected fresh questions through this contract. Reconciliation, deterministic integration,
 common-condition registration and measurement remain subsequent work. The model,
 ceilings, baselines, six criteria and historical failed/unknown results remain
 unchanged. [Milestone 4 acceptance](milestone-4-status.md) remains open.

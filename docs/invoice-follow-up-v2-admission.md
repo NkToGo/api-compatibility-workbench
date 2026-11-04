@@ -84,9 +84,12 @@ depth-one questions, enforce cumulative 24/6/24/6 stage allocation and the 54-ca
 follow-up ceiling within the shared 60, use actual reservation counts and the
 unchanged deadline, and seal each fresh history without leaking sibling reads.
 Generic admission enforces the whole-trial pool; it does not enforce stage order
-or open the original/review barrier. The existing
-[prefix runner](invoice-team-runner-v2.md) remains limited to originals and review.
-There is no new command or automatic participant dispatch in this step.
+or open the original/review barrier. The public
+[prefix-only runner](invoice-team-runner-v2.md) remains limited to originals and review.
+A separate [durable follow-up runner](invoice-follow-up-runner-v2.md) now integrates
+the fixed original/review/fresh membership in a dedicated prefix mode and validates
+actual sealed source histories before selected dispatch. Admission itself runs
+no stage and does not grant access to a final reconciliation protocol.
 
 Run the README preparation and Java verification commands. Offline controls cover
 namespace isolation in both directions, exact policy/build/limit binding, scoped
@@ -97,7 +100,7 @@ are authored fixtures, not observed original-stage execution or model quality.
 Additional broker checks exercise strict wire routing and rejected responses.
 No test calls the provider or dispatches a consumer.
 
-Durable fresh execution, reconciliation, deterministic integration, common-condition
+Reconciliation, deterministic integration, common-condition
 registration and measurement remain subsequent work. The original model,
 ceilings, baselines, six review criteria and historical failures/unknowns remain
 unchanged. [Milestone 4 acceptance](milestone-4-status.md) remains open.

@@ -76,7 +76,9 @@ and cumulative stage accounting. A pure [follow-up v2 boundary](invoice-follow-u
 now binds selected questions/anchors to fresh own contexts and structural finishes.
 A separate [follow-up v2 admission path](invoice-follow-up-v2-admission.md) now binds
 original, review and fresh grants with scoped broker routing and retained recovery.
-Durable fresh dispatch, reconciliation and measurement remain pending. These changes
+A [durable follow-up v2 runner](invoice-follow-up-runner-v2.md) now authenticates
+sealed original/review sources and executes selected fresh questions with owned
+histories and shared cumulative limits. Reconciliation and measurement remain pending. These changes
 establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

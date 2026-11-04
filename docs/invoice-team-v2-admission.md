@@ -92,7 +92,9 @@ A pure [follow-up v2 contract](invoice-follow-up-v2-contract.md) is now defined;
 this factory still rejects its fresh protocols. A separate
 [follow-up admission path](invoice-follow-up-v2-admission.md) now binds original,
 review and fresh grants with dedicated broker routing and retained recovery.
-Durable fresh dispatch and reconciliation stages, deterministic integration, common-condition
+A separate [durable follow-up runner](invoice-follow-up-runner-v2.md) now executes
+selected fresh questions through its dedicated admission and sealed source prefix.
+Reconciliation stages, deterministic integration, common-condition
 registration and measurement remain separate work. The model, ceilings, baselines,
 six review criteria and historical negative/unknown results remain unchanged.
 This admission step establishes no live-model success, answer-quality improvement,

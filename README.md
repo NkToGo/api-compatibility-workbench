@@ -271,7 +271,9 @@ A pure [follow-up v2 contract](docs/invoice-follow-up-v2-contract.md) now binds
 selected role questions and exact anchors to fresh owned-read contexts and
 structural finishes. A separate [follow-up v2 admission path](docs/invoice-follow-up-v2-admission.md)
 now binds original, review and fresh role permissions with strict broker routing
-and retained recovery. Durable fresh dispatch, reconciliation and revised measurement remain pending;
+and retained recovery. A [durable follow-up v2 runner](docs/invoice-follow-up-runner-v2.md)
+now authenticates original/review stages and executes only selected fresh questions
+with owned histories and shared limits. Reconciliation and revised measurement remain pending;
 finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader

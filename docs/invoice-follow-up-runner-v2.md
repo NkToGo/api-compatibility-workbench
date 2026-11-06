@@ -3,7 +3,9 @@
 Step 4e5m adds `InvoiceFollowUpRunnerV2`, an opt-in runner for original v2 role
 investigations, coordinator review and selected fresh follow-ups. It retains a
 recoverable stage prefix under one trial. Reconciliation, whole-trial completion,
-comparison export and answer-quality review remain pending.
+comparison export and answer-quality review remain pending. A separate pure
+[final reconciliation contract](invoice-reconciliation-v2-contract.md) can now
+validate supplied lineage and final advice without admitting or executing that stage.
 
 ## Registration and authenticated selection
 

@@ -150,7 +150,11 @@ Step 4e5l adds [dedicated follow-up v2 admission](invoice-follow-up-v2-admission
 binding original, review and fresh grants with exact broker routing and recovery.
 Step 4e5m adds a [durable selected follow-up runner](invoice-follow-up-runner-v2.md)
 with authenticated source replay, fixed fresh membership, owned contexts and
-sealed recovery under the unchanged pool/deadline. Reconciliation remains separate work.
+sealed recovery under the unchanged pool/deadline. Step 4e5n adds a pure
+[final reconciliation v2 contract](invoice-reconciliation-v2-contract.md) that
+recomputes source lineage, preserves unresolved conflicts and validates owned
+joint context and structural advisory finishes. Final-stage admission and durable
+execution remain separate work.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

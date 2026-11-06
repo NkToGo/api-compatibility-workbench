@@ -82,6 +82,7 @@ final class InvoiceTeamReviewV2 {
         claim.addProperty("authority", "original-model-advice-not-execution-or-semantic-acceptance");
         claims.add(claim); references.put(claim.get("referenceId").getAsString(), claim);
     }
+    JsonObject evidence() { return json(Map.of("workers", workers.deepCopy(), "originalClaims", claims.deepCopy())); }
     String context(JsonObject bootstrap, List<JsonObject> reads, CoordinationTeamBudget.Allocation allocation,
                    CoordinationTeamBudget.Reservations reserved, int byteLimit) {
         CaseInputs.require(allocation.ceiling() <= 60 && allocation.equals(CoordinationTeamBudget.forCeiling(allocation.ceiling()))

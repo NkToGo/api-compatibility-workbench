@@ -78,8 +78,11 @@ A separate [follow-up v2 admission path](invoice-follow-up-v2-admission.md) now 
 original, review and fresh grants with scoped broker routing and retained recovery.
 A [durable follow-up v2 runner](invoice-follow-up-runner-v2.md) now authenticates
 sealed original/review sources and executes selected fresh questions with owned
-histories and shared cumulative limits. Reconciliation and measurement remain pending. These changes
-establish neither improved answer quality nor useful coordination.
+histories and shared cumulative limits. A pure [final reconciliation v2 contract](invoice-reconciliation-v2-contract.md)
+now validates source/question lineage, preserves original/fresh outcomes and
+unresolved conflicts, and checks owned joint contexts and advisory finishes.
+Final-stage admission, durable execution and measurement remain pending. These
+changes establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider

@@ -483,7 +483,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      [durable selected follow-up runner](invoice-follow-up-runner-v2.md) authenticates
      sealed original/review sources, dispatches only selected fresh roles with
      owned contexts and finishes, and retains interruption recovery under the
-     unchanged cumulative pool and deadline. Reconciliation follows before measurement. Existing ceilings,
+     unchanged cumulative pool and deadline. **4e5n implemented:** a pure
+     [final reconciliation v2 contract](invoice-reconciliation-v2-contract.md)
+     recomputes question/finish lineage, preserves all outcomes/claims/conflicts,
+     validates owned joint context and checks structural advisory finishes.
+     Final-stage admission and durable execution follow before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

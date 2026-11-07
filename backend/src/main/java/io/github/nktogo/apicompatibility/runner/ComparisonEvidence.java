@@ -13,6 +13,7 @@ interface ComparisonEvidence {
     String INVOICE_V2_TOOLS = "invoice-describe-catalog-prefix-300-40-32768-text-4000-utf16-investigation-v2";
     String INVOICE_TEAM_V2_TOOLS = "invoice-describe-catalog-prefix-300-40-32768-text-4000-utf16-team-review-v2";
     String INVOICE_FOLLOW_UP_V2_TOOLS = "invoice-describe-catalog-prefix-300-40-32768-text-4000-utf16-team-follow-up-v2";
+    String INVOICE_RECONCILIATION_V2_TOOLS = "invoice-describe-catalog-prefix-300-40-32768-text-4000-utf16-team-reconciliation-v2";
     record PageRequest(String kind, String caseId, String alias, int offset, int limit) {}
     Map<String, ContentDigest> identities(String bundle) throws IOException;
     String receiptHash(String bundle) throws IOException;
@@ -52,6 +53,9 @@ interface ComparisonEvidence {
     static ComparisonEvidence invoiceFollowUpV2(Path directory, ContentDigest expected) throws IOException {
         return invoice(directory, expected, false, true, false, false, true);
     }
+    static ComparisonEvidence invoiceReconciliationV2(Path directory, ContentDigest expected) throws IOException {
+        return invoice(directory, expected, false, true, false, false, false, true);
+    }
     private static ComparisonEvidence invoice(Path directory, ContentDigest expected, boolean investigation, boolean navigation, boolean v2) throws IOException {
         return invoice(directory, expected, investigation, navigation, v2, false);
     }
@@ -59,6 +63,9 @@ interface ComparisonEvidence {
         return invoice(directory, expected, investigation, navigation, v2, teamV2, false);
     }
     private static ComparisonEvidence invoice(Path directory, ContentDigest expected, boolean investigation, boolean navigation, boolean v2, boolean teamV2, boolean followUpV2) throws IOException {
+        return invoice(directory, expected, investigation, navigation, v2, teamV2, followUpV2, false);
+    }
+    private static ComparisonEvidence invoice(Path directory, ContentDigest expected, boolean investigation, boolean navigation, boolean v2, boolean teamV2, boolean followUpV2, boolean reconciliationV2) throws IOException {
         var inputs = InvoiceComparisonInputs.open(directory, expected);
         byte[] receipt = ConsumerTasks.bytes(directory, "receipt.json");
         CaseInputs.require(CaseInputs.object(receipt).equals(CaseInputs.JSON.toJsonTree(Map.of("manifestSha256", expected.sha256()))), "Changed invoice input receipt");
@@ -89,6 +96,7 @@ interface ComparisonEvidence {
                 };
             }
             public void validatePolicy(CoordinationRuntime.Policy policy) {
+                if (reconciliationV2) { InvoiceReconciliationV2Admission.validate(policy); return; }
                 if (followUpV2) { InvoiceFollowUpV2Admission.validate(policy); return; }
                 if (teamV2) { InvoiceTeamV2Admission.validate(policy); return; }
                 if (v2) { InvoiceV2Admission.validate(policy); return; }
@@ -103,17 +111,17 @@ interface ComparisonEvidence {
                 if (navigation) validatePolicy(policy); else rejectV2Protocols(policy);
             }
             public void validateActivePolicy(CoordinationRuntime.Policy policy) {
-                if (navigation) CaseInputs.require(currentAdapter.equals(policy.adapterIdentity()), v2 || teamV2 || followUpV2
+                if (navigation) CaseInputs.require(currentAdapter.equals(policy.adapterIdentity()), v2 || teamV2 || followUpV2 || reconciliationV2
                         ? "Changed invoice v2 build; register a new trial" : "Changed navigation build; register a new trace");
             }
             public void validateDefinition(io.github.nktogo.apicompatibility.evaluation.CoordinationExperiment.Definition definition) {
-                if (v2 || teamV2 || followUpV2) InvoiceV2Admission.validateDefinition(definition);
+                if (v2 || teamV2 || followUpV2 || reconciliationV2) InvoiceV2Admission.validateDefinition(definition);
             }
         };
     }
     private static void rejectV2Protocols(CoordinationRuntime.Policy policy) {
         CaseInputs.require(policy.participants().stream().flatMap(p -> p.protocols().stream())
-                        .noneMatch(p -> InvoiceDecisionV2.accepts(p) || InvoiceTeamDecisionV2.PROTOCOL.equals(p) || InvoiceFollowUpDecisionV2.accepts(p)),
+                        .noneMatch(p -> InvoiceDecisionV2.accepts(p) || InvoiceTeamDecisionV2.PROTOCOL.equals(p) || InvoiceFollowUpDecisionV2.accepts(p) || InvoiceReconciliationDecisionV2.PROTOCOL.equals(p)),
                 "Invoice v2 protocols require the v2 host boundary");
     }
 }

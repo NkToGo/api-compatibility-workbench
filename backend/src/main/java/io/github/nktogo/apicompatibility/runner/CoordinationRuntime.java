@@ -25,7 +25,7 @@ public final class CoordinationRuntime {
         public Participant {
             identifier(id); cases = Collections.unmodifiableSet(new TreeSet<>(cases)); protocols = Collections.unmodifiableSet(new TreeSet<>(protocols));
             CaseInputs.require(!cases.isEmpty() && cases.size() <= 2
-                    && protocols.stream().allMatch(p -> PROTOCOLS.contains(p) || InvoiceDecisionV2.accepts(p) || InvoiceTeamDecisionV2.PROTOCOL.equals(p) || InvoiceFollowUpDecisionV2.accepts(p)), "Invalid participant scope");
+                    && protocols.stream().allMatch(p -> PROTOCOLS.contains(p) || InvoiceDecisionV2.accepts(p) || InvoiceTeamDecisionV2.PROTOCOL.equals(p) || InvoiceFollowUpDecisionV2.accepts(p) || InvoiceReconciliationDecisionV2.PROTOCOL.equals(p)), "Invalid participant scope");
         }
     }
     public record Policy(int parallelCalls, int maxReads, ContentDigest adapterIdentity, ContentDigest promptIdentity, ContentDigest toolPolicyIdentity,
@@ -91,6 +91,16 @@ public final class CoordinationRuntime {
     }
     public static Policy invoiceFollowUpV2Policy(int parallelCalls, int maxReads, List<Participant> participants) throws IOException {
         return InvoiceFollowUpV2Admission.policy(parallelCalls, maxReads, participants);
+    }
+    /** Separate final-review admission; source authentication and stage execution remain caller responsibilities. */
+    public static CoordinationRuntime forInvoiceReconciliationV2(Path state, Path directory, ContentDigest expected) throws IOException {
+        return forInvoiceReconciliationV2(state, directory, expected, Clock.systemUTC(), CoordinationRuntime::broker);
+    }
+    static CoordinationRuntime forInvoiceReconciliationV2(Path state, Path directory, ContentDigest expected, Clock clock, Brokers brokers) throws IOException {
+        return new CoordinationRuntime(state, clock, brokers, ComparisonEvidence.invoiceReconciliationV2(directory, expected), "invoice-team-reconciliation-v2-trials");
+    }
+    public static Policy invoiceReconciliationV2Policy(int parallelCalls, int maxReads, List<Participant> participants) throws IOException {
+        return InvoiceReconciliationV2Admission.policy(parallelCalls, maxReads, participants);
     }
     /** Separately admitted prefix navigation over captured invoice evidence; no model protocols are allowed. */
     public static CoordinationRuntime forInvoiceNavigation(Path state, Path directory, ContentDigest expected) throws IOException {

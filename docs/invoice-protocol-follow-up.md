@@ -153,8 +153,10 @@ with authenticated source replay, fixed fresh membership, owned contexts and
 sealed recovery under the unchanged pool/deadline. Step 4e5n adds a pure
 [final reconciliation v2 contract](invoice-reconciliation-v2-contract.md) that
 recomputes source lineage, preserves unresolved conflicts and validates owned
-joint context and structural advisory finishes. Final-stage admission and durable
-execution remain separate work.
+joint context and structural advisory finishes. Step 4e5o adds
+[dedicated final-review admission](invoice-reconciliation-v2-admission.md), binding
+all six allowed contracts, strict broker routing and retained recovery in a
+separate namespace. Durable final-stage execution remains separate work.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

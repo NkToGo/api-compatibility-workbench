@@ -275,8 +275,10 @@ and retained recovery. A [durable follow-up v2 runner](docs/invoice-follow-up-ru
 now authenticates original/review stages and executes only selected fresh questions
 with owned histories and shared limits. A pure [final reconciliation v2 contract](docs/invoice-reconciliation-v2-contract.md)
 now preserves original/fresh lineage and unresolved conflicts, validates owned
-joint context and checks advisory finishes. Final-stage admission, execution and
-revised measurement remain pending; finding quality is not established by these components.
+joint context and checks advisory finishes. A separate [final-review admission path](docs/invoice-reconciliation-v2-admission.md)
+now binds scoped grants, strict broker routing and retained recovery under the
+same whole-trial limits. Durable final-stage execution and revised measurement
+remain pending; finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

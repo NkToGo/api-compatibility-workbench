@@ -100,7 +100,10 @@ are authored fixtures, not observed original-stage execution or model quality.
 Additional broker checks exercise strict wire routing and rejected responses.
 No test calls the provider or dispatches a consumer.
 
-Reconciliation, deterministic integration, common-condition
+A separate [final-review v2 admission path](invoice-reconciliation-v2-admission.md)
+now admits the final protocol under a distinct policy and namespace; it does not
+extend these existing five-protocol registrations. Durable final reconciliation,
+deterministic integration, common-condition
 registration and measurement remain subsequent work. The original model,
 ceilings, baselines, six review criteria and historical failures/unknowns remain
 unchanged. [Milestone 4 acceptance](milestone-4-status.md) remains open.

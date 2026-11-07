@@ -487,7 +487,10 @@ provider families and automatic repair-feedback loops remain outside its scope.
      [final reconciliation v2 contract](invoice-reconciliation-v2-contract.md)
      recomputes question/finish lineage, preserves all outcomes/claims/conflicts,
      validates owned joint context and checks structural advisory finishes.
-     Final-stage admission and durable execution follow before measurement. Existing ceilings,
+     **4e5o implemented:** [dedicated final-review admission](invoice-reconciliation-v2-admission.md)
+     binds all six allowed contracts, scoped broker routing and retained recovery
+     in a separate namespace while keeping earlier hosts closed to final grants.
+     Durable final-stage execution follows before measurement. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

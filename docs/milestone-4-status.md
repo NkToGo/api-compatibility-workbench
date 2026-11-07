@@ -81,8 +81,11 @@ sealed original/review sources and executes selected fresh questions with owned
 histories and shared cumulative limits. A pure [final reconciliation v2 contract](invoice-reconciliation-v2-contract.md)
 now validates source/question lineage, preserves original/fresh outcomes and
 unresolved conflicts, and checks owned joint contexts and advisory finishes.
-Final-stage admission, durable execution and measurement remain pending. These
-changes establish neither improved answer quality nor useful coordination.
+A separate [final-review admission path](invoice-reconciliation-v2-admission.md)
+now binds original/review/fresh/final scopes with strict broker routing and
+retained recovery under the unchanged pool and deadline. Durable final execution
+and measurement remain pending. These changes establish neither improved answer
+quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider

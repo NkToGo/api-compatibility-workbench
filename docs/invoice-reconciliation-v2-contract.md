@@ -4,9 +4,10 @@ Step 4e5n adds the pure `InvoiceTeamReconciliationV2` and
 `InvoiceReconciliationDecisionV2` boundaries. They prepare one final joint
 advisory dossier from supplied original, coordinator and fresh histories. They
 grant no permission, authenticate no runtime journal and dispatch no operation.
-Existing broker requests and runtime participant declarations still reject the
-new `invoice-final-reconciliation-v2` protocol. Admission and a durable final-stage
-runner are separate work; the existing five-member follow-up runner is unchanged.
+The `invoice-final-reconciliation-v2` protocol now has a separate
+[runtime/broker admission path](invoice-reconciliation-v2-admission.md). A durable
+final-stage runner remains separate work; the existing five-member follow-up
+runner is unchanged.
 
 ## Validated source lineage
 
@@ -91,9 +92,10 @@ finishes, incomplete/unknown dispositions, foreign reads, invented and catalogue
 citations, both structural answer routes, cumulative limits, context overflow and
 defensive copies. Positive access controls use separately identified authored
 coverage metadata, not newly observed consumer execution or live-model quality.
-Broker/runtime controls confirm that defining this protocol does not admit it.
+Broker/runtime controls require explicit admission and keep older host policies
+closed to this protocol.
 
-Admission, durable final-stage execution, whole-trial completion and comparison
+Durable final-stage execution, whole-trial completion and comparison
 export must follow before new measurement. Historical campaigns, model, limits,
 baselines and the six review criteria remain unchanged.
 [Milestone 4 acceptance](milestone-4-status.md) remains open.

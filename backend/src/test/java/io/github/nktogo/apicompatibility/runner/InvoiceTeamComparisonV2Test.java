@@ -160,9 +160,11 @@ class InvoiceTeamComparisonV2Test {
         assertEquals(0, scripts.dispatched.get());
     }
     @Test void expiryOrRevocationBeforeFinalStagePreservesEarlierWorkAndStopsDispatch() throws Exception {
-        scripts.afterFresh = () -> clock.now = clock.now.plusMillis(1200000); String id = fixture(60); var result = adapter().run(id);
+        String id = fixture(60); InvoiceFollowUpRunnerV2.forReconciliation(root, InvoiceComparisonInputs.open(inputs, identity), runtime()).run(id);
+        assertFalse(scripts.turns.containsKey(FINAL)); assertEquals(5, scripts.dispatched.get()); clock.now = clock.now.plusMillis(1200000);
+        var result = adapter().run(id);
         assertEquals("TRIAL_EXPIRED", finalOutcome(result).get("stopReason").getAsString()); assertEquals("NOT_PROVIDED", output(result).get("response").getAsString());
-        assertTrue(scripts.dispatched.get() < 6); assertEquals(result, adapter().retained(id));
+        assertEquals(5, scripts.dispatched.get()); assertEquals(result, adapter().retained(id));
     }
     @Test void fixedSixMembershipAndInputReceiptCannotBeReplaced() throws Exception {
         var p = InvoiceFollowUpRunnerV2.policy(); var base = InvoiceTeamComparisonV2.checkDefinition(identity); var implementations = new EnumMap<>(base.implementations()); implementations.put(Arm.COORDINATED_TEAM, CoordinationRuntime.implementationIdentity(p));
@@ -185,9 +187,11 @@ class InvoiceTeamComparisonV2Test {
         assertEquals("NOT_PERFORMED", result.get("qualityReview").getAsString());
     }
     @Test void explicitRevocationBeforeFinalDispatchKeepsItsCancelledDisposition() throws Exception {
-        String id = fixture(60); scripts.afterFresh = () -> { try { runtime().revoke(id); } catch (IOException e) { throw new java.io.UncheckedIOException(e); } };
+        String id = fixture(60); InvoiceFollowUpRunnerV2.forReconciliation(root, InvoiceComparisonInputs.open(inputs, identity), runtime()).run(id);
+        assertFalse(scripts.turns.containsKey(FINAL)); assertEquals(5, scripts.dispatched.get()); runtime().revoke(id);
         var result = adapter().run(id); assertEquals("TRIAL_REVOKED", finalOutcome(result).get("stopReason").getAsString());
         assertEquals("CANCELLED", result.getAsJsonObject("trial").get("status").getAsString()); assertEquals("NOT_PROVIDED", output(result).get("response").getAsString());
+        assertEquals(5, scripts.dispatched.get());
     }
     @Test void completedInspectionWorksInAnotherCredentialFreeProcess() throws Exception {
         String id = fixture(60); adapter().run(id); var before = inventory();
@@ -241,7 +245,7 @@ class InvoiceTeamComparisonV2Test {
         BiFunction<JsonObject, Integer, String> reviewScript = (input, turn) -> finishReview(input, true);
         BiFunction<JsonObject, Integer, String> freshScript = (input, turn) -> original(input, List.of());
         BiFunction<JsonObject, Integer, String> finalScript = (input, turn) -> original(input, List.of());
-        String interruptRegistrationParticipant; Runnable afterFresh; final AtomicBoolean fired = new AtomicBoolean();
+        String interruptRegistrationParticipant;
         String interruptParticipant, unknownParticipant, blockWorker; CyclicBarrier barrier; CountDownLatch entered, release;
         public CoordinationRuntime.Broker create(Path store, BooleanSupplier permitted) {
             return new CoordinationRuntime.Broker() {
@@ -258,7 +262,6 @@ class InvoiceTeamComparisonV2Test {
                         if (participant.equals(blockWorker)) { entered.countDown(); try { if (!release.await(30, TimeUnit.SECONDS)) throw new IOException("Blocked worker timeout"); } catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IOException(e); } }
                         boolean unknown = participant.equals(unknownParticipant); var response = json(Map.of("callId", id, "status", unknown ? "UNKNOWN_REMOTE_OUTCOME" : "COMPLETED", "remoteOutcome", unknown ? "UNKNOWN" : "RESPONSE_RECEIVED",
                                 "inputTokens", 5, "outputTokens", 2, "outputText", (input.has("history") ? finalScript : review(input) ? reviewScript : fresh(input) ? freshScript : originalScript).apply(input, turn))); DurableExecution.publish(file, response);
-                        if (fresh(input) && afterFresh != null && fired.compareAndSet(false, true)) afterFresh.run();
                         if (participant.equals(interruptParticipant) && interruptAfterPersist.compareAndSet(true, false)) throw new IOException("Interrupted controller"); return response;
                     } finally { concurrent.decrementAndGet(); }
                 }

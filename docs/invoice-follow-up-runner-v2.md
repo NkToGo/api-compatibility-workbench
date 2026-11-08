@@ -6,6 +6,9 @@ recoverable stage prefix under one trial. Reconciliation, whole-trial completion
 comparison export and answer-quality review remain pending. A separate pure
 [final reconciliation contract](invoice-reconciliation-v2-contract.md) can now
 validate supplied lineage and final advice without admitting or executing that stage.
+A separate [full v2 team runner](invoice-team-comparison-v2.md) now executes final
+review and closes accounting through dedicated six-member journal modes. It does
+not upgrade this public five-member path or its existing trials.
 
 ## Registration and authenticated selection
 

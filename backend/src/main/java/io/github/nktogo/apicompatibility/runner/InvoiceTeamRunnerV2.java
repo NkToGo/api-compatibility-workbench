@@ -17,7 +17,7 @@ public final class InvoiceTeamRunnerV2 {
     private final Path state, root;
     private final CoordinationRuntime runtime;
     private final InvoiceComparisonInputs.Bundle inputs;
-    private final boolean followUp;
+    private final boolean followUp, reconciliation;
     record Spec(int formatVersion, String runId, String bundleId, Definition definition, Slot slot,
                 CoordinationRuntime.Policy policy, String runtimeSpecSha256, String publicTaskSha256) {}
     private static final class Worker {
@@ -35,15 +35,26 @@ public final class InvoiceTeamRunnerV2 {
         this(state, InvoiceComparisonInputs.open(inputs, expected), CoordinationRuntime.forInvoiceTeamReviewV2(state, inputs, expected));
     }
     InvoiceTeamRunnerV2(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime) throws IOException {
-        this(state, inputs, runtime, false);
+        this(state, inputs, runtime, false, false);
     }
-    private InvoiceTeamRunnerV2(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime, boolean followUp) throws IOException {
+    private InvoiceTeamRunnerV2(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime, boolean followUp, boolean reconciliation) throws IOException {
         this.state = state.toAbsolutePath().normalize(); this.inputs = Objects.requireNonNull(inputs); this.runtime = runtime;
-        this.followUp = followUp;
-        root = this.state.resolve(followUp ? "invoice-team-follow-up-v2-prefix-runs" : "invoice-team-v2-runs"); Files.createDirectories(root); ConsumerTasks.directory(root);
+        this.followUp = followUp; this.reconciliation = reconciliation;
+        root = this.state.resolve(reconciliation ? "invoice-team-reconciliation-v2-prefix-runs" : followUp ? "invoice-team-follow-up-v2-prefix-runs" : "invoice-team-v2-runs"); Files.createDirectories(root); ConsumerTasks.directory(root);
     }
     static InvoiceTeamRunnerV2 forFollowUps(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime) throws IOException {
-        return new InvoiceTeamRunnerV2(state, inputs, runtime, true);
+        return new InvoiceTeamRunnerV2(state, inputs, runtime, true, false);
+    }
+    static InvoiceTeamRunnerV2 forReconciliation(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime) throws IOException {
+        return new InvoiceTeamRunnerV2(state, inputs, runtime, true, true);
+    }
+    static CoordinationRuntime.Policy reconciliationPolicy() throws IOException {
+        return CoordinationRuntime.invoiceReconciliationV2Policy(2, 100, reconciliationParticipants());
+    }
+    private static List<CoordinationRuntime.Participant> reconciliationParticipants() {
+        var members = new ArrayList<>(followUpParticipants());
+        members.add(new CoordinationRuntime.Participant("invoice-final-reviewer", Set.of(CASE), Set.of(InvoiceReconciliationDecisionV2.PROTOCOL)));
+        return List.copyOf(members);
     }
     static CoordinationRuntime.Policy followUpPolicy() throws IOException {
         return CoordinationRuntime.invoiceFollowUpV2Policy(2, 100, followUpParticipants());
@@ -54,7 +65,7 @@ public final class InvoiceTeamRunnerV2 {
         return List.copyOf(members);
     }
     private CoordinationRuntime.Policy executionPolicy() throws IOException {
-        return followUp ? followUpPolicy() : policy();
+        return reconciliation ? reconciliationPolicy() : followUp ? followUpPolicy() : policy();
     }
     public static CoordinationRuntime.Policy policy() throws IOException {
         return CoordinationRuntime.invoiceTeamReviewV2Policy(2, 100, participants());
@@ -352,7 +363,7 @@ public final class InvoiceTeamRunnerV2 {
         CaseInputs.require(host.get("bundleId").getAsString().equals(spec.bundleId()) && host.get("definition").equals(JSON.toJsonTree(spec.definition())) && host.get("slot").equals(JSON.toJsonTree(spec.slot()))
                 && host.get("policy").equals(JSON.toJsonTree(spec.policy())) && spec.slot().arm() == Arm.COORDINATED_TEAM
                 && spec.policy().parallelCalls() == 2 && spec.policy().maxReads() == 100
-                && spec.policy().participants().equals(followUp ? followUpParticipants() : participants()), "Changed invoice team runtime binding or fixed membership");
+                && spec.policy().participants().equals(reconciliation ? reconciliationParticipants() : followUp ? followUpParticipants() : participants()), "Changed invoice team runtime binding or fixed membership");
         CoordinationTeamBudget.forCeiling(spec.definition().limits().modelCalls()); artifacts(run); return spec;
     }
     private static Map<String, String> artifacts(Path run) throws IOException {
@@ -362,7 +373,7 @@ public final class InvoiceTeamRunnerV2 {
                     || name.matches("(?:round|review-turn)-[1-9][0-9]{0,2}\\.json") || name.matches("(?:request|event)-[1-9][0-9]{0,2}-invoice-(?:webhook|reconciliation|coordinator)(?:-receipt)?\\.json"), "Unexpected invoice team artifact"); hashes.put(name, hash(run, name));
         } } return hashes;
     }
-    private Path parent(String id) { return state.resolve((followUp ? "invoice-team-follow-up-v2-trials/" : "invoice-team-v2-trials/") + id); }
+    private Path parent(String id) { return state.resolve((reconciliation ? "invoice-team-reconciliation-v2-trials/" : followUp ? "invoice-team-follow-up-v2-trials/" : "invoice-team-v2-trials/") + id); }
     private Path directory(String id) { CaseInputs.require(id != null && id.matches("trial-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid invoice team reference"); ConsumerTasks.directory(root); Path run = root.resolve(id); ConsumerTasks.directory(run); return run; }
     static Definition checkDefinition(ContentDigest bundle) throws IOException {
         var base = InvoiceSingleAgentV2.checkDefinition(bundle); var implementations = new EnumMap<>(base.implementations()); implementations.put(Arm.COORDINATED_TEAM, CoordinationRuntime.implementationIdentity(policy()));

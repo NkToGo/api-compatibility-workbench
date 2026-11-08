@@ -490,7 +490,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4e5o implemented:** [dedicated final-review admission](invoice-reconciliation-v2-admission.md)
      binds all six allowed contracts, scoped broker routing and retained recovery
      in a separate namespace while keeping earlier hosts closed to final grants.
-     Durable final-stage execution follows before measurement. Existing ceilings,
+     **4e5p implemented:** a [durable full v2 team adapter](invoice-team-comparison-v2.md)
+     pre-registers fixed six-member scope, authenticates sealed source stages,
+     retains owned final review and recovery, and closes inclusive accounting with
+     one unreviewed comparison output. Deterministic integration, common-condition
+     registration and measurement remain separate work. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

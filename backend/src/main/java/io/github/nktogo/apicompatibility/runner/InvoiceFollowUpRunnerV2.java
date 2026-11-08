@@ -15,6 +15,7 @@ public final class InvoiceFollowUpRunnerV2 {
     private static final Gson JSON = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
     private static final String CASE = InvoiceRenewalFixtures.CASE_ID, COORDINATOR = "invoice-coordinator";
     private final Path state, root;
+    private final boolean reconciliation;
     private final CoordinationRuntime runtime;
     private final InvoiceComparisonInputs.Bundle inputs;
     private static final class Fresh {
@@ -32,11 +33,18 @@ public final class InvoiceFollowUpRunnerV2 {
         this(state, InvoiceComparisonInputs.open(inputs, expected), CoordinationRuntime.forInvoiceFollowUpV2(state, inputs, expected));
     }
     InvoiceFollowUpRunnerV2(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime) throws IOException {
-        this.state = state.toAbsolutePath().normalize(); this.inputs = Objects.requireNonNull(inputs); this.runtime = runtime;
-        root = this.state.resolve("invoice-follow-up-v2-runs"); Files.createDirectories(root); ConsumerTasks.directory(root);
+        this(state, inputs, runtime, false);
     }
+    private InvoiceFollowUpRunnerV2(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime, boolean reconciliation) throws IOException {
+        this.state = state.toAbsolutePath().normalize(); this.inputs = Objects.requireNonNull(inputs); this.runtime = runtime; this.reconciliation = reconciliation;
+        root = this.state.resolve(reconciliation ? "invoice-team-reconciliation-v2-fresh-runs" : "invoice-follow-up-v2-runs"); Files.createDirectories(root); ConsumerTasks.directory(root);
+    }
+    static InvoiceFollowUpRunnerV2 forReconciliation(Path state, InvoiceComparisonInputs.Bundle inputs, CoordinationRuntime runtime) throws IOException {
+        return new InvoiceFollowUpRunnerV2(state, inputs, runtime, true);
+    }
+    private CoordinationRuntime.Policy executionPolicy() throws IOException { return reconciliation ? InvoiceTeamRunnerV2.reconciliationPolicy() : policy(); }
     public static CoordinationRuntime.Policy policy() throws IOException { return InvoiceTeamRunnerV2.followUpPolicy(); }
-    private InvoiceTeamRunnerV2 stages() throws IOException { return InvoiceTeamRunnerV2.forFollowUps(state, inputs, runtime); }
+    private InvoiceTeamRunnerV2 stages() throws IOException { return reconciliation ? InvoiceTeamRunnerV2.forReconciliation(state, inputs, runtime) : InvoiceTeamRunnerV2.forFollowUps(state, inputs, runtime); }
     public String register(String bundle, Definition definition, Slot slot) throws IOException {
         String id = stages().register(bundle, definition, slot); Path run = Files.createDirectory(root.resolve(id));
         publish(run, "spec.json", record(prefix(id), "spec.json")); publish(run, "registration.json", Map.of("specSha256", hash(run, "spec.json"))); return id;
@@ -53,7 +61,7 @@ public final class InvoiceFollowUpRunnerV2 {
                 }
                 return retained(id);
             }
-            CaseInputs.require(spec.policy().equals(policy()), "Changed v2 follow-up implementation; register a new trial");
+            CaseInputs.require(spec.policy().equals(executionPolicy()), "Changed v2 follow-up implementation; register a new trial");
             var stages = stages(); var source = exists(run, "prefix.json") ? stages.retained(id) : stages.run(id); if (active(source)) return source;
             retain(run, "prefix.json", Map.of("resultSha256", hash(prefix(id), "result.json")));
             var followUp = followUp(spec, source); var prior = JSON.fromJson(source.get("stageReservations"), CoordinationTeamBudget.Reservations.class);
@@ -203,8 +211,8 @@ public final class InvoiceFollowUpRunnerV2 {
                     || name.matches("fresh-round-[1-9][0-9]{0,2}\\.json") || name.matches("(?:request|event)-[1-9][0-9]{0,2}-fresh-invoice-(?:webhook|reconciliation)(?:-receipt)?\\.json"), "Unexpected v2 fresh artifact"); hashes.put(name, hash(run, name));
         } } return hashes;
     }
-    private Path parent(String id) { return state.resolve("invoice-team-follow-up-v2-trials/" + id); }
-    private Path prefix(String id) { return state.resolve("invoice-team-follow-up-v2-prefix-runs/" + id); }
+    private Path parent(String id) { return state.resolve((reconciliation ? "invoice-team-reconciliation-v2-trials/" : "invoice-team-follow-up-v2-trials/") + id); }
+    private Path prefix(String id) { return state.resolve((reconciliation ? "invoice-team-reconciliation-v2-prefix-runs/" : "invoice-team-follow-up-v2-prefix-runs/") + id); }
     private Path directory(String id) { CaseInputs.require(id != null && id.matches("trial-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid v2 fresh reference"); ConsumerTasks.directory(root); Path run = root.resolve(id); ConsumerTasks.directory(run); return run; }
     static Definition checkDefinition(ContentDigest bundle) throws IOException {
         var base = InvoiceSingleAgentV2.checkDefinition(bundle); var implementations = new EnumMap<>(base.implementations()); implementations.put(Arm.COORDINATED_TEAM, CoordinationRuntime.implementationIdentity(policy()));

@@ -277,8 +277,10 @@ with owned histories and shared limits. A pure [final reconciliation v2 contract
 now preserves original/fresh lineage and unresolved conflicts, validates owned
 joint context and checks advisory finishes. A separate [final-review admission path](docs/invoice-reconciliation-v2-admission.md)
 now binds scoped grants, strict broker routing and retained recovery under the
-same whole-trial limits. Durable final-stage execution and revised measurement
-remain pending; finding quality is not established by these components.
+same whole-trial limits. A [durable full v2 team adapter](docs/invoice-team-comparison-v2.md)
+now authenticates sealed source stages, executes owned final review and closes
+inclusive accounting with one unreviewed comparison output. Revised measurement
+remains pending; finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

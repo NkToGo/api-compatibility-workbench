@@ -156,7 +156,10 @@ recomputes source lineage, preserves unresolved conflicts and validates owned
 joint context and structural advisory finishes. Step 4e5o adds
 [dedicated final-review admission](invoice-reconciliation-v2-admission.md), binding
 all six allowed contracts, strict broker routing and retained recovery in a
-separate namespace. Durable final-stage execution remains separate work.
+separate namespace. Step 4e5p adds a [durable full v2 team adapter](invoice-team-comparison-v2.md)
+with fixed six-member registration, authenticated source barriers, owned final
+review, recovery and inclusive operational closure/comparison export. The older
+public prefix and follow-up paths retain their earlier scopes.
 
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all

@@ -64,7 +64,10 @@ After policy and artifact validation, a stale-build trial can be inspected and
 closed, but cannot start or resume work under the current build. Operational
 closure is not an accepted answer, reviewed question coverage or release approval.
 
-## Execution still required
+## Separate execution integration
+
+The [durable full-team runner](invoice-team-comparison-v2.md) now integrates the
+following execution requirements. Admission itself does not order or run stages.
 
 A concrete final-stage runner must pre-register its fixed six participants,
 authenticate the actual original/review/fresh registrations and sealed journals,
@@ -78,7 +81,8 @@ limits; it does not itself enforce the original, review, fresh and final stage
 barriers. The existing [prefix](invoice-team-runner-v2.md) and
 [selected follow-up](invoice-follow-up-runner-v2.md) runners remain limited to their
 three- and five-participant policies and cannot execute this final protocol.
-Whole-trial completion and comparison export require that later runner.
+The full runner uses separate six-member modes of those journal engines and its
+own final controller. Operational closure and comparison export occur there.
 
 Run the README preparation and Java verification commands. Offline controls cover
 all six scoped protocols, namespace copying in both directions, older-label
@@ -88,7 +92,7 @@ final contexts with a synthetic credential, retaining source uncertainty and a
 cited partial abstention. Its source outcomes are authored controls, not observed
 original-stage execution or live-model quality. No test calls the provider.
 
-Durable final execution, deterministic integration, common-condition registration
-and measurement remain separate work. The original model, limits, baselines,
+Deterministic integration, common-condition registration and measurement remain
+separate work. The original model, limits, baselines,
 six review criteria and historical failures/unknowns remain unchanged.
 [Milestone 4 acceptance](milestone-4-status.md) remains open.

@@ -111,5 +111,6 @@ positive answer control uses separately identified authored coverage metadata an
 actual owned fresh reads while preserving original uncertainty; it is not newly
 observed consumer execution.
 The original model, ceilings, baselines, six criteria and historical records remain
-unchanged. Deterministic integration, common-condition registration and measurement
-remain separate work; [Milestone 4 acceptance](milestone-4-status.md) remains open.
+unchanged. The [deterministic v2 adapter](invoice-diagnostics-v2.md) is separately
+implemented. Common-condition registration and measurement remain separate work;
+[Milestone 4 acceptance](milestone-4-status.md) remains open.

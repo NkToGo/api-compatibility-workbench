@@ -87,8 +87,11 @@ retained recovery under the unchanged pool and deadline. A separate
 [durable full v2 team adapter](invoice-team-comparison-v2.md) now pre-registers six
 fixed participants, authenticates sealed source stages, executes owned final
 review and closes inclusive operational accounting with one unreviewed output.
-Deterministic integration, common-condition registration and measurement remain
-pending. These changes establish neither improved answer quality nor useful coordination.
+A separately bound [deterministic v2 adapter](invoice-diagnostics-v2.md) now uses
+the unchanged fixed selection/extraction rules under the current public task and
+read limits, reconstructing reports from owned runtime reads. Common-condition
+registration and measurement remain pending. These changes establish neither
+improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider

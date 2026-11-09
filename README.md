@@ -279,8 +279,11 @@ joint context and checks advisory finishes. A separate [final-review admission p
 now binds scoped grants, strict broker routing and retained recovery under the
 same whole-trial limits. A [durable full v2 team adapter](docs/invoice-team-comparison-v2.md)
 now authenticates sealed source stages, executes owned final review and closes
-inclusive accounting with one unreviewed comparison output. Revised measurement
-remains pending; finding quality is not established by these components.
+inclusive accounting with one unreviewed comparison output. A separately bound
+[deterministic v2 adapter](docs/invoice-diagnostics-v2.md) uses the unchanged fixed
+rules under the current task and read limits, reconstructing reports from owned
+runtime pages. Common-condition registration and revised measurement remain
+pending; finding quality is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

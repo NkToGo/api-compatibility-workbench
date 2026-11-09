@@ -493,8 +493,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4e5p implemented:** a [durable full v2 team adapter](invoice-team-comparison-v2.md)
      pre-registers fixed six-member scope, authenticates sealed source stages,
      retains owned final review and recovery, and closes inclusive accounting with
-     one unreviewed comparison output. Deterministic integration, common-condition
-     registration and measurement remain separate work. Existing ceilings,
+     one unreviewed comparison output. **4e5q implemented:** a separately bound
+     [deterministic v2 adapter](invoice-diagnostics-v2.md) supplies the current
+     public task, preserves the fixed selection/extraction rules and reconstructs
+     its output from counted owned runtime pages with durable recovery.
+     Common-condition registration and measurement remain separate work. Existing ceilings,
      baselines, six review criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

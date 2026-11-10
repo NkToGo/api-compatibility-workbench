@@ -89,8 +89,11 @@ fixed participants, authenticates sealed source stages, executes owned final
 review and closes inclusive operational accounting with one unreviewed output.
 A separately bound [deterministic v2 adapter](invoice-diagnostics-v2.md) now uses
 the unchanged fixed selection/extraction rules under the current public task and
-read limits, reconstructing reports from owned runtime reads. Common-condition
-registration and measurement remain pending. These changes establish neither
+read limits, reconstructing reports from owned runtime reads. A separate
+[v2 registration](invoice-campaign-v2.md) now binds the common task/contracts,
+four-arm policies, original rubric and twelve ordered slots, with sealed
+no-dispatch recovery and an independent-receipt current-build gate. Ordered v2
+execution and measurement remain pending. These changes establish neither
 improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

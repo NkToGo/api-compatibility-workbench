@@ -161,11 +161,18 @@ with fixed six-member registration, authenticated source barriers, owned final
 review, recovery and inclusive operational closure/comparison export. The older
 public prefix and follow-up paths retain their earlier scopes.
 
+Step 4e5q adds the [deterministic v2 adapter](invoice-diagnostics-v2.md), preserving
+the fixed selection/extraction rules under the same public task and read limits.
+Step 4e5r adds [separate v2 registration](invoice-campaign-v2.md), binding that
+common task, seven contracts, all four compiled policies, unchanged protected
+rubric and twelve ordered slots before participant measurement. It grants no
+trial capability; ordered v2 execution remains separate work.
+
 Before new participant measurement, freeze the implemented policy/tool/task
 identities, exact runtime, model, unchanged rubric, common input, budgets and all
 ordered slots in a new campaign. Use the same three repetitions and rotations;
 retain the known small-sample/order limitations. Registration is a later explicit
-boundary, not something this design document performs.
+boundary implemented by the separate command, not something this design document performs.
 
 One complete planned revised campaign is a comparison, not a search for favorable
 retries. Review every material claim, retain failed/abstained/missing/uncertain

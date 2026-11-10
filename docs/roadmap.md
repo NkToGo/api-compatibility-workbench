@@ -497,8 +497,13 @@ provider families and automatic repair-feedback loops remain outside its scope.
      [deterministic v2 adapter](invoice-diagnostics-v2.md) supplies the current
      public task, preserves the fixed selection/extraction rules and reconstructs
      its output from counted owned runtime pages with durable recovery.
-     Common-condition registration and measurement remain separate work. Existing ceilings,
-     baselines, six review criteria and historical failures remain unchanged.
+     **4e5r implemented:** a separately identified [v2 campaign registration](invoice-campaign-v2.md)
+     freezes the common public task and seven contracts, exact four-arm policies,
+     unchanged rubric, protected sources, limits and twelve ordered slots.
+     Sealed inspection/recovery creates no trial permission; current-policy checks
+     also require the independently expected receipt. Ordered v2 execution and
+     measurement remain separate work. Existing ceilings, baselines, six review
+     criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;
 no permission leakage or unbounded delegation.

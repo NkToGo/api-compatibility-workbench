@@ -95,8 +95,11 @@ four-arm policies, original rubric and twelve ordered slots, with sealed
 no-dispatch recovery and an independent-receipt current-build gate. An
 [ordered v2 controller](invoice-campaign-v2-execution.md) now binds the selected
 runtime and routes exact scoped registrations with durable recovery and inclusive
-accounting. Revised measurement remains pending. These changes establish neither
-improved answer quality nor useful coordination.
+accounting. A [transient v2 review inspector](invoice-review-inputs-v2.md) now
+authenticates four retained arms and inventories their available answers,
+original/fresh lineage and rejected/uncertain broker outcomes without writing
+packets or grading advice. Campaign-bound v2 export and revised measurement remain
+pending. These changes establish neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider

@@ -505,7 +505,10 @@ provider families and automatic repair-feedback loops remain outside its scope.
      [ordered v2 controller](invoice-campaign-v2-execution.md) binds an explicitly
      selected runtime, routes the three runtime namespaces and four adapters,
      validates task/slot ownership and retains original-clock recovery and inclusive
-     participant accounting. Revised measurement remains separate work. Existing ceilings, baselines, six review
+     participant accounting. **4e5t implemented:** a [transient v2 review inspector](invoice-review-inputs-v2.md)
+     authenticates the four retained arms, nested final advice, original/fresh
+     lineage and rejected/uncertain responses without writes, dispatch or grading.
+     Campaign-bound v2 export and revised measurement remain separate work. Existing ceilings, baselines, six review
      criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

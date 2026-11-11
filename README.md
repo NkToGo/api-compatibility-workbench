@@ -286,8 +286,11 @@ runtime pages. A separate [v2 campaign registration](docs/invoice-campaign-v2.md
 now freezes the common task, contract/policy identities, unchanged rubric and all
 twelve ordered slots without participant dispatch. An [ordered v2 controller](docs/invoice-campaign-v2-execution.md)
 now routes each slot to its scoped adapter, binds the selected runtime and retains
-recovery and inclusive accounting. Revised measurement remains pending; finding
-quality is not established by these components.
+recovery and inclusive accounting. A [transient v2 review inspector](docs/invoice-review-inputs-v2.md)
+now authenticates four selected retained arms and inventories their available
+answers, original/fresh lineage and broker outcomes without dispatch or grading.
+Campaign-bound v2 export and revised measurement remain pending; finding quality
+is not established by these components.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

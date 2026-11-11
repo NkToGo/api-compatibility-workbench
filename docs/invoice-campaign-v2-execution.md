@@ -101,8 +101,9 @@ All twelve terminal outcomes seal generic `records.json` plus version 2
 controller metadata and receipts. `FINISHED` describes operational closure,
 including unsuccessful trials; it establishes no semantic acceptance. Quality
 review remains `NOT_PERFORMED`. A separate [transient v2 inventory reader](invoice-review-inputs-v2.md)
-can inspect four selected retained arms without dispatch. Campaign-bound v2
-publication, measured trials, semantic review and
+can inspect four selected retained arms without dispatch. A separate
+[v2 publisher](invoice-campaign-review-inputs-v2.md) now seals their campaign-bound
+review inputs. Measured trials, v2 semantic review and
 [Milestone 4 acceptance](milestone-4-status.md) remain separate work.
 
 After building, run `./scripts/Test-InvoiceCampaignV2Execution.ps1`. It uses real

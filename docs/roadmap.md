@@ -508,7 +508,10 @@ provider families and automatic repair-feedback loops remain outside its scope.
      participant accounting. **4e5t implemented:** a [transient v2 review inspector](invoice-review-inputs-v2.md)
      authenticates the four retained arms, nested final advice, original/fresh
      lineage and rejected/uncertain responses without writes, dispatch or grading.
-     Campaign-bound v2 export and revised measurement remain separate work. Existing ceilings, baselines, six review
+     **4e5u implemented:** [campaign-bound v2 review packets](invoice-campaign-review-inputs-v2.md)
+     seal all twelve slots, task/rubric identities, frozen chronology and available
+     review units with distinct campaign/inspection runtimes and create-only
+     recovery. Revised measurement and v2 semantic review remain separate work. Existing ceilings, baselines, six review
      criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

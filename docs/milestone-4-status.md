@@ -98,8 +98,11 @@ runtime and routes exact scoped registrations with durable recovery and inclusiv
 accounting. A [transient v2 review inspector](invoice-review-inputs-v2.md) now
 authenticates four retained arms and inventories their available answers,
 original/fresh lineage and rejected/uncertain broker outcomes without writing
-packets or grading advice. Campaign-bound v2 export and revised measurement remain
-pending. These changes establish neither improved answer quality nor useful coordination.
+packets or grading advice. A separate [v2 campaign review publisher](invoice-campaign-review-inputs-v2.md)
+now seals all twelve slots, task/rubric identities, recorded frozen chronology and
+available review units with bound inspection binaries and recoverable publications.
+Revised measurement and v2 semantic review remain pending. These changes establish
+neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and
 must not be rerun or rewritten simply to obtain a preferred result. Broader provider

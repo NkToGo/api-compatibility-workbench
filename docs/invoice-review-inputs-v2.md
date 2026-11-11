@@ -10,8 +10,8 @@ The existing v1 inspector, packets and campaign records remain unchanged.
 [Campaign registration](invoice-campaign-v2.md) and the
 [ordered controller](invoice-campaign-v2-execution.md) are separate boundaries.
 This inspector does not establish campaign membership or that criteria were
-frozen before a trial. Those checks belong to campaign-bound export, which
-remains pending.
+frozen before a trial. The separate [v2 campaign publisher](invoice-campaign-review-inputs-v2.md)
+now establishes those bindings without semantic grading.
 
 ## Selection and invocation
 
@@ -97,5 +97,5 @@ broker outcomes and synthetic execution captures. They check pointer/value
 digests, full lineage, rejected and uncertain answers, missing namespaces,
 tampering, strict parsing and repeat inspection without source changes or new
 calls. These fixtures establish inventory behavior, not measured model quality.
-The existing v1 tests remain part of verification. Campaign-bound publication and
-semantic review integration remain separate work.
+The existing v1 tests remain part of verification. Campaign-bound publication is
+implemented separately; v2 semantic review integration remains pending.

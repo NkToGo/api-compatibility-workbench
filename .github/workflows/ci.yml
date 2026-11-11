@@ -69,6 +69,9 @@ jobs:
       - name: Verify invoice campaign review input binding
         shell: pwsh
         run: ./scripts/Test-InvoiceCampaignReview.ps1
+      - name: Verify invoice v2 campaign review input binding
+        shell: pwsh
+        run: ./scripts/Test-InvoiceCampaignReviewV2.ps1
       - name: Verify invoice campaign claim-review records
         shell: pwsh
         run: ./scripts/Test-InvoiceCampaignClaims.ps1
@@ -125,6 +128,7 @@ jobs:
             backend/target/invoice-campaign-execution-tests/
             backend/target/invoice-campaign-v2-execution-tests/
             backend/target/invoice-campaign-review-tests/
+            backend/target/invoice-campaign-review-v2-tests/
             backend/target/invoice-campaign-claim-tests/
             backend/target/invoice-campaign-comparison-tests/
             !backend/target/**/.env

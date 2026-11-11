@@ -501,8 +501,11 @@ provider families and automatic repair-feedback loops remain outside its scope.
      freezes the common public task and seven contracts, exact four-arm policies,
      unchanged rubric, protected sources, limits and twelve ordered slots.
      Sealed inspection/recovery creates no trial permission; current-policy checks
-     also require the independently expected receipt. Ordered v2 execution and
-     measurement remain separate work. Existing ceilings, baselines, six review
+     also require the independently expected receipt. **4e5s implemented:** an
+     [ordered v2 controller](invoice-campaign-v2-execution.md) binds an explicitly
+     selected runtime, routes the three runtime namespaces and four adapters,
+     validates task/slot ownership and retains original-clock recovery and inclusive
+     participant accounting. Revised measurement remains separate work. Existing ceilings, baselines, six review
      criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

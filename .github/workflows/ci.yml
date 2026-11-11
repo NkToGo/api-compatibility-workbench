@@ -63,6 +63,9 @@ jobs:
       - name: Verify ordered invoice campaign execution
         shell: pwsh
         run: ./scripts/Test-InvoiceCampaignExecution.ps1
+      - name: Verify ordered invoice v2 campaign execution
+        shell: pwsh
+        run: ./scripts/Test-InvoiceCampaignV2Execution.ps1
       - name: Verify invoice campaign review input binding
         shell: pwsh
         run: ./scripts/Test-InvoiceCampaignReview.ps1
@@ -120,6 +123,7 @@ jobs:
             backend/target/subscription-period-case-reports/
             backend/target/versioned-invoice-build-tests/
             backend/target/invoice-campaign-execution-tests/
+            backend/target/invoice-campaign-v2-execution-tests/
             backend/target/invoice-campaign-review-tests/
             backend/target/invoice-campaign-claim-tests/
             backend/target/invoice-campaign-comparison-tests/

@@ -92,8 +92,10 @@ the unchanged fixed selection/extraction rules under the current public task and
 read limits, reconstructing reports from owned runtime reads. A separate
 [v2 registration](invoice-campaign-v2.md) now binds the common task/contracts,
 four-arm policies, original rubric and twelve ordered slots, with sealed
-no-dispatch recovery and an independent-receipt current-build gate. Ordered v2
-execution and measurement remain pending. These changes establish neither
+no-dispatch recovery and an independent-receipt current-build gate. An
+[ordered v2 controller](invoice-campaign-v2-execution.md) now binds the selected
+runtime and routes exact scoped registrations with durable recovery and inclusive
+accounting. Revised measurement remains pending. These changes establish neither
 improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

@@ -91,8 +91,9 @@ Retain the returned ID and receipt identity independently. The default storage i
 ignored `.workbench/invoice-campaigns-v2/invoicecampaign-v2-UUID/`; a custom state
 root contains the same registration and `coordination-comparisons/` layout. Selection paths remain
 relative. Preserve original evidence and the exact compiled runtime with state.
-The existing v1 execution driver rejects v2 IDs; ordered v2 execution is separate
-remaining work. A final measured condition must match the build used for its
+The existing v1 execution driver rejects v2 IDs. The separate
+[ordered v2 controller](invoice-campaign-v2-execution.md) uses the selected exact
+runtime and authenticated per-arm mappings. A final measured condition must match the build used for its
 execution. A later build change requires a new frozen ID before new work.
 
 ## Integrity, recovery and limitations

@@ -515,8 +515,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      bind task/campaign/packet identities, initialize all pending units and 72
      criteria, validate supplied nested final coverage and preserve historical
      errors under unchanged gates. Host inspection revalidates full packets and
-     selected review binaries. Revised measurement and semantic inspection remain
-     separate work. Existing ceilings, baselines, six review
+     selected review binaries. **4e5w implemented:** a separate
+     [v2 paired comparison publisher](invoice-campaign-comparison-v2.md) binds
+     completed reviews to all twelve original trials, preserves failures and
+     incomplete usage, and retains exact evaluator binaries with create-only
+     recovery. Revised measurement and semantic inspection remain separate work.
+     Existing ceilings, baselines, six review
      criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

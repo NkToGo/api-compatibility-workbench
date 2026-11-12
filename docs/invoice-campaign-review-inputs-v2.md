@@ -82,7 +82,9 @@ the controller summary are checked again at completion.
 `NOT_ESTABLISHED`. Mechanical binding supplies no claim verdicts, accepted cases,
 useful-coordination result, routing promotion or migration approval. Separate
 [v2 claim-review records](invoice-campaign-claim-review-v2.md) now initialize
-pending work and verify supplied judgments. Revised measurements and actual
+pending work and verify supplied judgments. A separate
+[v2 paired report](invoice-campaign-comparison-v2.md) binds completed supplied
+reviews without changing original trials. Revised measurements and actual
 semantic inspection remain separate work.
 
 ## Storage, recovery and limits

@@ -81,6 +81,9 @@ jobs:
       - name: Verify bound invoice campaign comparison
         shell: pwsh
         run: ./scripts/Test-InvoiceCampaignComparison.ps1
+      - name: Verify bound invoice v2 campaign comparison
+        shell: pwsh
+        run: ./scripts/Test-InvoiceCampaignComparisonV2.ps1
       - name: Verify coordination review input binding
         shell: pwsh
         run: ./scripts/Test-CoordinationReviewPacket.ps1
@@ -135,6 +138,7 @@ jobs:
             backend/target/invoice-campaign-claim-v2-tests/
             backend/target/invoice-campaign-claim-tests/
             backend/target/invoice-campaign-comparison-tests/
+            backend/target/invoice-campaign-comparison-v2-tests/
             !backend/target/**/.env
             !backend/target/**/.env.*
           if-no-files-found: warn

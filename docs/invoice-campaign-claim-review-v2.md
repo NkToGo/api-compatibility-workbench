@@ -90,7 +90,9 @@ propositions are true, citations support them, a reviewer is accurate, or
 coordination is useful. Reviewer method/date/limitations stay explicit. Supported
 inspection remains offline and unblinded, without claimed independent human
 adjudication, calibrated accuracy or new provider calls. Measured outcomes,
-semantic inspection, paired reporting and Milestone 4 acceptance remain separate.
+semantic inspection and Milestone 4 acceptance remain separate. A
+[bound v2 paired report](invoice-campaign-comparison-v2.md) can now export a
+completed supplied review; it does not supply that inspection or a measurement.
 
 ## Boundaries and validation
 

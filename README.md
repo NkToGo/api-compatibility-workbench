@@ -294,8 +294,10 @@ now seals all twelve slots, the frozen task/rubric and available review units wi
 explicit campaign and inspector runtime identities. Separate [v2 claim-review records](docs/invoice-campaign-claim-review-v2.md)
 now retain pending work and verify supplied anchored judgments, nested final
 coverage and conservative gates with a separately selected review engine.
-Revised measurement and semantic inspection remain pending; mechanical review
-bindings do not establish finding quality.
+A separate [bound v2 paired comparison](docs/invoice-campaign-comparison-v2.md)
+now exports completed supplied reviews without altering original trials, retaining
+failed/unknown outcomes and exact evaluator identities. Revised measurement and
+semantic inspection remain pending; mechanical bindings do not establish quality.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

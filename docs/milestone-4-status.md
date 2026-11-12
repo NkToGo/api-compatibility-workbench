@@ -264,6 +264,13 @@ reporting now preserves all twelve trials, the two unestablished quality blocks
 and inclusive resources without inventing missing answers or zero unknown usage.
 These results establish no useful-coordination benefit, routing promotion or
 acceptance; see the [bound paired report](invoice-campaign-results.md).
+
+A separate [v2 paired comparison publisher](invoice-campaign-comparison-v2.md)
+now connects complete supplied v2 reviews to the unchanged evaluator, preserving
+all original trials, incomplete usage and exact runtime identities. No revised
+measurement, completed v2 semantic inspection or coordination benefit is supplied
+by that publication boundary.
+
 The four arms and joint review must share the same aggregate evidence
 and whole-bundle limits. Team communication is not an acceptance requirement.
 

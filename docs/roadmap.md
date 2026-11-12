@@ -511,7 +511,12 @@ provider families and automatic repair-feedback loops remain outside its scope.
      **4e5u implemented:** [campaign-bound v2 review packets](invoice-campaign-review-inputs-v2.md)
      seal all twelve slots, task/rubric identities, frozen chronology and available
      review units with distinct campaign/inspection runtimes and create-only
-     recovery. Revised measurement and v2 semantic review remain separate work. Existing ceilings, baselines, six review
+     recovery. **4e5v implemented:** [v2 claim-review records](invoice-campaign-claim-review-v2.md)
+     bind task/campaign/packet identities, initialize all pending units and 72
+     criteria, validate supplied nested final coverage and preserve historical
+     errors under unchanged gates. Host inspection revalidates full packets and
+     selected review binaries. Revised measurement and semantic inspection remain
+     separate work. Existing ceilings, baselines, six review
      criteria and historical failures remain unchanged.
 
 Acceptance: useful coordination on heterogeneous consumers under declared budgets;

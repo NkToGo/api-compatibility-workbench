@@ -13,11 +13,13 @@ import static io.github.nktogo.apicompatibility.runner.CoordinationTeamRunner.*;
 public final class InvoiceSemanticReview {
     private static final Gson JSON = new GsonBuilder().serializeNulls().create();
     private static final String TIMING = "POST_HOC_FOR_EXISTING_OPERATIONAL_TRIALS";
-    private record Scope(String timing, int trials, int sourceLimit, String gate, String description) {}
+    private record Scope(String timing, int trials, int sourceLimit, String gate, String description, int format) {}
     private static final Scope POST_HOC = new Scope(TIMING, 4, 1048576, "satisfiesDeclaredPostHocReview",
-            "Incomplete descriptive review of selected historical operational trials; no campaign or routing acceptance.");
+            "Incomplete descriptive review of selected historical operational trials; no campaign or routing acceptance.", 1);
     private static final Scope CAMPAIGN = new Scope("FROZEN_BEFORE_TRIALS", 12, 8388608, "satisfiesDeclaredReview",
-            "Incomplete review of all frozen campaign slots; no semantic, coordination, routing or release acceptance.");
+            "Incomplete review of all frozen campaign slots; no semantic, coordination, routing or release acceptance.", 1);
+    private static final Scope CAMPAIGN_V2 = new Scope("FROZEN_BEFORE_TRIALS", 12, 8388608, "satisfiesDeclaredReview",
+            "Incomplete review of all frozen v2 campaign slots; no semantic, coordination, routing or release acceptance.", 2);
     private final Path evidence, state;
     private final InvoiceReviewInputs inputs;
 
@@ -67,6 +69,9 @@ public final class InvoiceSemanticReview {
     static JsonObject campaignDraft(JsonObject packet, ContentDigest packetIdentity) {
         campaignScope(packet); return draft(packet, packetIdentity, CAMPAIGN);
     }
+    static JsonObject campaignDraftV2(JsonObject packet, ContentDigest packetIdentity) {
+        campaignScope(packet, CAMPAIGN_V2); return draft(packet, packetIdentity, CAMPAIGN_V2);
+    }
     private static JsonObject draft(JsonObject packet, ContentDigest packetIdentity, Scope scope) {
         var inventory = packet.getAsJsonObject("inventory"); var rows = new JsonArray();
         for (var element : inventory.getAsJsonArray("trials")) {
@@ -81,10 +86,12 @@ public final class InvoiceSemanticReview {
         }
         var reviewer = json(Map.of("method", "NOT_RECORDED", "label", "Not reviewed", "independentHumanAdjudication", false,
                 "calibratedReviewerAccuracy", false, "blinded", false, "newProviderCalls", 0)); reviewer.add("reviewedOn", JsonNull.INSTANCE);
-        var result = json(Map.of("formatVersion", 1, "reviewId", "semanticreview-" + UUID.randomUUID(), "packetId", string(packet, "packetId"),
+        var result = json(Map.of("formatVersion", scope.format(), "reviewId", (scope == CAMPAIGN_V2 ? "semanticreview-v2-" : "semanticreview-") + UUID.randomUUID(), "packetId", string(packet, "packetId"),
                 "packetSha256", packetIdentity.sha256(), "rubricIdentity", inventory.get("rubricIdentity"), "contractIdentity", inventory.get("contractIdentity"),
                 "criteriaTiming", scope.timing(), "reviewer", reviewer, "scope", scope.description()));
-        result.add("evidence", new JsonArray()); result.add("trials", rows); return result;
+        result.add("evidence", new JsonArray()); result.add("trials", rows);
+        if (scope == CAMPAIGN_V2) for (String key : List.of("publicTaskSha256", "campaignId", "expectedCampaignReceiptSha256")) result.add(key, inventory.get(key).deepCopy());
+        return result;
     }
 
     @FunctionalInterface interface SourceReader { byte[] read(String artifact) throws IOException; }
@@ -93,17 +100,27 @@ public final class InvoiceSemanticReview {
         return validate(review, packet, reader, POST_HOC);
     }
     static JsonObject validateCampaign(JsonObject review, JsonObject packet, ContentDigest packetIdentity, SourceReader reader) throws IOException {
-        campaignScope(packet);
+        return validateCampaign(review, packet, packetIdentity, reader, CAMPAIGN);
+    }
+    static JsonObject validateCampaignV2(JsonObject review, JsonObject packet, ContentDigest packetIdentity, SourceReader reader) throws IOException {
+        return validateCampaign(review, packet, packetIdentity, reader, CAMPAIGN_V2);
+    }
+    private static JsonObject validateCampaign(JsonObject review, JsonObject packet, ContentDigest packetIdentity, SourceReader reader, Scope scope) throws IOException {
+        campaignScope(packet, scope);
         require(string(review, "packetSha256").equals(packetIdentity.sha256()), "Changed independently selected campaign packet identity");
-        var result = validate(review, packet, reader, CAMPAIGN);
+        var result = validate(review, packet, reader, scope);
         result.add("campaignId", packet.getAsJsonObject("inventory").get("campaignId"));
         result.add("expectedCampaignReceiptSha256", packet.getAsJsonObject("inventory").get("expectedCampaignReceiptSha256"));
+        if (scope == CAMPAIGN_V2) result.add("publicTaskSha256", packet.getAsJsonObject("inventory").get("publicTaskSha256"));
         return result;
     }
     private static JsonObject validate(JsonObject review, JsonObject packet, SourceReader reader, Scope scope) throws IOException {
-        keys(review, "formatVersion", "reviewId", "packetId", "packetSha256", "rubricIdentity", "contractIdentity", "criteriaTiming", "reviewer", "scope", "evidence", "trials");
-        require(integer(review.get("formatVersion")) == 1 && string(review, "reviewId").matches("semanticreview-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid invoice review identity");
+        var reviewKeys = new ArrayList<>(List.of("formatVersion", "reviewId", "packetId", "packetSha256", "rubricIdentity", "contractIdentity", "criteriaTiming", "reviewer", "scope", "evidence", "trials"));
+        if (scope == CAMPAIGN_V2) reviewKeys.addAll(List.of("publicTaskSha256", "campaignId", "expectedCampaignReceiptSha256"));
+        keys(review, reviewKeys.toArray(String[]::new));
+        require(integer(review.get("formatVersion")) == scope.format() && string(review, "reviewId").matches((scope == CAMPAIGN_V2 ? "semanticreview-v2-" : "semanticreview-") + "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"), "Invalid invoice review identity");
         var inventory = packet.getAsJsonObject("inventory");
+        if (scope == CAMPAIGN_V2) for (String key : List.of("publicTaskSha256", "campaignId", "expectedCampaignReceiptSha256")) require(review.get(key).equals(inventory.get(key)), "Changed v2 review binding");
         require(review.get("packetId").equals(packet.get("packetId")) && review.get("rubricIdentity").equals(inventory.get("rubricIdentity"))
                 && review.get("contractIdentity").equals(inventory.get("contractIdentity")) && string(review, "criteriaTiming").equals(scope.timing())
                 && string(inventory, "criteriaTiming").equals(scope.timing()), "Changed invoice review scope or protected identities");
@@ -145,7 +162,8 @@ public final class InvoiceSemanticReview {
                 if (coverage.equals("PENDING")) { require(judgments.isEmpty() && coveredBy.isEmpty(), "Pending units cannot conceal judgments"); rowPending++; continue; }
                 judgmentsMade = true;
                 if (coverage.equals("CONTEXT")) require(judgments.isEmpty() && coveredBy.isEmpty() && contextOnly(item, value, scope), "Claim-bearing invoice unit cannot be excluded as context");
-                if (coverage.equals("CONTAINER")) require(judgments.isEmpty() && Set.of("FINAL_DOSSIER", "WORKER_DOSSIER", "PARTIAL_AGGREGATE").contains(kind), "Invalid invoice container delegation");
+                if (coverage.equals("CONTAINER")) require(judgments.isEmpty() && (Set.of("FINAL_DOSSIER", "WORKER_DOSSIER", "PARTIAL_AGGREGATE").contains(kind)
+                        || scope == CAMPAIGN_V2 && kind.equals("ADVISORY_DECISION")), "Invalid invoice container delegation");
                 if (coverage.equals("CLAIMS")) require(!judgments.isEmpty() && coveredBy.isEmpty(), "Missing invoice claim decomposition");
                 var ids = new HashSet<String>();
                 for (var element : judgments) {
@@ -155,7 +173,7 @@ public final class InvoiceSemanticReview {
                     require(Set.of("SUPPORTED_WITHIN_RECORDED_SCOPE", "UNSUPPORTED", "UNRESOLVED").contains(verdict), "Invalid supplied invoice claim verdict");
                     boolean material = bool(claim, "material"), endorsed = bool(claim, "endorsed");
                     if (!Set.of("TRIAL_OUTCOME", "WORKER_OUTCOME").contains(kind)) require(material, "Claim passage cannot be relabeled as nonmaterial");
-                    if (Set.of("SUMMARY", "FINDING", "DOSSIER_SECTION").contains(kind)) require(endorsed, "Final or worker dossier assertion cannot be excluded from review gates");
+                    if (Set.of("SUMMARY", "FINDING", "DOSSIER_SECTION").contains(kind) || scope == CAMPAIGN_V2 && Set.of("ADVISORY_DECISION", "FINAL_DOSSIER", "WORKER_DOSSIER", "PARTIAL_AGGREGATE").contains(kind)) require(endorsed, "Final or worker dossier assertion cannot be excluded from review gates");
                     var anchor = claim.getAsJsonObject("anchor"); keys(anchor, "representation", "pointer", "valueIdentity");
                     JsonElement base = value; String representation = string(anchor, "representation");
                     if (representation.equals("JSON_TEXT")) { require(kind.equals("MODEL_RESPONSE") && value.isJsonPrimitive() && value.getAsJsonPrimitive().isString(), "Invalid decoded response anchor"); base = InvoiceReviewInputs.object(value.getAsString().getBytes(StandardCharsets.UTF_8)); }
@@ -169,7 +187,8 @@ public final class InvoiceSemanticReview {
             }
             for (var unit : byId.values()) if (string(unit, "coverage").equals("CONTAINER")) {
                 var item = kinds.get(string(unit, "unitId")); var expected = new HashSet<String>();
-                for (var other : kinds.values()) if (other.get("artifact").equals(item.get("artifact")) && !string(other, "pointer").isEmpty()) expected.add(string(other, "unitId"));
+                for (var other : kinds.values()) if (other.get("artifact").equals(item.get("artifact")) && (scope == CAMPAIGN_V2
+                        ? string(other, "pointer").startsWith(string(item, "pointer") + "/") : !string(other, "pointer").isEmpty())) expected.add(string(other, "unitId"));
                 var delegated = refs(unit, "coveredBy", byId.keySet(), false); require(delegated.equals(expected) && !expected.isEmpty(), "Incomplete or cyclic invoice container coverage");
             }
             var criteria = array(row, "criteria", 6); require(criteria.size() == 6, "Missing protected invoice criteria"); var seen = new HashSet<String>(); boolean criteriaSatisfied = true; int rowPendingCriteria = 0;
@@ -198,13 +217,28 @@ public final class InvoiceSemanticReview {
     }
 
     private static void campaignScope(JsonObject packet) {
+        campaignScope(packet, CAMPAIGN);
+    }
+    private static void campaignScope(JsonObject packet, Scope scope) {
         keys(packet, "formatVersion", "packetId", "createdAtUnixMillis", "producer", "inventory", "qualityReview", "authority");
-        require(integer(packet.get("formatVersion")) == 1 && string(packet, "packetId").matches("reviewpacket-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}")
+        require(integer(packet.get("formatVersion")) == scope.format() && string(packet, "packetId").matches((scope == CAMPAIGN_V2 ? "reviewpacket-v2-" : "reviewpacket-") + "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}")
                 && string(packet, "qualityReview").equals("NOT_PERFORMED") && string(packet, "authority").equals("campaign-bound-review-inputs-not-semantic-acceptance"), "Not an unreviewed campaign packet");
         var inventory = packet.getAsJsonObject("inventory");
-        require(string(inventory, "campaignId").matches("invoicecampaign-[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}")
+        require(string(inventory, "campaignId").matches((scope == CAMPAIGN_V2 ? "invoicecampaign-v2-" : "invoicecampaign-") + "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}")
                 && string(inventory, "criteriaTiming").equals(CAMPAIGN.timing()) && string(inventory, "campaignAcceptance").equals("NOT_ESTABLISHED"), "Changed campaign review scope");
         new ContentDigest(string(inventory, "expectedCampaignReceiptSha256"));
+        if (scope == CAMPAIGN_V2) {
+            require(string(inventory, "publicTaskSha256").equals(InvoiceDecisionV2.taskIdentity()), "Changed v2 public task");
+            require(integer(packet.get("createdAtUnixMillis")) >= 0, "Invalid v2 packet publication time");
+            var producer = packet.getAsJsonObject("producer"); keys(producer, "extractor", "scriptSha256", "inspectionRuntimeArtifacts");
+            require(string(producer, "extractor").equals("invoice-campaign-review-v2"), "Wrong v2 packet producer"); new ContentDigest(string(producer, "scriptSha256"));
+            var binaries = producer.getAsJsonObject("inspectionRuntimeArtifacts");
+            require(binaries.size() >= 2 && binaries.size() <= 33 && binaries.has("api-compatibility-backend-0.1.0-SNAPSHOT.jar"), "Incomplete v2 inspection runtime");
+            for (var entry : binaries.entrySet()) {
+                require(entry.getKey().equals("api-compatibility-backend-0.1.0-SNAPSHOT.jar") || entry.getKey().matches("dependency/[A-Za-z0-9._-]+\\.jar"), "Invalid v2 binary reference");
+                require(entry.getValue().isJsonPrimitive() && entry.getValue().getAsJsonPrimitive().isString(), "Invalid v2 binary identity"); new ContentDigest(entry.getValue().getAsString());
+            }
+        }
         var rows = array(inventory, "trials", 12); require(rows.size() == 12, "Incomplete twelve-slot campaign packet");
         var runs = new HashSet<String>(); var slots = new HashSet<String>();
         for (int i = 0; i < rows.size(); i++) {
@@ -244,10 +278,12 @@ public final class InvoiceSemanticReview {
 
     private static boolean contextOnly(JsonObject item, JsonElement value, Scope scope) {
         String kind = string(item, "kind"), pointer = string(item, "pointer");
-        if (scope == CAMPAIGN && kind.equals("BROKER_OUTCOME")) return brokerMetadata(value);
+        if ((scope == CAMPAIGN || scope == CAMPAIGN_V2) && kind.equals("BROKER_OUTCOME")) return brokerMetadata(value);
         if (Set.of("TRIAL_OUTCOME", "WORKER_OUTCOME").contains(kind)) return true;
         if (kind.equals("TEAM_CONTEXT")) return value.isJsonArray() && value.getAsJsonArray().isEmpty();
         if (kind.equals("DOSSIER_SECTION")) {
+            if (scope == CAMPAIGN_V2 && pointer.startsWith("/decision/")) pointer = pointer.substring("/decision".length());
+            if (scope == CAMPAIGN_V2 && pointer.equals("/publicTaskSha256")) return value.isJsonPrimitive() && value.getAsJsonPrimitive().isString() && value.getAsString().equals(InvoiceDecisionV2.taskIdentity());
             if (pointer.equals("/formatVersion")) return value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber();
             if (pointer.equals("/summaryCitations")) return value.isJsonArray() && value.getAsJsonArray().asList().stream().allMatch(v -> v.isJsonPrimitive() && v.getAsString().matches("[a-zA-Z0-9:/._-]{1,160}"));
             if (!value.isJsonPrimitive() || !value.getAsJsonPrimitive().isString()) return false; String text = value.getAsString();
@@ -258,11 +294,16 @@ public final class InvoiceSemanticReview {
                 case "/qualityReview" -> text.equals("NOT_PERFORMED");
                 case "/action" -> text.equals("finish");
                 case "/workerId", "/workerRole", "/selectedDecision" -> text.matches("[a-zA-Z0-9-]{1,128}");
-                case "/authority" -> Set.of("model-advice-not-semantic-acceptance", "deterministic-recorded-facts-not-semantic-acceptance", "verbatim-worker-advice-not-semantic-acceptance").contains(text);
+                case "/authority" -> Set.of("model-advice-not-semantic-acceptance", "deterministic-recorded-facts-not-semantic-acceptance", "verbatim-worker-advice-not-semantic-acceptance").contains(text)
+                        || scope == CAMPAIGN_V2 && text.equals("final-v2-model-advice-not-semantic-acceptance-or-release-approval");
                 default -> false;
             };
         }
         if (kind.equals("MODEL_RESPONSE") && value.isJsonPrimitive() && value.getAsJsonPrimitive().isString()) {
+            if (scope == CAMPAIGN_V2) {
+                try { var decision = InvoiceDecisionV2.parse(value.getAsString()); return Set.of("catalog", "catalog_prefix", "read_text").contains(string(decision, "action")); }
+                catch (RuntimeException ignored) { return false; }
+            }
             try { var decision = InvoiceInvestigationDecision.parse(value.getAsString()); return Set.of("catalog", "read_text").contains(string(decision, "action")); }
             catch (RuntimeException ignored) { return false; }
         }

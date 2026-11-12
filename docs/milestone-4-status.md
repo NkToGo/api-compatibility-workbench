@@ -101,7 +101,10 @@ original/fresh lineage and rejected/uncertain broker outcomes without writing
 packets or grading advice. A separate [v2 campaign review publisher](invoice-campaign-review-inputs-v2.md)
 now seals all twelve slots, task/rubric identities, recorded frozen chronology and
 available review units with bound inspection binaries and recoverable publications.
-Revised measurement and v2 semantic review remain pending. These changes establish
+Separate [v2 claim-review records](invoice-campaign-claim-review-v2.md) now initialize
+pending work and verify supplied task/campaign/claim bindings, nested final
+coverage and conservative gates with full host packet revalidation. Revised
+measurement and semantic inspection remain pending. These changes establish
 neither improved answer quality nor useful coordination.
 
 The existing campaign, rubric, review and reports remain historical evidence and

@@ -98,4 +98,6 @@ digests, full lineage, rejected and uncertain answers, missing namespaces,
 tampering, strict parsing and repeat inspection without source changes or new
 calls. These fixtures establish inventory behavior, not measured model quality.
 The existing v1 tests remain part of verification. Campaign-bound publication is
-implemented separately; v2 semantic review integration remains pending.
+implemented separately. Separate [v2 claim-review records](invoice-campaign-claim-review-v2.md)
+now initialize pending work and validate supplied judgments; actual semantic
+inspection remains pending.

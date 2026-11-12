@@ -80,8 +80,10 @@ the controller summary are checked again at completion.
 `criteriaTiming: FROZEN_BEFORE_TRIALS` establishes the recorded chronology only.
 `qualityReview` remains `NOT_PERFORMED` and `campaignAcceptance` remains
 `NOT_ESTABLISHED`. Mechanical binding supplies no claim verdicts, accepted cases,
-useful-coordination result, routing promotion or migration approval. V2 semantic
-review integration and revised measurements remain separate work.
+useful-coordination result, routing promotion or migration approval. Separate
+[v2 claim-review records](invoice-campaign-claim-review-v2.md) now initialize
+pending work and verify supplied judgments. Revised measurements and actual
+semantic inspection remain separate work.
 
 ## Storage, recovery and limits
 

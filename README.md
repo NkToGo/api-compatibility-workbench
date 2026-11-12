@@ -291,8 +291,11 @@ now authenticates four selected retained arms and inventories their available
 answers, original/fresh lineage and broker outcomes without dispatch or grading.
 A separate [v2 campaign review publisher](docs/invoice-campaign-review-inputs-v2.md)
 now seals all twelve slots, the frozen task/rubric and available review units with
-explicit campaign and inspector runtime identities. Revised measurement and v2
-semantic review remain pending; these components do not establish finding quality.
+explicit campaign and inspector runtime identities. Separate [v2 claim-review records](docs/invoice-campaign-claim-review-v2.md)
+now retain pending work and verify supplied anchored judgments, nested final
+coverage and conservative gates with a separately selected review engine.
+Revised measurement and semantic inspection remain pending; mechanical review
+bindings do not establish finding quality.
 
 There is no hosted web application or general migration runner yet. Broader
 provider adapters, distributed workflows and repair publication are

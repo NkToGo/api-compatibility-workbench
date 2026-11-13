@@ -21,6 +21,12 @@ failures in the historical reference patch. Every run includes an offline HTML
 report with scenario coverage, expandable observations and exact input identities.
 See [running the case](docs/stripe-case-runner.md) and [reading the report](docs/case-report.md).
 
+A [local read-only maintainer view](docs/local-maintainer-view.md) can now open one
+selected customer-sources report. It recalculates conclusions from the supplied
+observations and presents scenario coverage, unresolved work and input identities.
+It excludes raw payloads and does not authenticate executions, check a current
+checkout or authorize a release.
+
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded
 output and removes the container. See [isolated execution](docs/isolated-execution.md).
@@ -331,12 +337,23 @@ call OpenAI, Stripe or GitHub. They need no Docker, database or credentials. The
 container integration tests are skipped unless their image IDs are supplied;
 Linux CI builds both worker images and runs them explicitly. Preparation downloads
 checksum-pinned artifacts from Maven Central; execution then uses an offline fixture
-transport. The build produces a library JAR and runtime dependencies, not a server.
+transport. The build produces a library JAR and runtime dependencies. The optional
+local maintainer view runs from those classes; it is not a hosted product service.
 
 After building, run `./scripts/Run-StripeCase.ps1` in PowerShell to produce a new
 local report. Open the printed `report.html` path in a browser; no server or account
 is required. The [runner documentation](docs/stripe-case-runner.md) explains the
 results, artifacts and isolation limits.
+
+To inspect that run through the local interface, select its `report.json`:
+
+```powershell
+./scripts/Start-MaintainerView.ps1 -Report ./backend/target/case-runs/RUN_ID/report.json
+```
+
+Replace `RUN_ID` with the printed run directory, then open the loopback address.
+See [local maintainer view](docs/local-maintainer-view.md) for supported inputs,
+access boundaries and snapshot limitations.
 
 For container isolation, start a Linux Docker engine with cgroup v2 and default
 seccomp support, then run these commands after building the backend:

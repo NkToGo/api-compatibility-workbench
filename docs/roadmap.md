@@ -533,6 +533,14 @@ step is separately frozen work, not a replay or reinterpretation of that campaig
 
 ## Milestone 5 — Complete the maintainer workflow
 
+**Local read-only view implemented:** a [maintainer interface](local-maintainer-view.md)
+opens one selected customer-sources report and derives scenario comparisons,
+repair outcomes and blocking issues from its observations. It exposes only a
+bounded metadata projection and exact input identities. Execution authentication,
+current-checkout comparison, maintainer approvals and repository integration are
+not implemented in this interface. Milestone 4 acceptance remains open; this
+entry point does not establish useful coordination or complete Milestone 5.
+
 1. Register selected repositories through a scoped GitHub App installation.
 2. Inventory provider, SDK, request and webhook versions and configuration.
 3. Bind review decisions to exact evidence and invalidate stale approvals.

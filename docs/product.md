@@ -71,6 +71,12 @@ A host-side model broker holds the API credential and enforces exact-request gra
 Recovery retains ambiguous outcomes without automatically replaying dispatched work.
 These are single-host boundaries with trusted local storage, not multi-tenant controls.
 
+A [local read-only maintainer view](local-maintainer-view.md) now presents one
+selected customer-sources report through an allowlisted metadata projection. It
+recomputes comparisons and retains unresolved observations, without authenticating
+execution, checking current inputs or granting any action. The repository-to-PR
+workflow remains planned.
+
 The planned product API will own organization access and maintainer review records.
 Selected repository access, provider actions, repair publication and distributed
 execution remain future integrations. No current result approves a deployment.

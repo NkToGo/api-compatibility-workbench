@@ -27,6 +27,11 @@ observations and presents scenario coverage, unresolved work and input identitie
 It excludes raw payloads and does not authenticate executions, check a current
 checkout or authorize a release.
 
+A separate [read-only GitHub App connection probe](docs/github-repository-connection.md)
+can verify one selected repository and exact commit through a repository-scoped
+installation token. It requires a configured App installation and returns safe
+metadata only. Source inventory and durable repository registration remain pending.
+
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded
 output and removes the container. See [isolated execution](docs/isolated-execution.md).

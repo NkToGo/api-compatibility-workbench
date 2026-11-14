@@ -1,0 +1,9 @@
+{
+  "formatVersion": 1,
+  "installationId": 20,
+  "accountId": 30,
+  "repositoryId": 40,
+  "owner": "sample-owner",
+  "name": "billing",
+  "commitSha": "0000000000000000000000000000000000000000"
+}

@@ -542,6 +542,10 @@ not implemented in this interface. Milestone 4 acceptance remains open; this
 entry point does not establish useful coordination or complete Milestone 5.
 
 1. Register selected repositories through a scoped GitHub App installation.
+   A [read-only connection probe](github-repository-connection.md) now verifies
+   app/installation/account identities, single-repository token scope and an exact
+   commit. It returns a metadata snapshot without source execution or writes.
+   Installation provisioning and durable registration remain separate work.
 2. Inventory provider, SDK, request and webhook versions and configuration.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.

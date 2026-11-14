@@ -78,8 +78,10 @@ execution, checking current inputs or granting any action. The repository-to-PR
 workflow remains planned.
 
 The planned product API will own organization access and maintainer review records.
-Selected repository access, provider actions, repair publication and distributed
-execution remain future integrations. No current result approves a deployment.
+A [read-only GitHub App probe](github-repository-connection.md) now checks selected
+repository access and an exact commit, returning only metadata. Real installations
+require their own access check; durable registration remains pending. Provider actions, repair publication
+and distributed execution remain future integrations. No current result approves a deployment.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)
 keeps useful-coordination acceptance separate from implemented orchestration.

@@ -3,8 +3,10 @@
 The host can inspect one explicitly selected GitHub.com repository revision using
 a GitHub App. It verifies the app, installation, owning account, effective token
 scope and exact commit before returning a metadata snapshot. This command neither
-downloads source nor assesses compatibility. Source/version inventory, durable
-repository registration, browser integration and PR publication remain planned.
+downloads source nor assesses compatibility. A separate [selected POM inventory](github-source-inventory.md)
+reuses this authorization sequence for bounded source reads. Effective version
+resolution, durable repository registration, browser integration and PR publication
+remain planned.
 
 The implementation has credential-free loopback tests for signing, scope checks,
 provider errors and transport limits. Real installations require their own access

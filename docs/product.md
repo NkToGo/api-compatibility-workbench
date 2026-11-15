@@ -80,7 +80,10 @@ workflow remains planned.
 The planned product API will own organization access and maintainer review records.
 A [read-only GitHub App probe](github-repository-connection.md) now checks selected
 repository access and an exact commit, returning only metadata. Real installations
-require their own access check; durable registration remains pending. Provider actions, repair publication
+require their own access check; durable registration remains pending. A separate
+[selected POM inventory](github-source-inventory.md) reads explicit files at that
+revision, checks Git identities and reports Stripe dependency declarations without
+resolving effective SDK or API versions. Provider actions, repair publication
 and distributed execution remain future integrations. No current result approves a deployment.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)

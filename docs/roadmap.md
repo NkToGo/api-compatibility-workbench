@@ -547,6 +547,11 @@ entry point does not establish useful coordination or complete Milestone 5.
    commit. It returns a metadata snapshot without source execution or writes.
    Installation provisioning and durable registration remain separate work.
 2. Inventory provider, SDK, request and webhook versions and configuration.
+   A [selected POM inventory](github-source-inventory.md) now reads explicit paths
+   at the verified commit, checks tree/blob identities and reports Stripe SDK
+   declarations and local property candidates. Missing, rejected and bounded-out
+   files remain visible. Effective Maven configuration, request/webhook versions,
+   retained source bundles and workflow integration remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

@@ -31,7 +31,7 @@ public final class GitHubRepositoryConnection {
     public record Snapshot(int formatVersion, long appId, Selection selection, String treeSha,
                            Instant observedAt, Instant tokenExpiresAt, String authority,
                            boolean compatibilityAssessed) {}
-    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION }
+    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB }
     public enum Code { ACCESS_DENIED_OR_RATE_LIMITED, AUTHENTICATION_FAILED, NOT_FOUND_OR_NOT_INSTALLED,
         SCOPE_REJECTED, REDIRECT_REFUSED, PROVIDER_UNAVAILABLE, UNEXPECTED_STATUS,
         INVALID_METADATA, IDENTITY_OR_SCOPE_MISMATCH, TOKEN_EXPIRED, TRANSPORT_INCOMPLETE }
@@ -56,6 +56,10 @@ public final class GitHubRepositoryConnection {
         try (var transport = new GitHubTransport()) { return inspect(selection, credentials, transport); }
     }
     Snapshot inspect(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport)
+            throws ConnectionFailure, InterruptedException {
+        return openVerified(selection, credentials, transport).snapshot();
+    }
+    VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport)
             throws ConnectionFailure, InterruptedException {
         java.util.Objects.requireNonNull(selection, "selection"); java.util.Objects.requireNonNull(credentials, "credentials");
         String jwt = credentials.jwt(clock.instant());
@@ -112,8 +116,30 @@ public final class GitHubRepositoryConnection {
             String tree = GitHubJson.text(GitHubJson.object(commit.get("tree")), "sha");
             check(GitHubJson.text(commit, "sha").equals(selection.commitSha()) && tree.matches("[0-9a-f]{40}"), Stage.REVISION);
             live(expires, Stage.REVISION);
-            return new Snapshot(1, appId, selection, tree, clock.instant(), expires, "AUTHENTICATED_GITHUB_METADATA", false);
+            return new VerifiedRepository(new Snapshot(1, appId, selection, tree, clock.instant(), expires,
+                    "AUTHENTICATED_GITHUB_METADATA", false), token, transport);
         } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.REVISION, 0, null, false); }
+    }
+
+    /** Package-private host capability; credentials cannot be serialized into source inventory results. */
+    final class VerifiedRepository {
+        private final Snapshot snapshot;
+        private final String token;
+        private final GitHubTransport transport;
+        private VerifiedRepository(Snapshot snapshot, String token, GitHubTransport transport) {
+            this.snapshot = snapshot; this.token = token; this.transport = transport;
+        }
+        Snapshot snapshot() { return snapshot; }
+        JsonObject tree(String sha) throws ConnectionFailure, InterruptedException { return read(sha, Stage.SOURCE_TREE, "trees"); }
+        JsonObject blob(String sha) throws ConnectionFailure, InterruptedException { return read(sha, Stage.SOURCE_BLOB, "blobs"); }
+        private JsonObject read(String sha, Stage stage, String kind) throws ConnectionFailure, InterruptedException {
+            if (sha == null || !sha.matches("[0-9a-f]{40}")) throw new IllegalArgumentException("Invalid Git object identity");
+            live(snapshot.tokenExpiresAt(), stage);
+            var result = request(transport, stage, "GET", snapshot.selection().path() + "/git/" + kind + "/" + sha,
+                    new byte[0], token, 200);
+            live(snapshot.tokenExpiresAt(), stage); return result;
+        }
+        @Override public String toString() { return "VerifiedRepository[redacted]"; }
     }
 
     private void live(Instant expires, Stage stage) throws ConnectionFailure {

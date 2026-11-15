@@ -1,0 +1,7 @@
+{
+  "formatVersion": 1,
+  "pomPaths": [
+    "pom.xml",
+    "webhook/pom.xml"
+  ]
+}

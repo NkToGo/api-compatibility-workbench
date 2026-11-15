@@ -30,7 +30,10 @@ checkout or authorize a release.
 A separate [read-only GitHub App connection probe](docs/github-repository-connection.md)
 can verify one selected repository and exact commit through a repository-scoped
 installation token. It requires a configured App installation and returns safe
-metadata only. Source inventory and durable repository registration remain pending.
+metadata only. A separate [selected POM inventory](docs/github-source-inventory.md)
+reads bounded files at that commit and reports Stripe SDK declarations and local
+property candidates, with Git object checks and explicit incomplete states.
+Effective SDK/API configuration and durable repository registration remain pending.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

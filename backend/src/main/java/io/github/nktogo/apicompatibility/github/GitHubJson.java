@@ -25,8 +25,11 @@ final class GitHubJson {
     }
     static JsonObject object(JsonElement value) { require(value != null && value.isJsonObject()); return value.getAsJsonObject(); }
     static String text(JsonObject o, String key) {
+        return text(o, key, 8192);
+    }
+    static String text(JsonObject o, String key, int limit) {
         var value = o.get(key); require(value != null && value.isJsonPrimitive() && value.getAsJsonPrimitive().isString());
-        String text = value.getAsString(); require(text.length() <= 8192); return text;
+        String text = value.getAsString(); require(text.length() <= limit); return text;
     }
     static long number(JsonObject o, String key) {
         var value = o.get(key); require(value != null && value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber());

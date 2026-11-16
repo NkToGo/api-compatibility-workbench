@@ -33,7 +33,11 @@ installation token. It requires a configured App installation and returns safe
 metadata only. A separate [selected POM inventory](docs/github-source-inventory.md)
 reads bounded files at that commit and reports Stripe SDK declarations and local
 property candidates, with Git object checks and explicit incomplete states.
-Effective SDK/API configuration and durable repository registration remain pending.
+A [source-bound configuration inspector](docs/migration-configuration.md) now
+checks explicit baseline/target declarations for the invoice case against fresh
+repository and POM identities, retaining unknowns and profile gaps. These are
+maintainer declarations; effective runtime configuration and durable repository
+registration remain pending.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

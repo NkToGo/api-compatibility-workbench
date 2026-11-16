@@ -550,8 +550,12 @@ entry point does not establish useful coordination or complete Milestone 5.
    A [selected POM inventory](github-source-inventory.md) now reads explicit paths
    at the verified commit, checks tree/blob identities and reports Stripe SDK
    declarations and local property candidates. Missing, rejected and bounded-out
-   files remain visible. Effective Maven configuration, request/webhook versions,
-   retained source bundles and workflow integration remain separate work.
+   files remain visible. A [source-bound configuration inspector](migration-configuration.md)
+   now checks operator-declared invoice-case baseline/target versions against
+   exact repository/POM identities and retains unknowns and out-of-profile settings.
+   These declarations do not establish effective runtime settings. Effective
+   Maven configuration, request/webhook evidence, retained source bundles and
+   workflow integration remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

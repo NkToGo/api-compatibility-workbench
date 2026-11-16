@@ -100,7 +100,9 @@ Protect the host and do not enable HTTP or parser payload diagnostics.
 This is a bounded CLI read, not durable repository registration, a retained source
 bundle, an asynchronous job service or the maintainer web workflow. Connecting
 these declarations to effective configuration, retained evidence and authorized
-repair review remains separate work. No repository writes or PRs are performed.
+repair review remains separate work. A separate [configuration inspector](migration-configuration.md)
+now compares explicit invoice-case declarations with a fresh inventory; it does
+not resolve effective settings. No repository writes or PRs are performed.
 
 ## Primary references
 

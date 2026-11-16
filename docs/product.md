@@ -83,7 +83,9 @@ repository access and an exact commit, returning only metadata. Real installatio
 require their own access check; durable registration remains pending. A separate
 [selected POM inventory](github-source-inventory.md) reads explicit files at that
 revision, checks Git identities and reports Stripe dependency declarations without
-resolving effective SDK or API versions. Provider actions, repair publication
+resolving effective SDK or API versions. A [configuration inspector](migration-configuration.md)
+binds operator-declared invoice-case versions to fresh source identities without
+runtime verification or execution admission. Provider actions, repair publication
 and distributed execution remain future integrations. No current result approves a deployment.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)

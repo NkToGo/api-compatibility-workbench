@@ -1,0 +1,68 @@
+{
+  "formatVersion": 1,
+  "caseId": "stripe-invoice-subscription-2025-03-31",
+  "repository": {
+    "accountId": 2,
+    "repositoryId": 3,
+    "owner": "example-owner",
+    "name": "example-repository",
+    "commitSha": "0000000000000000000000000000000000000000",
+    "treeSha": "0000000000000000000000000000000000000000"
+  },
+  "poms": [
+    {
+      "path": "pom.xml",
+      "contentSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "webhook/pom.xml",
+      "contentSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "path": "reconciliation/pom.xml",
+      "contentSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "consumers": [
+    {
+      "id": "invoice-webhook",
+      "pomPath": "webhook/pom.xml",
+      "baseline": {
+        "sdkVersion": "28.4.0",
+        "requestApiVersion": "2025-02-24.acacia",
+        "endpointApiVersion": "2025-02-24.acacia",
+        "eventApiVersion": "2025-02-24.acacia",
+        "accountApiVersion": "2025-02-24.acacia",
+        "adapterApiVersion": null
+      },
+      "target": {
+        "sdkVersion": "29.0.0",
+        "requestApiVersion": "2025-03-31.basil",
+        "endpointApiVersion": "2025-03-31.basil",
+        "eventApiVersion": "2025-03-31.basil",
+        "accountApiVersion": "2025-02-24.acacia",
+        "adapterApiVersion": null
+      }
+    },
+    {
+      "id": "invoice-reconciliation",
+      "pomPath": "reconciliation/pom.xml",
+      "baseline": {
+        "sdkVersion": "28.4.0",
+        "requestApiVersion": "2025-02-24.acacia",
+        "endpointApiVersion": null,
+        "eventApiVersion": null,
+        "accountApiVersion": "2025-02-24.acacia",
+        "adapterApiVersion": null
+      },
+      "target": {
+        "sdkVersion": "29.0.0",
+        "requestApiVersion": "2025-03-31.basil",
+        "endpointApiVersion": null,
+        "eventApiVersion": null,
+        "accountApiVersion": "2025-02-24.acacia",
+        "adapterApiVersion": null
+      }
+    }
+  ]
+}

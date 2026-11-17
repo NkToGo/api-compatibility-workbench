@@ -39,6 +39,11 @@ repository and POM identities, retaining unknowns and profile gaps. These are
 maintainer declarations; effective runtime configuration and durable repository
 registration remain pending.
 
+An opt-in [input capture](docs/migration-input-retention.md) now retains selected
+POM bytes and the configuration result in the existing evidence store. Reopening
+verifies stored bytes and recomputes the binding offline while preserving gaps.
+These snapshots contain planning inputs, not executable consumer bundles or grants.
+
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded
 output and removes the container. See [isolated execution](docs/isolated-execution.md).

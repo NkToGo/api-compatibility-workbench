@@ -6,6 +6,10 @@ Stripe Java dependency declarations and possible local property values. It does
 not execute source, run Maven, resolve an effective dependency graph or assess
 compatibility. There is no model call in this command.
 
+The separate [input capture command](migration-input-retention.md) opts into
+retaining verified POM bytes and declaration results. The inventory command below
+continues to emit metadata only and does not retain source bytes.
+
 ## Run
 
 Configure the App, host key and exact repository selection as described in the

@@ -37,6 +37,21 @@ public final class GitHubSourceInventory {
                          int sourceBytes, Problem problem, List<String> limitations) {
         public Result { files = List.copyOf(files); limitations = List.copyOf(limitations); }
     }
+    /** Opt-in host capture. Source bytes are never included in diagnostic JSON. */
+    public static final class Capture {
+        private final Result inventory;
+        private final transient Map<String, byte[]> poms;
+        private Capture(Result inventory, Map<String, byte[]> poms) {
+            this.inventory = inventory; this.poms = copy(poms);
+        }
+        public Result inventory() { return inventory; }
+        public Map<String, byte[]> poms() { return copy(poms); }
+        private static Map<String, byte[]> copy(Map<String, byte[]> source) {
+            var result = new TreeMap<String, byte[]>(); source.forEach((path, bytes) -> result.put(path, bytes.clone()));
+            return Collections.unmodifiableMap(result);
+        }
+        @Override public String toString() { return "Capture[source bytes omitted]"; }
+    }
     private final Clock clock;
     public GitHubSourceInventory() { this(Clock.systemUTC()); }
     GitHubSourceInventory(Clock clock) { this.clock = clock; }
@@ -46,9 +61,22 @@ public final class GitHubSourceInventory {
     }
     Result inspect(GitHubRepositoryConnection.Selection selection, GitHubAppCredentials credentials, Plan plan, GitHubTransport transport)
             throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
+        return read(selection, credentials, plan, transport, null);
+    }
+    public Capture capture(GitHubRepositoryConnection.Selection selection, GitHubAppCredentials credentials, Plan plan)
+            throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
+        try (var transport = new GitHubTransport()) { return capture(selection, credentials, plan, transport); }
+    }
+    Capture capture(GitHubRepositoryConnection.Selection selection, GitHubAppCredentials credentials, Plan plan, GitHubTransport transport)
+            throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
+        var poms = new TreeMap<String, byte[]>();
+        return new Capture(read(selection, credentials, plan, transport, poms), poms);
+    }
+    private Result read(GitHubRepositoryConnection.Selection selection, GitHubAppCredentials credentials, Plan plan, GitHubTransport transport,
+                        Map<String, byte[]> captured) throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
         Objects.requireNonNull(plan, "plan"); Instant deadline = clock.instant().plusSeconds(180);
         var access = new GitHubRepositoryConnection(clock).openVerified(selection, credentials, transport);
-        var reads = new Reads(access, deadline); var files = new ArrayList<FileResult>(); Problem problem = null;
+        var reads = new Reads(access, deadline, captured); var files = new ArrayList<FileResult>(); Problem problem = null;
         for (String path : plan.pomPaths()) {
             if (problem != null) { files.add(unread(path, FileState.NOT_READ)); continue; }
             try { files.add(reads.file(path)); }
@@ -61,16 +89,19 @@ public final class GitHubSourceInventory {
         }
         State state = files.stream().allMatch(f -> f.state() == FileState.READ) ? State.COMPLETE_WITHIN_SELECTED_FILES : State.INCOMPLETE;
         return new Result(1, access.snapshot(), plan, clock.instant(), state, files, reads.requests, reads.totalBytes, problem,
-                List.of("SELECTED_POMS_ONLY", "SOURCE_BYTES_NOT_RETAINED", "MAVEN_EFFECTIVE_MODEL_NOT_RESOLVED",
+                List.of("SELECTED_POMS_ONLY", captured == null ? "SOURCE_BYTES_NOT_RETAINED" : "SOURCE_BYTES_CAPTURED_IN_MEMORY", "MAVEN_EFFECTIVE_MODEL_NOT_RESOLVED",
                         "REQUEST_API_VERSION_NOT_ASSESSED", "WEBHOOK_API_VERSION_NOT_ASSESSED", "ACCOUNT_DEFAULT_VERSION_NOT_ASSESSED",
                         "NO_COMPATIBILITY_ASSESSMENT_OR_EXECUTION"));
     }
     private final class Reads {
         private final GitHubRepositoryConnection.VerifiedRepository access;
         private final Instant deadline;
+        private final Map<String, byte[]> captured;
         private final Map<String, Map<String, GitSourceObjects.Entry>> trees = new HashMap<>();
         private int requests, totalBytes;
-        private Reads(GitHubRepositoryConnection.VerifiedRepository access, Instant deadline) { this.access = access; this.deadline = deadline; }
+        private Reads(GitHubRepositoryConnection.VerifiedRepository access, Instant deadline, Map<String, byte[]> captured) {
+            this.access = access; this.deadline = deadline; this.captured = captured;
+        }
         private void time() { if (!clock.instant().isBefore(deadline)) throw new Limit(Stop.DEADLINE); }
         private void request() { time(); if (requests >= MAX_SOURCE_REQUESTS) throw new Limit(Stop.REQUEST_LIMIT); requests++; }
         private Map<String, GitSourceObjects.Entry> tree(String sha) throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
@@ -89,6 +120,7 @@ public final class GitHubSourceInventory {
             if (entry == null || !Set.of("100644", "100755").contains(entry.mode())) return unread(path, FileState.UNSUPPORTED_ENTRY);
             if (entry.size() == null || entry.size() > 65536 || entry.size() > MAX_TOTAL_BYTES - totalBytes) return unread(path, FileState.SIZE_LIMIT);
             request(); JsonObject data = access.blob(entry.sha()); time(); byte[] bytes = GitSourceObjects.blob(data, entry); totalBytes += bytes.length;
+            if (captured != null) captured.put(path, bytes.clone());
             var declarations = MavenPomInventory.scan(bytes);
             return new FileResult(path, declarations.state() == MavenPomInventory.State.SCANNED ? FileState.READ : FileState.POM_REJECTED,
                     entry.sha(), GitSourceObjects.sha256(bytes), bytes.length, declarations);

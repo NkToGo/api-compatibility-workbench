@@ -22,6 +22,77 @@ public final class EvidenceStore {
         directory(this.root.resolve("runs"));
     }
 
+    /** Retains selected POMs and their binding report in a namespace separate from execution receipts. */
+    public String saveInputs(Map<String, byte[]> source) throws IOException { return saveInputs(source, () -> {}); }
+
+    synchronized String saveInputs(Map<String, byte[]> source, BeforePublish beforePublish) throws IOException {
+        var captured = new TreeMap<String, byte[]>(); source.forEach((name, bytes) -> captured.put(name, bytes.clone()));
+        validateInputs(captured);
+        var manifest = new JsonObject(); manifest.addProperty("formatVersion", 1);
+        manifest.addProperty("retention", "selected-poms-and-declarations-v1"); var artifacts = new JsonObject();
+        captured.forEach((name, bytes) -> {
+            var entry = new JsonObject(); entry.addProperty("sha256", CaseInputs.hash(bytes)); entry.addProperty("size", bytes.length); artifacts.add(name, entry);
+        });
+        manifest.add("artifacts", artifacts); byte[] encoded = encode(manifest); String hash = CaseInputs.hash(encoded);
+        directory(root.resolve("inputs"));
+        try (var lease = LocalFileLease.acquire(root.resolve("writer.lock"))) {
+            if (!lease.lock().isValid()) throw new IOException("Store lock lost");
+            Path reference = root.resolve("inputs").resolve(hash + ".json");
+            if (Files.exists(reference, LinkOption.NOFOLLOW_LINKS)) {
+                CaseInputs.require(hash.equals(reference(reference)), "Input reference changed"); readInputs(hash); return hash;
+            }
+            for (byte[] bytes : captured.values()) put(bytes);
+            put(encoded); beforePublish.run();
+            var ref = new JsonObject(); ref.addProperty("formatVersion", 1); ref.addProperty("manifestSha256", hash);
+            publish(reference, encode(ref)); return hash;
+        }
+    }
+
+    public Map<String, byte[]> readInputs(String inputId) throws IOException {
+        inputId(inputId); CaseInputs.require(Files.isDirectory(root.resolve("inputs"), LinkOption.NOFOLLOW_LINKS), "Missing or linked input namespace");
+        String hash = reference(root.resolve("inputs").resolve(inputId + ".json"));
+        CaseInputs.require(inputId.equals(hash), "Input reference identity mismatch"); var manifest = CaseInputs.object(object(hash));
+        CaseInputs.require(manifest.keySet().equals(Set.of("formatVersion", "retention", "artifacts"))
+                && inputNumber(manifest, "formatVersion") == 1 && "selected-poms-and-declarations-v1".equals(manifest.get("retention").getAsString()), "Unsupported input manifest");
+        var inventory = manifest.getAsJsonObject("artifacts"); CaseInputs.require(inventory.size() >= 1 && inventory.size() <= 9, "Invalid input inventory");
+        var result = new TreeMap<String, byte[]>();
+        for (var entry : inventory.entrySet()) {
+            inputName(entry.getKey()); var metadata = entry.getValue().getAsJsonObject();
+            CaseInputs.require(metadata.keySet().equals(Set.of("sha256", "size")), "Invalid input artifact metadata");
+            byte[] bytes = object(metadata.get("sha256").getAsString());
+            CaseInputs.require(bytes.length == inputNumber(metadata, "size"), "Input object size mismatch"); result.put(entry.getKey(), bytes);
+        }
+        validateInputs(result); return Collections.unmodifiableMap(result);
+    }
+
+    public List<String> listInputs() throws IOException {
+        if (!Files.exists(root.resolve("inputs"), LinkOption.NOFOLLOW_LINKS)) return List.of();
+        CaseInputs.require(Files.isDirectory(root.resolve("inputs"), LinkOption.NOFOLLOW_LINKS), "Linked input namespace");
+        var result = new ArrayList<String>();
+        try (var entries = Files.list(root.resolve("inputs"))) {
+            for (Path file : entries.toList()) {
+                String name = file.getFileName().toString(); if (name.endsWith(".pending")) continue;
+                CaseInputs.require(name.matches("[0-9a-f]{64}\\.json"), "Unexpected input reference");
+                String id = name.substring(0, 64); readInputs(id); result.add(id);
+            }
+        }
+        Collections.sort(result); return List.copyOf(result);
+    }
+    private static void validateInputs(Map<String, byte[]> files) {
+        CaseInputs.require(files.containsKey("binding.json") && files.size() <= 9, "Missing input binding or excessive files"); int bytes = 0;
+        for (var entry : files.entrySet()) {
+            inputName(entry.getKey()); CaseInputs.require(entry.getValue().length <= (entry.getKey().equals("binding.json") ? MAX_BYTES : 65536), "Oversized input artifact");
+            if (!entry.getKey().equals("binding.json")) bytes += entry.getValue().length;
+        }
+        CaseInputs.require(bytes <= 262144, "Input POM bytes exceed limit");
+    }
+    private static void inputName(String name) { CaseInputs.require(name.equals("binding.json") || name.matches("pom-[0-7]\\.bin"), "Unsupported input artifact"); }
+    private static void inputId(String id) { CaseInputs.require(id != null && id.matches("[0-9a-f]{64}"), "Invalid input snapshot identity"); }
+    private static long inputNumber(JsonObject object, String key) {
+        var value = object.get(key); CaseInputs.require(value != null && value.isJsonPrimitive() && value.getAsJsonPrimitive().isNumber(), "Invalid input metadata number");
+        return value.getAsBigDecimal().longValueExact();
+    }
+
     public static void main(String[] args) throws Exception {
         if (args.length < 2) throw new IllegalArgumentException("Usage: EvidenceStore list ROOT | import ROOT RECEIPT | verify ROOT RUN_ID | export ROOT RUN_ID NEW_DIRECTORY");
         var store = new EvidenceStore(Path.of(args[1]));

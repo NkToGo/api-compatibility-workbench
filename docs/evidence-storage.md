@@ -1,5 +1,11 @@
 # Local evidence storage
 
+Opt-in [migration planning input snapshots](migration-input-retention.md) also
+reuse this store's objects and writer lease, with a separate `inputs/` namespace.
+They retain selected POMs and declaration bindings, not execution receipts. Use
+`MigrationInputs.ps1` for semantic inspection; the execution commands below keep
+their existing run-only behavior.
+
 The isolated-run command retains finalized execution records in
 `.workbench/evidence/` by default. This directory is ignored by Git and is outside
 Maven's `target` tree. Successful, failed, timed-out and output-limited executions

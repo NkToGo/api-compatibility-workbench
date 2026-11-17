@@ -87,6 +87,11 @@ resolving effective SDK or API versions. A [configuration inspector](migration-c
 binds operator-declared invoice-case versions to fresh source identities without
 runtime verification or execution admission. Provider actions, repair publication
 and distributed execution remain future integrations. No current result approves a deployment.
+
+Opt-in [planning input retention](migration-input-retention.md) now preserves the
+selected POM bytes and declaration result for offline revalidation. It reuses the
+existing local evidence store without turning snapshots into execution receipts.
+Full consumer source capture and durable maintainer jobs remain planned.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)
 keeps useful-coordination acceptance separate from implemented orchestration.

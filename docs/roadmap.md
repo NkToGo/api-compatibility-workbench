@@ -554,8 +554,12 @@ entry point does not establish useful coordination or complete Milestone 5.
    now checks operator-declared invoice-case baseline/target versions against
    exact repository/POM identities and retains unknowns and out-of-profile settings.
    These declarations do not establish effective runtime settings. Effective
-   Maven configuration, request/webhook evidence, retained source bundles and
-   workflow integration remain separate work.
+   Maven configuration, request/webhook evidence and workflow integration remain
+   separate work. Opt-in [planning input snapshots](migration-input-retention.md)
+   now retain selected POM bytes and their configuration binding in the existing
+   evidence store, including partial results. Offline reopening revalidates bytes
+   and derived metadata. Complete consumer source bundles and durable maintainer
+   jobs remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

@@ -6,6 +6,10 @@ is the existing `stripe-invoice-subscription-2025-03-31` case with its webhook a
 reconciliation roles. It records intended configuration and identifies gaps; it
 does not discover or verify effective runtime settings.
 
+An opt-in [input capture](migration-input-retention.md) can retain this binding
+with the selected POM bytes and revalidate it offline. The inspection command
+below remains a transient read without storage publication.
+
 ## Prepare and inspect
 
 1. Configure the [read-only GitHub App](github-repository-connection.md) and obtain

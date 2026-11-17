@@ -178,25 +178,27 @@ public final class MigrationConfiguration {
     public static Plan load(Path file) throws IOException {
         if (!Files.isRegularFile(file, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("Invalid configuration file");
         try (var channel = Files.newByteChannel(file, Set.of(StandardOpenOption.READ, LinkOption.NOFOLLOW_LINKS)); var stream = Channels.newInputStream(channel)) {
-            var o = GitHubJson.parse(stream.readNBytes(32769), 32768);
-            GitHubJson.fields(o, "formatVersion", "caseId", "repository", "poms", "consumers");
-            GitHubJson.require(GitHubJson.number(o, "formatVersion") == 1);
-            var r = GitHubJson.object(o.get("repository")); GitHubJson.fields(r, "accountId", "repositoryId", "owner", "name", "commitSha", "treeSha");
-            var repository = new Repository(GitHubJson.number(r, "accountId"), GitHubJson.number(r, "repositoryId"), GitHubJson.text(r, "owner"),
-                    GitHubJson.text(r, "name"), GitHubJson.text(r, "commitSha"), GitHubJson.text(r, "treeSha"));
-            require(o.get("poms").isJsonArray() && o.getAsJsonArray("poms").size() <= 8);
-            var poms = new ArrayList<Pom>();
-            for (var item : o.getAsJsonArray("poms")) {
-                var p = GitHubJson.object(item); GitHubJson.fields(p, "path", "contentSha256"); poms.add(new Pom(GitHubJson.text(p, "path"), GitHubJson.text(p, "contentSha256")));
-            }
-            require(o.get("consumers").isJsonArray() && o.getAsJsonArray("consumers").size() <= 8);
-            var consumers = new ArrayList<Consumer>();
-            for (var item : o.getAsJsonArray("consumers")) {
-                var c = GitHubJson.object(item); GitHubJson.fields(c, "id", "pomPath", "baseline", "target");
-                consumers.add(new Consumer(GitHubJson.text(c, "id"), GitHubJson.text(c, "pomPath"), versions(GitHubJson.object(c.get("baseline"))), versions(GitHubJson.object(c.get("target")))));
-            }
-            return new Plan(1, GitHubJson.text(o, "caseId"), repository, poms, consumers);
+            return parsePlan(GitHubJson.parse(stream.readNBytes(32769), 32768));
         }
+    }
+    static Plan parsePlan(JsonObject o) {
+        GitHubJson.fields(o, "formatVersion", "caseId", "repository", "poms", "consumers");
+        GitHubJson.require(GitHubJson.number(o, "formatVersion") == 1);
+        var r = GitHubJson.object(o.get("repository")); GitHubJson.fields(r, "accountId", "repositoryId", "owner", "name", "commitSha", "treeSha");
+        var repository = new Repository(GitHubJson.number(r, "accountId"), GitHubJson.number(r, "repositoryId"), GitHubJson.text(r, "owner"),
+                GitHubJson.text(r, "name"), GitHubJson.text(r, "commitSha"), GitHubJson.text(r, "treeSha"));
+        require(o.get("poms").isJsonArray() && o.getAsJsonArray("poms").size() <= 8);
+        var poms = new ArrayList<Pom>();
+        for (var item : o.getAsJsonArray("poms")) {
+            var p = GitHubJson.object(item); GitHubJson.fields(p, "path", "contentSha256"); poms.add(new Pom(GitHubJson.text(p, "path"), GitHubJson.text(p, "contentSha256")));
+        }
+        require(o.get("consumers").isJsonArray() && o.getAsJsonArray("consumers").size() <= 8);
+        var consumers = new ArrayList<Consumer>();
+        for (var item : o.getAsJsonArray("consumers")) {
+            var c = GitHubJson.object(item); GitHubJson.fields(c, "id", "pomPath", "baseline", "target");
+            consumers.add(new Consumer(GitHubJson.text(c, "id"), GitHubJson.text(c, "pomPath"), versions(GitHubJson.object(c.get("baseline"))), versions(GitHubJson.object(c.get("target")))));
+        }
+        return new Plan(1, GitHubJson.text(o, "caseId"), repository, poms, consumers);
     }
     private static Versions versions(JsonObject o) {
         GitHubJson.fields(o, "sdkVersion", "requestApiVersion", "endpointApiVersion", "eventApiVersion", "accountApiVersion", "adapterApiVersion");

@@ -6,10 +6,10 @@ import java.nio.file.*;
 import java.util.*;
 
 /** Keeps one channel per locally held lock; closing a second channel can release POSIX locks. */
-record LocalFileLease(Path path, FileChannel channel, FileLock lock) implements AutoCloseable {
+public record LocalFileLease(Path path, FileChannel channel, FileLock lock) implements AutoCloseable {
     private static final Set<Path> HELD = new HashSet<>();
 
-    static LocalFileLease tryAcquire(Path path) throws IOException {
+    public static LocalFileLease tryAcquire(Path path) throws IOException {
         Path key = path.toAbsolutePath().getParent().toRealPath().resolve(path.getFileName());
         synchronized (HELD) {
             if (HELD.contains(key)) return null;
@@ -23,7 +23,7 @@ record LocalFileLease(Path path, FileChannel channel, FileLock lock) implements 
         }
     }
 
-    static LocalFileLease acquire(Path path) throws IOException {
+    public static LocalFileLease acquire(Path path) throws IOException {
         while (true) {
             var lease = tryAcquire(path);
             if (lease != null) return lease;

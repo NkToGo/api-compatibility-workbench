@@ -27,13 +27,7 @@ public final class EvidenceStore {
 
     synchronized String saveInputs(Map<String, byte[]> source, BeforePublish beforePublish) throws IOException {
         var captured = new TreeMap<String, byte[]>(); source.forEach((name, bytes) -> captured.put(name, bytes.clone()));
-        validateInputs(captured);
-        var manifest = new JsonObject(); manifest.addProperty("formatVersion", 1);
-        manifest.addProperty("retention", "selected-poms-and-declarations-v1"); var artifacts = new JsonObject();
-        captured.forEach((name, bytes) -> {
-            var entry = new JsonObject(); entry.addProperty("sha256", CaseInputs.hash(bytes)); entry.addProperty("size", bytes.length); artifacts.add(name, entry);
-        });
-        manifest.add("artifacts", artifacts); byte[] encoded = encode(manifest); String hash = CaseInputs.hash(encoded);
+        byte[] encoded = inputManifest(captured); String hash = CaseInputs.hash(encoded);
         directory(root.resolve("inputs"));
         try (var lease = LocalFileLease.acquire(root.resolve("writer.lock"))) {
             if (!lease.lock().isValid()) throw new IOException("Store lock lost");
@@ -46,6 +40,26 @@ public final class EvidenceStore {
             var ref = new JsonObject(); ref.addProperty("formatVersion", 1); ref.addProperty("manifestSha256", hash);
             publish(reference, encode(ref)); return hash;
         }
+    }
+    public static String inputIdentity(Map<String, byte[]> artifacts) { return CaseInputs.hash(inputManifest(artifacts)); }
+    private static byte[] inputManifest(Map<String, byte[]> files) {
+        validateInputs(files);
+        var manifest = new JsonObject(); manifest.addProperty("formatVersion", 1);
+        manifest.addProperty("retention", "selected-poms-and-declarations-v1"); var artifacts = new JsonObject();
+        new TreeMap<>(files).forEach((name, bytes) -> {
+            var entry = new JsonObject(); entry.addProperty("sha256", CaseInputs.hash(bytes)); entry.addProperty("size", bytes.length); artifacts.add(name, entry);
+        });
+        manifest.add("artifacts", artifacts); return encode(manifest);
+    }
+    /** Absence is distinguished from unreadable or unsafe references; contents still require readInputs. */
+    public boolean hasInputReference(String id) throws IOException {
+        inputId(id);
+        try {
+            var directory = Files.readAttributes(root.resolve("inputs"), java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+            CaseInputs.require(directory.isDirectory(), "Unsafe input namespace");
+            var file = Files.readAttributes(root.resolve("inputs").resolve(id + ".json"), java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+            CaseInputs.require(file.isRegularFile(), "Unsafe input reference"); return true;
+        } catch (NoSuchFileException e) { return false; }
     }
 
     public Map<String, byte[]> readInputs(String inputId) throws IOException {

@@ -9,7 +9,8 @@ configuration gaps remain incomplete after reopening.
 These are **planning inputs**, not a complete consumer source checkout, dependency
 archive, runnable build, verified runtime configuration or execution permission.
 Only explicitly selected POMs are fetched; modules, parents and arbitrary source
-files are not followed. Durable maintainer jobs remain a separate workflow step.
+files are not followed. A separate [durable planning job](maintainer-jobs.md) can
+refresh a retained snapshot without turning its input ID into an execution grant.
 
 ## Capture and inspect
 
@@ -85,8 +86,9 @@ republished. Orphan objects and `.pending` files are not automatically deleted.
 This is atomic local snapshot publication, not a journal for resuming an
 interrupted GitHub fetch or an unconditional filesystem/power-loss guarantee.
 After process loss without a completed reference, a new capture is a new
-observation. Future durable jobs must retain their selected input ID and own their
-state transitions separately.
+observation. The separate planning job retains its selected input ID and owns its
+state transitions; recovery finalizes an already-published matching snapshot or
+records interruption without repeating the fetch.
 
 ## Revalidation and trust
 

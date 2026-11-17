@@ -558,8 +558,11 @@ entry point does not establish useful coordination or complete Milestone 5.
    separate work. Opt-in [planning input snapshots](migration-input-retention.md)
    now retain selected POM bytes and their configuration binding in the existing
    evidence store, including partial results. Offline reopening revalidates bytes
-   and derived metadata. Complete consumer source bundles and durable maintainer
-   jobs remain separate work.
+   and derived metadata. A [durable planning refresh job](maintainer-jobs.md) now
+   pins an input ID and rechecks the same repository selection through a finite,
+   single-worker queue. Cancellation and local recovery preserve lost read
+   outcomes without automatic network replay. Complete consumer source bundles
+   and execution admission remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

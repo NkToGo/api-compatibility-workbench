@@ -226,11 +226,15 @@ public final class DurableExecution {
         }
     }
     static void publish(Path path, Object value) throws IOException {
+        publishMetadata(path, (CaseInputs.JSON.toJson(value) + "\n").getBytes(StandardCharsets.UTF_8));
+    }
+    /** Low-level forced atomic metadata publication. The caller owns the corresponding journal lease. */
+    public static void publishMetadata(Path path, byte[] value) throws IOException {
         // A deterministic temporary name can be overwritten after a crash while the attempt lease is held.
         Path pending = path.resolveSibling(path.getFileName() + ".pending");
         try (var channel = FileChannel.open(pending, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING,
                 StandardOpenOption.WRITE, LinkOption.NOFOLLOW_LINKS)) {
-            var bytes = ByteBuffer.wrap((CaseInputs.JSON.toJson(value) + "\n").getBytes(StandardCharsets.UTF_8));
+            var bytes = ByteBuffer.wrap(value);
             while (bytes.hasRemaining()) channel.write(bytes);
             channel.force(true);
         }

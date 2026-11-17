@@ -34,11 +34,28 @@ public final class MigrationInputCapture {
         @Override public String toString() { return "Retained[" + summary.inputId() + ", source bytes omitted]"; }
     }
     private MigrationInputCapture() {}
+    public static final class Prepared {
+        private final MigrationConfiguration.Result binding;
+        private final transient Map<String, byte[]> artifacts;
+        private final String inputId;
+        private Prepared(MigrationConfiguration.Result binding, Map<String, byte[]> artifacts) {
+            this.binding = binding; this.artifacts = copy(artifacts); this.inputId = EvidenceStore.inputIdentity(this.artifacts);
+        }
+        public String inputId() { return inputId; }
+        public MigrationConfiguration.Result binding() { return binding; }
+        public Retained publish(EvidenceStore store) throws IOException {
+            require(inputId.equals(store.saveInputs(artifacts))); return reopen(store, inputId);
+        }
+        @Override public String toString() { return "Prepared[" + inputId + ", source bytes omitted]"; }
+    }
     private static Map<String, byte[]> copy(Map<String, byte[]> source) {
         var result = new TreeMap<String, byte[]>(); source.forEach((path, bytes) -> result.put(path, bytes.clone()));
         return Collections.unmodifiableMap(result);
     }
     public static Retained retain(EvidenceStore store, GitHubSourceInventory.Capture capture, MigrationConfiguration.Plan declarations) throws IOException {
+        return prepare(capture, declarations).publish(store);
+    }
+    public static Prepared prepare(GitHubSourceInventory.Capture capture, MigrationConfiguration.Plan declarations) {
         var binding = MigrationConfiguration.bind(capture.inventory(), declarations);
         var artifacts = new TreeMap<String, byte[]>();
         artifacts.put("binding.json", (GitHubJson.JSON.toJson(binding) + "\n").getBytes(StandardCharsets.UTF_8));
@@ -47,8 +64,7 @@ public final class MigrationInputCapture {
             byte[] bytes = poms.get(files.get(i).path()); if (bytes != null) artifacts.put(name(i), bytes);
         }
         validate(artifacts); // Validate the same schema and byte relationships before publication and on every reopen.
-        String id = store.saveInputs(artifacts);
-        return reopen(store, id);
+        return new Prepared(binding, artifacts);
     }
     public static Retained reopen(EvidenceStore store, String inputId) throws IOException {
         var artifacts = store.readInputs(inputId); var binding = validate(artifacts); var poms = new TreeMap<String, byte[]>();

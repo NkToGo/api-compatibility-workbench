@@ -17,15 +17,19 @@ final class GitHubTransport implements AutoCloseable {
     private final URI origin;
     private final Duration timeout;
     private final HttpClient client;
+    private final GitHubSourceInventory.CancellationCheck control;
     GitHubTransport() { this(ORIGIN, Duration.ofSeconds(30)); }
     // Package-private loopback injection for credential-free transport tests only.
     GitHubTransport(URI origin, Duration timeout) {
+        this(origin, timeout, () -> {});
+    }
+    GitHubTransport(URI origin, Duration timeout, GitHubSourceInventory.CancellationCheck control) {
         if (!(origin.equals(ORIGIN) || ("http".equals(origin.getScheme()) && "127.0.0.1".equals(origin.getHost())
                 && origin.getPort() > 0 && origin.getRawUserInfo() == null && origin.getRawQuery() == null
                 && origin.getRawFragment() == null && origin.getRawPath().isEmpty()))
                 || timeout.isNegative() || timeout.isZero() || timeout.compareTo(Duration.ofSeconds(30)) > 0)
             throw new IllegalArgumentException("Unsupported GitHub transport configuration");
-        this.origin = origin; this.timeout = timeout;
+        this.origin = origin; this.timeout = timeout; this.control = java.util.Objects.requireNonNull(control);
         client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NEVER)
                 .proxy(new ProxySelector() {
                     @Override public List<Proxy> select(URI uri) { return List.of(Proxy.NO_PROXY); }
@@ -33,6 +37,7 @@ final class GitHubTransport implements AutoCloseable {
                 }).build();
     }
     HttpResponse<byte[]> send(String method, String path, byte[] body, String credential) throws IOException, InterruptedException {
+        control.check();
         if (!List.of("GET", "POST").contains(method) || !path.startsWith("/") || path.startsWith("//"))
             throw new IllegalArgumentException("Unsupported GitHub request");
         var request = HttpRequest.newBuilder(URI.create(origin.toString() + path)).timeout(timeout)
@@ -41,7 +46,7 @@ final class GitHubTransport implements AutoCloseable {
                 .method(method, body.length == 0 ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofByteArray(body));
         if (body.length > 0) request.header("Content-Type", "application/json");
         var pending = client.sendAsync(request.build(), ignored -> new LimitedBody());
-        try { return pending.get(timeout.toMillis(), TimeUnit.MILLISECONDS); }
+        try { var response = pending.get(timeout.toMillis(), TimeUnit.MILLISECONDS); control.check(); return response; }
         catch (ExecutionException | TimeoutException e) { throw new IOException("GitHub transport did not complete"); }
         finally { if (!pending.isDone()) pending.cancel(true); }
     }

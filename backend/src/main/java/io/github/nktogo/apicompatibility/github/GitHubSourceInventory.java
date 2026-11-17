@@ -67,6 +67,13 @@ public final class GitHubSourceInventory {
             throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
         try (var transport = new GitHubTransport()) { return capture(selection, credentials, plan, transport); }
     }
+    @FunctionalInterface public interface CancellationCheck { void check() throws IOException, InterruptedException; }
+    public Capture capture(GitHubRepositoryConnection.Selection selection, GitHubAppCredentials credentials, Plan plan, CancellationCheck control)
+            throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
+        try (var transport = new GitHubTransport(GitHubTransport.ORIGIN, java.time.Duration.ofSeconds(30), control)) {
+            return capture(selection, credentials, plan, transport);
+        }
+    }
     Capture capture(GitHubRepositoryConnection.Selection selection, GitHubAppCredentials credentials, Plan plan, GitHubTransport transport)
             throws GitHubRepositoryConnection.ConnectionFailure, InterruptedException {
         var poms = new TreeMap<String, byte[]>();

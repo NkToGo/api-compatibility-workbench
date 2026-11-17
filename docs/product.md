@@ -91,7 +91,10 @@ and distributed execution remain future integrations. No current result approves
 Opt-in [planning input retention](migration-input-retention.md) now preserves the
 selected POM bytes and declaration result for offline revalidation. It reuses the
 existing local evidence store without turning snapshots into execution receipts.
-Full consumer source capture and durable maintainer jobs remain planned.
+A [durable planning refresh job](maintainer-jobs.md) now queues a snapshot-bound
+read, requires a matching host repository selection and retains refreshed inputs.
+Cancellation and recovery preserve uncertain reads without automatic replay.
+Full consumer source capture and execution admission remain separate work.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)
 keeps useful-coordination acceptance separate from implemented orchestration.

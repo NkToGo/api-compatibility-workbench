@@ -43,6 +43,10 @@ An opt-in [input capture](docs/migration-input-retention.md) now retains selecte
 POM bytes and the configuration result in the existing evidence store. Reopening
 verifies stored bytes and recomputes the binding offline while preserving gaps.
 These snapshots contain planning inputs, not executable consumer bundles or grants.
+A [durable planning refresh job](docs/maintainer-jobs.md) can now reference one
+snapshot, recheck the same pinned source with current App access and retain a new
+snapshot. A bounded worker supports cancellation and local recovery without
+replaying a lost network outcome. It does not run consumers or models.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

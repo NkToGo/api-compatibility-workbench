@@ -47,6 +47,10 @@ A [durable planning refresh job](docs/maintainer-jobs.md) can now reference one
 snapshot, recheck the same pinned source with current App access and retain a new
 snapshot. A bounded worker supports cancellation and local recovery without
 replaying a lost network outcome. It does not run consumers or models.
+An opt-in [consumer source capture](docs/consumer-source-capture.md) retains the
+ten registered invoice consumer files at the pinned revision. The capture
+reopens offline against its parent planning snapshot and records catalog gaps
+separately from any later execution.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

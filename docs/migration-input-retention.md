@@ -11,6 +11,8 @@ archive, runnable build, verified runtime configuration or execution permission.
 Only explicitly selected POMs are fetched; modules, parents and arbitrary source
 files are not followed. A separate [durable planning job](maintainer-jobs.md) can
 refresh a retained snapshot without turning its input ID into an execution grant.
+For the supported invoice layout, [consumer source capture](consumer-source-capture.md)
+uses one such input as its parent and retains the registered source separately.
 
 ## Capture and inspect
 

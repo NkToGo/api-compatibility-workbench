@@ -7,13 +7,13 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import javax.tools.*;
+import static io.github.nktogo.apicompatibility.runner.InvoiceConsumerSourceCatalog.CORE;
+import static io.github.nktogo.apicompatibility.runner.InvoiceConsumerSourceCatalog.PACKAGE;
 import static io.github.nktogo.apicompatibility.runner.InvoiceRenewalFixtures.*;
 
 /** Compiles only the pinned authored source catalog; never loads consumer classes or executes Maven. */
 final class InvoiceConsumerBuilds {
-    static final String REGISTRATION_SHA256 = "1f74dcacd771d6a9202186fa501e29dc97426c60452887ec42835ccf49463610";
-    private static final String PACKAGE = "io/github/nktogo/invoiceconsumer/";
-    private static final String CORE = "core/src/main/java/" + PACKAGE + "RenewalPolicy.java";
+    static final String REGISTRATION_SHA256 = InvoiceConsumerSourceCatalog.REGISTRATION_SHA256;
     private static final Set<String> ARTIFACTS = Set.of("stripe-java-28.4.0.jar", "stripe-java-28.4.0.pom",
             "stripe-java-29.0.0.jar", "stripe-java-29.0.0.pom", "gson-2.10.1.jar", "gson-2.10.1.pom");
     enum Disposition { SUCCEEDED, FAILED }
@@ -66,8 +66,8 @@ final class InvoiceConsumerBuilds {
     private InvoiceConsumerBuilds() {}
     static Registration load(Path caseRoot) throws IOException {
         var fixtures = InvoiceRenewalRegistry.load(caseRoot); fixtures.requireFullCaseCoverage();
-        Path sourceRoot = caseRoot.resolve("consumer-sources-v1");
-        byte[] index = read(sourceRoot.resolve("build-registration.json"), 262144);
+        Path sourceRoot = caseRoot.resolve(InvoiceConsumerSourceCatalog.DIRECTORY);
+        byte[] index = read(sourceRoot.resolve(InvoiceConsumerSourceCatalog.REGISTRATION), 262144);
         CaseInputs.require(REGISTRATION_SHA256.equals(CaseInputs.hash(index)), "Invoice consumer registration changed");
         var manifest = object(index);
         fields(manifest, "formatVersion", "caseId", "policy", "origin", "stage", "contractIdentity", "fixtureRegistryIdentity", "javaRelease", "files", "artifacts", "builds");
@@ -75,7 +75,9 @@ final class InvoiceConsumerBuilds {
         equal(manifest, "fixtureRegistryIdentity", fixtures.identity());
         CaseInputs.require(CaseInputs.hash(read(caseRoot.resolve("contract-integrity.json"), 262144)).equals(text(manifest, "contractIdentity"))
                 && manifest.get("javaRelease").getAsInt() == 21, "Invoice consumer contract/runtime mismatch");
-        var expectedFiles = fileNames(); var declared = manifest.getAsJsonObject("files");
+        var expectedFiles = new HashSet<>(InvoiceConsumerSourceCatalog.FILES);
+        expectedFiles.remove(InvoiceConsumerSourceCatalog.REGISTRATION);
+        var declared = manifest.getAsJsonObject("files");
         CaseInputs.require(declared.keySet().equals(expectedFiles), "Unexpected invoice consumer source inventory");
         var files = new TreeMap<String, byte[]>(); files.put("build-registration.json", index);
         for (String name : expectedFiles) {
@@ -146,12 +148,6 @@ final class InvoiceConsumerBuilds {
         String role = build.consumerId().equals("invoice-webhook") ? "webhook" : "reconciliation";
         return List.of("pom.xml", "core/pom.xml", role + "/pom.xml", CORE,
                 role + "/src/" + build.sourceTrain() + "/java/" + PACKAGE + (role.equals("webhook") ? "InvoiceWebhookConsumer" : "InvoiceReconciliationConsumer") + ".java");
-    }
-    private static Set<String> fileNames() {
-        var result = new HashSet<>(Set.of("pom.xml", "core/pom.xml", "webhook/pom.xml", "reconciliation/pom.xml", CORE));
-        for (String role : List.of("webhook", "reconciliation")) for (String train : List.of("acacia", "basil"))
-            result.add(role + "/src/" + train + "/java/" + PACKAGE + (role.equals("webhook") ? "InvoiceWebhookConsumer" : "InvoiceReconciliationConsumer") + ".java");
-        return Set.copyOf(result);
     }
     private static void verifyInventory(Path root, Set<String> expected) throws IOException {
         verifyInventory(root, expected, Set.of("target", "core/target", "webhook/target", "reconciliation/target"));

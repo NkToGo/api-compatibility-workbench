@@ -561,8 +561,10 @@ entry point does not establish useful coordination or complete Milestone 5.
    and derived metadata. A [durable planning refresh job](maintainer-jobs.md) now
    pins an input ID and rechecks the same repository selection through a finite,
    single-worker queue. Cancellation and local recovery preserve lost read
-   outcomes without automatic network replay. Complete consumer source bundles
-   and execution admission remain separate work.
+   outcomes without automatic network replay. [Invoice consumer source capture](consumer-source-capture.md)
+   now retains the complete registered base catalog and preserves partial reads
+   and mismatches. The companion adapter, effective runtime configuration and
+   captured-source execution admission remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

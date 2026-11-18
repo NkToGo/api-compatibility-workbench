@@ -96,8 +96,10 @@ read, requires a matching host repository selection and retains refreshed inputs
 Cancellation and recovery preserve uncertain reads without automatic replay.
 A separate [invoice consumer source capture](consumer-source-capture.md) retains
 the two registered consumers and their shared files from the same pinned tree.
-Catalog coverage and parent configuration are shown separately. Execution
-admission for repository captures remains separate work.
+Catalog coverage and parent configuration are shown separately. The
+[invoice capture preflight](invoice-capture-preflight.md) maps a matching capture
+and selected planning snapshot to exact synthetic deliveries and registered builds.
+Protected execution of repository captures remains separate work.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)
 keeps useful-coordination acceptance separate from implemented orchestration.

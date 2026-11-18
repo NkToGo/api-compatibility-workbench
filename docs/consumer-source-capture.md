@@ -75,6 +75,8 @@ capture in the same store. Offline inspection revalidates stored byte hashes,
 Git blob identities, the retained parent binding and the catalog comparison.
 GitHub access and tree traversal are historical observations. Offline inspection
 does not authenticate the remote again or reconstruct the original tree responses.
+The [invoice capture preflight](invoice-capture-preflight.md) can use this
+retained evidence to check the selected plan against the host's synthetic rollout.
 
 The store retains full bytes for selected files that were read, including files
 whose contents differ from the registered digests. Keep it private to the

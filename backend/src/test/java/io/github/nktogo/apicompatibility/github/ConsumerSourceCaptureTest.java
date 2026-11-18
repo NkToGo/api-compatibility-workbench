@@ -15,6 +15,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.UnaryOperator;
 
 import static io.github.nktogo.apicompatibility.github.ConsumerSourceCapture.*;
 import static io.github.nktogo.apicompatibility.github.GitHubRepositoryConnectionTest.*;
@@ -31,13 +32,13 @@ class ConsumerSourceCaptureTest {
 
     @BeforeAll static void appKey() throws Exception { GitHubSourceInventoryTest.key(); }
 
-    private static Map<String, byte[]> sourceFiles() throws Exception {
+    static Map<String, byte[]> sourceFiles() throws Exception {
         var files = new TreeMap<String, byte[]>();
         for (String name : FILES) files.put(name, Files.readAllBytes(Path.of("..", ROOT, name)));
         return files;
     }
 
-    private static void installSources(Fixture fixture, Map<String, byte[]> files) throws Exception {
+    static void installSources(Fixture fixture, Map<String, byte[]> files) throws Exception {
         var root = new Directory();
         root.files.put(OUTSIDE_NAME, OUTSIDE);
         for (var entry : files.entrySet()) {
@@ -49,7 +50,11 @@ class ConsumerSourceCaptureTest {
         install(fixture, root);
     }
 
-    private static String planningInput(Fixture fixture, EvidenceStore store) throws Exception {
+    static String planningInput(Fixture fixture, EvidenceStore store) throws Exception {
+        return planningInput(fixture, store, UnaryOperator.identity());
+    }
+
+    static String planningInput(Fixture fixture, EvidenceStore store, UnaryOperator<MigrationConfiguration.Plan> change) throws Exception {
         var paths = List.of(ROOT + "/pom.xml", ROOT + "/webhook/pom.xml", ROOT + "/reconciliation/pom.xml");
         try (var transport = fixture.transport()) {
             var baseline = new GitHubSourceInventory(CLOCK).capture(SELECTION, sourceCredentials, new GitHubSourceInventory.Plan(1, paths), transport);
@@ -62,11 +67,11 @@ class ConsumerSourceCaptureTest {
                                     MigrationConfigurationTest.baseline(true), MigrationConfigurationTest.target(true)),
                             new MigrationConfiguration.Consumer("invoice-reconciliation", paths.get(2),
                                     MigrationConfigurationTest.baseline(false), MigrationConfigurationTest.target(false))));
-            return MigrationInputCapture.retain(store, baseline, declarations).summary().inputId();
+            return MigrationInputCapture.retain(store, baseline, change.apply(declarations)).summary().inputId();
         }
     }
 
-    private static Summary capture(Fixture fixture, EvidenceStore store, String input) throws Exception {
+    static Summary capture(Fixture fixture, EvidenceStore store, String input) throws Exception {
         try (var transport = fixture.transport()) {
             return new ConsumerSourceCapture(store, CLOCK).capture(input, SELECTION, sourceCredentials, transport);
         }

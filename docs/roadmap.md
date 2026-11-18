@@ -563,8 +563,10 @@ entry point does not establish useful coordination or complete Milestone 5.
    single-worker queue. Cancellation and local recovery preserve lost read
    outcomes without automatic network replay. [Invoice consumer source capture](consumer-source-capture.md)
    now retains the complete registered base catalog and preserves partial reads
-   and mismatches. The companion adapter, effective runtime configuration and
-   captured-source execution admission remain separate work.
+   and mismatches. An [offline preflight](invoice-capture-preflight.md) now checks
+   the capture's exact planning parent and maps matching declarations to
+   registered synthetic deliveries and builds. Companion source capture,
+   effective runtime configuration and authorized execution remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

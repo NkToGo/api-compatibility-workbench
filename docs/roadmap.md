@@ -567,8 +567,11 @@ entry point does not establish useful coordination or complete Milestone 5.
    the capture's exact planning parent and maps matching declarations to
    registered synthetic deliveries and builds. A [protected rollout command](invoice-rollout-delivery.md)
    now executes one matched synthetic reconciliation delivery under separate
-   authorization. Paired rollout execution, companion source capture and
-   effective runtime configuration remain separate work.
+   authorization. An [offline comparison](invoice-rollout-comparison.md) now
+   assesses separately authorized baseline and target reconciliation attempts.
+   It preserves unresolved evidence and limits conclusions to the selected
+   synthetic delivery. Webhook and companion coverage and effective runtime
+   configuration remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

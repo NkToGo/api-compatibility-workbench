@@ -56,6 +56,9 @@ whether the exact capture and planning snapshot match both phases of a registere
 synthetic rollout. It reports the fixture and build identities or the blocking gaps.
 A separately authorized [protected rollout command](docs/invoice-rollout-delivery.md)
 can run one matched synthetic reconciliation delivery and retain its result.
+An [offline rollout comparison](docs/invoice-rollout-comparison.md) assesses
+explicitly selected baseline and target reconciliation attempts and preserves
+missing, failed and inconclusive evidence.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

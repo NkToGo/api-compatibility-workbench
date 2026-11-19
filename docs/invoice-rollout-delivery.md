@@ -73,5 +73,6 @@ unchanged. This step provides no automatic recovery or redispatch. Keep the
 run directory on trusted local storage and restrict access to it and Docker.
 
 This execution uses the synthetic reconciliation fixture and has no provider
-network access. Webhook execution, paired baseline/target comparisons, live
-Stripe evidence and migration approval require separate work.
+network access. Use the [offline rollout comparison](invoice-rollout-comparison.md)
+to assess two separately approved reconciliation attempts. Webhook execution,
+live Stripe evidence and migration approval require separate work.

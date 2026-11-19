@@ -58,3 +58,5 @@ grants or execution records. The assessment always reports
 Effective runtime settings, live Stripe event provenance, worker-image
 validation, authorization, and consumer behavior require their own evidence.
 The preflight reads local case assets but runs neither Maven nor captured code.
+The separate [protected rollout command](invoice-rollout-delivery.md) can
+revalidate a matching capture and run one authorized reconciliation delivery.

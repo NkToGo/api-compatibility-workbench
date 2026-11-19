@@ -54,6 +54,8 @@ separately from any later execution.
 An offline [invoice capture preflight](docs/invoice-capture-preflight.md) checks
 whether the exact capture and planning snapshot match both phases of a registered
 synthetic rollout. It reports the fixture and build identities or the blocking gaps.
+A separately authorized [protected rollout command](docs/invoice-rollout-delivery.md)
+can run one matched synthetic reconciliation delivery and retain its result.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

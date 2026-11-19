@@ -565,8 +565,10 @@ entry point does not establish useful coordination or complete Milestone 5.
    now retains the complete registered base catalog and preserves partial reads
    and mismatches. An [offline preflight](invoice-capture-preflight.md) now checks
    the capture's exact planning parent and maps matching declarations to
-   registered synthetic deliveries and builds. Companion source capture,
-   effective runtime configuration and authorized execution remain separate work.
+   registered synthetic deliveries and builds. A [protected rollout command](invoice-rollout-delivery.md)
+   now executes one matched synthetic reconciliation delivery under separate
+   authorization. Paired rollout execution, companion source capture and
+   effective runtime configuration remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.

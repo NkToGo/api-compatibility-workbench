@@ -27,6 +27,10 @@ final class ExecutionAuthorization {
     }
 
     void revoke() throws IOException {
+        revoke(directory);
+    }
+
+    static void revoke(Path directory) throws IOException {
         try (var file = FileChannel.open(directory.resolve("authorization.revoked"), StandardOpenOption.CREATE_NEW,
                 StandardOpenOption.WRITE, LinkOption.NOFOLLOW_LINKS)) { file.force(true); }
         catch (FileAlreadyExistsException ignored) { /* Revocation is permanent and idempotent. */ }
@@ -53,5 +57,9 @@ final class ExecutionAuthorization {
         catch (RuntimeException e) { return Decision.INVALID; }
     }
 
-    private String permission() { return mode.equals("repair-verification") ? "execute-repair-verification" : "execute-curated-case"; }
+    private String permission() {
+        if (mode.equals("repair-verification")) return "execute-repair-verification";
+        if (mode.startsWith("invoice-rollout-delivery-v1:")) return "execute-invoice-rollout-delivery";
+        return "execute-curated-case";
+    }
 }

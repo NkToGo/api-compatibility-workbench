@@ -58,9 +58,10 @@ final class InvoiceConsumerBuilds {
         }
         String configurationIdentity(String id) {
             var build = build(id);
-            return CaseInputs.identity(Map.of("consumerId", build.consumerId(), "sourceTrain", build.sourceTrain(),
+            // Preview and execution may start separate JVMs. Hash the configuration in a fixed key order.
+            return CaseInputs.identity(new TreeMap<>(Map.of("consumerId", build.consumerId(), "sourceTrain", build.sourceTrain(),
                     "sdkVersion", build.sdkVersion(), "apiVersion", build.apiVersion(), "javaRelease", 21,
-                    "compilerOptions", List.of("--release", "21", "-proc:none", "-encoding", "UTF-8", "-Xlint:all", "-Werror")));
+                    "compilerOptions", List.of("--release", "21", "-proc:none", "-encoding", "UTF-8", "-Xlint:all", "-Werror"))));
         }
     }
     private InvoiceConsumerBuilds() {}

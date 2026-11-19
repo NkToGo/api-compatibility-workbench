@@ -52,10 +52,15 @@ public final class InvoiceCapturePreflight {
         }
     }
     public record Report(String preflightIdentity, Assessment assessment) {}
+    record Checked(Report report, InvoiceCaseCoverage.Plan plan) {}
 
     private InvoiceCapturePreflight() {}
 
     public static Report inspect(EvidenceStore store, Path hostCaseRoot, String inputId, String captureId) throws IOException {
+        return check(store, hostCaseRoot, inputId, captureId).report();
+    }
+
+    static Checked check(EvidenceStore store, Path hostCaseRoot, String inputId, String captureId) throws IOException {
         var capture = new ConsumerSourceCapture(store).inspect(captureId);
         var input = MigrationInputCapture.reopen(store, inputId);
         var binding = input.binding();
@@ -104,7 +109,7 @@ public final class InvoiceCapturePreflight {
         var assessment = new Assessment(1, POLICY, state, inputs, host, findings, binding.issues(), matches,
                 List.of("EFFECTIVE_MAVEN_CONFIGURATION", "LIVE_STRIPE_SETTINGS_AND_EVENT_PROVENANCE",
                         "WORKER_IMAGE_AND_EXECUTION_PERMISSION", "CONSUMER_BEHAVIOR_AND_MIGRATION_APPROVAL"), false);
-        return new Report(CaseInputs.identity(assessment), assessment);
+        return new Checked(new Report(CaseInputs.identity(assessment), assessment), plan);
     }
 
     private static void match(Phase phase, Map<String, MigrationConfiguration.Consumer> consumers,

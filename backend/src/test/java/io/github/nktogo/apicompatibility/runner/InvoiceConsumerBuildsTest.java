@@ -57,6 +57,20 @@ class InvoiceConsumerBuildsTest {
         }
         assertNotEquals(registration.sourceIdentity("webhook-baseline"), registration.sourceIdentity("reconciliation-baseline"));
     }
+    @Test void configurationIdentityUsesAStableFieldOrderAcrossProcesses() throws Exception {
+        var canonical = """
+                {
+                  "apiVersion": "2025-03-31.basil",
+                  "compilerOptions": ["--release", "21", "-proc:none", "-encoding", "UTF-8", "-Xlint:all", "-Werror"],
+                  "consumerId": "invoice-reconciliation",
+                  "javaRelease": 21,
+                  "sdkVersion": "29.0.0",
+                  "sourceTrain": "basil"
+                }
+                """;
+        var expected = CaseInputs.identity(CaseInputs.object(canonical.getBytes(StandardCharsets.UTF_8)));
+        assertEquals(expected, InvoiceConsumerBuilds.load(root()).configurationIdentity("reconciliation-basil-source"));
+    }
     @Test void unknownBuildCannotInvokeCompilerAndCapturedDataCannotBeMutated() throws Exception {
         var registration = InvoiceConsumerBuilds.load(root());
         assertThrows(IllegalArgumentException.class, () -> InvoiceConsumerBuilds.compile(registration, "invented", temporary.resolve("not-created")));

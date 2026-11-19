@@ -1,5 +1,6 @@
 package io.github.nktogo.apicompatibility.github;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.github.nktogo.apicompatibility.compatibility.ComparisonAssessment.Conclusion;
 import io.github.nktogo.apicompatibility.runner.EvidenceStore;
@@ -149,7 +150,8 @@ class InvoiceRolloutDeliveryTest {
     }
 
     private static void write(Path directory, String name, Object value) throws Exception {
-        Files.writeString(directory.resolve(name), GitHubJson.JSON.toJson(value));
+        var journalJson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        Files.writeString(directory.resolve(name), journalJson.toJson(value));
     }
 
     @Test void previewBindsOneDeliveryAndChangedApprovalScopeCannotStartAnAttempt() throws Exception {

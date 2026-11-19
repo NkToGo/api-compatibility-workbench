@@ -2,6 +2,8 @@ package io.github.nktogo.apicompatibility.runner;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import io.github.nktogo.apicompatibility.compatibility.CompatibilityComparison;
 import io.github.nktogo.apicompatibility.compatibility.ComparisonAssessment;
 import io.github.nktogo.apicompatibility.compatibility.ComparisonDefinition;
@@ -226,9 +228,9 @@ public final class InvoiceRolloutComparison {
                                                             InvoiceRenewalOracle.Assertion recorded) {
         require(same(observation, "consumerId", ROLE) && same(observation, "executionStatus", "COMPLETED")
                 && observation.get("protocolInvalid").equals(new JsonPrimitive(false))
-                && expected.json().equals(observation.get("expected")));
+                && expected.equals(fact(observation.get("expected"))));
         var actualValue = observation.get("actual");
-        var actual = actualValue.isJsonNull() ? null : InvoiceRenewalOracle.Fact.parse(actualValue.getAsJsonObject());
+        var actual = actualValue == null || actualValue.isJsonNull() ? null : fact(actualValue);
         boolean bound = actual != null && actual.inputIdentity().equals(expected.inputIdentity())
                 && actual.evidenceIdentity().equals(expected.evidenceIdentity());
         var derived = actual == null ? InvoiceRenewalOracle.Assertion.NOT_EVALUATED
@@ -236,6 +238,15 @@ public final class InvoiceRolloutComparison {
         require(observation.get("identitiesMatch").equals(new JsonPrimitive(bound)) && same(observation, "assertionOutcome", derived.name())
                 && recorded == derived);
         return bound ? derived : InvoiceRenewalOracle.Assertion.NOT_EVALUATED;
+    }
+
+    private static InvoiceRenewalOracle.Fact fact(JsonElement value) {
+        var fact = value.getAsJsonObject().deepCopy();
+        // The journal serializer omits JSON nulls. Restore only the oracle's nullable fields.
+        for (String name : List.of("customerId", "subscriptionId", "effectiveApiVersion", "reason")) {
+            if (!fact.has(name)) fact.add(name, JsonNull.INSTANCE);
+        }
+        return InvoiceRenewalOracle.Fact.parse(fact);
     }
 
     private static ComparisonAssessment compare(InvoiceCapturePreflight.Report preflight, Selected before, Selected after,

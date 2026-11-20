@@ -579,6 +579,10 @@ entry point does not establish useful coordination or complete Milestone 5.
    historical decisions when applicability changes. Remote repository actions
    and their authorization remain separate work.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
+   A [read-only lookup](repair-pull-request-lookup.md) can reconcile a saved
+   publication intent against exact same-repository pull request metadata.
+   Binding verified repair code to a proposed head and authorizing and
+   recording publication remain separate work.
 5. Observe PR/deployment states and support evidence export.
 
 Acceptance: a maintainer completes an authorized supported migration workflow

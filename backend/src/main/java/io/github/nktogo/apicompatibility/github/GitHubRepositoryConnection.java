@@ -1,8 +1,10 @@
 package io.github.nktogo.apicompatibility.github;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.net.http.HttpResponse;
 import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +33,7 @@ public final class GitHubRepositoryConnection {
     public record Snapshot(int formatVersion, long appId, Selection selection, String treeSha,
                            Instant observedAt, Instant tokenExpiresAt, String authority,
                            boolean compatibilityAssessed) {}
-    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB }
+    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS }
     public enum Code { ACCESS_DENIED_OR_RATE_LIMITED, AUTHENTICATION_FAILED, NOT_FOUND_OR_NOT_INSTALLED,
         SCOPE_REJECTED, REDIRECT_REFUSED, PROVIDER_UNAVAILABLE, UNEXPECTED_STATUS,
         INVALID_METADATA, IDENTITY_OR_SCOPE_MISMATCH, TOKEN_EXPIRED, TRANSPORT_INCOMPLETE }
@@ -61,11 +63,19 @@ public final class GitHubRepositoryConnection {
     }
     VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport)
             throws ConnectionFailure, InterruptedException {
+        return openVerified(selection, credentials, transport, null);
+    }
+    VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport,
+                                    Long pullRequestAppId) throws ConnectionFailure, InterruptedException {
         java.util.Objects.requireNonNull(selection, "selection"); java.util.Objects.requireNonNull(credentials, "credentials");
+        boolean readPullRequests = pullRequestAppId != null;
         String jwt = credentials.jwt(clock.instant());
         var app = request(transport, Stage.APP, "GET", "/app", new byte[0], jwt, 200);
         long appId;
-        try { appId = GitHubJson.number(app, "id"); check(appId > 0 && credentials.matches(app), Stage.APP); }
+        try {
+            appId = GitHubJson.number(app, "id");
+            check(appId > 0 && credentials.matches(app) && (!readPullRequests || appId == pullRequestAppId), Stage.APP);
+        }
         catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.APP, 0, null, false); }
 
         var installation = request(transport, Stage.INSTALLATION, "GET", "/app/installations/" + selection.installationId(), new byte[0], jwt, 200);
@@ -81,15 +91,15 @@ public final class GitHubRepositoryConnection {
 
         var tokenRequest = new JsonObject(); tokenRequest.add("repository_ids", GitHubJson.JSON.toJsonTree(List.of(selection.repositoryId())));
         var permissions = new JsonObject(); permissions.addProperty("contents", "read"); permissions.addProperty("metadata", "read");
+        if (readPullRequests) permissions.addProperty("pull_requests", "read");
         tokenRequest.add("permissions", permissions);
         var tokenResponse = request(transport, Stage.TOKEN, "POST", "/app/installations/" + selection.installationId() + "/access_tokens",
                 GitHubJson.JSON.toJson(tokenRequest).getBytes(StandardCharsets.UTF_8), jwt, 201);
         String token; Instant expires;
         try {
             var granted = GitHubJson.object(tokenResponse.get("permissions"));
-            check(granted.has("contents") && GitHubJson.text(granted, "contents").equals("read")
-                    && Set.of("contents", "metadata").containsAll(granted.keySet())
-                    && (!granted.has("metadata") || GitHubJson.text(granted, "metadata").equals("read")), Stage.TOKEN);
+            check(permissions.entrySet().containsAll(granted.entrySet()) && granted.has("contents")
+                    && (!readPullRequests || granted.has("pull_requests")), Stage.TOKEN);
             token = GitHubJson.text(tokenResponse, "token");
             check(token.matches("[-A-Za-z0-9._~+/]{16,8192}={0,2}"), Stage.TOKEN);
             expires = Instant.parse(GitHubJson.text(tokenResponse, "expires_at"));
@@ -117,21 +127,45 @@ public final class GitHubRepositoryConnection {
             check(GitHubJson.text(commit, "sha").equals(selection.commitSha()) && tree.matches("[0-9a-f]{40}"), Stage.REVISION);
             live(expires, Stage.REVISION);
             return new VerifiedRepository(new Snapshot(1, appId, selection, tree, clock.instant(), expires,
-                    "AUTHENTICATED_GITHUB_METADATA", false), token, transport);
+                    "AUTHENTICATED_GITHUB_METADATA", false), token, transport, readPullRequests);
         } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.REVISION, 0, null, false); }
     }
+
+    static final int PULL_REQUEST_PAGE_SIZE = 10;
+    record PullPage(JsonArray items, boolean possiblyTruncated, Instant observedAt) {}
 
     /** Package-private host capability; credentials cannot be serialized into source inventory results. */
     final class VerifiedRepository {
         private final Snapshot snapshot;
         private final String token;
         private final GitHubTransport transport;
-        private VerifiedRepository(Snapshot snapshot, String token, GitHubTransport transport) {
-            this.snapshot = snapshot; this.token = token; this.transport = transport;
+        private final boolean readPullRequests;
+        private VerifiedRepository(Snapshot snapshot, String token, GitHubTransport transport, boolean readPullRequests) {
+            this.snapshot = snapshot; this.token = token; this.transport = transport; this.readPullRequests = readPullRequests;
         }
         Snapshot snapshot() { return snapshot; }
         JsonObject tree(String sha) throws ConnectionFailure, InterruptedException { return read(sha, Stage.SOURCE_TREE, "trees"); }
         JsonObject blob(String sha) throws ConnectionFailure, InterruptedException { return read(sha, Stage.SOURCE_BLOB, "blobs"); }
+        PullPage pullRequests(GitHubPullRequestLookup.Intent intent) throws ConnectionFailure, InterruptedException {
+            Stage stage = Stage.PULL_REQUESTS;
+            if (!readPullRequests || !snapshot.selection().equals(intent.selection()) || snapshot.appId() != intent.appId())
+                throw failed(Code.IDENTITY_OR_SCOPE_MISMATCH, stage, 0, null, false);
+            var selection = snapshot.selection();
+            String head = URLEncoder.encode(selection.owner() + ":" + intent.headRef(), StandardCharsets.UTF_8);
+            String base = URLEncoder.encode(intent.baseRef(), StandardCharsets.UTF_8);
+            String path = selection.path() + "/pulls?state=all&head=" + head + "&base=" + base
+                    + "&per_page=" + PULL_REQUEST_PAGE_SIZE + "&page=1";
+            live(snapshot.tokenExpiresAt(), stage);
+            var response = requestResponse(transport, stage, "GET", path, new byte[0], token, 200);
+            live(snapshot.tokenExpiresAt(), stage);
+            try {
+                var items = GitHubJson.parseArray(response.body(), GitHubTransport.MAX_BYTES);
+                boolean possiblyTruncated = items.size() >= PULL_REQUEST_PAGE_SIZE || response.headers().firstValue("Link").isPresent();
+                return new PullPage(items, possiblyTruncated, clock.instant());
+            } catch (RuntimeException e) {
+                throw failed(Code.INVALID_METADATA, stage, 200, null, false);
+            }
+        }
         private JsonObject read(String sha, Stage stage, String kind) throws ConnectionFailure, InterruptedException {
             if (sha == null || !sha.matches("[0-9a-f]{40}")) throw new IllegalArgumentException("Invalid Git object identity");
             live(snapshot.tokenExpiresAt(), stage);
@@ -150,6 +184,17 @@ public final class GitHubRepositoryConnection {
     }
     private JsonObject request(GitHubTransport transport, Stage stage, String method, String path, byte[] body, String credential, int expected)
             throws ConnectionFailure, InterruptedException {
+        var response = requestResponse(transport, stage, method, path, body, credential, expected);
+        try {
+            return GitHubJson.parse(response.body(), GitHubTransport.MAX_BYTES);
+        } catch (RuntimeException e) {
+            throw failed(Code.INVALID_METADATA, stage, expected, null, stage == Stage.TOKEN);
+        }
+    }
+
+    private HttpResponse<byte[]> requestResponse(GitHubTransport transport, Stage stage, String method, String path,
+                                                 byte[] body, String credential, int expected)
+            throws ConnectionFailure, InterruptedException {
         HttpResponse<byte[]> response;
         try { response = transport.send(method, path, body, credential); }
         catch (IOException e) { throw failed(Code.TRANSPORT_INCOMPLETE, stage, 0, null, stage == Stage.TOKEN); }
@@ -166,12 +211,10 @@ public final class GitHubRepositoryConnection {
             throw failed(code, stage, status, retryTime(response, status), stage == Stage.TOKEN
                     && !Set.of(401, 403, 404, 422, 429).contains(status));
         }
-        try {
-            String type = response.headers().firstValue("Content-Type").orElse("").split(";", 2)[0].strip();
-            if (!type.equalsIgnoreCase("application/json") && !type.equalsIgnoreCase("application/vnd.github+json"))
-                throw new IllegalArgumentException();
-            return GitHubJson.parse(response.body(), GitHubTransport.MAX_BYTES);
-        } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, stage, status, null, stage == Stage.TOKEN); }
+        String type = response.headers().firstValue("Content-Type").orElse("").split(";", 2)[0].strip();
+        if (!type.equalsIgnoreCase("application/json") && !type.equalsIgnoreCase("application/vnd.github+json"))
+            throw failed(Code.INVALID_METADATA, stage, status, null, stage == Stage.TOKEN);
+        return response;
     }
     private Instant retryTime(HttpResponse<?> response, int status) {
         if (status != 403 && status != 429 && status < 500) return null;
@@ -196,12 +239,14 @@ public final class GitHubRepositoryConnection {
         if (!Files.isRegularFile(file, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("Invalid selection file");
         try (var channel = Files.newByteChannel(file, Set.of(StandardOpenOption.READ, LinkOption.NOFOLLOW_LINKS));
              var stream = Channels.newInputStream(channel)) {
-            var o = GitHubJson.parse(stream.readNBytes(8193), 8192);
-            GitHubJson.fields(o, "formatVersion", "installationId", "accountId", "repositoryId", "owner", "name", "commitSha");
-            GitHubJson.require(GitHubJson.number(o, "formatVersion") == 1);
-            return new Selection(1, GitHubJson.number(o, "installationId"), GitHubJson.number(o, "accountId"),
-                    GitHubJson.number(o, "repositoryId"), GitHubJson.text(o, "owner"), GitHubJson.text(o, "name"), GitHubJson.text(o, "commitSha"));
+            return parseSelection(GitHubJson.parse(stream.readNBytes(8193), 8192));
         }
+    }
+    static Selection parseSelection(JsonObject o) {
+        GitHubJson.fields(o, "formatVersion", "installationId", "accountId", "repositoryId", "owner", "name", "commitSha");
+        GitHubJson.require(GitHubJson.number(o, "formatVersion") == 1);
+        return new Selection(1, GitHubJson.number(o, "installationId"), GitHubJson.number(o, "accountId"),
+                GitHubJson.number(o, "repositoryId"), GitHubJson.text(o, "owner"), GitHubJson.text(o, "name"), GitHubJson.text(o, "commitSha"));
     }
     public static void main(String[] args) {
         if (args.length != 1) { System.err.println("Usage: GitHubRepositoryConnection SELECTION_JSON"); System.exit(2); return; }

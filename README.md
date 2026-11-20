@@ -63,6 +63,9 @@ A [local review decision](docs/invoice-rollout-review.md) records acceptance of
 the bounded no-regression result or a hold, tied to the exact evidence examined.
 Rechecking against the current selection preserves history and detects stale
 decisions.
+A [repair pull request lookup](docs/repair-pull-request-lookup.md) checks GitHub
+metadata for an exact match to a local publication intent. It keeps empty,
+conflicting and incomplete results distinct.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

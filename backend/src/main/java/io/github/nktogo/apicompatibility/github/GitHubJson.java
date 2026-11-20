@@ -17,10 +17,18 @@ final class GitHubJson {
                     (value, type, context) -> new JsonPrimitive(value.toString())).create();
     private GitHubJson() {}
     static JsonObject parse(byte[] bytes, int limit) {
+        return object(document(bytes, limit));
+    }
+    static JsonArray parseArray(byte[] bytes, int limit) {
+        var result = document(bytes, limit);
+        require(result.isJsonArray());
+        return result.getAsJsonArray();
+    }
+    private static JsonElement document(byte[] bytes, int limit) {
         require(bytes.length > 0 && bytes.length <= limit);
         try (var reader = new JsonReader(new StringReader(StandardCharsets.UTF_8.newDecoder().decode(ByteBuffer.wrap(bytes)).toString()))) {
             reader.setStrictness(Strictness.STRICT);
-            var result = object(element(reader, 0)); require(reader.peek() == JsonToken.END_DOCUMENT); return result;
+            var result = element(reader, 0); require(reader.peek() == JsonToken.END_DOCUMENT); return result;
         } catch (IOException | RuntimeException e) { throw new IllegalArgumentException("Invalid GitHub metadata"); }
     }
     static JsonObject object(JsonElement value) { require(value != null && value.isJsonObject()); return value.getAsJsonObject(); }

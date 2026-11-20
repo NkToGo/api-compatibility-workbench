@@ -59,6 +59,10 @@ can run one matched synthetic reconciliation delivery and retain its result.
 An [offline rollout comparison](docs/invoice-rollout-comparison.md) assesses
 explicitly selected baseline and target reconciliation attempts and preserves
 missing, failed and inconclusive evidence.
+A [local review decision](docs/invoice-rollout-review.md) records acceptance of
+the bounded no-regression result or a hold, tied to the exact evidence examined.
+Rechecking against the current selection preserves history and detects stale
+decisions.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

@@ -20,8 +20,11 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import static io.github.nktogo.apicompatibility.runner.InvoiceCapturePreflight.Phase;
 
@@ -50,6 +53,12 @@ public final class InvoiceRolloutComparison {
             blockers = List.copyOf(blockers);
         }
     }
+    public record ReviewEvidence(Report comparison, Map<String, String> baselineFiles, Map<String, String> targetFiles) {
+        public ReviewEvidence {
+            baselineFiles = Collections.unmodifiableMap(new TreeMap<>(baselineFiles));
+            targetFiles = Collections.unmodifiableMap(new TreeMap<>(targetFiles));
+        }
+    }
     private record Selected(InvoiceCapturePreflight.PhaseMatch match, InvoiceCapturePreflight.Delivery delivery,
                             InvoiceBusinessCoverage.Entry entry) {}
     private record Checked(Side side, InvoiceRenewalOracle.Assertion assertion) {}
@@ -67,11 +76,18 @@ public final class InvoiceRolloutComparison {
 
     public static Report inspect(EvidenceStore store, Path caseRoot, Path runs, String inputId, String captureId,
                                  String baselineId, String targetId) throws IOException {
+        return reviewEvidence(store, caseRoot, runs, inputId, captureId, baselineId, targetId).comparison();
+    }
+
+    static ReviewEvidence reviewEvidence(EvidenceStore store, Path caseRoot, Path runs, String inputId, String captureId,
+                                         String baselineId, String targetId) throws IOException {
         validateRunId(baselineId);
         validateRunId(targetId);
         CaseInputs.require(baselineId == null || !baselineId.equals(targetId), "Select separate attempts");
         var preflight = InvoiceCapturePreflight.check(store, caseRoot, inputId, captureId);
         var blockers = new ArrayList<Blocker>();
+        var baselineFiles = new TreeMap<String, String>();
+        var targetFiles = new TreeMap<String, String>();
         var baseline = unavailable(Phase.BASELINE, baselineId, baselineId == null ? ReceiptState.UNSELECTED : ReceiptState.NOT_CHECKED);
         var target = unavailable(Phase.TARGET, targetId, targetId == null ? ReceiptState.UNSELECTED : ReceiptState.NOT_CHECKED);
         ComparisonAssessment assessment = null;
@@ -80,8 +96,8 @@ public final class InvoiceRolloutComparison {
         } else {
             var before = select(preflight, Phase.BASELINE);
             var after = select(preflight, Phase.TARGET);
-            baseline = read(runs, baselineId, preflight.report(), before);
-            target = read(runs, targetId, preflight.report(), after);
+            baseline = read(runs, baselineId, preflight.report(), before, baselineFiles);
+            target = read(runs, targetId, preflight.report(), after, targetFiles);
             if (baseline.side().state() != ReceiptState.RECORDED || target.side().state() != ReceiptState.RECORDED) {
                 blockers.add(Blocker.RECEIPT_UNAVAILABLE);
             }
@@ -104,8 +120,9 @@ public final class InvoiceRolloutComparison {
             }
         }
         var conclusion = assessment == null ? ComparisonAssessment.Conclusion.UNRESOLVED : assessment.conclusion();
-        return new Report(1, "TRUSTED_LOCAL_SYNTHETIC_ROLLOUT", preflight.report().preflightIdentity(), inputId, captureId,
+        var report = new Report(1, "TRUSTED_LOCAL_SYNTHETIC_ROLLOUT", preflight.report().preflightIdentity(), inputId, captureId,
                 baseline.side(), target.side(), preflight.report().assessment().findings(), blockers, conclusion, assessment);
+        return new ReviewEvidence(report, baselineFiles, targetFiles);
     }
 
     private static Selected select(InvoiceCapturePreflight.Checked preflight, Phase phase) {
@@ -117,7 +134,8 @@ public final class InvoiceRolloutComparison {
         return new Selected(match, delivery, entry);
     }
 
-    private static Checked read(Path runs, String runId, InvoiceCapturePreflight.Report preflight, Selected selected) {
+    private static Checked read(Path runs, String runId, InvoiceCapturePreflight.Report preflight, Selected selected,
+                                Map<String, String> evidence) {
         Phase phase = selected.match().phase();
         if (runId == null) return unavailable(phase, null, ReceiptState.UNSELECTED);
         var directory = runs.toAbsolutePath().normalize().resolve(runId);
@@ -128,9 +146,9 @@ public final class InvoiceRolloutComparison {
                 return unavailable(phase, runId, ReceiptState.MISSING_ATTEMPT);
             }
             ConsumerTasks.directory(directory);
-            JsonObject scopeRecord = readOptional(directory.resolve("scope.json"));
+            JsonObject scopeRecord = readOptional(directory.resolve("scope.json"), evidence);
             if (scopeRecord == null) {
-                require(readOptional(directory.resolve("result.json")) == null);
+                require(readOptional(directory.resolve("result.json"), evidence) == null);
                 return unavailable(phase, runId, ReceiptState.INCOMPLETE_ATTEMPT);
             }
             var preview = CaseInputs.JSON.fromJson(scopeRecord, InvoiceRolloutDelivery.Preview.class);
@@ -139,9 +157,9 @@ public final class InvoiceRolloutComparison {
             if (!matchesScope(preview.scope(), preflight, selected, runId)) {
                 return unavailable(phase, runId, ReceiptState.SCOPE_MISMATCH);
             }
-            byte[] receipt = bytesOptional(directory.resolve("result.json"));
+            byte[] receipt = bytesOptional(directory.resolve("result.json"), evidence);
             if (receipt == null) return unavailable(phase, runId, ReceiptState.INCOMPLETE_ATTEMPT);
-            return checkReceipt(directory, preview, receipt, selected);
+            return checkReceipt(directory, preview, receipt, selected, evidence);
         } catch (IOException | RuntimeException invalid) {
             return unavailable(phase, runId, ReceiptState.INVALID_RECORD);
         }
@@ -159,7 +177,8 @@ public final class InvoiceRolloutComparison {
                 && isDigest(scope.runtimeIdentity()) && scope.deadlineSeconds() == 30 && scope.authorizationSeconds() == 120;
     }
 
-    private static Checked checkReceipt(Path directory, InvoiceRolloutDelivery.Preview preview, byte[] bytes, Selected selected) throws IOException {
+    private static Checked checkReceipt(Path directory, InvoiceRolloutDelivery.Preview preview, byte[] bytes,
+                                        Selected selected, Map<String, String> evidence) throws IOException {
         var receipt = InvoiceRenewalFixtures.object(bytes);
         var result = CaseInputs.JSON.fromJson(receipt, InvoiceRolloutDelivery.Result.class);
         var execution = receipt.get("protectedExecution");
@@ -177,7 +196,7 @@ public final class InvoiceRolloutComparison {
         if (result.status().equals("COMPLETED")) {
             require(execution != null && execution.isJsonObject() && Boolean.TRUE.equals(result.containerRemoved())
                     && result.authorizationDecision().equals("ALLOWED"));
-            String container = verifyDispatch(directory, preview);
+            String container = verifyDispatch(directory, preview, evidence);
             var record = execution.getAsJsonObject();
             var delivery = scope.delivery();
             require(record.get("formatVersion").equals(new JsonPrimitive(1))
@@ -196,17 +215,18 @@ public final class InvoiceRolloutComparison {
         } else {
             require(recorded == InvoiceRenewalOracle.Assertion.NOT_EVALUATED);
         }
-        var side = new Side(scope.phase(), scope.runId(), ReceiptState.RECORDED, preview.scopeIdentity(), CaseInputs.hash(bytes),
+        var side = new Side(scope.phase(), scope.runId(), ReceiptState.RECORDED, preview.scopeIdentity(), evidence.get("result.json"),
                 result.status(), recorded.name(), assertion.name(), result.authorizationDecision(),
                 result.containerRemoved(), scope.imageId(), scope.runtimeIdentity(), sandbox);
         return new Checked(side, assertion);
     }
 
-    private static String verifyDispatch(Path directory, InvoiceRolloutDelivery.Preview preview) throws IOException {
+    private static String verifyDispatch(Path directory, InvoiceRolloutDelivery.Preview preview,
+                                         Map<String, String> evidence) throws IOException {
         var scope = preview.scope();
-        var grant = readOptional(directory.resolve("authorization.json"));
-        var started = readOptional(directory.resolve("started.json"));
-        var admission = readOptional(directory.resolve("admission.json"));
+        var grant = readOptional(directory.resolve("authorization.json"), evidence);
+        var started = readOptional(directory.resolve("started.json"), evidence);
+        var admission = readOptional(directory.resolve("admission.json"), evidence);
         require(grant != null && started != null && admission != null);
         require(grant.get("formatVersion").equals(new JsonPrimitive(1))
                 && same(grant, "runId", scope.runId()) && same(grant, "imageId", scope.imageId())
@@ -291,12 +311,12 @@ public final class InvoiceRolloutComparison {
                 InvoiceRenewalOracle.Assertion.NOT_EVALUATED);
     }
 
-    private static JsonObject readOptional(Path path) throws IOException {
-        byte[] bytes = bytesOptional(path);
+    private static JsonObject readOptional(Path path, Map<String, String> evidence) throws IOException {
+        byte[] bytes = bytesOptional(path, evidence);
         return bytes == null ? null : InvoiceRenewalFixtures.object(bytes);
     }
 
-    private static byte[] bytesOptional(Path path) throws IOException {
+    private static byte[] bytesOptional(Path path, Map<String, String> evidence) throws IOException {
         try {
             require(Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS).isRegularFile());
         } catch (NoSuchFileException absent) {
@@ -305,6 +325,7 @@ public final class InvoiceRolloutComparison {
         try (var stream = Files.newInputStream(path, LinkOption.NOFOLLOW_LINKS)) {
             byte[] bytes = stream.readNBytes(65537);
             require(bytes.length <= 65536);
+            evidence.put(path.getFileName().toString(), CaseInputs.hash(bytes));
             return bytes;
         }
     }
@@ -315,7 +336,7 @@ public final class InvoiceRolloutComparison {
 
     private static ContentDigest digest(Object value) { return new ContentDigest(CaseInputs.identity(value)); }
     private static boolean isDigest(String value) { return value != null && value.matches("[0-9a-f]{64}"); }
-    private static void validateRunId(String runId) {
+    static void validateRunId(String runId) {
         CaseInputs.require(runId == null || runId.matches("acw-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"),
                 "Invalid rollout attempt ID");
     }

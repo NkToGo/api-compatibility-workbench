@@ -6,6 +6,7 @@ import io.github.nktogo.apicompatibility.compatibility.ComparisonAssessment.Conc
 import io.github.nktogo.apicompatibility.runner.EvidenceStore;
 import io.github.nktogo.apicompatibility.runner.InvoiceRolloutComparison;
 import io.github.nktogo.apicompatibility.runner.InvoiceRolloutDelivery;
+import io.github.nktogo.apicompatibility.runner.InvoiceRolloutReview;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.UUID;
 
@@ -51,6 +53,67 @@ class InvoiceRolloutDeliveryTest {
     private InvoiceRolloutComparison.Report compare(Setup test, String baseline, String target) throws Exception {
         return InvoiceRolloutComparison.inspect(new EvidenceStore(temporary.resolve("evidence")),
                 CASE_ROOT, test.runs(), test.input(), test.capture(), baseline, target);
+    }
+
+    private InvoiceRolloutReview reviews(Setup test) throws Exception {
+        return new InvoiceRolloutReview(new EvidenceStore(temporary.resolve("evidence")), CASE_ROOT, test.runs());
+    }
+
+    @Test void retainedReviewBindsJournalBytesEvenWhenComparisonIsUnchanged() throws Exception {
+        var test = prepare(false);
+        var baseline = test.runner().preview(test.input(), test.capture(), BASELINE, SAMPLE_IMAGE, attempt());
+        var target = test.runner().preview(test.input(), test.capture(), TARGET, SAMPLE_IMAGE, attempt());
+        retain(test, baseline, true);
+        retain(test, target, true);
+        var selection = new InvoiceRolloutReview.Selection(test.input(), test.capture(), baseline.scope().runId(), target.scope().runId());
+        var reviewer = reviews(test);
+        var reviewed = reviewer.preview(selection);
+        var accepted = reviewer.record(selection, reviewed.evidenceIdentity(), InvoiceRolloutReview.Disposition.ACCEPT_NO_REGRESSION);
+        assertEquals(accepted, reviewer.record(selection, reviewed.evidenceIdentity(), InvoiceRolloutReview.Disposition.ACCEPT_NO_REGRESSION));
+        assertEquals(accepted, reviews(test).reopen(accepted.reviewId()));
+        assertEquals(InvoiceRolloutReview.State.CURRENT, reviews(test).check(accepted.reviewId(), selection).state());
+
+        var admission = test.runs().resolve(selection.targetRunId()).resolve("admission.json");
+        Files.writeString(admission, "\n", StandardOpenOption.APPEND);
+        var stale = reviewer.check(accepted.reviewId(), selection);
+        assertEquals(InvoiceRolloutReview.State.STALE, stale.state());
+        assertEquals(reviewed.evidence().comparison(), stale.current().evidence().comparison());
+        assertNotEquals(reviewed.evidence().targetFiles().get("admission.json"), stale.current().evidence().targetFiles().get("admission.json"));
+        assertEquals(accepted, stale.historical());
+        assertThrows(IllegalArgumentException.class,
+                () -> reviewer.record(selection, reviewed.evidenceIdentity(), InvoiceRolloutReview.Disposition.ACCEPT_NO_REGRESSION));
+
+        var unavailable = new InvoiceRolloutReview.Selection("0".repeat(64), test.capture(), selection.baselineRunId(), selection.targetRunId());
+        var missing = reviewer.check(accepted.reviewId(), unavailable);
+        assertEquals(InvoiceRolloutReview.State.CURRENT_EVIDENCE_UNAVAILABLE, missing.state());
+        assertEquals(accepted, missing.historical());
+        assertNull(missing.current());
+    }
+
+    @Test void acceptsOnlyPassingEvidenceAndRetainsAHoldAfterMissingEvidenceArrives() throws Exception {
+        var test = prepare(false);
+        var baseline = test.runner().preview(test.input(), test.capture(), BASELINE, SAMPLE_IMAGE, attempt());
+        var target = test.runner().preview(test.input(), test.capture(), TARGET, SAMPLE_IMAGE, attempt());
+        retain(test, baseline, true);
+        var selection = new InvoiceRolloutReview.Selection(test.input(), test.capture(), baseline.scope().runId(), target.scope().runId());
+        var reviewer = reviews(test);
+        var pending = reviewer.preview(selection);
+        assertEquals(Conclusion.UNRESOLVED, pending.evidence().comparison().conclusion());
+        assertThrows(IllegalArgumentException.class,
+                () -> reviewer.record(selection, pending.evidenceIdentity(), InvoiceRolloutReview.Disposition.ACCEPT_NO_REGRESSION));
+        assertFalse(Files.exists(temporary.resolve("evidence/invoice-rollout-reviews")));
+        var hold = reviewer.record(selection, pending.evidenceIdentity(), InvoiceRolloutReview.Disposition.HOLD);
+        assertEquals(InvoiceRolloutReview.State.CURRENT, reviewer.check(hold.reviewId(), selection).state());
+
+        retain(test, target, false);
+        var updated = reviewer.check(hold.reviewId(), selection);
+        assertEquals(InvoiceRolloutReview.State.STALE, updated.state());
+        assertEquals(hold, updated.historical());
+        assertEquals(Conclusion.REGRESSION_OBSERVED, updated.current().evidence().comparison().conclusion());
+        assertThrows(IllegalArgumentException.class, () -> reviewer.record(selection, updated.current().evidenceIdentity(),
+                InvoiceRolloutReview.Disposition.ACCEPT_NO_REGRESSION));
+        var changed = new InvoiceRolloutReview.Selection(test.input(), test.capture(), selection.baselineRunId(), attempt());
+        assertEquals(InvoiceRolloutReview.State.STALE, reviewer.check(hold.reviewId(), changed).state());
     }
 
     @Test void comparisonPreservesMissingInterruptedAndWrongPhaseSelections() throws Exception {
@@ -228,6 +291,11 @@ class InvoiceRolloutDeliveryTest {
         assertEquals(Conclusion.NO_REGRESSION_OBSERVED, pair.conclusion(), pair.toString());
         assertEquals("PASSED", pair.baseline().checkedAssertion());
         assertEquals("PASSED", pair.target().checkedAssertion());
+        var selection = new InvoiceRolloutReview.Selection(test.input(), test.capture(), baselineId, id);
+        var reviewer = reviews(test);
+        var preview = reviewer.preview(selection);
+        var decision = reviewer.record(selection, preview.evidenceIdentity(), InvoiceRolloutReview.Disposition.ACCEPT_NO_REGRESSION);
+        assertEquals(InvoiceRolloutReview.State.CURRENT, reviews(test).check(decision.reviewId(), selection).state());
         assertArrayEquals(original, Files.readAllBytes(directory.resolve("result.json")));
     }
 }

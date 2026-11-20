@@ -573,6 +573,11 @@ entry point does not establish useful coordination or complete Milestone 5.
    synthetic delivery. Webhook and companion coverage and effective runtime
    configuration remain separate work.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
+   A [local invoice review](invoice-rollout-review.md) records acceptance of a
+   bounded no-regression result or a hold for a selected rollout comparison.
+   It rechecks the supplied inputs and exact journal evidence and preserves
+   historical decisions when applicability changes. Remote repository actions
+   and their authorization remain separate work.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
 5. Observe PR/deployment states and support evidence export.
 

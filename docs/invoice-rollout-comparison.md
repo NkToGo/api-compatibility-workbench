@@ -46,3 +46,6 @@ bindings and identify the bytes assessed. They do not authenticate records
 copied from outside the operator's trust boundary. A grant that expired or was
 revoked after completion does not rewrite a result. This assessment covers one
 synthetic reconciliation delivery and does not approve a deployment.
+
+Use the [local invoice review](invoice-rollout-review.md) to record a maintainer
+decision bound to the exact comparison and check whether it still applies.

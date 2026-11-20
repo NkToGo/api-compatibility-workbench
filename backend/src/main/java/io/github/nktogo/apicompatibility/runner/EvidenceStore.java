@@ -33,6 +33,14 @@ public final class EvidenceStore {
         return saveSnapshot(SnapshotKind.CONSUMER, source, () -> {});
     }
 
+    String saveInvoiceRolloutReview(byte[] review) throws IOException {
+        return saveSnapshot(SnapshotKind.INVOICE_REVIEW, Map.of("review.json", review), () -> {});
+    }
+
+    byte[] readInvoiceRolloutReview(String id) throws IOException {
+        return readSnapshot(SnapshotKind.INVOICE_REVIEW, id).get("review.json");
+    }
+
     private synchronized String saveSnapshot(SnapshotKind kind, Map<String, byte[]> source, BeforePublish beforePublish) throws IOException {
         var captured = new TreeMap<String, byte[]>(); source.forEach((name, bytes) -> captured.put(name, bytes.clone()));
         byte[] encoded = inputManifest(kind, captured); String hash = CaseInputs.hash(encoded);
@@ -118,7 +126,8 @@ public final class EvidenceStore {
     }
     private enum SnapshotKind {
         PLANNING("inputs", "selected-poms-and-declarations-v1", "binding.json", "pom-[0-7]\\.bin", 9, MAX_BYTES),
-        CONSUMER("consumer-sources", "invoice-consumer-sources-v1", "capture.json", "source-[0-9]\\.bin", 11, 65536);
+        CONSUMER("consumer-sources", "invoice-consumer-sources-v1", "capture.json", "source-[0-9]\\.bin", 11, 65536),
+        INVOICE_REVIEW("invoice-rollout-reviews", "invoice-rollout-review-v1", "review.json", "(?!)", 1, 65536);
 
         final String directory, retention, metadata, binaryPattern;
         final int maxFiles, metadataLimit;

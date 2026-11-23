@@ -41,7 +41,9 @@ The command reads local Git objects by their exact IDs with replacement
 objects and lazy fetching disabled. Uncommitted edits are irrelevant to
 this check. The result establishes source and tree correspondence for the
 supported synthetic case. GitHub repository identity, current remote branch
-tips, maintainer authorization, and publication are checked separately.
+tips, maintainer authorization, and publication are checked separately. Use the
+[repair branch check](repair-branch-check.md) to compare a reviewed binding with
+GitHub when the branches are available.
 GitHub access and model calls are unnecessary for this command.
 [Git object reads](https://git-scm.com/docs/git-cat-file)
 

@@ -33,7 +33,7 @@ public final class GitHubRepositoryConnection {
     public record Snapshot(int formatVersion, long appId, Selection selection, String treeSha,
                            Instant observedAt, Instant tokenExpiresAt, String authority,
                            boolean compatibilityAssessed) {}
-    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS }
+    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS, BRANCH_REF }
     public enum Code { ACCESS_DENIED_OR_RATE_LIMITED, AUTHENTICATION_FAILED, NOT_FOUND_OR_NOT_INSTALLED,
         SCOPE_REJECTED, REDIRECT_REFUSED, PROVIDER_UNAVAILABLE, UNEXPECTED_STATUS,
         INVALID_METADATA, IDENTITY_OR_SCOPE_MISMATCH, TOKEN_EXPIRED, TRANSPORT_INCOMPLETE }
@@ -63,18 +63,17 @@ public final class GitHubRepositoryConnection {
     }
     VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport)
             throws ConnectionFailure, InterruptedException {
-        return openVerified(selection, credentials, transport, null);
+        return openVerified(selection, credentials, transport, null, false);
     }
     VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport,
-                                    Long pullRequestAppId) throws ConnectionFailure, InterruptedException {
+                                    Long expectedAppId, boolean readPullRequests) throws ConnectionFailure, InterruptedException {
         java.util.Objects.requireNonNull(selection, "selection"); java.util.Objects.requireNonNull(credentials, "credentials");
-        boolean readPullRequests = pullRequestAppId != null;
         String jwt = credentials.jwt(clock.instant());
         var app = request(transport, Stage.APP, "GET", "/app", new byte[0], jwt, 200);
         long appId;
         try {
             appId = GitHubJson.number(app, "id");
-            check(appId > 0 && credentials.matches(app) && (!readPullRequests || appId == pullRequestAppId), Stage.APP);
+            check(appId > 0 && credentials.matches(app) && (expectedAppId == null || appId == expectedAppId), Stage.APP);
         }
         catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.APP, 0, null, false); }
 
@@ -133,6 +132,7 @@ public final class GitHubRepositoryConnection {
 
     static final int PULL_REQUEST_PAGE_SIZE = 10;
     record PullPage(JsonArray items, boolean possiblyTruncated, Instant observedAt) {}
+    record BranchTip(String sha, Instant observedAt) {}
 
     /** Package-private host capability; credentials cannot be serialized into source inventory results. */
     final class VerifiedRepository {
@@ -146,6 +146,24 @@ public final class GitHubRepositoryConnection {
         Snapshot snapshot() { return snapshot; }
         JsonObject tree(String sha) throws ConnectionFailure, InterruptedException { return read(sha, Stage.SOURCE_TREE, "trees"); }
         JsonObject blob(String sha) throws ConnectionFailure, InterruptedException { return read(sha, Stage.SOURCE_BLOB, "blobs"); }
+        BranchTip branchTip(String branch) throws ConnectionFailure, InterruptedException {
+            GitHubJson.require(GitHubPullRequestLookup.validBranch(branch));
+            Stage stage = Stage.BRANCH_REF;
+            live(snapshot.tokenExpiresAt(), stage);
+            // The branch grammar allows slashes in names and excludes URI escapes and traversal.
+            var reference = request(transport, stage, "GET", snapshot.selection().path() + "/git/ref/heads/" + branch,
+                    new byte[0], token, 200);
+            live(snapshot.tokenExpiresAt(), stage);
+            try {
+                var object = GitHubJson.object(reference.get("object"));
+                String sha = GitHubJson.text(object, "sha");
+                GitHubJson.require(GitHubJson.text(reference, "ref").equals("refs/heads/" + branch)
+                        && GitHubJson.text(object, "type").equals("commit") && sha.matches("[0-9a-f]{40}"));
+                return new BranchTip(sha, clock.instant());
+            } catch (RuntimeException e) {
+                throw failed(Code.INVALID_METADATA, stage, 200, null, false);
+            }
+        }
         PullPage pullRequests(GitHubPullRequestLookup.Intent intent) throws ConnectionFailure, InterruptedException {
             Stage stage = Stage.PULL_REQUESTS;
             if (!readPullRequests || !snapshot.selection().equals(intent.selection()) || snapshot.appId() != intent.appId())

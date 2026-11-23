@@ -69,6 +69,8 @@ conflicting and incomplete results distinct.
 A [local repair commit check](docs/repair-commit-binding.md) confirms that the
 proposed subscription repair commit changes only the adapter and matches the
 bytes covered by retained verification evidence.
+A [read-only repair branch check](docs/repair-branch-check.md) verifies that
+GitHub points both selected branches to the commits covered by that binding.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

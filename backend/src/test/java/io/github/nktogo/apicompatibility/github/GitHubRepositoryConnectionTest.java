@@ -53,6 +53,7 @@ class GitHubRepositoryConnectionTest {
         final Map<String, String> faultHeaders = new HashMap<>();
         boolean holdBody;
         Runnable afterScope = () -> {};
+        java.util.function.Consumer<String> afterHeaders = path -> {};
         Fixture() throws Exception {
             replies.put("/app", json("{\"id\":10,\"client_id\":\"Iv1.fixture\"}"));
             replies.put(INSTALLATION, json("{\"id\":20,\"app_id\":10,\"account\":{\"id\":30,\"login\":\"sample-owner\"},\"repository_selection\":\"selected\",\"suspended_at\":null}"));
@@ -71,6 +72,7 @@ class GitHubRepositoryConnectionTest {
                     if (fault) faultHeaders.forEach((name, value) -> exchange.getResponseHeaders().set(name, value));
                     exchange.sendResponseHeaders(fault ? faultStatus : path.equals(MINT) ? 201 : 200, bytes.length);
                     if (path.equals(SCOPE)) afterScope.run();
+                    afterHeaders.accept(path);
                     if (fault && holdBody) try { releaseBody.await(); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
                     try { exchange.getResponseBody().write(bytes); } catch (java.io.IOException ignored) { /* Expected bounded-client cancellation. */ }
                 }

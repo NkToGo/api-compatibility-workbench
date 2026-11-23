@@ -23,9 +23,7 @@ public final class GitHubPullRequestLookup {
         public Intent {
             if (formatVersion != 1 || appId <= 0 || selection == null || operationId == null
                     || !operationId.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
-                    || baseRef == null || baseRef.length() > 128 || baseRef.equals("HEAD")
-                    || !baseRef.matches("[A-Za-z0-9][A-Za-z0-9_-]*(\\.[A-Za-z0-9_-]+)*(/[A-Za-z0-9][A-Za-z0-9_-]*(\\.[A-Za-z0-9_-]+)*)*")
-                    || baseRef.endsWith(".lock") || baseRef.contains(".lock/")
+                    || !validBranch(baseRef)
                     || baseRef.equals("workbench/repair-" + operationId)
                     || headSha == null || !headSha.matches(SHA) || headSha.equals(selection.commitSha())) {
                 throw new IllegalArgumentException("Invalid pull request intention");
@@ -33,6 +31,12 @@ public final class GitHubPullRequestLookup {
         }
 
         public String headRef() { return "workbench/repair-" + operationId; }
+    }
+
+    static boolean validBranch(String branch) {
+        return branch != null && branch.length() <= 128 && !branch.equals("HEAD")
+                && branch.matches("[A-Za-z0-9][A-Za-z0-9_-]*(\\.[A-Za-z0-9_-]+)*(/[A-Za-z0-9][A-Za-z0-9_-]*(\\.[A-Za-z0-9_-]+)*)*")
+                && !branch.endsWith(".lock") && !branch.contains(".lock/");
     }
 
     public enum State { MATCHED, NOT_OBSERVED, CONFLICT, INCOMPLETE }
@@ -63,7 +67,7 @@ public final class GitHubPullRequestLookup {
     Result lookup(Intent intent, GitHubAppCredentials credentials, GitHubTransport transport) throws InterruptedException {
         var outline = describe(intent);
         try {
-            var repository = connection.openVerified(intent.selection(), credentials, transport, intent.appId());
+            var repository = connection.openVerified(intent.selection(), credentials, transport, intent.appId(), true);
             return reconcile(outline, repository.pullRequests(intent));
         } catch (GitHubRepositoryConnection.ConnectionFailure e) {
             return new Result(State.INCOMPLETE, Reason.LOOKUP_FAILED, outline, null, List.of(), e.failure());

@@ -66,6 +66,9 @@ decisions.
 A [repair pull request lookup](docs/repair-pull-request-lookup.md) checks GitHub
 metadata for an exact match to a local publication intent. It keeps empty,
 conflicting and incomplete results distinct.
+A [local repair commit check](docs/repair-commit-binding.md) confirms that the
+proposed subscription repair commit changes only the adapter and matches the
+bytes covered by retained verification evidence.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded
@@ -352,7 +355,8 @@ currently certified as supported.
 
 ## Build and test
 
-Requirements: JDK 21, PowerShell 7 and network access for the first dependency download.
+Requirements: JDK 21, PowerShell 7, Git with `--no-lazy-fetch` support, and
+network access for the first dependency download.
 The included Maven Wrapper selects Maven 3.9.16 and checks its distribution digest.
 Run these commands from the repository root.
 

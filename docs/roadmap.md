@@ -581,8 +581,10 @@ entry point does not establish useful coordination or complete Milestone 5.
 4. Publish repair PRs with reconciliation after ambiguous external outcomes.
    A [read-only lookup](repair-pull-request-lookup.md) can reconcile a saved
    publication intent against exact same-repository pull request metadata.
-   Binding verified repair code to a proposed head and authorizing and
-   recording publication remain separate work.
+   An [offline commit check](repair-commit-binding.md) binds the verified
+   subscription adapter to a proposed single-parent commit with the exact source
+   replacement. Remote branch validation, authorization and durable publication
+   remain separate work.
 5. Observe PR/deployment states and support evidence export.
 
 Acceptance: a maintainer completes an authorized supported migration workflow

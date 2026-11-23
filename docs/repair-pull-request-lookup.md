@@ -25,6 +25,9 @@ body. Read the marker from parsed JSON, for example with PowerShell's
 `ConvertFrom-Json`. This local command requires no credentials or network.
 The intent contains metadata only.
 
+For a verified subscription repair, use the [local repair commit check](repair-commit-binding.md)
+to bind the same intent to retained verification and the proposed Git tree.
+
 ## Look up the matching metadata
 
 Use the [GitHub App configuration](github-repository-connection.md) with

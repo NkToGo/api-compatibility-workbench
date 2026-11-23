@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** Bounds Docker CLI output in memory; killing the CLI alone does not kill a container. */
+/** Bounds subprocess output in memory and stops the direct child on a timeout or cancellation. */
 final class BoundedCommand {
     enum Status { EXITED, TIMED_OUT, OUTPUT_LIMIT, CANCELLED }
     record Result(Status status, int exitCode, byte[] stdout, byte[] stderr) {}
@@ -18,8 +18,12 @@ final class BoundedCommand {
     }
 
     static Result run(List<String> command, Duration deadline, int limit, java.util.function.BooleanSupplier cancelled) throws IOException, InterruptedException {
+        return run(new ProcessBuilder(command), deadline, limit, cancelled);
+    }
+
+    static Result run(ProcessBuilder builder, Duration deadline, int limit, java.util.function.BooleanSupplier cancelled) throws IOException, InterruptedException {
         if (deadline.isNegative() || deadline.isZero() || limit < 1) throw new IllegalArgumentException("Invalid process bounds");
-        Process process = new ProcessBuilder(command).start();
+        Process process = builder.start();
         var exceeded = new AtomicBoolean();
         var out = new Capture(process.getInputStream(), limit, exceeded);
         var err = new Capture(process.getErrorStream(), limit, exceeded);

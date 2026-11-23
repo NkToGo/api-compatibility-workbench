@@ -29,6 +29,12 @@ class SubscriptionSandboxContainerTest {
         assertEquals("CANDIDATE_READY", candidates.generate(candidate).get("status").getAsString());
         String generatedVerification = candidates.verification(candidate, System.getProperty("workbench.repair.image"));
         assertEquals("ALL_OBSERVED_REGRESSIONS_FIXED", verifier.execute(generatedVerification).getAsJsonObject("evaluation").get("conclusion").getAsString());
+        var revisions = RepairCommitBindingTest.history(state.resolve("binding-test-repo"),
+                source("subscription.get(\"current_period_end\").getAsLong()"),
+                source("selected.get(\"current_period_end\").getAsLong()"));
+        var binding = RepairCommitBinding.check(state, generatedVerification, revisions.repository(),
+                RepairCommitBindingTest.intent(revisions.base(), revisions.head()), RepairCommitBindingTest.SOURCE);
+        assertEquals(RepairCommitBinding.State.MATCHED, binding.state(), binding.toString());
         assertEquals(1, models.calls);
     }
     static String source(String expression) {

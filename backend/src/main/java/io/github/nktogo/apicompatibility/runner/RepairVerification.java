@@ -167,7 +167,7 @@ public final class RepairVerification {
             }
             verifyInputs(directory, spec);
             if (guard.getAsBoolean()) return finish(directory, spec, guard.stopStatus(), null);
-            var definition = new RepairEvaluation.Definition(new ComparisonDefinition(snapshot(spec, "baseline"), snapshot(spec, "target"), List.copyOf(fixtures.keySet())), snapshot(spec, "candidate"));
+            var definition = definition(spec, List.copyOf(fixtures.keySet()));
             var evaluation = RepairEvaluation.evaluate(definition, observations.get("baseline"), observations.get("target"), observations.get("candidate"));
             DurableExecution.publish(directory.resolve("observations.json"), observations);
             return finish(directory, spec, "COMPLETED", evaluation);
@@ -197,13 +197,70 @@ public final class RepairVerification {
         if (Files.exists(directory.resolve("observations.json"))) result.addProperty("observationsSha256", CaseInputs.hash(Files.readAllBytes(directory.resolve("observations.json"))));
         DurableExecution.publish(directory.resolve("result.json"), result); return result;
     }
-    static JsonObject retained(Path directory) throws IOException {
-        var result = read(directory.resolve("result.json"));
-        CaseInputs.require(result.get("specSha256").getAsString().equals(CaseInputs.hash(Files.readAllBytes(directory.resolve("spec.json")))), "Verification registration changed");
-        var spec = read(directory.resolve("spec.json")); verifyInputs(directory, spec);
+    private record Retained(JsonObject result, JsonObject spec, byte[] observations, String receiptSha256) {}
+    public record SubscriptionRepairEvidence(String verificationId, String receiptSha256, String baseSourceSha256,
+                                             String repairSourceSha256, RepairEvaluation.Conclusion conclusion) {}
+
+    static JsonObject retained(Path directory) throws IOException { return loadRetained(directory).result(); }
+
+    private static Retained loadRetained(Path directory) throws IOException {
+        byte[] receipt = recordBytes(directory.resolve("result.json"));
+        var result = CaseInputs.object(receipt);
+        byte[] registration = recordBytes(directory.resolve("spec.json"));
+        CaseInputs.require(result.get("specSha256").getAsString().equals(CaseInputs.hash(registration)), "Verification registration changed");
+        var spec = CaseInputs.object(registration);
+        verifyInputs(directory, spec);
         CaseInputs.require(result.get("jobArtifacts").equals(CaseInputs.JSON.toJsonTree(CaseInputs.inventory(directory.resolve("jobs")))), "Verification evidence changed");
-        if (result.has("observationsSha256")) CaseInputs.require(result.get("observationsSha256").getAsString().equals(CaseInputs.hash(Files.readAllBytes(directory.resolve("observations.json")))), "Observations changed");
-        return result;
+        byte[] observations = null;
+        if (result.has("observationsSha256")) {
+            observations = recordBytes(directory.resolve("observations.json"));
+            CaseInputs.require(result.get("observationsSha256").getAsString().equals(CaseInputs.hash(observations)), "Observations changed");
+        }
+        return new Retained(result, spec, observations, CaseInputs.hash(receipt));
+    }
+
+    static SubscriptionRepairEvidence subscriptionRepairEvidence(Path state, String id) throws IOException {
+        Path root = state.toAbsolutePath().normalize().resolve("verifications");
+        Path directory = verificationDirectory(root, id);
+        ConsumerTasks.directory(root);
+        ConsumerTasks.directory(directory);
+        ConsumerTasks.directory(directory.resolve("inputs"));
+        ConsumerTasks.directory(directory.resolve("jobs"));
+        var retained = loadRetained(directory);
+        var result = retained.result();
+        var spec = retained.spec();
+        CaseInputs.require(id.equals(result.get("verificationId").getAsString()) && id.equals(spec.get("verificationId").getAsString())
+                && new JsonPrimitive(1).equals(result.get("formatVersion")) && new JsonPrimitive(1).equals(spec.get("formatVersion"))
+                && "host-recorded-synthetic-service-behavior".equals(result.get("authority").getAsString())
+                && spec.get("candidateId").equals(result.get("candidateId")), "Unexpected verification identity");
+        if (!subscription(spec) || !"COMPLETED".equals(result.get("status").getAsString())
+                || !"ALLOWED".equals(result.get("authorizationDecision").getAsString())) {
+            return new SubscriptionRepairEvidence(id, retained.receiptSha256(), null, null, null);
+        }
+        CaseInputs.require(retained.observations() != null, "Missing verification observations");
+        byte[] fixtures = recordBytes(directory.resolve("inputs/fixtures.json"));
+        CaseInputs.require(CaseInputs.hash(fixtures).equals(spec.getAsJsonObject("inputs").get("fixtures.json").getAsString()),
+                "Verification fixtures changed");
+        var definition = definition(spec, List.copyOf(indexed(CaseInputs.object(fixtures)).keySet()));
+        var observations = CaseInputs.object(retained.observations());
+        CaseInputs.require(observations.keySet().equals(Set.of("baseline", "target", "candidate")), "Invalid observations");
+        var assessment = RepairEvaluation.evaluate(definition, observations(observations, "baseline"),
+                observations(observations, "target"), observations(observations, "candidate"));
+        CaseInputs.require(CaseInputs.JSON.toJsonTree(assessment).equals(result.get("evaluation")), "Verification conclusion changed");
+        return new SubscriptionRepairEvidence(id, retained.receiptSha256(), definition.transition().target().source().sha256(),
+                definition.repairedTarget().source().sha256(), assessment.conclusion());
+    }
+
+    private static RepairEvaluation.Definition definition(JsonObject spec, List<String> scenarios) {
+        return new RepairEvaluation.Definition(new ComparisonDefinition(snapshot(spec, "baseline"), snapshot(spec, "target"), scenarios),
+                snapshot(spec, "candidate"));
+    }
+
+    private static List<ExecutionObservation> observations(JsonObject data, String side) {
+        var values = data.getAsJsonArray(side);
+        var parsed = CaseInputs.JSON.fromJson(values, ExecutionObservation[].class);
+        CaseInputs.require(values.equals(CaseInputs.JSON.toJsonTree(parsed)), "Invalid observation fields");
+        return List.of(parsed);
     }
     private static InputSnapshot snapshot(JsonObject spec, String variant) {
         var hashes = spec.getAsJsonObject("inputs");
@@ -232,8 +289,11 @@ public final class RepairVerification {
         return new ExecutionAuthorization(directory, directory.getFileName().toString(), image, "repair-verification", Clock.systemUTC());
     }
     private Path directory(String id) {
-        CaseInputs.require(id.matches("verification-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"), "Invalid verification ID");
-        return state.resolve("verifications").resolve(id);
+        return verificationDirectory(state.resolve("verifications"), id);
+    }
+    private static Path verificationDirectory(Path root, String id) {
+        CaseInputs.require(id != null && id.matches("verification-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"), "Invalid verification ID");
+        return root.resolve(id);
     }
     private static void verifyInputs(Path directory, JsonObject spec) throws IOException {
         CaseInputs.require(spec.get("inputs").equals(CaseInputs.JSON.toJsonTree(CaseInputs.inventory(directory.resolve("inputs")))), "Verification inputs changed");
@@ -253,8 +313,15 @@ public final class RepairVerification {
         return true;
     }
     private static JsonObject read(Path path) throws IOException {
-        CaseInputs.require(Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS) && Files.size(path) < 1048576, "Invalid verification record");
-        return CaseInputs.object(Files.readAllBytes(path));
+        return CaseInputs.object(recordBytes(path));
+    }
+    private static byte[] recordBytes(Path path) throws IOException {
+        CaseInputs.require(Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS), "Invalid verification record");
+        try (var stream = Files.newInputStream(path, LinkOption.NOFOLLOW_LINKS)) {
+            var bytes = stream.readNBytes(1048576);
+            CaseInputs.require(bytes.length < 1048576, "Verification record exceeds limit");
+            return bytes;
+        }
     }
     private static JsonObject json(Object value) { return CaseInputs.JSON.toJsonTree(value).getAsJsonObject(); }
     public static void main(String[] args) throws Exception {

@@ -67,7 +67,7 @@ public final class GitHubPullRequestLookup {
     Result lookup(Intent intent, GitHubAppCredentials credentials, GitHubTransport transport) throws InterruptedException {
         var outline = describe(intent);
         try {
-            var repository = connection.openVerified(intent.selection(), credentials, transport, intent.appId(), true);
+            var repository = connection.openVerified(intent.selection(), credentials, transport, intent.appId(), GitHubRepositoryConnection.PullAccess.READ);
             return reconcile(outline, repository.pullRequests(intent));
         } catch (GitHubRepositoryConnection.ConnectionFailure e) {
             return new Result(State.INCOMPLETE, Reason.LOOKUP_FAILED, outline, null, List.of(), e.failure());
@@ -96,7 +96,7 @@ public final class GitHubPullRequestLookup {
         return new Result(State.MATCHED, null, outline, page.observedAt(), observed, null);
     }
 
-    private static ObservedPull inspect(Outline outline, JsonObject pull) {
+    static ObservedPull inspect(Outline outline, JsonObject pull) {
         var intent = outline.intent();
         long number = GitHubJson.number(pull, "number");
         GitHubJson.require(number > 0);

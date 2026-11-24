@@ -50,8 +50,8 @@ marker. It works offline and can be repeated.
 | `ALREADY_RECORDED`, `BUSY` | An approval already exists or another local writer holds the operation's lease. |
 
 These are local approval commands. The record covers the selected draft PR
-operation. The eventual publisher must repeat validation at dispatch and record
-the outcome durably. The check is point-in-time. It does not lock GitHub branches
+operation. The [draft publisher](draft-repair-publication.md) repeats validation
+at dispatch and records the outcome. The check is point-in-time. It does not lock GitHub branches
 or authenticate individual callers of the local command. Protect the state
 directory with operating-system access controls.
 

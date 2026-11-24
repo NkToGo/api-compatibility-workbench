@@ -75,6 +75,11 @@ public final class RepairPublicationApproval {
     }
 
     Report check(Intent intent, RepairCommitBinding.Report local) throws IOException, InterruptedException {
+        return check(intent, local, remote);
+    }
+
+    Report check(Intent intent, RepairCommitBinding.Report local, GitHubRepairRefs.RemoteCheck branchCheck)
+            throws IOException, InterruptedException {
         verifySelection(intent, local);
         String id = intent.operationId();
         Path directory = operation(id);
@@ -85,7 +90,7 @@ public final class RepairPublicationApproval {
         if (approval.bindingIdentity().equals(local.bindingIdentity())
                 && !matches(approval.reviewedBranches(), intent, Instant.MIN, Instant.parse(approval.issuedAt())))
             return new Report(State.INVALID, id, null, null);
-        var branches = GitHubRepairRefs.checkReviewed(local, approval.bindingIdentity(), remote);
+        var branches = GitHubRepairRefs.checkReviewed(local, approval.bindingIdentity(), branchCheck);
         var after = read(directory, id);
         if (after.blocker() != null) return new Report(after.blocker(), id, approval, branches);
         if (!approval.equals(after.approval())) return new Report(State.INVALID, id, null, branches);
@@ -108,6 +113,12 @@ public final class RepairPublicationApproval {
             // An existing marker keeps revocation in force.
         }
         return new Report(State.REVOKED, id, null, null);
+    }
+
+    State dispatchBlocker(Approval approval) throws IOException {
+        var stored = read(operation(approval.operationId()), approval.operationId());
+        if (stored.blocker() != null) return stored.blocker();
+        return approval.equals(stored.approval()) ? null : State.INVALID;
     }
 
     private Stored read(Path directory, String id) throws IOException {
@@ -169,12 +180,12 @@ public final class RepairPublicationApproval {
         GitHubJson.require(local.state() != RepairCommitBinding.State.MATCHED || intent.equals(local.proof().publication().intent()));
     }
 
-    private Path operation(String id) {
+    Path operation(String id) {
         GitHubJson.require(id != null && id.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"));
         return root.resolve(id);
     }
 
-    private void checkDirectories(Path directory) throws IOException {
+    void checkDirectories(Path directory) throws IOException {
         checkDirectory(root.getParent());
         checkDirectory(root);
         checkDirectory(directory);
@@ -191,7 +202,7 @@ public final class RepairPublicationApproval {
             throw new IOException("Unsafe approval directory");
     }
 
-    private static boolean exists(Path path) throws IOException {
+    static boolean exists(Path path) throws IOException {
         try { Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS); return true; }
         catch (NoSuchFileException missing) { return false; }
     }

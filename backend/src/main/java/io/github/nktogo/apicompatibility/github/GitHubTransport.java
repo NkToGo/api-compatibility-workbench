@@ -1,6 +1,7 @@
 package io.github.nktogo.apicompatibility.github;
 
 import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.*;
 import java.net.http.*;
@@ -8,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Fixed API origin, no redirects/proxy/application retries, bounded whole-response time and bytes. */
 final class GitHubTransport implements AutoCloseable {
@@ -37,14 +39,27 @@ final class GitHubTransport implements AutoCloseable {
                 }).build();
     }
     HttpResponse<byte[]> send(String method, String path, byte[] body, String credential) throws IOException, InterruptedException {
+        return send(method, path, body.length == 0 ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofByteArray(body),
+                body.length > 0, credential);
+    }
+
+    HttpResponse<byte[]> postOnce(String path, byte[] body, String credential) throws IOException, InterruptedException {
+        var subscribed = new AtomicBoolean();
+        var stream = HttpRequest.BodyPublishers.ofInputStream(() ->
+                subscribed.compareAndSet(false, true) ? new ByteArrayInputStream(body) : null);
+        return send("POST", path, HttpRequest.BodyPublishers.fromPublisher(stream, body.length), true, credential);
+    }
+
+    private HttpResponse<byte[]> send(String method, String path, HttpRequest.BodyPublisher body, boolean json, String credential)
+            throws IOException, InterruptedException {
         control.check();
         if (!List.of("GET", "POST").contains(method) || !path.startsWith("/") || path.startsWith("//"))
             throw new IllegalArgumentException("Unsupported GitHub request");
         var request = HttpRequest.newBuilder(URI.create(origin.toString() + path)).timeout(timeout)
                 .header("Authorization", "Bearer " + credential).header("Accept", "application/vnd.github+json")
                 .header("X-GitHub-Api-Version", API_VERSION).header("User-Agent", "API-Compatibility-Workbench")
-                .method(method, body.length == 0 ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofByteArray(body));
-        if (body.length > 0) request.header("Content-Type", "application/json");
+                .method(method, body);
+        if (json) request.header("Content-Type", "application/json");
         var pending = client.sendAsync(request.build(), ignored -> new LimitedBody());
         try { var response = pending.get(timeout.toMillis(), TimeUnit.MILLISECONDS); control.check(); return response; }
         catch (ExecutionException | TimeoutException e) { throw new IOException("GitHub transport did not complete"); }

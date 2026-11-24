@@ -74,6 +74,9 @@ GitHub points both selected branches to the commits covered by that binding.
 A [local publication approval](docs/repair-publication-approval.md) binds
 one draft repair pull request operation to reviewed evidence and checks
 current applicability against GitHub.
+A [draft repair publisher](docs/draft-repair-publication.md) checks approval,
+journals the create attempt and can reconcile an uncertain outcome against
+GitHub without resending the request.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

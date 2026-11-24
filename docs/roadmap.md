@@ -587,7 +587,10 @@ entry point does not establish useful coordination or complete Milestone 5.
    GitHub's target and repair branches to that reviewed binding. A
    [local approval](repair-publication-approval.md) records permission for
    one draft operation and checks binding, branch observations, expiry and
-   revocation. Durable publication remains separate work.
+   revocation. A [draft publisher](draft-repair-publication.md) checks approval
+   at dispatch, journals one create attempt and reconciles ambiguous responses
+   through the read-only lookup. GitHub publication requires the selected App's
+   pull-request write access.
 5. Observe PR/deployment states and support evidence export.
 
 Acceptance: a maintainer completes an authorized supported migration workflow

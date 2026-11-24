@@ -33,7 +33,8 @@ public final class GitHubRepositoryConnection {
     public record Snapshot(int formatVersion, long appId, Selection selection, String treeSha,
                            Instant observedAt, Instant tokenExpiresAt, String authority,
                            boolean compatibilityAssessed) {}
-    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS, BRANCH_REF }
+    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS, BRANCH_REF, CREATE_PULL_REQUEST }
+    enum PullAccess { NONE, READ, WRITE }
     public enum Code { ACCESS_DENIED_OR_RATE_LIMITED, AUTHENTICATION_FAILED, NOT_FOUND_OR_NOT_INSTALLED,
         SCOPE_REJECTED, REDIRECT_REFUSED, PROVIDER_UNAVAILABLE, UNEXPECTED_STATUS,
         INVALID_METADATA, IDENTITY_OR_SCOPE_MISMATCH, TOKEN_EXPIRED, TRANSPORT_INCOMPLETE }
@@ -63,10 +64,10 @@ public final class GitHubRepositoryConnection {
     }
     VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport)
             throws ConnectionFailure, InterruptedException {
-        return openVerified(selection, credentials, transport, null, false);
+        return openVerified(selection, credentials, transport, null, PullAccess.NONE);
     }
     VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport,
-                                    Long expectedAppId, boolean readPullRequests) throws ConnectionFailure, InterruptedException {
+                                    Long expectedAppId, PullAccess pullAccess) throws ConnectionFailure, InterruptedException {
         java.util.Objects.requireNonNull(selection, "selection"); java.util.Objects.requireNonNull(credentials, "credentials");
         String jwt = credentials.jwt(clock.instant());
         var app = request(transport, Stage.APP, "GET", "/app", new byte[0], jwt, 200);
@@ -90,7 +91,7 @@ public final class GitHubRepositoryConnection {
 
         var tokenRequest = new JsonObject(); tokenRequest.add("repository_ids", GitHubJson.JSON.toJsonTree(List.of(selection.repositoryId())));
         var permissions = new JsonObject(); permissions.addProperty("contents", "read"); permissions.addProperty("metadata", "read");
-        if (readPullRequests) permissions.addProperty("pull_requests", "read");
+        if (pullAccess != PullAccess.NONE) permissions.addProperty("pull_requests", pullAccess == PullAccess.READ ? "read" : "write");
         tokenRequest.add("permissions", permissions);
         var tokenResponse = request(transport, Stage.TOKEN, "POST", "/app/installations/" + selection.installationId() + "/access_tokens",
                 GitHubJson.JSON.toJson(tokenRequest).getBytes(StandardCharsets.UTF_8), jwt, 201);
@@ -98,7 +99,7 @@ public final class GitHubRepositoryConnection {
         try {
             var granted = GitHubJson.object(tokenResponse.get("permissions"));
             check(permissions.entrySet().containsAll(granted.entrySet()) && granted.has("contents")
-                    && (!readPullRequests || granted.has("pull_requests")), Stage.TOKEN);
+                    && (pullAccess == PullAccess.NONE || granted.has("pull_requests")), Stage.TOKEN);
             token = GitHubJson.text(tokenResponse, "token");
             check(token.matches("[-A-Za-z0-9._~+/]{16,8192}={0,2}"), Stage.TOKEN);
             expires = Instant.parse(GitHubJson.text(tokenResponse, "expires_at"));
@@ -126,7 +127,7 @@ public final class GitHubRepositoryConnection {
             check(GitHubJson.text(commit, "sha").equals(selection.commitSha()) && tree.matches("[0-9a-f]{40}"), Stage.REVISION);
             live(expires, Stage.REVISION);
             return new VerifiedRepository(new Snapshot(1, appId, selection, tree, clock.instant(), expires,
-                    "AUTHENTICATED_GITHUB_METADATA", false), token, transport, readPullRequests);
+                    "AUTHENTICATED_GITHUB_METADATA", false), token, transport, pullAccess);
         } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.REVISION, 0, null, false); }
     }
 
@@ -139,9 +140,9 @@ public final class GitHubRepositoryConnection {
         private final Snapshot snapshot;
         private final String token;
         private final GitHubTransport transport;
-        private final boolean readPullRequests;
-        private VerifiedRepository(Snapshot snapshot, String token, GitHubTransport transport, boolean readPullRequests) {
-            this.snapshot = snapshot; this.token = token; this.transport = transport; this.readPullRequests = readPullRequests;
+        private final PullAccess pullAccess;
+        private VerifiedRepository(Snapshot snapshot, String token, GitHubTransport transport, PullAccess pullAccess) {
+            this.snapshot = snapshot; this.token = token; this.transport = transport; this.pullAccess = pullAccess;
         }
         Snapshot snapshot() { return snapshot; }
         JsonObject tree(String sha) throws ConnectionFailure, InterruptedException { return read(sha, Stage.SOURCE_TREE, "trees"); }
@@ -166,7 +167,7 @@ public final class GitHubRepositoryConnection {
         }
         PullPage pullRequests(GitHubPullRequestLookup.Intent intent) throws ConnectionFailure, InterruptedException {
             Stage stage = Stage.PULL_REQUESTS;
-            if (!readPullRequests || !snapshot.selection().equals(intent.selection()) || snapshot.appId() != intent.appId())
+            if (pullAccess == PullAccess.NONE || !matchesIntent(intent))
                 throw failed(Code.IDENTITY_OR_SCOPE_MISMATCH, stage, 0, null, false);
             var selection = snapshot.selection();
             String head = URLEncoder.encode(selection.owner() + ":" + intent.headRef(), StandardCharsets.UTF_8);
@@ -184,6 +185,18 @@ public final class GitHubRepositoryConnection {
                 throw failed(Code.INVALID_METADATA, stage, 200, null, false);
             }
         }
+        JsonObject createDraft(GitHubPullRequestLookup.Intent intent, byte[] body) throws ConnectionFailure, InterruptedException {
+            Stage stage = Stage.CREATE_PULL_REQUEST;
+            if (pullAccess != PullAccess.WRITE || !matchesIntent(intent))
+                throw failed(Code.IDENTITY_OR_SCOPE_MISMATCH, stage, 0, null, false);
+            live(snapshot.tokenExpiresAt(), stage);
+            return request(transport, stage, "POST", snapshot.selection().path() + "/pulls", body, token, 201);
+        }
+
+        private boolean matchesIntent(GitHubPullRequestLookup.Intent intent) {
+            return snapshot.selection().equals(intent.selection()) && snapshot.appId() == intent.appId();
+        }
+
         private JsonObject read(String sha, Stage stage, String kind) throws ConnectionFailure, InterruptedException {
             if (sha == null || !sha.matches("[0-9a-f]{40}")) throw new IllegalArgumentException("Invalid Git object identity");
             live(snapshot.tokenExpiresAt(), stage);
@@ -214,7 +227,10 @@ public final class GitHubRepositoryConnection {
                                                  byte[] body, String credential, int expected)
             throws ConnectionFailure, InterruptedException {
         HttpResponse<byte[]> response;
-        try { response = transport.send(method, path, body, credential); }
+        try {
+            response = stage == Stage.CREATE_PULL_REQUEST ? transport.postOnce(path, body, credential)
+                    : transport.send(method, path, body, credential);
+        }
         catch (IOException e) { throw failed(Code.TRANSPORT_INCOMPLETE, stage, 0, null, stage == Stage.TOKEN); }
         int status = response.statusCode();
         if (status != expected) {

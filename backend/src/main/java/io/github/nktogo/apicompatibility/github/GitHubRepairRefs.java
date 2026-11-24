@@ -40,10 +40,20 @@ public final class GitHubRepairRefs {
         var intent = proof.publication().intent();
         GitHubRepositoryConnection.VerifiedRepository repository;
         try {
-            repository = connection.openVerified(intent.selection(), credentials, transport, intent.appId(), false);
+            repository = connection.openVerified(intent.selection(), credentials, transport, intent.appId(), GitHubRepositoryConnection.PullAccess.NONE);
         } catch (GitHubRepositoryConnection.ConnectionFailure e) {
-            return new Report(1, State.INCOMPLETE, Reason.CONNECTION_FAILED, bindingIdentity, null, null, null, null, e.failure());
+            return connectionFailed(bindingIdentity, e.failure());
         }
+        return inspect(proof, bindingIdentity, repository);
+    }
+
+    static Report connectionFailed(String bindingIdentity, GitHubRepositoryConnection.Failure failure) {
+        return new Report(1, State.INCOMPLETE, Reason.CONNECTION_FAILED, bindingIdentity, null, null, null, null, failure);
+    }
+
+    static Report inspect(RepairCommitBinding.Proof proof, String bindingIdentity,
+                          GitHubRepositoryConnection.VerifiedRepository repository) throws InterruptedException {
+        var intent = proof.publication().intent();
         if (!repository.snapshot().treeSha().equals(proof.baseTreeSha()))
             return new Report(1, State.BLOCKED, Reason.BASE_TREE_DIFFERS, bindingIdentity, null, null, null, null, null);
 
@@ -79,13 +89,17 @@ public final class GitHubRepairRefs {
     }
 
     static Report readWithConfiguredApp(RepairCommitBinding.Proof proof, String identity) throws IOException, InterruptedException {
-        String issuer = System.getenv("WORKBENCH_GITHUB_APP_ISSUER");
-        String key = System.getenv("WORKBENCH_GITHUB_APP_PRIVATE_KEY_FILE");
-        GitHubJson.require(issuer != null && key != null && !key.isBlank());
-        var credentials = GitHubAppCredentials.load(issuer, Path.of(key));
+        var credentials = configuredApp();
         try (var transport = new GitHubTransport()) {
             return inspect(proof, identity, credentials, new GitHubRepositoryConnection(), transport);
         }
+    }
+
+    static GitHubAppCredentials configuredApp() throws IOException {
+        String issuer = System.getenv("WORKBENCH_GITHUB_APP_ISSUER");
+        String key = System.getenv("WORKBENCH_GITHUB_APP_PRIVATE_KEY_FILE");
+        GitHubJson.require(issuer != null && key != null && !key.isBlank());
+        return GitHubAppCredentials.load(issuer, Path.of(key));
     }
 
     public static void main(String[] args) {

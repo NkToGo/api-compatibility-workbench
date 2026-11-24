@@ -4,9 +4,10 @@ The host can inspect one explicitly selected GitHub.com repository revision usin
 a GitHub App. It verifies the app, installation, owning account, effective token
 scope and exact commit before returning a metadata snapshot. This command neither
 downloads source nor assesses compatibility. A separate [selected POM inventory](github-source-inventory.md)
-reuses this authorization sequence for bounded source reads. Effective version
-resolution, durable repository registration, browser integration and PR publication
-remain planned.
+reuses this authorization sequence for bounded source reads. The
+[draft repair publisher](draft-repair-publication.md) requests a separate scoped
+token for an approved draft PR. Effective version resolution, durable repository
+registration and browser integration remain planned.
 
 The implementation has credential-free loopback tests for signing, scope checks,
 provider errors and transport limits. Real installations require their own access

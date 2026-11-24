@@ -584,8 +584,10 @@ entry point does not establish useful coordination or complete Milestone 5.
    An [offline commit check](repair-commit-binding.md) binds the verified
    subscription adapter to a proposed single-parent commit with the exact source
    replacement. A [read-only remote check](repair-branch-check.md) compares
-   GitHub's target and repair branches to that reviewed binding. Authorization
-   and durable publication remain separate work.
+   GitHub's target and repair branches to that reviewed binding. A
+   [local approval](repair-publication-approval.md) records permission for
+   one draft operation and checks binding, branch observations, expiry and
+   revocation. Durable publication remains separate work.
 5. Observe PR/deployment states and support evidence export.
 
 Acceptance: a maintainer completes an authorized supported migration workflow

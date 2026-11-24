@@ -42,7 +42,8 @@ Results include expected and observed commit IDs and observation times when
 available. They exclude returned URLs, provider response bodies and credentials.
 The sequential reads can detect a target move between reads. They provide no
 atomic snapshot or guarantee that either branch still points to the same commit
-afterward. Publication requires a fresh check and separate authorization.
+afterward. The [publication approval](repair-publication-approval.md) workflow
+requires a fresh check and records the local authorization separately.
 
 Java returns exit code `0` for a match, `3` for a blocked, incomplete or
 interrupted check, and `2` for an invalid invocation or configuration. The

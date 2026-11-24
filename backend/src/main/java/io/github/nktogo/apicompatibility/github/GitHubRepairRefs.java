@@ -78,20 +78,22 @@ public final class GitHubRepairRefs {
         };
     }
 
+    static Report readWithConfiguredApp(RepairCommitBinding.Proof proof, String identity) throws IOException, InterruptedException {
+        String issuer = System.getenv("WORKBENCH_GITHUB_APP_ISSUER");
+        String key = System.getenv("WORKBENCH_GITHUB_APP_PRIVATE_KEY_FILE");
+        GitHubJson.require(issuer != null && key != null && !key.isBlank());
+        var credentials = GitHubAppCredentials.load(issuer, Path.of(key));
+        try (var transport = new GitHubTransport()) {
+            return inspect(proof, identity, credentials, new GitHubRepositoryConnection(), transport);
+        }
+    }
+
     public static void main(String[] args) {
         try {
             GitHubJson.require(args.length == 6);
             var local = RepairCommitBinding.check(Path.of(args[0]), args[1], Path.of(args[2]),
                     GitHubPullRequestLookup.loadIntent(Path.of(args[3])), args[4]);
-            var report = checkReviewed(local, args[5], (proof, identity) -> {
-                String issuer = System.getenv("WORKBENCH_GITHUB_APP_ISSUER");
-                String key = System.getenv("WORKBENCH_GITHUB_APP_PRIVATE_KEY_FILE");
-                GitHubJson.require(issuer != null && key != null && !key.isBlank());
-                var credentials = GitHubAppCredentials.load(issuer, Path.of(key));
-                try (var transport = new GitHubTransport()) {
-                    return inspect(proof, identity, credentials, new GitHubRepositoryConnection(), transport);
-                }
-            });
+            var report = checkReviewed(local, args[5], GitHubRepairRefs::readWithConfiguredApp);
             System.out.println(GitHubJson.JSON.toJson(report));
             if (report.state() != State.MATCHED) System.exit(3);
         } catch (IOException | RuntimeException e) {

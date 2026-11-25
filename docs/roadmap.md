@@ -594,8 +594,9 @@ entry point does not establish useful coordination or complete Milestone 5.
 5. Observe PR/deployment states and support evidence export.
    The [read-only PR status check](published-repair-status.md) opens a confirmed
    publication by number and distinguishes present status and drift from the
-   original publication record. Deployment observation and export remain
-   separate work.
+   original publication record. A [read-only deployment status check](repair-deployment-status.md)
+   reads GitHub deployment records for the exact merged revision and selected
+   environment, keeping status gaps visible. Evidence export remains separate work.
 
 Acceptance: a maintainer completes an authorized supported migration workflow
 without manual database intervention.

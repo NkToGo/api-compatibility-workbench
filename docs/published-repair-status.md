@@ -24,6 +24,8 @@ the current base and head commit IDs and flags differences in repository, ref,
 commit or operation marker. An exact creation response remains historical
 evidence even if the PR changes later. A merged observation reports the GitHub
 merge time and commit ID when available. It carries no deployment conclusion.
+To observe GitHub's deployment records for that revision in a specific
+environment, use the [separate deployment status check](repair-deployment-status.md).
 
 | Result | Meaning |
 | --- | --- |

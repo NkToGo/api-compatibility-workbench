@@ -19,18 +19,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PublishedRepairStatusTest {
     private static final String HEAD_SHA = "c".repeat(40);
-    private static final String DETAIL = "/repos/sample-owner/billing/pulls/17";
-    private static final GitHubPullRequestLookup.Intent INTENT = new GitHubPullRequestLookup.Intent(1, 10, SELECTION,
+    static final String DETAIL = "/repos/sample-owner/billing/pulls/17";
+    static final GitHubPullRequestLookup.Intent INTENT = new GitHubPullRequestLookup.Intent(1, 10, SELECTION,
             "b876052c-4c83-4d18-80a1-f9e2a35bcfa3", "main", HEAD_SHA);
     @TempDir Path state;
 
     @BeforeAll static void key() throws Exception { GitHubRepositoryConnectionTest.keys(); }
 
     private Path operation() {
+        return operation(state);
+    }
+
+    static Path operation(Path state) {
         return state.resolve("repair-publications").resolve(INTENT.operationId());
     }
 
-    private static JsonObject pull() {
+    static JsonObject pull() {
         var repo = json("{\"id\":40,\"full_name\":\"sample-owner/billing\",\"owner\":{\"id\":30,\"login\":\"sample-owner\"}}");
         var detail = json("{\"number\":17,\"state\":\"open\",\"draft\":true,\"merged\":false,\"merged_at\":null,\"base\":{},\"head\":{},\"html_url\":\"https://attacker.invalid/ignored\"}");
         detail.addProperty("body", "PRIVATE_BODY_SENTINEL\n\n" + GitHubPullRequestLookup.describe(INTENT).marker());
@@ -47,11 +51,16 @@ class PublishedRepairStatusTest {
     }
 
     private DraftRepairPublication.Receipt journal(DraftRepairPublication.State publicationState) throws Exception {
-        Files.createDirectories(operation());
+        return journal(state, publicationState);
+    }
+
+    static DraftRepairPublication.Receipt journal(Path state, DraftRepairPublication.State publicationState) throws Exception {
+        var operation = operation(state);
+        Files.createDirectories(operation);
         var attempt = new DraftRepairPublication.Attempt(1, INTENT, "a".repeat(64),
                 GitSourceObjects.sha256(DraftRepairPublication.request(INTENT)), NOW.toString());
         String encoded = GitHubJson.JSON.toJson(attempt) + "\n";
-        Files.writeString(operation().resolve("publication-started.json"), encoded);
+        Files.writeString(operation.resolve("publication-started.json"), encoded);
         String identity = GitSourceObjects.sha256(encoded.getBytes(StandardCharsets.UTF_8));
         var pull = GitHubPullRequestLookup.inspect(GitHubPullRequestLookup.describe(INTENT), pull());
         var receipt = new DraftRepairPublication.Receipt(1, identity, publicationState, pull,
@@ -59,7 +68,7 @@ class PublishedRepairStatusTest {
                 publicationState == DraftRepairPublication.State.UNKNOWN ? GitHubRepositoryConnection.Code.INVALID_METADATA : null,
                 null, NOW.toString(), null);
         String file = publicationState == DraftRepairPublication.State.RECONCILED ? "publication-recovered.json" : "publication-response.json";
-        Files.writeString(operation().resolve(file), GitHubJson.JSON.toJson(receipt) + "\n");
+        Files.writeString(operation.resolve(file), GitHubJson.JSON.toJson(receipt) + "\n");
         return receipt;
     }
 

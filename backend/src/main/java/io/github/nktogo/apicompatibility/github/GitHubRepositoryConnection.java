@@ -34,7 +34,7 @@ public final class GitHubRepositoryConnection {
                            Instant observedAt, Instant tokenExpiresAt, String authority,
                            boolean compatibilityAssessed) {}
     public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS, BRANCH_REF,
-        CREATE_PULL_REQUEST, PULL_REQUEST_DETAIL }
+        CREATE_PULL_REQUEST, PULL_REQUEST_DETAIL, DEPLOYMENTS, DEPLOYMENT_STATUSES }
     enum PullAccess { NONE, READ, WRITE }
     public enum Code { ACCESS_DENIED_OR_RATE_LIMITED, AUTHENTICATION_FAILED, NOT_FOUND_OR_NOT_INSTALLED,
         SCOPE_REJECTED, REDIRECT_REFUSED, PROVIDER_UNAVAILABLE, UNEXPECTED_STATUS,
@@ -69,7 +69,7 @@ public final class GitHubRepositoryConnection {
     }
     VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport,
                                     Long expectedAppId, PullAccess pullAccess) throws ConnectionFailure, InterruptedException {
-        var access = authenticateScope(selection, credentials, transport, expectedAppId, pullAccess);
+        var access = authenticateScope(selection, credentials, transport, expectedAppId, sourcePermissions(pullAccess));
         live(access.expires(), Stage.REVISION);
         var commit = request(transport, Stage.REVISION, "GET", selection.path() + "/git/commits/" + selection.commitSha(),
                 new byte[0], access.token(), 200);
@@ -86,7 +86,7 @@ public final class GitHubRepositoryConnection {
                            GitHubTransport transport) throws ConnectionFailure, InterruptedException {
         GitHubJson.require(number > 0);
         var selection = intent.selection();
-        var access = authenticateScope(selection, credentials, transport, intent.appId(), PullAccess.NONE);
+        var access = authenticateScope(selection, credentials, transport, intent.appId(), sourcePermissions(PullAccess.NONE));
         Stage stage = Stage.PULL_REQUEST_DETAIL;
         live(access.expires(), stage);
         // A numbered PR can still be inspected when the original base commit is no longer reachable.
@@ -95,12 +95,72 @@ public final class GitHubRepositoryConnection {
         return result;
     }
 
+    static final int DEPLOYMENT_PAGE_SIZE = 10;
+    record DeploymentPage(JsonArray items, boolean possiblyTruncated, Instant observedAt) {}
+
+    DeploymentReader openDeployments(GitHubPullRequestLookup.Intent intent, GitHubAppCredentials credentials,
+                                     GitHubTransport transport) throws ConnectionFailure, InterruptedException {
+        var permissions = new JsonObject();
+        permissions.addProperty("metadata", "read");
+        permissions.addProperty("deployments", "read");
+        var selection = intent.selection();
+        var access = authenticateScope(selection, credentials, transport, intent.appId(), permissions);
+        return new DeploymentReader(selection, access, transport);
+    }
+
+    final class DeploymentReader {
+        private final Selection selection;
+        private final ScopedAccess access;
+        private final GitHubTransport transport;
+
+        private DeploymentReader(Selection selection, ScopedAccess access, GitHubTransport transport) {
+            this.selection = selection;
+            this.access = access;
+            this.transport = transport;
+        }
+
+        DeploymentPage deployments(String sha, String environment) throws ConnectionFailure, InterruptedException {
+            GitHubJson.require(sha.matches("[0-9a-f]{40}"));
+            String encoded = URLEncoder.encode(environment, StandardCharsets.UTF_8);
+            return page(Stage.DEPLOYMENTS, "/deployments?sha=" + sha + "&environment=" + encoded + "&");
+        }
+
+        DeploymentPage statuses(long id) throws ConnectionFailure, InterruptedException {
+            GitHubJson.require(id > 0);
+            return page(Stage.DEPLOYMENT_STATUSES, "/deployments/" + id + "/statuses?");
+        }
+
+        private DeploymentPage page(Stage stage, String suffix) throws ConnectionFailure, InterruptedException {
+            live(access.expires(), stage);
+            String path = selection.path() + suffix + "per_page=" + DEPLOYMENT_PAGE_SIZE + "&page=1";
+            var response = requestResponse(transport, stage, "GET", path, new byte[0], access.token(), 200);
+            live(access.expires(), stage);
+            try {
+                var items = GitHubJson.parseArray(response.body(), GitHubTransport.MAX_BYTES);
+                GitHubJson.require(items.size() <= DEPLOYMENT_PAGE_SIZE);
+                return new DeploymentPage(items, items.size() == DEPLOYMENT_PAGE_SIZE
+                        || response.headers().firstValue("Link").isPresent(), clock.instant());
+            } catch (RuntimeException e) {
+                throw failed(Code.INVALID_METADATA, stage, 200, null, false);
+            }
+        }
+    }
+
     private record ScopedAccess(long appId, String token, Instant expires) {
         @Override public String toString() { return "ScopedAccess[redacted]"; }
     }
 
+    private static JsonObject sourcePermissions(PullAccess pullAccess) {
+        var permissions = new JsonObject();
+        permissions.addProperty("contents", "read");
+        permissions.addProperty("metadata", "read");
+        if (pullAccess != PullAccess.NONE)
+            permissions.addProperty("pull_requests", pullAccess == PullAccess.READ ? "read" : "write");
+        return permissions;
+    }
+
     private ScopedAccess authenticateScope(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport,
-                                           Long expectedAppId, PullAccess pullAccess) throws ConnectionFailure, InterruptedException {
+                                           Long expectedAppId, JsonObject permissions) throws ConnectionFailure, InterruptedException {
         java.util.Objects.requireNonNull(selection, "selection"); java.util.Objects.requireNonNull(credentials, "credentials");
         String jwt = credentials.jwt(clock.instant());
         var app = request(transport, Stage.APP, "GET", "/app", new byte[0], jwt, 200);
@@ -123,16 +183,14 @@ public final class GitHubRepositoryConnection {
         } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.INSTALLATION, 0, null, false); }
 
         var tokenRequest = new JsonObject(); tokenRequest.add("repository_ids", GitHubJson.JSON.toJsonTree(List.of(selection.repositoryId())));
-        var permissions = new JsonObject(); permissions.addProperty("contents", "read"); permissions.addProperty("metadata", "read");
-        if (pullAccess != PullAccess.NONE) permissions.addProperty("pull_requests", pullAccess == PullAccess.READ ? "read" : "write");
         tokenRequest.add("permissions", permissions);
         var tokenResponse = request(transport, Stage.TOKEN, "POST", "/app/installations/" + selection.installationId() + "/access_tokens",
                 GitHubJson.JSON.toJson(tokenRequest).getBytes(StandardCharsets.UTF_8), jwt, 201);
         String token; Instant expires;
         try {
             var granted = GitHubJson.object(tokenResponse.get("permissions"));
-            check(permissions.entrySet().containsAll(granted.entrySet()) && granted.has("contents")
-                    && (pullAccess == PullAccess.NONE || granted.has("pull_requests")), Stage.TOKEN);
+            check(permissions.entrySet().containsAll(granted.entrySet())
+                    && permissions.keySet().stream().allMatch(name -> name.equals("metadata") || granted.has(name)), Stage.TOKEN);
             token = GitHubJson.text(tokenResponse, "token");
             check(token.matches("[-A-Za-z0-9._~+/]{16,8192}={0,2}"), Stage.TOKEN);
             expires = Instant.parse(GitHubJson.text(tokenResponse, "expires_at"));

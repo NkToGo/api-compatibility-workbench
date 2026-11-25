@@ -1,5 +1,6 @@
 package io.github.nktogo.apicompatibility.github;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,6 +46,7 @@ class GitHubRepositoryConnectionTest {
         final HttpServer server;
         final ExecutorService executor = Executors.newCachedThreadPool();
         final Map<String, JsonObject> replies = new HashMap<>();
+        final Map<String, JsonElement> additionalReplies = new ConcurrentHashMap<>();
         final List<Captured> requests = new CopyOnWriteArrayList<>();
         final CountDownLatch releaseBody = new CountDownLatch(1);
         String faultPath = "", contentType = "application/json";
@@ -67,7 +69,8 @@ class GitHubRepositoryConnectionTest {
                     requests.add(new Captured(exchange.getRequestMethod(), path, headers.getFirst("Authorization"),
                             headers.getFirst("X-GitHub-Api-Version"), headers.getFirst("User-Agent"), exchange.getRequestBody().readNBytes(8192)));
                     boolean fault = path.equals(faultPath);
-                    byte[] bytes = fault ? faultBody : GitHubJson.JSON.toJson(replies.get(path)).getBytes(StandardCharsets.UTF_8);
+                    var reply = additionalReplies.getOrDefault(path, replies.get(path));
+                    byte[] bytes = fault ? faultBody : GitHubJson.JSON.toJson(reply).getBytes(StandardCharsets.UTF_8);
                     exchange.getResponseHeaders().set("Content-Type", fault ? contentType : "application/json");
                     if (fault) faultHeaders.forEach((name, value) -> exchange.getResponseHeaders().set(name, value));
                     exchange.sendResponseHeaders(fault ? faultStatus : path.equals(MINT) ? 201 : 200, bytes.length);

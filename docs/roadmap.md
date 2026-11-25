@@ -592,6 +592,10 @@ entry point does not establish useful coordination or complete Milestone 5.
    through the read-only lookup. GitHub publication requires the selected App's
    pull-request write access.
 5. Observe PR/deployment states and support evidence export.
+   The [read-only PR status check](published-repair-status.md) opens a confirmed
+   publication by number and distinguishes present status and drift from the
+   original publication record. Deployment observation and export remain
+   separate work.
 
 Acceptance: a maintainer completes an authorized supported migration workflow
 without manual database intervention.

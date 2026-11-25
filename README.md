@@ -77,6 +77,8 @@ current applicability against GitHub.
 A [draft repair publisher](docs/draft-repair-publication.md) checks approval,
 journals the create attempt and can reconcile an uncertain outcome against
 GitHub without resending the request.
+A [published repair status check](docs/published-repair-status.md) reads the
+confirmed PR's current state and shows drift alongside its original publication.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

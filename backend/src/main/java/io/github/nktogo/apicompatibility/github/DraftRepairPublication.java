@@ -107,6 +107,14 @@ public final class DraftRepairPublication {
         }
     }
 
+    Report recorded(Intent intent) throws IOException {
+        Path directory = approvals.operation(intent.operationId());
+        if (!exists(directory)) return empty(State.NOT_STARTED, intent);
+        approvals.checkDirectories(directory);
+        var attempt = readAttempt(directory, intent);
+        return attempt == null ? empty(State.NOT_STARTED, intent) : retained(directory, attempt, null);
+    }
+
     private Receipt create(GitHubRepositoryConnection.VerifiedRepository repository, Attempt attempt, byte[] body)
             throws InterruptedException {
         try {

@@ -132,7 +132,7 @@ public final class GitHubPullRequestLookup {
         return new ObservedPull(number, state, draft, mismatches);
     }
 
-    private static boolean matchesRepository(JsonObject side, GitHubRepositoryConnection.Selection selection) {
+    static boolean matchesRepository(JsonObject side, GitHubRepositoryConnection.Selection selection) {
         GitHubJson.require(side.has("repo"));
         if (side.get("repo").isJsonNull()) return false;
         var repo = GitHubJson.object(side.get("repo"));

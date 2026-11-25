@@ -47,6 +47,9 @@ separately. A conflict, incomplete search or empty page leaves the result
 unknown. An inconclusive lookup cannot trigger another create request.
 Respect any reported retry time before running another read.
 
+Once publication is confirmed, use the [published repair status check](published-repair-status.md)
+to see current PR metadata without changing the saved publication record.
+
 | Result | Meaning |
 | --- | --- |
 | `CREATED` | GitHub's create response confirmed the exact open draft. |

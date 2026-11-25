@@ -33,7 +33,8 @@ public final class GitHubRepositoryConnection {
     public record Snapshot(int formatVersion, long appId, Selection selection, String treeSha,
                            Instant observedAt, Instant tokenExpiresAt, String authority,
                            boolean compatibilityAssessed) {}
-    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS, BRANCH_REF, CREATE_PULL_REQUEST }
+    public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS, BRANCH_REF,
+        CREATE_PULL_REQUEST, PULL_REQUEST_DETAIL }
     enum PullAccess { NONE, READ, WRITE }
     public enum Code { ACCESS_DENIED_OR_RATE_LIMITED, AUTHENTICATION_FAILED, NOT_FOUND_OR_NOT_INSTALLED,
         SCOPE_REJECTED, REDIRECT_REFUSED, PROVIDER_UNAVAILABLE, UNEXPECTED_STATUS,
@@ -68,6 +69,38 @@ public final class GitHubRepositoryConnection {
     }
     VerifiedRepository openVerified(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport,
                                     Long expectedAppId, PullAccess pullAccess) throws ConnectionFailure, InterruptedException {
+        var access = authenticateScope(selection, credentials, transport, expectedAppId, pullAccess);
+        live(access.expires(), Stage.REVISION);
+        var commit = request(transport, Stage.REVISION, "GET", selection.path() + "/git/commits/" + selection.commitSha(),
+                new byte[0], access.token(), 200);
+        try {
+            String tree = GitHubJson.text(GitHubJson.object(commit.get("tree")), "sha");
+            check(GitHubJson.text(commit, "sha").equals(selection.commitSha()) && tree.matches("[0-9a-f]{40}"), Stage.REVISION);
+            live(access.expires(), Stage.REVISION);
+            return new VerifiedRepository(new Snapshot(1, access.appId(), selection, tree, clock.instant(), access.expires(),
+                    "AUTHENTICATED_GITHUB_METADATA", false), access.token(), transport, pullAccess);
+        } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.REVISION, 0, null, false); }
+    }
+
+    JsonObject pullRequest(GitHubPullRequestLookup.Intent intent, long number, GitHubAppCredentials credentials,
+                           GitHubTransport transport) throws ConnectionFailure, InterruptedException {
+        GitHubJson.require(number > 0);
+        var selection = intent.selection();
+        var access = authenticateScope(selection, credentials, transport, intent.appId(), PullAccess.NONE);
+        Stage stage = Stage.PULL_REQUEST_DETAIL;
+        live(access.expires(), stage);
+        // A numbered PR can still be inspected when the original base commit is no longer reachable.
+        var result = request(transport, stage, "GET", selection.path() + "/pulls/" + number, new byte[0], access.token(), 200);
+        live(access.expires(), stage);
+        return result;
+    }
+
+    private record ScopedAccess(long appId, String token, Instant expires) {
+        @Override public String toString() { return "ScopedAccess[redacted]"; }
+    }
+
+    private ScopedAccess authenticateScope(Selection selection, GitHubAppCredentials credentials, GitHubTransport transport,
+                                           Long expectedAppId, PullAccess pullAccess) throws ConnectionFailure, InterruptedException {
         java.util.Objects.requireNonNull(selection, "selection"); java.util.Objects.requireNonNull(credentials, "credentials");
         String jwt = credentials.jwt(clock.instant());
         var app = request(transport, Stage.APP, "GET", "/app", new byte[0], jwt, 200);
@@ -120,15 +153,7 @@ public final class GitHubRepositoryConnection {
                     && GitHubJson.text(repository, "full_name").equalsIgnoreCase(selection.fullName()), Stage.REPOSITORY_SCOPE);
         } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.REPOSITORY_SCOPE, 0, null, false); }
 
-        live(expires, Stage.REVISION);
-        var commit = request(transport, Stage.REVISION, "GET", selection.path() + "/git/commits/" + selection.commitSha(), new byte[0], token, 200);
-        try {
-            String tree = GitHubJson.text(GitHubJson.object(commit.get("tree")), "sha");
-            check(GitHubJson.text(commit, "sha").equals(selection.commitSha()) && tree.matches("[0-9a-f]{40}"), Stage.REVISION);
-            live(expires, Stage.REVISION);
-            return new VerifiedRepository(new Snapshot(1, appId, selection, tree, clock.instant(), expires,
-                    "AUTHENTICATED_GITHUB_METADATA", false), token, transport, pullAccess);
-        } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.REVISION, 0, null, false); }
+        return new ScopedAccess(appId, token, expires);
     }
 
     static final int PULL_REQUEST_PAGE_SIZE = 10;

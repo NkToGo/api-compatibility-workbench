@@ -14,6 +14,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
+import java.time.Instant;
 import java.time.ZoneOffset;
 
 import static io.github.nktogo.apicompatibility.github.GitHubRepositoryConnectionTest.*;
@@ -160,36 +161,7 @@ class RepairEvidenceExportTest {
         var test = prepare(false);
         recordPublication(test, test.binding().bindingIdentity());
         try (var fixture = new Fixture(); var transport = fixture.transport()) {
-            var merged = pull(test);
-            merged.addProperty("state", "closed");
-            merged.addProperty("draft", false);
-            merged.addProperty("merged", true);
-            merged.addProperty("merged_at", NOW.toString());
-            merged.addProperty("merge_commit_sha", MERGE);
-            fixture.replies.put(DETAIL, merged);
-            var deploymentToken = fixture.replies.get(MINT).deepCopy();
-            var permissions = deploymentToken.getAsJsonObject("permissions");
-            permissions.remove("contents");
-            permissions.addProperty("deployments", "read");
-            fixture.afterHeaders = path -> {
-                if (DETAIL.equals(path)) fixture.additionalReplies.put(MINT, deploymentToken);
-            };
-            String repositoryUrl = "https://api.github.com" + test.intent().selection().path();
-            var deployment = json("{\"id\":31,\"environment\":\"production\",\"description\":\"PRIVATE_DEPLOYMENT_SENTINEL\"}");
-            deployment.addProperty("sha", MERGE);
-            deployment.addProperty("repository_url", repositoryUrl);
-            deployment.addProperty("created_at", NOW.toString());
-            var status = json("{\"id\":1,\"environment\":\"production\",\"state\":\"success\",\"log_url\":\"https://unrelated.invalid\"}");
-            status.addProperty("repository_url", repositoryUrl);
-            status.addProperty("deployment_url", repositoryUrl + "/deployments/31");
-            status.addProperty("created_at", NOW.toString());
-            String path = test.intent().selection().path() + "/deployments";
-            var records = new JsonArray();
-            records.add(deployment);
-            var statuses = new JsonArray();
-            statuses.add(status);
-            fixture.additionalReplies.put(path + "?sha=" + MERGE + "&environment=production&per_page=10&page=1", records);
-            fixture.additionalReplies.put(path + "/31/statuses?per_page=10&page=1", statuses);
+            configureMergedDeployment(fixture, test.intent(), pull(test), MERGE, NOW);
             var report = test.export("online", true, "production", transport, () -> credentials);
             var github = report.getAsJsonObject("github");
             assertEquals(MERGE, GitHubJson.text(github.getAsJsonObject("pull").getAsJsonObject("current"), "mergeCommitSha"));
@@ -203,6 +175,40 @@ class RepairEvidenceExportTest {
             assertFalse(data.contains("unrelated.invalid"));
             assertFalse(data.contains(TOKEN));
         }
+    }
+
+    static void configureMergedDeployment(Fixture fixture, GitHubPullRequestLookup.Intent intent, JsonObject detail,
+                                          String merge, Instant mergedAt) {
+        var merged = detail.deepCopy();
+        merged.addProperty("state", "closed");
+        merged.addProperty("draft", false);
+        merged.addProperty("merged", true);
+        merged.addProperty("merged_at", mergedAt.toString());
+        merged.addProperty("merge_commit_sha", merge);
+        fixture.replies.put(DETAIL, merged);
+        var deploymentToken = fixture.replies.get(MINT).deepCopy();
+        var permissions = deploymentToken.getAsJsonObject("permissions");
+        permissions.remove("contents");
+        permissions.addProperty("deployments", "read");
+        fixture.afterHeaders = path -> {
+            if (DETAIL.equals(path)) fixture.additionalReplies.put(MINT, deploymentToken);
+        };
+        String repositoryUrl = "https://api.github.com" + intent.selection().path();
+        var deployment = json("{\"id\":31,\"environment\":\"production\",\"description\":\"PRIVATE_DEPLOYMENT_SENTINEL\"}");
+        deployment.addProperty("sha", merge);
+        deployment.addProperty("repository_url", repositoryUrl);
+        deployment.addProperty("created_at", mergedAt.toString());
+        var status = json("{\"id\":1,\"environment\":\"production\",\"state\":\"success\",\"log_url\":\"https://unrelated.invalid\"}");
+        status.addProperty("repository_url", repositoryUrl);
+        status.addProperty("deployment_url", repositoryUrl + "/deployments/31");
+        status.addProperty("created_at", mergedAt.toString());
+        String path = intent.selection().path() + "/deployments";
+        var records = new JsonArray();
+        records.add(deployment);
+        var statuses = new JsonArray();
+        statuses.add(status);
+        fixture.additionalReplies.put(path + "?sha=" + merge + "&environment=production&per_page=10&page=1", records);
+        fixture.additionalReplies.put(path + "/31/statuses?per_page=10&page=1", statuses);
     }
 
     @Test void keepsUnavailableCurrentStatusAndNeverOverwritesAnExistingExport() throws Exception {

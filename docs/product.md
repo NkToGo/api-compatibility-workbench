@@ -52,7 +52,7 @@ did not establish benefit over simpler configurations under its recorded review;
 the [comparison contract](coordination-comparison.md) separates reviewed quality
 from execution and usage. A [scoped read-only routing policy](coordination-routing.md)
 prefers initial diagnostics with mandatory review when supplied conditions match.
-Useful-coordination acceptance remains open; the repository-to-PR workflow remains planned.
+Useful-coordination acceptance remains open.
 Agent assertions cannot become test results merely because they conform to a schema.
 
 A separately identified [invoice identity workload](../cases/stripe-invoice-subscription-2025-03-31/README.md)
@@ -75,7 +75,7 @@ A [local read-only maintainer view](local-maintainer-view.md) now presents one
 selected customer-sources report through an allowlisted metadata projection. It
 recomputes comparisons and retains unresolved observations, without authenticating
 execution, checking current inputs or granting any action. The repository-to-PR
-workflow remains planned.
+workflow uses separate maintainer commands.
 
 The planned product API will own organization access and maintainer review records.
 A [read-only GitHub App probe](github-repository-connection.md) now checks selected
@@ -85,8 +85,8 @@ require their own access check; durable registration remains pending. A separate
 revision, checks Git identities and reports Stripe dependency declarations without
 resolving effective SDK or API versions. A [configuration inspector](migration-configuration.md)
 binds operator-declared invoice-case versions to fresh source identities without
-runtime verification or execution admission. Provider actions, repair publication
-and distributed execution remain future integrations. No current result approves a deployment.
+runtime verification or execution admission. Provider actions and distributed
+execution remain future integrations. No current result approves a deployment.
 
 Opt-in [planning input retention](migration-input-retention.md) now preserves the
 selected POM bytes and declaration result for offline revalidation. It reuses the
@@ -99,7 +99,14 @@ the two registered consumers and their shared files from the same pinned tree.
 Catalog coverage and parent configuration are shown separately. The
 [invoice capture preflight](invoice-capture-preflight.md) maps a matching capture
 and selected planning snapshot to exact synthetic deliveries and registered builds.
-Protected execution of repository captures remains separate work.
+The protected invoice runner supports a separately authorized reconciliation
+delivery per phase, with offline comparison and local review.
+
+The subscription repair commands bind protected verification to an exact local
+commit, check scoped GitHub branches and publish an approved draft PR. They
+reconcile uncertain responses, observe GitHub status and export bounded evidence.
+The [Milestone 5 status](milestone-5-status.md) distinguishes these capabilities
+from the still-open acceptance exercise on a selected installation.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)
 keeps useful-coordination acceptance separate from implemented orchestration.

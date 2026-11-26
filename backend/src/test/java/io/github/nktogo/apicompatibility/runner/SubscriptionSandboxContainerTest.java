@@ -1,6 +1,7 @@
 package io.github.nktogo.apicompatibility.runner;
 
 import com.google.gson.*;
+import io.github.nktogo.apicompatibility.github.SubscriptionMaintainerWorkflowTest;
 import java.nio.file.*;
 import java.time.Duration;
 import java.util.*;
@@ -32,9 +33,7 @@ class SubscriptionSandboxContainerTest {
         var revisions = RepairCommitBindingTest.history(state.resolve("binding-test-repo"),
                 source("subscription.get(\"current_period_end\").getAsLong()"),
                 source("selected.get(\"current_period_end\").getAsLong()"));
-        var binding = RepairCommitBinding.check(state, generatedVerification, revisions.repository(),
-                RepairCommitBindingTest.intent(revisions.base(), revisions.head()), RepairCommitBindingTest.SOURCE);
-        assertEquals(RepairCommitBinding.State.MATCHED, binding.state(), binding.toString());
+        SubscriptionMaintainerWorkflowTest.verify(state, revisions, generatedVerification);
         assertEquals(1, models.calls);
     }
     static String source(String expression) {

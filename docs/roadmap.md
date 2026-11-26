@@ -603,6 +603,10 @@ entry point does not establish useful coordination or complete Milestone 5.
 Acceptance: a maintainer completes an authorized supported migration workflow
 without manual database intervention.
 
+**Acceptance remains open.** The [Milestone 5 status](milestone-5-status.md)
+records the tested handoffs and the outstanding evidence from a single
+supported case on a selected GitHub installation.
+
 ## Milestone 6 — Release and operate
 
 1. Establish organization isolation, retention, deletion and security checks.

@@ -16,13 +16,13 @@ import java.util.Locale;
 import static io.github.nktogo.apicompatibility.runner.RepairCommitBinding.Blocker.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class RepairCommitBindingTest {
-    static final String SOURCE = "src/main/PeriodConsumer.java";
+public class RepairCommitBindingTest {
+    public static final String SOURCE = "src/main/PeriodConsumer.java";
     @TempDir Path temporary;
 
-    record Revisions(Path repository, String base, String head) {}
+    public record Revisions(Path repository, String base, String head) {}
 
-    static Revisions history(Path repository, String original, String repair) throws Exception {
+    public static Revisions history(Path repository, String original, String repair) throws Exception {
         Files.createDirectories(repository.resolve(SOURCE).getParent());
         git(repository, "init", "--object-format=sha1", "-q");
         git(repository, "config", "core.autocrlf", "false");
@@ -60,9 +60,14 @@ class RepairCommitBindingTest {
     }
 
     private String completed() throws Exception {
-        var verifier = new RepairVerification(temporary, new SubscriptionVerificationTest.Sandbox());
+        return verification(temporary, false);
+    }
+
+    public static String verification(Path state, boolean cancelled) throws Exception {
+        var verifier = new RepairVerification(state, new SubscriptionVerificationTest.Sandbox());
         String id = SubscriptionVerificationTest.register(verifier);
-        verifier.execute(id);
+        if (cancelled) verifier.cancel(id);
+        else verifier.execute(id);
         return id;
     }
 

@@ -33,7 +33,13 @@ public final class PublishedRepairStatus {
     }
 
     Report observe(Intent intent, GitHubTransport transport) throws IOException, InterruptedException {
-        var retained = publication.recorded(intent);
+        return observeRecorded(intent, publication.recorded(intent), transport);
+    }
+
+    Report observeRecorded(Intent intent, DraftRepairPublication.Report retained, GitHubTransport transport)
+            throws IOException, InterruptedException {
+        GitHubJson.require(intent.operationId().equals(retained.operationId())
+                && (retained.attempt() == null || intent.equals(retained.attempt().intent())));
         var receipt = switch (retained.state()) {
             case CREATED -> retained.response();
             case RECONCILED -> retained.recovered();

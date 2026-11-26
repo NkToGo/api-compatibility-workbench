@@ -200,6 +200,9 @@ public final class RepairVerification {
     private record Retained(JsonObject result, JsonObject spec, byte[] observations, String receiptSha256) {}
     public record SubscriptionRepairEvidence(String verificationId, String receiptSha256, String baseSourceSha256,
                                              String repairSourceSha256, RepairEvaluation.Conclusion conclusion) {}
+    public enum VerificationStatus { COMPLETED, CANCELLED, AUTHORIZATION_DENIED, INTERRUPTED }
+    public record RecordedOutcome(VerificationStatus status, String authorizationDecision, Instant finishedAt) {}
+    record SubscriptionReview(SubscriptionRepairEvidence evidence, RecordedOutcome outcome, RepairEvaluation.Assessment assessment) {}
 
     static JsonObject retained(Path directory) throws IOException { return loadRetained(directory).result(); }
 
@@ -219,7 +222,7 @@ public final class RepairVerification {
         return new Retained(result, spec, observations, CaseInputs.hash(receipt));
     }
 
-    static SubscriptionRepairEvidence subscriptionRepairEvidence(Path state, String id) throws IOException {
+    static SubscriptionReview subscriptionRepairReview(Path state, String id) throws IOException {
         Path root = state.toAbsolutePath().normalize().resolve("verifications");
         Path directory = verificationDirectory(root, id);
         ConsumerTasks.directory(root);
@@ -233,9 +236,11 @@ public final class RepairVerification {
                 && new JsonPrimitive(1).equals(result.get("formatVersion")) && new JsonPrimitive(1).equals(spec.get("formatVersion"))
                 && "host-recorded-synthetic-service-behavior".equals(result.get("authority").getAsString())
                 && spec.get("candidateId").equals(result.get("candidateId")), "Unexpected verification identity");
-        if (!subscription(spec) || !"COMPLETED".equals(result.get("status").getAsString())
-                || !"ALLOWED".equals(result.get("authorizationDecision").getAsString())) {
-            return new SubscriptionRepairEvidence(id, retained.receiptSha256(), null, null, null);
+        var status = VerificationStatus.valueOf(result.get("status").getAsString());
+        var authorization = ExecutionAuthorization.Decision.valueOf(result.get("authorizationDecision").getAsString());
+        var outcome = new RecordedOutcome(status, authorization.name(), Instant.parse(result.get("finishedAt").getAsString()));
+        if (!subscription(spec) || status != VerificationStatus.COMPLETED || authorization != ExecutionAuthorization.Decision.ALLOWED) {
+            return new SubscriptionReview(new SubscriptionRepairEvidence(id, retained.receiptSha256(), null, null, null), outcome, null);
         }
         CaseInputs.require(retained.observations() != null, "Missing verification observations");
         byte[] fixtures = recordBytes(directory.resolve("inputs/fixtures.json"));
@@ -247,8 +252,9 @@ public final class RepairVerification {
         var assessment = RepairEvaluation.evaluate(definition, observations(observations, "baseline"),
                 observations(observations, "target"), observations(observations, "candidate"));
         CaseInputs.require(CaseInputs.JSON.toJsonTree(assessment).equals(result.get("evaluation")), "Verification conclusion changed");
-        return new SubscriptionRepairEvidence(id, retained.receiptSha256(), definition.transition().target().source().sha256(),
+        var evidence = new SubscriptionRepairEvidence(id, retained.receiptSha256(), definition.transition().target().source().sha256(),
                 definition.repairedTarget().source().sha256(), assessment.conclusion());
+        return new SubscriptionReview(evidence, outcome, assessment);
     }
 
     private static RepairEvaluation.Definition definition(JsonObject spec, List<String> scenarios) {

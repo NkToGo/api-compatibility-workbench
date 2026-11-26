@@ -60,7 +60,11 @@ public final class RepairDeploymentStatus {
 
     Report observe(Intent intent, String environment, GitHubTransport transport) throws IOException, InterruptedException {
         GitHubJson.require(validEnvironment(environment));
-        var pull = published.observe(intent, transport);
+        return observeForPull(intent, environment, published.observe(intent, transport), transport);
+    }
+
+    Report observeForPull(Intent intent, String environment, PublishedRepairStatus.Report pull, GitHubTransport transport)
+            throws IOException, InterruptedException {
         if (pull.state() == PublishedRepairStatus.State.NOT_CONFIRMED)
             return unavailable(State.NOT_READY, Reason.PUBLICATION_UNCONFIRMED, environment, pull, null);
         if (pull.state() == PublishedRepairStatus.State.INCOMPLETE)
@@ -103,7 +107,7 @@ public final class RepairDeploymentStatus {
         return new Report(1, state, reason, environment, pull, null, List.of(), failure);
     }
 
-    private static boolean validEnvironment(String name) {
+    static boolean validEnvironment(String name) {
         return name != null && !name.isBlank() && name.length() <= 255 && name.equals(name.strip())
                 && name.codePoints().noneMatch(character -> Character.isISOControl(character)
                         || Character.getType(character) == Character.SURROGATE

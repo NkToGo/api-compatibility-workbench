@@ -2,6 +2,7 @@ package io.github.nktogo.apicompatibility.runner;
 
 import io.github.nktogo.apicompatibility.compatibility.RepairEvaluation;
 import io.github.nktogo.apicompatibility.github.GitHubPullRequestLookup;
+import io.github.nktogo.apicompatibility.runner.RepairVerification.RecordedOutcome;
 import io.github.nktogo.apicompatibility.runner.RepairVerification.SubscriptionRepairEvidence;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public final class RepairCommitBinding {
     public record Proof(int formatVersion, GitHubPullRequestLookup.Outline publication, String sourcePath, SubscriptionRepairEvidence verification,
                         String baseTreeSha, String headTreeSha, String baseBlobSha, String headBlobSha) {}
     public record Report(State state, Blocker blocker, SubscriptionRepairEvidence verification, String bindingIdentity, Proof proof) {}
+    public record Review(Report binding, RecordedOutcome outcome, RepairEvaluation.Assessment assessment) {}
     private record Commit(String tree, List<String> parents) {}
     private record Entry(String mode, String sha) {}
 
@@ -37,21 +39,27 @@ public final class RepairCommitBinding {
 
     public static Report check(Path state, String verificationId, Path repository, GitHubPullRequestLookup.Intent intent,
                                String sourcePath) throws InterruptedException {
+        return review(state, verificationId, repository, intent, sourcePath).binding();
+    }
+
+    public static Review review(Path state, String verificationId, Path repository, GitHubPullRequestLookup.Intent intent,
+                                String sourcePath) throws InterruptedException {
         CaseInputs.require(sourcePath != null && sourcePath.length() <= 240
                 && sourcePath.matches("([A-Za-z0-9_-][A-Za-z0-9_.-]*/){0,7}PeriodConsumer\\.java"), "Unsupported repair source path");
-        SubscriptionRepairEvidence evidence;
+        RepairVerification.SubscriptionReview review;
         try {
-            evidence = RepairVerification.subscriptionRepairEvidence(state, verificationId);
+            review = RepairVerification.subscriptionRepairReview(state, verificationId);
         } catch (IOException | RuntimeException invalid) {
-            return blocked(Blocker.VERIFICATION_UNAVAILABLE, null);
+            return new Review(blocked(Blocker.VERIFICATION_UNAVAILABLE, null), null, null);
         }
+        var evidence = review.evidence();
         if (evidence.conclusion() != RepairEvaluation.Conclusion.ALL_OBSERVED_REGRESSIONS_FIXED)
-            return blocked(Blocker.REPAIR_NOT_ESTABLISHED, evidence);
+            return new Review(blocked(Blocker.REPAIR_NOT_ESTABLISHED, evidence), review.outcome(), review.assessment());
         try {
             var git = new GitObjects(repository.toAbsolutePath().normalize());
-            return compare(git, intent, sourcePath, evidence);
+            return new Review(compare(git, intent, sourcePath, evidence), review.outcome(), review.assessment());
         } catch (IOException | IllegalArgumentException invalid) {
-            return blocked(Blocker.GIT_OBJECTS_UNAVAILABLE, evidence);
+            return new Review(blocked(Blocker.GIT_OBJECTS_UNAVAILABLE, evidence), review.outcome(), review.assessment());
         }
     }
 

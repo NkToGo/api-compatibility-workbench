@@ -81,6 +81,8 @@ A [published repair status check](docs/published-repair-status.md) reads the
 confirmed PR's current state and shows drift alongside its original publication.
 A [repair deployment status check](docs/repair-deployment-status.md) reads
 GitHub deployment records for the exact merged revision and selected environment.
+A [repair evidence export](docs/repair-evidence-export.md) summarizes one verified
+subscription repair, its publication history and optional fresh GitHub observations.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

@@ -62,3 +62,6 @@ Java exits `0` for a completed observation or empty search, `3` for an
 incomplete, unready or interrupted check, and `2` for invalid input or local
 configuration. The PowerShell wrapper warns for exit `3` and raises an error
 for exit `2`.
+
+To include this observation alongside the reviewed repair and original
+publication, use the [repair evidence export](repair-evidence-export.md).

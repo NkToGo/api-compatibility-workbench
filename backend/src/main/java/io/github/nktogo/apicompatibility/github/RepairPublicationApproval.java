@@ -78,6 +78,18 @@ public final class RepairPublicationApproval {
         return check(intent, local, remote);
     }
 
+    Report recorded(Intent intent, String bindingIdentity) throws IOException {
+        String id = intent.operationId();
+        var stored = read(operation(id), id);
+        var approval = stored.approval();
+        if (approval == null) return new Report(stored.blocker(), id, null, null);
+        if (!bindingIdentity.equals(approval.bindingIdentity()))
+            return new Report(State.STALE, id, null, null);
+        if (!matches(approval.reviewedBranches(), intent, Instant.MIN, Instant.parse(approval.issuedAt())))
+            return new Report(State.INVALID, id, null, null);
+        return new Report(stored.blocker() == null ? State.RECORDED : stored.blocker(), id, approval, null);
+    }
+
     Report check(Intent intent, RepairCommitBinding.Report local, GitHubRepairRefs.RemoteCheck branchCheck)
             throws IOException, InterruptedException {
         verifySelection(intent, local);

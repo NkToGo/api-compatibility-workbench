@@ -596,7 +596,9 @@ entry point does not establish useful coordination or complete Milestone 5.
    publication by number and distinguishes present status and drift from the
    original publication record. A [read-only deployment status check](repair-deployment-status.md)
    reads GitHub deployment records for the exact merged revision and selected
-   environment, keeping status gaps visible. Evidence export remains separate work.
+   environment, keeping status gaps visible. A [repair evidence export](repair-evidence-export.md)
+   recomputes the subscription repair binding, summarizes retained verification and
+   publication evidence, and optionally includes fresh GitHub observations.
 
 Acceptance: a maintainer completes an authorized supported migration workflow
 without manual database intervention.

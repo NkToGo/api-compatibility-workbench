@@ -106,7 +106,10 @@ The subscription repair commands bind protected verification to an exact local
 commit, check scoped GitHub branches and publish an approved draft PR. They
 reconcile uncertain responses, observe GitHub status and export bounded evidence.
 The [Milestone 5 status](milestone-5-status.md) distinguishes these capabilities
-from the still-open acceptance exercise on a selected installation.
+from the completed synthetic acceptance exercise on a selected installation.
+The [installation state setting](installation-state.md) binds these commands to
+one operator-selected data directory. Separate service accounts and filesystem
+permissions provide the host access boundary.
 The [Milestone 3 acceptance checklist](milestone-3-acceptance.md) records the completed
 bounded repair/evidence-availability exercise. The [Milestone 4 status](milestone-4-status.md)
 keeps useful-coordination acceptance separate from implemented orchestration.

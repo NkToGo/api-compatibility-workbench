@@ -21,7 +21,8 @@ $intentFile = (Resolve-Path -LiteralPath $Intent).Path
 $mode = if ($Execute) { 'verify' } else { 'preview' }
 $arguments = @($mode, $repo, $intentFile, $SourcePath, $BaselineApiVersion, $TargetApiVersion)
 if ($Execute) {
-    if (-not $StateDirectory) { $StateDirectory = Join-Path $root '.workbench' }
+    . (Join-Path $PSScriptRoot 'WorkbenchInstallationState.ps1')
+    $StateDirectory = Resolve-WorkbenchInstallationState -WorkbenchRoot $root -RequestedDirectory $StateDirectory
     $image = (Get-Content -LiteralPath (Join-Path $root 'backend/target/repair-worker-image.txt') -Raw).Trim()
     if ($image -cnotmatch '^sha256:[0-9a-f]{64}$') { throw 'Build the repair worker first.' }
     $arguments += @(([IO.Path]::GetFullPath($StateDirectory)), (Join-Path $root 'cases/stripe-subscription-periods-2025-07-30'), $image)

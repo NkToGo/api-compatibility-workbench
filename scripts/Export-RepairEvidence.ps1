@@ -20,7 +20,8 @@ if (-not (Test-Path -LiteralPath (Join-Path $classes 'io/github/nktogo/apicompat
 if ($PSBoundParameters.ContainsKey('Environment') -and (-not $ObserveGitHub -or [string]::IsNullOrWhiteSpace($Environment))) {
     throw 'Use -Environment with -ObserveGitHub and supply the deployment environment name.'
 }
-if (-not $StateDirectory) { $StateDirectory = Join-Path $root '.workbench' }
+. (Join-Path $PSScriptRoot 'WorkbenchInstallationState.ps1')
+$StateDirectory = Resolve-WorkbenchInstallationState -WorkbenchRoot $root -RequestedDirectory $StateDirectory
 $repo = (Resolve-Path -LiteralPath $Repository).Path
 $file = (Resolve-Path -LiteralPath $Intent).Path
 $classpath = $classes + [IO.Path]::PathSeparator + $libraries

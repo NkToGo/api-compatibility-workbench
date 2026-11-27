@@ -10,7 +10,8 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-if (-not $StateDirectory) { $StateDirectory = Join-Path $root '.workbench' }
+. (Join-Path $PSScriptRoot 'WorkbenchInstallationState.ps1')
+$StateDirectory = Resolve-WorkbenchInstallationState -WorkbenchRoot $root -RequestedDirectory $StateDirectory
 $classpath = (Join-Path $root 'backend/target/classes') + [IO.Path]::PathSeparator + (Join-Path $root 'backend/target/dependency/*')
 if ($Action -eq 'start' -and $CandidateId) {
     if ($BaselineSource -or $CandidateSource) { throw 'Use CandidateId or supplied source paths, not both.' }

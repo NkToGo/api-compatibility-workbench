@@ -87,6 +87,8 @@ A [repair evidence export](docs/repair-evidence-export.md) summarizes one verifi
 subscription repair, its publication history and optional fresh GitHub observations.
 The [Milestone 5 status](docs/milestone-5-status.md) records the verified
 handoffs and the completed subscription maintainer workflow on a synthetic case.
+The subscription commands accept a shared [installation state setting](docs/installation-state.md)
+so verification, publication and export use the same operator-selected directory.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

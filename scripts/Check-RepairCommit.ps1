@@ -14,7 +14,8 @@ $libraries = Join-Path $root 'backend/target/dependency/*'
 if (-not (Test-Path -LiteralPath (Join-Path $classes 'io/github/nktogo/apicompatibility/runner/RepairCommitBinding.class'))) {
     throw 'Build the backend before checking a repair commit.'
 }
-if (-not $StateDirectory) { $StateDirectory = Join-Path $root '.workbench' }
+. (Join-Path $PSScriptRoot 'WorkbenchInstallationState.ps1')
+$StateDirectory = Resolve-WorkbenchInstallationState -WorkbenchRoot $root -RequestedDirectory $StateDirectory
 $repo = (Resolve-Path -LiteralPath $Repository).Path
 $inputFile = (Resolve-Path -LiteralPath $Intent).Path
 $classpath = $classes + [IO.Path]::PathSeparator + $libraries

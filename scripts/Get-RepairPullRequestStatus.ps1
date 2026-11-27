@@ -11,7 +11,8 @@ $libraries = Join-Path $root 'backend/target/dependency/*'
 if (-not (Test-Path -LiteralPath (Join-Path $classes 'io/github/nktogo/apicompatibility/github/PublishedRepairStatus.class'))) {
     throw 'Build the backend before checking a published repair.'
 }
-if (-not $StateDirectory) { $StateDirectory = Join-Path $root '.workbench' }
+. (Join-Path $PSScriptRoot 'WorkbenchInstallationState.ps1')
+$StateDirectory = Resolve-WorkbenchInstallationState -WorkbenchRoot $root -RequestedDirectory $StateDirectory
 $file = (Resolve-Path -LiteralPath $Intent).Path
 $classpath = $classes + [IO.Path]::PathSeparator + $libraries
 & java '-Djdk.httpclient.disableRetryConnect=true' '-Djdk.httpclient.enableAllMethodRetry=false' `

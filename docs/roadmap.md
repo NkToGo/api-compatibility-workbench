@@ -613,6 +613,10 @@ selected GitHub installation, including the synthetic rollout and evidence expor
 ## Milestone 6 — Release and operate
 
 1. Establish organization isolation, retention, deletion and security checks.
+   The subscription workflow now supports an [installation state directory](installation-state.md)
+   bound across verification, approvals, publication, status and export. The
+   commands reject conflicting paths. Host access controls, retention, deletion
+   and validation across separately provisioned accounts remain release work.
 2. Expose costs, recorded actions, operational metrics and alerts.
 3. Complete deployment automation, backups and restoration exercises.
 4. Document installation, updates and incident handling.

@@ -42,6 +42,9 @@ jobs:
       - name: Verify on Linux
         if: runner.os == 'Linux'
         run: sh ./mvnw -B -ntp -f backend/pom.xml clean verify
+      - name: Verify installation state separation
+        shell: pwsh
+        run: ./scripts/Test-WorkbenchInstallationState.ps1
       - name: Verify versioned invoice Maven projects
         shell: pwsh
         run: |

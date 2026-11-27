@@ -16,7 +16,8 @@ $libraries = Join-Path $root 'backend/target/dependency/*'
 if (-not (Test-Path -LiteralPath (Join-Path $classes 'io/github/nktogo/apicompatibility/github/DraftRepairPublication.class'))) {
     throw 'Build the backend before publishing a repair draft.'
 }
-if (-not $StateDirectory) { $StateDirectory = Join-Path $root '.workbench' }
+. (Join-Path $PSScriptRoot 'WorkbenchInstallationState.ps1')
+$StateDirectory = Resolve-WorkbenchInstallationState -WorkbenchRoot $root -RequestedDirectory $StateDirectory
 $arguments = @($PSCmdlet.ParameterSetName.ToLowerInvariant(), [IO.Path]::GetFullPath($StateDirectory), (Resolve-Path -LiteralPath $Intent).Path)
 if ($Publish) {
     $arguments += @($VerificationId, (Resolve-Path -LiteralPath $Repository).Path, $SourcePath)

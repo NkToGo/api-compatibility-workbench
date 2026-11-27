@@ -41,13 +41,13 @@ public class RepairCommitBindingTest {
                 "b876052c-4c83-4d18-80a1-f9e2a35bcfa3", "main", head);
     }
 
-    private static String commit(Path repo, String parent) throws Exception {
+    static String commit(Path repo, String parent) throws Exception {
         String tree = git(repo, "write-tree");
         return parent == null ? git(repo, "commit-tree", tree, "-m", "Original")
                 : git(repo, "commit-tree", tree, "-p", parent, "-m", "Proposed repair");
     }
 
-    private static String git(Path root, String... args) throws Exception {
+    static String git(Path root, String... args) throws Exception {
         var command = new ArrayList<>(List.of("git", "-C", root.toString(), "-c", "user.name=Test", "-c", "user.email=test@example.com",
                 "-c", "commit.gpgSign=false"));
         command.addAll(List.of(args));

@@ -40,7 +40,9 @@ The output excludes source bytes and Git diagnostics.
 The command reads local Git objects by their exact IDs with replacement
 objects and lazy fetching disabled. Uncommitted edits are irrelevant to
 this check. The result establishes source and tree correspondence for the
-supported synthetic case. GitHub repository identity, current remote branch
+supported synthetic case. A [repository-bound verification](subscription-repository-verification.md)
+must also match the repository, exact revisions and source path retained at
+registration. GitHub repository identity, current remote branch
 tips, maintainer authorization, and publication are checked separately. Use the
 [repair branch check](repair-branch-check.md) to compare a reviewed binding with
 GitHub when the branches are available.

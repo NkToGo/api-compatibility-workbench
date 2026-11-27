@@ -9,6 +9,7 @@ import io.github.nktogo.apicompatibility.runner.DurableExecution;
 import io.github.nktogo.apicompatibility.runner.RepairCommitBinding;
 import io.github.nktogo.apicompatibility.runner.RepairVerification.RecordedOutcome;
 import io.github.nktogo.apicompatibility.runner.RepairVerification.SubscriptionRepairEvidence;
+import io.github.nktogo.apicompatibility.runner.SubscriptionRepositoryVerification.RepositoryInput;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -38,7 +39,7 @@ public final class RepairEvidenceExport {
     public record Verification(SubscriptionRepairEvidence receipt, RecordedOutcome execution, RepairEvaluation.Definition inputs,
                                List<RepairEvaluation.Scenario> outcomes, ComparisonAssessment.Conclusion originalConclusion,
                                ComparisonAssessment.Conclusion repairedConclusion, List<ComparisonAssessment.Reason> issues,
-                               Boolean targetConditionsDiffer) {}
+                               Boolean targetConditionsDiffer, RepositoryInput repositoryInput) {}
     public record Binding(RepairCommitBinding.State state, RepairCommitBinding.Blocker blocker, String identity,
                           String baseTreeSha, String headTreeSha, String baseBlobSha, String headBlobSha) {}
     public record HistoricalApproval(RepairPublicationApproval.State state, String issuedAt, String expiresAt) {}
@@ -95,13 +96,14 @@ public final class RepairEvidenceExport {
         var receipt = review.binding().verification();
         if (receipt == null) return null;
         var assessment = review.assessment();
-        if (assessment == null) return new Verification(receipt, review.outcome(), null, List.of(), null, null, List.of(), null);
+        if (assessment == null)
+            return new Verification(receipt, review.outcome(), null, List.of(), null, null, List.of(), null, review.repositoryInput());
         var original = assessment.originalComparison();
         var repaired = assessment.repairedComparison();
         var issues = Stream.concat(original.issues().stream(), repaired.issues().stream())
                 .map(ComparisonAssessment.Issue::reason).distinct().toList();
         return new Verification(receipt, review.outcome(), assessment.definition(), assessment.scenarios(), original.conclusion(),
-                repaired.conclusion(), issues, !assessment.boundaryIssues().isEmpty());
+                repaired.conclusion(), issues, !assessment.boundaryIssues().isEmpty(), review.repositoryInput());
     }
 
     private static Binding binding(RepairCommitBinding.Report report) {

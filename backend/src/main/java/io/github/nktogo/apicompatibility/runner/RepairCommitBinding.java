@@ -4,6 +4,7 @@ import io.github.nktogo.apicompatibility.compatibility.RepairEvaluation;
 import io.github.nktogo.apicompatibility.github.GitHubPullRequestLookup;
 import io.github.nktogo.apicompatibility.runner.RepairVerification.RecordedOutcome;
 import io.github.nktogo.apicompatibility.runner.RepairVerification.SubscriptionRepairEvidence;
+import io.github.nktogo.apicompatibility.runner.SubscriptionRepositoryVerification.RepositoryInput;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -27,11 +28,19 @@ public final class RepairCommitBinding {
 
     public enum State { MATCHED, BLOCKED }
     public enum Blocker { VERIFICATION_UNAVAILABLE, REPAIR_NOT_ESTABLISHED, GIT_OBJECTS_UNAVAILABLE,
-        HEAD_NOT_DIRECT_CHILD, SOURCE_PATH_UNSUPPORTED, OTHER_TREE_CHANGES, BASE_SOURCE_DIFFERS, REPAIR_SOURCE_DIFFERS }
+        HEAD_NOT_DIRECT_CHILD, SOURCE_PATH_UNSUPPORTED, OTHER_TREE_CHANGES, BASE_SOURCE_DIFFERS, REPAIR_SOURCE_DIFFERS,
+        REPOSITORY_INPUT_DIFFERS }
     public record Proof(int formatVersion, GitHubPullRequestLookup.Outline publication, String sourcePath, SubscriptionRepairEvidence verification,
                         String baseTreeSha, String headTreeSha, String baseBlobSha, String headBlobSha) {}
     public record Report(State state, Blocker blocker, SubscriptionRepairEvidence verification, String bindingIdentity, Proof proof) {}
-    public record Review(Report binding, RecordedOutcome outcome, RepairEvaluation.Assessment assessment) {}
+    public record Review(Report binding, RecordedOutcome outcome, RepairEvaluation.Assessment assessment, RepositoryInput repositoryInput) {}
+    record CommitSources(String baseTreeSha, String headTreeSha, String baseBlobSha, String headBlobSha,
+                         byte[] baseline, byte[] candidate) {}
+    static final class SourceBlocked extends Exception {
+        private static final long serialVersionUID = 1L;
+        final Blocker blocker;
+        SourceBlocked(Blocker blocker) { super(blocker.name()); this.blocker = blocker; }
+    }
     private record Commit(String tree, List<String> parents) {}
     private record Entry(String mode, String sha) {}
 
@@ -44,31 +53,62 @@ public final class RepairCommitBinding {
 
     public static Review review(Path state, String verificationId, Path repository, GitHubPullRequestLookup.Intent intent,
                                 String sourcePath) throws InterruptedException {
-        CaseInputs.require(sourcePath != null && sourcePath.length() <= 240
-                && sourcePath.matches("([A-Za-z0-9_-][A-Za-z0-9_.-]*/){0,7}PeriodConsumer\\.java"), "Unsupported repair source path");
+        CaseInputs.require(validSourcePath(sourcePath), "Unsupported repair source path");
         RepairVerification.SubscriptionReview review;
         try {
             review = RepairVerification.subscriptionRepairReview(state, verificationId);
         } catch (IOException | RuntimeException invalid) {
-            return new Review(blocked(Blocker.VERIFICATION_UNAVAILABLE, null), null, null);
+            return new Review(blocked(Blocker.VERIFICATION_UNAVAILABLE, null), null, null, null);
         }
         var evidence = review.evidence();
-        if (evidence.conclusion() != RepairEvaluation.Conclusion.ALL_OBSERVED_REGRESSIONS_FIXED)
-            return new Review(blocked(Blocker.REPAIR_NOT_ESTABLISHED, evidence), review.outcome(), review.assessment());
+        var binding = evidence.conclusion() == RepairEvaluation.Conclusion.ALL_OBSERVED_REGRESSIONS_FIXED
+                ? compare(repository, intent, sourcePath, evidence, review.repositoryInput())
+                : blocked(Blocker.REPAIR_NOT_ESTABLISHED, evidence);
+        return new Review(binding, review.outcome(), review.assessment(), review.repositoryInput());
+    }
+
+    private static Report compare(Path repository, GitHubPullRequestLookup.Intent intent, String sourcePath,
+                                  SubscriptionRepairEvidence evidence, RepositoryInput origin) throws InterruptedException {
+        if (origin != null && !origin.matchesSelection(intent, sourcePath))
+            return blocked(Blocker.REPOSITORY_INPUT_DIFFERS, evidence);
+        CommitSources sources;
         try {
-            var git = new GitObjects(repository.toAbsolutePath().normalize());
-            return new Review(compare(git, intent, sourcePath, evidence), review.outcome(), review.assessment());
+            sources = readSources(repository, intent, sourcePath);
+        } catch (SourceBlocked invalid) {
+            return blocked(invalid.blocker, evidence);
+        }
+        if (!CaseInputs.hash(sources.baseline()).equals(evidence.baseSourceSha256()))
+            return blocked(Blocker.BASE_SOURCE_DIFFERS, evidence);
+        if (!CaseInputs.hash(sources.candidate()).equals(evidence.repairSourceSha256()))
+            return blocked(Blocker.REPAIR_SOURCE_DIFFERS, evidence);
+        if (origin != null && !origin.matchesObjects(sources))
+            return blocked(Blocker.REPOSITORY_INPUT_DIFFERS, evidence);
+        var proof = new Proof(1, GitHubPullRequestLookup.describe(intent), sourcePath, evidence,
+                sources.baseTreeSha(), sources.headTreeSha(), sources.baseBlobSha(), sources.headBlobSha());
+        return new Report(State.MATCHED, null, evidence, CaseInputs.identity(proof), proof);
+    }
+
+    static boolean validSourcePath(String sourcePath) {
+        return sourcePath != null && sourcePath.length() <= 240
+                && sourcePath.matches("([A-Za-z0-9_-][A-Za-z0-9_.-]*/){0,7}PeriodConsumer\\.java");
+    }
+
+    static CommitSources readSources(Path repository, GitHubPullRequestLookup.Intent intent, String sourcePath)
+            throws InterruptedException, SourceBlocked {
+        CaseInputs.require(validSourcePath(sourcePath), "Unsupported repair source path");
+        try {
+            return readSources(new GitObjects(repository.toAbsolutePath().normalize()), intent, sourcePath);
         } catch (IOException | IllegalArgumentException invalid) {
-            return new Review(blocked(Blocker.GIT_OBJECTS_UNAVAILABLE, evidence), review.outcome(), review.assessment());
+            throw new SourceBlocked(Blocker.GIT_OBJECTS_UNAVAILABLE);
         }
     }
 
-    private static Report compare(GitObjects git, GitHubPullRequestLookup.Intent intent, String sourcePath, SubscriptionRepairEvidence evidence)
-            throws IOException, InterruptedException {
+    private static CommitSources readSources(GitObjects git, GitHubPullRequestLookup.Intent intent, String sourcePath)
+            throws IOException, InterruptedException, SourceBlocked {
         var baseSha = intent.selection().commitSha();
         var base = git.commit(baseSha);
         var head = git.commit(intent.headSha());
-        if (!head.parents().equals(List.of(baseSha))) return blocked(Blocker.HEAD_NOT_DIRECT_CHILD, evidence);
+        if (!head.parents().equals(List.of(baseSha))) throw new SourceBlocked(Blocker.HEAD_NOT_DIRECT_CHILD);
         String baseObject = base.tree(), headObject = head.tree();
         var segments = sourcePath.split("/");
         for (int i = 0; i < segments.length; i++) {
@@ -79,21 +119,16 @@ public final class RepairCommitBinding {
             var oldEntry = before.get(name);
             var newEntry = after.get(name);
             if (oldEntry == null || newEntry == null || !oldEntry.mode().equals(requiredMode) || !newEntry.mode().equals(requiredMode))
-                return blocked(Blocker.SOURCE_PATH_UNSUPPORTED, evidence);
+                throw new SourceBlocked(Blocker.SOURCE_PATH_UNSUPPORTED);
             // Replace the allowed entry in the comparison only. Siblings, modes and their order must all match.
             after.put(name, oldEntry);
             if (!new ArrayList<>(before.entrySet()).equals(new ArrayList<>(after.entrySet())))
-                return blocked(Blocker.OTHER_TREE_CHANGES, evidence);
+                throw new SourceBlocked(Blocker.OTHER_TREE_CHANGES);
             baseObject = oldEntry.sha();
             headObject = newEntry.sha();
         }
-        if (!CaseInputs.hash(git.read("blob", baseObject)).equals(evidence.baseSourceSha256()))
-            return blocked(Blocker.BASE_SOURCE_DIFFERS, evidence);
-        if (!CaseInputs.hash(git.read("blob", headObject)).equals(evidence.repairSourceSha256()))
-            return blocked(Blocker.REPAIR_SOURCE_DIFFERS, evidence);
-        var proof = new Proof(1, GitHubPullRequestLookup.describe(intent), sourcePath, evidence,
-                base.tree(), head.tree(), baseObject, headObject);
-        return new Report(State.MATCHED, null, evidence, CaseInputs.identity(proof), proof);
+        return new CommitSources(base.tree(), head.tree(), baseObject, headObject,
+                git.read("blob", baseObject), git.read("blob", headObject));
     }
 
     private static Report blocked(Blocker blocker, SubscriptionRepairEvidence evidence) {
@@ -139,19 +174,23 @@ public final class RepairCommitBinding {
             var result = BoundedCommand.run(command, Duration.ofSeconds(5), 262144, () -> false);
             if (result.status() != BoundedCommand.Status.EXITED || result.exitCode() != 0)
                 throw new IOException("Git object is unavailable");
-            try {
-                var digest = MessageDigest.getInstance("SHA-1");
-                digest.update((type + " " + result.stdout().length + "\0").getBytes(StandardCharsets.US_ASCII));
-                CaseInputs.require(HexFormat.of().formatHex(digest.digest(result.stdout())).equals(sha), "Wrong Git object identity");
-                return result.stdout();
-            } catch (NoSuchAlgorithmException impossible) {
-                throw new IllegalStateException(impossible);
-            }
+            CaseInputs.require(gitObjectHash(type, result.stdout()).equals(sha), "Wrong Git object identity");
+            return result.stdout();
         }
 
         private static int delimiter(byte[] bytes, int start, byte wanted) {
             for (int i = start; i < bytes.length; i++) if (bytes[i] == wanted) return i;
             throw new IllegalArgumentException("Invalid Git tree");
+        }
+    }
+
+    static String gitObjectHash(String type, byte[] bytes) {
+        try {
+            var digest = MessageDigest.getInstance("SHA-1");
+            digest.update((type + " " + bytes.length + "\0").getBytes(StandardCharsets.US_ASCII));
+            return HexFormat.of().formatHex(digest.digest(bytes));
+        } catch (NoSuchAlgorithmException impossible) {
+            throw new IllegalStateException(impossible);
         }
     }
 

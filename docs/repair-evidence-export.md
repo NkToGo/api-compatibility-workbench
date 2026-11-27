@@ -24,7 +24,7 @@ needs a new destination.
 | Section | Contents |
 | --- | --- |
 | `selection` | Repository identity, verification and operation IDs, source path and exact proposed commits. |
-| `verification` | The retained receipt digest, recorded execution outcome, exact input digests, recomputed scenario results and comparison issues when available. |
+| `verification` | The retained receipt digest, recorded execution outcome, exact input digests, recomputed scenario results and comparison issues when available. A [repository-bound verification](subscription-repository-verification.md) also includes its declared versions, repository and source objects. |
 | `binding` | The recomputed commit binding or the reason it is blocked. A matched binding includes the tree and source blob IDs. |
 | `historicalApproval` | The status and timestamps of the local publication approval for this binding, including expiry or revocation. Current applicability is not checked. |
 | `publication` | The attempt and response timestamps, request digest, original response and any reconciliation receipt, linked only when the journal matches the recomputed binding. |

@@ -572,6 +572,9 @@ entry point does not establish useful coordination or complete Milestone 5.
    It preserves unresolved evidence and limits conclusions to the selected
    synthetic delivery. Webhook and companion coverage and effective runtime
    configuration remain separate work.
+   The [subscription repair verification](subscription-repository-verification.md)
+   binds exact local Git objects and the supported API version declarations to
+   the verification record of that separate case.
 3. Bind review decisions to exact evidence and invalidate stale approvals.
    A [local invoice review](invoice-rollout-review.md) records acceptance of a
    bounded no-regression result or a hold for a selected rollout comparison.

@@ -7,7 +7,7 @@ The implemented paths have different inputs and outcomes.
 | Supported path | Evidence exercised | Remaining boundary |
 | --- | --- | --- |
 | Invoice reconciliation | Selected GitHub repository and pinned POM reads, retained declarations and source, protected baseline and target runs, comparison, and a local review tied to the exact attempt records. | The host runs one registered synthetic reconciliation delivery per phase. Declared versions do not establish effective runtime configuration. This review supplies no subscription repair or permission to publish one. |
-| Subscription-period repair | Protected testing on eight synthetic scenarios, exact repair commit binding, scoped branch checks, local approval, draft publication and reconciliation, PR and deployment observations, and a versioned evidence export. | The publication path starts from a retained subscription verification and prepared Git refs. The complete sequence has been exercised against a local GitHub fixture. A corresponding run on an installed GitHub App is pending. |
+| Subscription-period repair | [Repository-bound verification](subscription-repository-verification.md) of exact committed adapter bytes and declared versions, protected testing on eight synthetic scenarios, scoped branch checks, approval, draft publication and reconciliation, PR and deployment observations, and export. | The complete sequence uses prepared synthetic case revisions and a local GitHub fixture. A corresponding maintainer run on the selected GitHub installation is pending. |
 
 Repository access and selected source reads were exercised separately with a
 scoped GitHub App. The two paths above do not form one migration. The invoice
@@ -27,8 +27,10 @@ contains all eight scenario outcomes and retains both outcomes of the publicatio
 attempt. Given fixture merge and deployment records, the export checks the
 confirmed PR number and carries deployment status for the exact merge revision.
 No database changes are part of the exercise. The default tests use synthetic
-verification. Linux protected verification also runs this sequence with a
-repair verified by the isolated worker. GitHub responses are simulated in both.
+verification. Linux protected verification runs this sequence with a repair
+verified by the isolated worker from the exact selected Git revisions and
+version declarations. The export carries the original repository provenance.
+GitHub responses are simulated in both.
 
 ## Remaining acceptance evidence
 

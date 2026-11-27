@@ -2,11 +2,15 @@ package io.github.nktogo.apicompatibility.runner;
 
 import com.google.gson.*;
 import io.github.nktogo.apicompatibility.compatibility.*;
+import io.github.nktogo.apicompatibility.runner.SubscriptionRepositoryVerification.RepositoryInput;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.*;
 import java.util.*;
+
+import static io.github.nktogo.apicompatibility.runner.SubscriptionRepositoryVerification.BASELINE_API_VERSION;
+import static io.github.nktogo.apicompatibility.runner.SubscriptionRepositoryVerification.TARGET_API_VERSION;
 
 /** Durable single-host verification of one captured candidate; interrupted attempts are never replayed. */
 public final class RepairVerification {
@@ -83,6 +87,17 @@ public final class RepairVerification {
         return registerSubscription(caseRoot, baseline, candidate, image, "supplied-source", null);
     }
     String registerSubscription(Path caseRoot, String baseline, String candidate, String image, String candidateId, String manifest) throws IOException {
+        return registerSubscription(caseRoot, baseline, candidate, image, candidateId, manifest, null);
+    }
+
+    String registerRepositorySubscription(Path caseRoot, String baseline, String candidate, String image, RepositoryInput input)
+            throws IOException {
+        input.verifyBytes(baseline.getBytes(StandardCharsets.UTF_8), candidate.getBytes(StandardCharsets.UTF_8));
+        return registerSubscription(caseRoot, baseline, candidate, image, SubscriptionRepositoryVerification.CANDIDATE_ID, null, input);
+    }
+
+    private String registerSubscription(Path caseRoot, String baseline, String candidate, String image, String candidateId,
+                                        String manifest, RepositoryInput repositoryInput) throws IOException {
         CaseInputs.require(!baseline.isBlank() && !candidate.isBlank() && baseline.length() <= 32000 && candidate.length() <= 32000
                 && image.matches("sha256:[0-9a-f]{64}"), "Invalid subscription verification input");
         var files = SubscriptionPeriodCase.load(caseRoot);
@@ -92,8 +107,8 @@ public final class RepairVerification {
                 && SubscriptionPeriodCase.CASE_ID.equals(expected.get("caseId").getAsString())
                 && "bound-item-renewal-v1".equals(expected.get("policy").getAsString())
                 && fixtures.get("formatVersion").getAsInt() == 1 && expected.get("formatVersion").getAsInt() == 1
-                && "2025-02-24.acacia".equals(fixtures.getAsJsonObject("apiVersions").get("baseline").getAsString())
-                && "2025-07-30.basil".equals(fixtures.getAsJsonObject("apiVersions").get("target").getAsString()), "Unsupported subscription case");
+                && BASELINE_API_VERSION.equals(fixtures.getAsJsonObject("apiVersions").get("baseline").getAsString())
+                && TARGET_API_VERSION.equals(fixtures.getAsJsonObject("apiVersions").get("target").getAsString()), "Unsupported subscription case");
         var scenarios = indexed(fixtures); var expectations = indexed(expected);
         CaseInputs.require(!scenarios.isEmpty() && scenarios.keySet().equals(expectations.keySet()), "Scenario coverage mismatch");
         for (var scenario : scenarios.entrySet()) for (String side : List.of("baseline", "target"))
@@ -112,6 +127,7 @@ public final class RepairVerification {
         spec.put("formatVersion", 1); spec.put("verificationId", id); spec.put("imageId", image);
         spec.put("caseId", SubscriptionPeriodCase.CASE_ID); spec.put("protocol", "subscription-period-v1");
         spec.put("candidateId", candidateId); if (manifest != null) spec.put("candidateManifestSha256", manifest);
+        if (repositoryInput != null) spec.put("repositoryInput", repositoryInput);
         spec.put("inputs", CaseInputs.inventory(captured));
         spec.put("jobs", jobs); spec.put("harnessSha256", harness()); spec.put("deadlineSeconds", 60);
         spec.put("createdAt", Instant.now().toString());
@@ -197,12 +213,13 @@ public final class RepairVerification {
         if (Files.exists(directory.resolve("observations.json"))) result.addProperty("observationsSha256", CaseInputs.hash(Files.readAllBytes(directory.resolve("observations.json"))));
         DurableExecution.publish(directory.resolve("result.json"), result); return result;
     }
-    private record Retained(JsonObject result, JsonObject spec, byte[] observations, String receiptSha256) {}
+    private record Retained(JsonObject result, JsonObject spec, byte[] observations, String receiptSha256, RepositoryInput repositoryInput) {}
     public record SubscriptionRepairEvidence(String verificationId, String receiptSha256, String baseSourceSha256,
                                              String repairSourceSha256, RepairEvaluation.Conclusion conclusion) {}
     public enum VerificationStatus { COMPLETED, CANCELLED, AUTHORIZATION_DENIED, INTERRUPTED }
     public record RecordedOutcome(VerificationStatus status, String authorizationDecision, Instant finishedAt) {}
-    record SubscriptionReview(SubscriptionRepairEvidence evidence, RecordedOutcome outcome, RepairEvaluation.Assessment assessment) {}
+    record SubscriptionReview(SubscriptionRepairEvidence evidence, RecordedOutcome outcome, RepairEvaluation.Assessment assessment,
+                              RepositoryInput repositoryInput) {}
 
     static JsonObject retained(Path directory) throws IOException { return loadRetained(directory).result(); }
 
@@ -212,14 +229,14 @@ public final class RepairVerification {
         byte[] registration = recordBytes(directory.resolve("spec.json"));
         CaseInputs.require(result.get("specSha256").getAsString().equals(CaseInputs.hash(registration)), "Verification registration changed");
         var spec = CaseInputs.object(registration);
-        verifyInputs(directory, spec);
+        var repositoryInput = verifyInputs(directory, spec);
         CaseInputs.require(result.get("jobArtifacts").equals(CaseInputs.JSON.toJsonTree(CaseInputs.inventory(directory.resolve("jobs")))), "Verification evidence changed");
         byte[] observations = null;
         if (result.has("observationsSha256")) {
             observations = recordBytes(directory.resolve("observations.json"));
             CaseInputs.require(result.get("observationsSha256").getAsString().equals(CaseInputs.hash(observations)), "Observations changed");
         }
-        return new Retained(result, spec, observations, CaseInputs.hash(receipt));
+        return new Retained(result, spec, observations, CaseInputs.hash(receipt), repositoryInput);
     }
 
     static SubscriptionReview subscriptionRepairReview(Path state, String id) throws IOException {
@@ -240,7 +257,8 @@ public final class RepairVerification {
         var authorization = ExecutionAuthorization.Decision.valueOf(result.get("authorizationDecision").getAsString());
         var outcome = new RecordedOutcome(status, authorization.name(), Instant.parse(result.get("finishedAt").getAsString()));
         if (!subscription(spec) || status != VerificationStatus.COMPLETED || authorization != ExecutionAuthorization.Decision.ALLOWED) {
-            return new SubscriptionReview(new SubscriptionRepairEvidence(id, retained.receiptSha256(), null, null, null), outcome, null);
+            return new SubscriptionReview(new SubscriptionRepairEvidence(id, retained.receiptSha256(), null, null, null),
+                    outcome, null, retained.repositoryInput());
         }
         CaseInputs.require(retained.observations() != null, "Missing verification observations");
         byte[] fixtures = recordBytes(directory.resolve("inputs/fixtures.json"));
@@ -254,7 +272,7 @@ public final class RepairVerification {
         CaseInputs.require(CaseInputs.JSON.toJsonTree(assessment).equals(result.get("evaluation")), "Verification conclusion changed");
         var evidence = new SubscriptionRepairEvidence(id, retained.receiptSha256(), definition.transition().target().source().sha256(),
                 definition.repairedTarget().source().sha256(), assessment.conclusion());
-        return new SubscriptionReview(evidence, outcome, assessment);
+        return new SubscriptionReview(evidence, outcome, assessment, retained.repositoryInput());
     }
 
     private static RepairEvaluation.Definition definition(JsonObject spec, List<String> scenarios) {
@@ -271,9 +289,9 @@ public final class RepairVerification {
     private static InputSnapshot snapshot(JsonObject spec, String variant) {
         var hashes = spec.getAsJsonObject("inputs");
         if (subscription(spec)) return new InputSnapshot(SubscriptionPeriodCase.CASE_ID, "stripe",
-                variant.equals("baseline") ? "2025-02-24.acacia" : "2025-07-30.basil",
+                variant.equals("baseline") ? BASELINE_API_VERSION : TARGET_API_VERSION,
                 new ContentDigest(hashes.get(variant.equals("candidate") ? "candidate.txt" : "baseline.txt").getAsString()),
-                new ContentDigest(CaseInputs.identity("bound-item-renewal-v1/subscription-period-v1")),
+                new ContentDigest(subscriptionConfiguration(spec)),
                 new ContentDigest(hashes.get("expectations.json").getAsString()), new ContentDigest(hashes.get("fixtures.json").getAsString()),
                 new ContentDigest(spec.get("harnessSha256").getAsString()),
                 new ContentDigest(CaseInputs.identity(new TreeMap<>(Map.of("imageId", spec.get("imageId"), "boundary", "repair-container-v1")))));
@@ -301,8 +319,20 @@ public final class RepairVerification {
         CaseInputs.require(id != null && id.matches("verification-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"), "Invalid verification ID");
         return root.resolve(id);
     }
-    private static void verifyInputs(Path directory, JsonObject spec) throws IOException {
+    private static String subscriptionConfiguration(JsonObject spec) {
+        String configuration = "bound-item-renewal-v1/subscription-period-v1";
+        return spec.has("repositoryInput") ? CaseInputs.identity(List.of(configuration, spec.get("repositoryInput")))
+                : CaseInputs.identity(configuration);
+    }
+
+    private static RepositoryInput verifyInputs(Path directory, JsonObject spec) throws IOException {
         CaseInputs.require(spec.get("inputs").equals(CaseInputs.JSON.toJsonTree(CaseInputs.inventory(directory.resolve("inputs")))), "Verification inputs changed");
+        boolean bound = SubscriptionRepositoryVerification.CANDIDATE_ID.equals(spec.get("candidateId").getAsString());
+        CaseInputs.require(bound == spec.has("repositoryInput"), "Missing or unexpected repository input");
+        if (!bound) return null;
+        CaseInputs.require(subscription(spec), "Repository input requires the subscription protocol");
+        return SubscriptionRepositoryVerification.retained(spec.getAsJsonObject("repositoryInput"), recordBytes(directory.resolve("inputs/baseline.txt")),
+                recordBytes(directory.resolve("inputs/candidate.txt")));
     }
     private static Map<String, JsonObject> indexed(JsonObject data) {
         var result = new LinkedHashMap<String, JsonObject>();

@@ -66,6 +66,8 @@ decisions.
 A [repair pull request lookup](docs/repair-pull-request-lookup.md) checks GitHub
 metadata for an exact match to a local publication intent. It keeps empty,
 conflicting and incomplete results distinct.
+A [repository-bound subscription verification](docs/subscription-repository-verification.md)
+can use exact committed adapter bytes and retain the declared API transition.
 A [local repair commit check](docs/repair-commit-binding.md) confirms that the
 proposed subscription repair commit changes only the adapter and matches the
 bytes covered by retained verification evidence.

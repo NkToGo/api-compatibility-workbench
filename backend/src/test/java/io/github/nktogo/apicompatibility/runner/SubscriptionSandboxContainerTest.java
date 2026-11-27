@@ -14,9 +14,13 @@ class SubscriptionSandboxContainerTest {
     @Test void durableVerificationExecutesCapturedSourcesAndReusesFinalEvidence() throws Exception {
         Path state = Path.of(System.getProperty("workbench.repository"), "backend/target/subscription-container-tests", UUID.randomUUID().toString());
         var verifier = new RepairVerification(state);
-        String id = verifier.registerSubscription(SubscriptionVerificationTest.caseRoot(),
+        var revisions = RepairCommitBindingTest.history(state.resolve("binding-test-repo"),
                 source("subscription.get(\"current_period_end\").getAsLong()"),
-                source("selected.get(\"current_period_end\").getAsLong()"), System.getProperty("workbench.repair.image"));
+                source("selected.get(\"current_period_end\").getAsLong()"));
+        var prepared = SubscriptionRepositoryVerification.prepare(revisions.repository(), SubscriptionMaintainerWorkflowTest.intent(revisions),
+                RepairCommitBindingTest.SOURCE, SubscriptionRepositoryVerification.BASELINE_API_VERSION,
+                SubscriptionRepositoryVerification.TARGET_API_VERSION);
+        String id = prepared.register(verifier, SubscriptionVerificationTest.caseRoot(), System.getProperty("workbench.repair.image"));
         var result = verifier.execute(id);
         assertEquals("COMPLETED", result.get("status").getAsString());
         assertEquals("ALL_OBSERVED_REGRESSIONS_FIXED", result.getAsJsonObject("evaluation").get("conclusion").getAsString());
@@ -30,10 +34,9 @@ class SubscriptionSandboxContainerTest {
         assertEquals("CANDIDATE_READY", candidates.generate(candidate).get("status").getAsString());
         String generatedVerification = candidates.verification(candidate, System.getProperty("workbench.repair.image"));
         assertEquals("ALL_OBSERVED_REGRESSIONS_FIXED", verifier.execute(generatedVerification).getAsJsonObject("evaluation").get("conclusion").getAsString());
-        var revisions = RepairCommitBindingTest.history(state.resolve("binding-test-repo"),
-                source("subscription.get(\"current_period_end\").getAsLong()"),
-                source("selected.get(\"current_period_end\").getAsLong()"));
-        SubscriptionMaintainerWorkflowTest.verify(state, revisions, generatedVerification);
+        assertEquals(RepairCommitBinding.State.MATCHED, RepairCommitBinding.check(state, generatedVerification, revisions.repository(),
+                SubscriptionMaintainerWorkflowTest.intent(revisions), RepairCommitBindingTest.SOURCE).state());
+        SubscriptionMaintainerWorkflowTest.verify(state, revisions, id);
         assertEquals(1, models.calls);
     }
     static String source(String expression) {

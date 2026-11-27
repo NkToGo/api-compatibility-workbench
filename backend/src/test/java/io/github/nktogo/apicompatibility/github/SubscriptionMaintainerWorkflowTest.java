@@ -29,9 +29,8 @@ public class SubscriptionMaintainerWorkflowTest {
     public static void verify(Path state, Revisions revisions, String verification) throws Exception {
         GitHubRepositoryConnectionTest.keys();
         var clock = new MutableClock();
-        var selection = new GitHubRepositoryConnection.Selection(1, 20, 30, 40, "sample-owner", "billing", revisions.base());
-        var intent = new GitHubPullRequestLookup.Intent(1, 10, selection,
-                "b876052c-4c83-4d18-80a1-f9e2a35bcfa3", "main", revisions.head());
+        var intent = intent(revisions);
+        var selection = intent.selection();
         var review = RepairCommitBinding.review(state, verification, revisions.repository(), intent, SOURCE);
         var local = review.binding();
         assertEquals(RepairCommitBinding.State.MATCHED, local.state());
@@ -88,11 +87,20 @@ public class SubscriptionMaintainerWorkflowTest {
                     .export(verification, revisions.repository(), intent, SOURCE, destination, true, "production", transport);
             byte[] bytes = Files.readAllBytes(destination.resolve(export.file()));
             assertEquals(GitSourceObjects.sha256(bytes), export.sha256());
-            verifyExport(GitHubJson.parse(bytes, 262144), local, merge, recovered.recovered().pull().number());
+            var report = GitHubJson.parse(bytes, 262144);
+            verifyExport(report, local, merge, recovered.recovered().pull().number());
+            var origin = report.getAsJsonObject("verification").get("repositoryInput");
+            assertEquals(GitHubJson.JSON.toJsonTree(review.repositoryInput()), origin);
             assertArrayEquals(originalResponse, Files.readAllBytes(response));
             assertTrue(fixture.requests.stream().allMatch(r -> "GET".equals(r.method())
                     || "POST".equals(r.method()) && (MINT.equals(r.path()) || pullPath.equals(r.path()))));
         }
+    }
+
+    public static GitHubPullRequestLookup.Intent intent(Revisions revisions) {
+        var selection = new GitHubRepositoryConnection.Selection(1, 20, 30, 40, "sample-owner", "billing", revisions.base());
+        return new GitHubPullRequestLookup.Intent(1, 10, selection,
+                "b876052c-4c83-4d18-80a1-f9e2a35bcfa3", "main", revisions.head());
     }
 
     private static void configureBinding(Fixture fixture, GitHubPullRequestLookup.Intent intent, RepairCommitBinding.Proof proof) {

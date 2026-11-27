@@ -14,7 +14,7 @@
                     }
                   }
                   if (selected == null) throw new IllegalArgumentException();
-                  long end = subscription.get("current_period_end").getAsLong();
+                  long end = selected.get("current_period_end").getAsLong();
                   if (end <= 0) throw new IllegalArgumentException();
                   var value = new JsonObject(); value.addProperty("status", "RESOLVED"); value.addProperty("periodEnd", end); return value;
                 } catch (RuntimeException e) {

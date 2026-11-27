@@ -34,7 +34,7 @@ public final class GitHubRepositoryConnection {
                            Instant observedAt, Instant tokenExpiresAt, String authority,
                            boolean compatibilityAssessed) {}
     public enum Stage { APP, INSTALLATION, TOKEN, REPOSITORY_SCOPE, REVISION, SOURCE_TREE, SOURCE_BLOB, PULL_REQUESTS, BRANCH_REF,
-        CREATE_PULL_REQUEST, PULL_REQUEST_DETAIL, DEPLOYMENTS, DEPLOYMENT_STATUSES }
+        CREATE_PULL_REQUEST, PULL_REQUEST_DETAIL, PULL_REQUEST_MERGE, DEPLOYMENTS, DEPLOYMENT_STATUSES }
     enum PullAccess { NONE, READ, WRITE }
     public enum Code { ACCESS_DENIED_OR_RATE_LIMITED, AUTHENTICATION_FAILED, NOT_FOUND_OR_NOT_INSTALLED,
         SCOPE_REJECTED, REDIRECT_REFUSED, PROVIDER_UNAVAILABLE, UNEXPECTED_STATUS,
@@ -82,17 +82,61 @@ public final class GitHubRepositoryConnection {
         } catch (RuntimeException e) { throw failed(Code.INVALID_METADATA, Stage.REVISION, 0, null, false); }
     }
 
-    JsonObject pullRequest(GitHubPullRequestLookup.Intent intent, long number, GitHubAppCredentials credentials,
-                           GitHubTransport transport) throws ConnectionFailure, InterruptedException {
+    PullReader openPull(GitHubPullRequestLookup.Intent intent, long number, GitHubAppCredentials credentials,
+                        GitHubTransport transport) throws ConnectionFailure, InterruptedException {
         GitHubJson.require(number > 0);
         var selection = intent.selection();
         var access = authenticateScope(selection, credentials, transport, intent.appId(), sourcePermissions(PullAccess.NONE));
-        Stage stage = Stage.PULL_REQUEST_DETAIL;
-        live(access.expires(), stage);
-        // A numbered PR can still be inspected when the original base commit is no longer reachable.
-        var result = request(transport, stage, "GET", selection.path() + "/pulls/" + number, new byte[0], access.token(), 200);
-        live(access.expires(), stage);
-        return result;
+        return new PullReader(selection, number, access, transport);
+    }
+
+    final class PullReader {
+        private final Selection selection;
+        private final long number;
+        private final ScopedAccess access;
+        private final GitHubTransport transport;
+
+        private PullReader(Selection selection, long number, ScopedAccess access, GitHubTransport transport) {
+            this.selection = selection;
+            this.number = number;
+            this.access = access;
+            this.transport = transport;
+        }
+
+        JsonObject detail() throws ConnectionFailure, InterruptedException {
+            Stage stage = Stage.PULL_REQUEST_DETAIL;
+            live(access.expires(), stage);
+            // A numbered PR can still be inspected when the original base commit is no longer reachable.
+            var result = request(transport, stage, "GET", selection.path() + "/pulls/" + number, new byte[0], access.token(), 200);
+            live(access.expires(), stage);
+            return result;
+        }
+
+        JsonObject mergeMetadata() throws ConnectionFailure, InterruptedException {
+            Stage stage = Stage.PULL_REQUEST_MERGE;
+            var variables = new JsonObject();
+            variables.addProperty("owner", selection.owner());
+            variables.addProperty("repository", selection.name());
+            variables.addProperty("number", number);
+            var query = new JsonObject();
+            query.add("variables", variables);
+            query.addProperty("query", """
+                    query($owner: String!, $repository: String!, $number: Int!) {
+                      repository(owner: $owner, name: $repository) {
+                        databaseId
+                        pullRequest(number: $number) {
+                          number merged mergedAt isDraft baseRefName baseRefOid headRefName headRefOid
+                          mergeCommit { oid }
+                        }
+                      }
+                    }
+                    """);
+            live(access.expires(), stage);
+            var result = request(transport, stage, "POST", "/graphql",
+                    GitHubJson.JSON.toJson(query).getBytes(StandardCharsets.UTF_8), access.token(), 200);
+            live(access.expires(), stage);
+            return result;
+        }
     }
 
     static final int DEPLOYMENT_PAGE_SIZE = 10;

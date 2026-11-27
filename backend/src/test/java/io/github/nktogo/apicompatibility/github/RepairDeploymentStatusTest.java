@@ -175,7 +175,7 @@ class RepairDeploymentStatusTest {
             var report = observe(fixture);
             assertEquals(reason, report.reason());
             assertEquals(reason == RepairDeploymentStatus.Reason.PR_NOT_MERGED ? NOT_READY : INCOMPLETE, report.state());
-            assertEquals(5, fixture.requests.size());
+            assertEquals(condition.equals("missing-merge-sha") ? 6 : 5, fixture.requests.size());
             assertTrue(report.deployments().isEmpty());
         }
     }

@@ -23,7 +23,13 @@ PR is open, closed, or merged and whether GitHub reports it as a draft. It shows
 the current base and head commit IDs and flags differences in repository, ref,
 commit or operation marker. An exact creation response remains historical
 evidence even if the PR changes later. A merged observation reports the GitHub
-merge time and commit ID when available. It carries no deployment conclusion.
+merge time and commit ID when available. When REST omits the merge commit ID for
+an otherwise matching merged PR, a fixed [GitHub GraphQL query](https://docs.github.com/en/graphql/reference/pulls#pullrequest)
+tries to read it using the same repository-scoped token. The returned repository,
+PR number, refs, commit IDs and merge time must agree with the REST observation.
+An unavailable or inconsistent answer preserves the observed merge, leaves the
+merge commit ID empty and records the failure separately. PR status carries no
+deployment conclusion.
 To observe GitHub's deployment records for that revision in a specific
 environment, use the [separate deployment status check](repair-deployment-status.md).
 

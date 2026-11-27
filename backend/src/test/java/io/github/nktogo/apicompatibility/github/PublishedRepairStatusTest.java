@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -153,6 +155,77 @@ class PublishedRepairStatusTest {
             assertEquals(INCOMPLETE, limited.state());
             assertEquals(NOW.plusSeconds(90), limited.failure().retryNotBefore());
             assertEquals(2, fixture.requests.stream().filter(r -> DETAIL.equals(r.path())).count());
+        }
+    }
+
+    private static JsonObject graphForMergedPull(Fixture fixture) {
+        var detail = pull();
+        detail.addProperty("state", "closed");
+        detail.addProperty("draft", false);
+        detail.addProperty("merged", true);
+        detail.addProperty("merged_at", NOW.toString());
+        fixture.replies.put(DETAIL, detail);
+
+        var graph = json("{\"data\":{\"repository\":{\"databaseId\":40,\"pullRequest\":{\"number\":17,\"merged\":true,\"isDraft\":false,\"mergeCommit\":{}}}}}");
+        var merged = graph.getAsJsonObject("data").getAsJsonObject("repository").getAsJsonObject("pullRequest");
+        merged.addProperty("mergedAt", NOW.toString());
+        merged.addProperty("baseRefName", INTENT.baseRef());
+        merged.addProperty("headRefName", INTENT.headRef());
+        merged.addProperty("baseRefOid", SHA);
+        merged.addProperty("headRefOid", HEAD_SHA);
+        merged.getAsJsonObject("mergeCommit").addProperty("oid", "e".repeat(40));
+        fixture.replies.put("/graphql", graph);
+        return merged;
+    }
+
+    @Test void resolvesAnOmittedMergeShaWithTheSameReadOnlyToken() throws Exception {
+        journal(DraftRepairPublication.State.CREATED);
+        try (var fixture = new Fixture()) {
+            graphForMergedPull(fixture);
+            var report = observe(fixture);
+            assertEquals(OBSERVED, report.state());
+            assertEquals("e".repeat(40), report.current().mergeCommitSha());
+            assertNull(report.failure());
+            assertEquals(List.of("/app", INSTALLATION, MINT, SCOPE, DETAIL, "/graphql"),
+                    fixture.requests.stream().map(Captured::path).toList());
+            var query = fixture.requests.getLast();
+            assertEquals("POST", query.method());
+            assertEquals(fixture.requests.get(4).authorization(), query.authorization());
+            var payload = GitHubJson.parse(query.body(), 8192);
+            assertEquals(json("{\"owner\":\"sample-owner\",\"repository\":\"billing\",\"number\":17}"), payload.get("variables"));
+            assertTrue(GitHubJson.text(payload, "query").stripLeading().startsWith("query("));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"wrong-head", "wrong-repository", "wrong-time", "partial", "malformed", "null-merge", "rate-limited"})
+    void keepsTheRestObservationWhenTheFallbackCannotConfirmItsMergeSha(String condition) throws Exception {
+        journal(DraftRepairPublication.State.CREATED);
+        try (var fixture = new Fixture()) {
+            var merged = graphForMergedPull(fixture);
+            var graph = fixture.replies.get("/graphql");
+            switch (condition) {
+                case "wrong-head" -> merged.addProperty("headRefOid", "f".repeat(40));
+                case "wrong-repository" -> graph.getAsJsonObject("data").getAsJsonObject("repository").addProperty("databaseId", 41);
+                case "wrong-time" -> merged.addProperty("mergedAt", NOW.plusSeconds(1).toString());
+                case "partial" -> graph.add("errors", json("{\"errors\":[{\"message\":\"PRIVATE_ERROR_SENTINEL\"}]}").get("errors"));
+                case "malformed" -> merged.getAsJsonObject("mergeCommit").addProperty("oid", "main");
+                case "null-merge" -> merged.add("mergeCommit", JsonNull.INSTANCE);
+                case "rate-limited" -> {
+                    fixture.faultPath = "/graphql";
+                    fixture.faultStatus = 429;
+                    fixture.faultHeaders.put("Retry-After", "90");
+                }
+                default -> throw new AssertionError(condition);
+            }
+            var report = observe(fixture);
+            assertEquals(OBSERVED, report.state());
+            assertEquals(GitHubPullRequestLookup.PullState.MERGED, report.current().pull().state());
+            assertNull(report.current().mergeCommitSha());
+            if (condition.equals("null-merge")) assertNull(report.failure());
+            else assertEquals(GitHubRepositoryConnection.Stage.PULL_REQUEST_MERGE, report.failure().stage());
+            if (condition.equals("rate-limited")) assertEquals(NOW.plusSeconds(90), report.failure().retryNotBefore());
+            assertFalse(GitHubJson.JSON.toJson(report).contains("PRIVATE_"));
         }
     }
 

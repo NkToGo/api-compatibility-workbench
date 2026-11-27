@@ -1,13 +1,13 @@
 # Milestone 5 maintainer workflow status
 
-**Acceptance remains open.** The criterion is a maintainer completing an
-authorized, supported migration workflow without manual database intervention.
-The implemented paths have different inputs and outcomes.
+**Acceptance met for the supported subscription-period repair.** A maintainer
+completed the workflow on a selected GitHub installation using synthetic inputs
+and the documented commands without manual database intervention.
 
 | Supported path | Evidence exercised | Remaining boundary |
 | --- | --- | --- |
 | Invoice reconciliation | Selected GitHub repository and pinned POM reads, retained declarations and source, protected baseline and target runs, comparison, and a local review tied to the exact attempt records. | The host runs one registered synthetic reconciliation delivery per phase. Declared versions do not establish effective runtime configuration. This review supplies no subscription repair or permission to publish one. |
-| Subscription-period repair | [Repository-bound verification](subscription-repository-verification.md) of exact committed adapter bytes and declared versions, protected testing on eight synthetic scenarios, scoped branch checks, approval, draft publication and reconciliation, PR and deployment observations, and export. | The complete sequence uses prepared synthetic case revisions and a local GitHub fixture. A corresponding maintainer run on the selected GitHub installation is pending. |
+| Subscription-period repair | [Repository-bound verification](subscription-repository-verification.md) of exact committed adapter bytes and declared versions, protected testing on eight synthetic scenarios, scoped branch checks, approval, draft publication, PR and deployment observations, and export. Ambiguous publication reconciliation is verified separately with a local GitHub fixture. | The live run used prepared synthetic case revisions and an isolated worker. Its rollout is a GitHub deployment record for the sandbox result. |
 
 Repository access and selected source reads were exercised separately with a
 scoped GitHub App. The two paths above do not form one migration. The invoice
@@ -32,14 +32,25 @@ verified by the isolated worker from the exact selected Git revisions and
 version declarations. The export carries the original repository provenance.
 GitHub responses are simulated in both.
 
-## Remaining acceptance evidence
+## Selected installation exercise
 
-For one supported case, record a maintainer run from selection and declared
-version and source evidence through protected execution, review, authorized
-publication and export. Keep the case, repository and exact inputs linked
-throughout. Verify the supported handoffs on the selected GitHub installation
-and show that the maintainer can recover or reconcile through the supported
-commands without manually changing stored state.
+1. Select the repository and pin the baseline and proposed repair revisions.
+   Bind the declared API versions and committed adapter bytes to the protected
+   verification. The repair passed all eight registered scenarios, including the
+   four that regressed on the target version before the repair.
+2. Check both remote branches against the verified binding and record approval
+   for the exact draft operation. The publisher created [repair PR #1](https://github.com/NkToGo/api-compatibility-workbench/pull/1)
+   and retained its publication receipt. Offline export confirmed it could reopen
+   the same verification and publication record from disk.
+3. Merge into the dedicated acceptance branch. The merge tree matched the
+   verified repair tree and all eight repair scenarios passed again in the
+   sandbox. Both CI jobs succeeded on the exact merge commit.
+   [Merge verification](https://github.com/NkToGo/api-compatibility-workbench/actions/runs/46072631823)
+4. Record the synthetic deployment in the acceptance environment. The workbench
+   retrieved its `SUCCESS` status by the exact merge SHA and environment, then
+   exported it alongside the original verification, eight scenario outcomes and
+   publication record. The observation and export left the publication journal
+   intact. [Deployment status record](https://api.github.com/repos/NkToGo/api-compatibility-workbench/deployments/8120489864/statuses)
 
 The subscription workflow requires the exact base and proposed repair branches
 to exist in the selected repository. Live draft creation needs **Pull requests:
@@ -47,9 +58,9 @@ write** on that installation and a fresh approval for the exact operation.
 Deployment observation additionally needs **Deployments: read** and a record
 for the exact merge revision in the selected environment. The workbench does
 not provision access, merge the PR or deploy the repair. Those actions have
-their own authorization. An absent rollout observation remains a gap in the
-evidence. The exercise can use a controlled repository with synthetic fixtures
-and requires no production Stripe access or paid model calls.
+their own authorization. The recorded success describes synthetic sandbox
+verification. Deployment health and production Stripe compatibility require
+separate evidence.
 
 See the [local invoice review](invoice-rollout-review.md),
 [draft publication](draft-repair-publication.md) and

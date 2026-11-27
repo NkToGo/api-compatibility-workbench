@@ -86,7 +86,7 @@ GitHub deployment records for the exact merged revision and selected environment
 A [repair evidence export](docs/repair-evidence-export.md) summarizes one verified
 subscription repair, its publication history and optional fresh GitHub observations.
 The [Milestone 5 status](docs/milestone-5-status.md) records the verified
-handoffs and the evidence still needed for maintainer workflow acceptance.
+handoffs and the completed subscription maintainer workflow on a synthetic case.
 
 The case can also run inside a constrained Linux container, including consumer
 compilation. The host controller enforces a fixed execution policy, captures bounded

@@ -25,8 +25,8 @@ For an eligible merged PR, the command requests a separate installation token
 limited to the same repository with **Deployments: read-only** and **Metadata:
 read-only**. The installation administrator must grant Deployments read access
 before the deployment query can succeed. The command cannot change installation
-permissions. Only token issuance uses POST. All PR, deployment and status
-operations are reads.
+permissions. Token issuance and the optional read-only GraphQL query for the
+merge commit ID use POST. All PR, deployment and status operations are reads.
 [GitHub Deployments API](https://docs.github.com/en/rest/deployments/deployments?apiVersion=2026-03-10#list-deployments)
 
 | Result | Meaning |

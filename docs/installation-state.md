@@ -45,9 +45,13 @@ remain explicit, and other workbench commands have their own state settings.
 
 The setting selects local state for a trusted installation. Run the commands from
 an environment controlled by the operator, with filesystem access granted to the
-designated account. On a shared host, the isolation boundary is the service
-account and its permissions. Hosted organization authorization, retention and
-deletion controls require separate release steps.
+designated account. For protected execution across organizations that require
+independent Docker access, provision separate hosts or VMs. Access to a rootful
+Docker daemon carries host-level privileges beyond the service account's file
+permissions. [Docker Engine security guidance](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user)
+
+Hosted organization authorization, retention and deletion controls require
+separate release steps.
 
 ## Verify the path boundary
 
